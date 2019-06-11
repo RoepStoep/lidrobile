@@ -97,6 +97,7 @@ export interface DailyPuzzle {
   readonly id: string
   readonly fen: string
   readonly color: Color
+  readonly variant: VariantKey
 }
 
 export interface DailyPuzzleHistory {
