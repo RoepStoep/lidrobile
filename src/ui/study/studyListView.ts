@@ -64,7 +64,6 @@ export default function studyListView(ctrl: StudyListCtrl) {
       h('div.study-pagerToggleSearch.fa.fa-search', {
         oncreate: helper.ontap(ctrl.toggleSearch)
       }),
-      h('div.main_header_drop_shadow')
     ]),
     studyList(ctrl)
   ])

@@ -8,13 +8,10 @@
     display flex
     flex-flow row nowrap
     justify-content space-between
-    >.numPlayers
-      flex 0 1 auto
-    >.numGames
+    > div
       flex 0 1 auto
   .tabs-view-wrapper
     height calc(((100vw * 0.85 - 40px) * 0.28) * 3 + 40px)
-    background-color transparent
     background-image url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMTAuMCAyMTAuMCI+PGcgb3BhY2l0eT0iLjEiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2ZmZiIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2Utd2lkdGg9IjYiPjxnIGZpbGw9IiMwMDAiPjxwYXRoIGQ9Ik0gMTAsMTQwIGMgMCw2MCAxOTAsNjAgMTkwLDAgbCAwLC0zNSBsIC0xOTAsMCB6Ii8+PHBhdGggZD0iTSAxMCwxMDUgYyAwLDYwIDE5MCw2MCAxOTAsMCBsIDAsLTM1IGwgLTE5MCwwIHoiLz48cGF0aCBkPSJNIDEwLDcwIGMgMCw2MCAxOTAsNjAgMTkwLDAgYyAwLC02MCAtMTkwLC02MCAtMTkwLDAgeiIvPjwvZz48L2c+PC9zdmc+")
     background-repeat no-repeat
     background-size 100% 100%
@@ -29,7 +26,7 @@
       &:nth-child(7), &:nth-child(8), &:nth-child(9)
         margin-bottom 0
       &.active
-        background-color lighten(bgdark, 8%)
+        background-color rgba(gold, 0.4)
 
 .tabs-navigation.homeSetup
   height 35px
@@ -37,14 +34,21 @@
     text-transform initial
     font-size 0.9rem
 
+.homeCreate
+  margin-bottom 0.5em
+
 .homeTournament
-  margin-top 0.5em
+  margin-top 1em
   padding 0px
-  >.homeTitle
-    margin 5px 0 5px
   >.tournamentList
     >.tournament_item
       padding 10px
+
+.home_start
+  display flex
+  flex-flow column nowrap
+  justify-content stretch
+  margin 0 1em
 
 .homeTitle
   font-weight bold
@@ -158,6 +162,7 @@
 .corres_seeks
   flex 1 1 auto
   text-align left
+  font-size 0.8em
   .must_signin
     text-align center
   th, td
@@ -177,7 +182,9 @@
 .corres_seek
   overflow hidden
   &.cancelCorresSeek
-    background rgba(gold, 15%)
+    background rgba(green, 0.15)
+  &.active
+    background rgba(gold, 0.3)
   > td
     &:first-child
       width 16px
@@ -191,7 +198,9 @@
     background-color inherit
 
   .home
+    background themeBgLightHeader
     .tabs-view-wrapper
+      background-color bglight
       background-image url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMTAuMCAyMTAuMCI+PGcgb3BhY2l0eT0iLjEiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzAwMCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2Utd2lkdGg9IjYiPjxnIGZpbGw9IiNmZmYiPjxwYXRoIGQ9Ik0gMTAsMTQwIGMgMCw2MCAxOTAsNjAgMTkwLDAgbCAwLC0zNSBsIC0xOTAsMCB6Ii8+PHBhdGggZD0iTSAxMCwxMDUgYyAwLDYwIDE5MCw2MCAxOTAsMCBsIDAsLTM1IGwgLTE5MCwwIHoiLz48cGF0aCBkPSJNIDEwLDcwIGMgMCw2MCAxOTAsNjAgMTkwLDAgYyAwLC02MCAtMTkwLC02MCAtMTkwLDAgeiIvPjwvZz48L2c+PC9zdmc+")
 
     .newGame-pool
@@ -199,7 +208,11 @@
       border-color borderLightGray
       color inherit
       &.active
-        background-color themeBgLightActive
+        background-color rgba(gold, 0.3)
+
+  .corres_seek
+    > td
+      border-color borderLightGray
 
 
 .view-container.transp
@@ -210,5 +223,3 @@
     .newGame-pool
       border-color transpWhite02
       background-color transpWhite005
-      &.active
-        background-color transpWhite01
