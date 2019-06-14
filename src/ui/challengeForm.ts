@@ -1,6 +1,10 @@
+import * as h from 'mithril/hyperscript'
+import * as stream from 'mithril/stream'
 import * as utils from '../utils'
 import router from '../router'
 import redraw from '../utils/redraw'
+import i18n from '../i18n'
+import challengesApi from '../lidraughts/challenges'
 import { challenge as challengeXhr } from '../xhr'
 import { validateFen } from '../utils/fen'
 import { getVariantKeyById } from '../lidraughts/variant'
@@ -8,12 +12,9 @@ import settings from '../settings'
 import session from '../session'
 import formWidgets from './shared/form'
 import popupWidget from './shared/popup'
-import i18n from '../i18n'
-import storage from '../storage'
 import ViewOnlyBoard from './shared/ViewOnlyBoard'
+import gamesMenu from './gamesMenu'
 import * as helper from './helper'
-import * as h from 'mithril/hyperscript'
-import * as stream from 'mithril/stream'
 import { toggleCoordinates } from '../draughtsground/fen'
 import { fenFromTag } from '../utils/draughtsFormat'
 
@@ -52,13 +53,8 @@ function doChallenge() {
       data.challenge.timeControl.type === 'correspondence' ||
       data.challenge.timeControl.type === 'unlimited')) {
 
-      if (!storage.get('donotshowpersistentchallengeexplanation')) {
-        window.navigator.notification.alert(i18n('persistentChallengeCreated'), function() {
-          storage.set('donotshowpersistentchallengeexplanation', true)
-        })
-      }
-      // TODO put in game menu
-      router.set('/correspondence?tab=1')
+      // see gamesMenu.ts, sending challenges are right after incoming challenges
+      gamesMenu.open(challengesApi.incoming().length + 2)
     }
     if (!data.challenge.destUser || data.challenge.timeControl.type === 'clock') {
       router.set(`/challenge/${data.challenge.id}`)

@@ -174,7 +174,6 @@ const untranslated: StringMap = {
   unsupportedVariant: 'Variant %s is not supported in this version',
   notesSynchronizationHasFailed: 'Notes synchronization with Lidraughts has failed, please try later.',
   challengeDeclined: 'Challenge declined',
-  persistentChallengeCreated: 'Correspondence challenge created. It will remain active for two weeks. You will get notified when your friend accepts it.',
   youAreChallenging: 'You are challenging %s',
   submitMove: 'Submit move',
   returnToHome: 'Return to home',
