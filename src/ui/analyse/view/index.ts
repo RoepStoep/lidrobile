@@ -49,7 +49,7 @@ export function renderContent(ctrl: AnalyseCtrl, isPortrait: boolean, bounds: Bo
   const availTabs = ctrl.availableTabs()
 
   return h.fragment({ key: isPortrait ? 'portrait' : 'landscape' }, [
-    renderBoard(ctrl, bounds, availTabs),
+    renderBoard(ctrl, bounds),
     h('div.analyse-tableWrapper', [
       renderAnalyseTable(ctrl, availTabs),
       renderActionsBar(ctrl)

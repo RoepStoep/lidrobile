@@ -4,10 +4,8 @@ import gameStatusApi from '../../../lidraughts/status'
 import { findTag, gameResult } from '../../../lidraughts/interfaces/study'
 import Board, { Bounds } from '../../shared/Board'
 import { Shape } from '../../shared/BoardBrush'
-import * as treeOps from '../../shared/tree/ops'
 
 import Clock from './Clock'
-import { Tab } from '../tabs'
 import { povDiff } from '../ceval/winningChances'
 import AnalyseCtrl from '../AnalyseCtrl'
 import settings from '../../../settings'
@@ -16,9 +14,7 @@ import i18n from '../../../i18n'
 export default function renderBoard(
   ctrl: AnalyseCtrl,
   bounds: Bounds,
-  availTabs: ReadonlyArray<Tab>
 ) {
-  const curTab = ctrl.currentTab(availTabs)
   const player = ctrl.data.game.player
   const ceval = ctrl.node && ctrl.node.ceval
   const rEval = ctrl.node && ctrl.node.eval
@@ -56,17 +52,12 @@ export default function renderBoard(
   const pastBestShape: Shape[] = !ctrl.retro && rEval && rEval.best ?
     makeShapesFromUci(rEval.best, 'paleGreen') : []
 
-  const nextUci = curTab.id === 'explorer' && ctrl.node && treeOps.withMainlineChild(ctrl.node, n => n.uci)
-
-  const nextMoveShape: Shape[] = nextUci ?
-    makeShapesFromUci(nextUci, 'palePurple') : []
-
   const badNode = ctrl.retro && ctrl.retro.showBadNode()
   const badMoveShape: Shape[] = badNode && badNode.uci ?
     makeShapesFromUci(badNode.uci, 'paleRed') : []
 
   const shapes = [
-    ...nextMoveShape, ...pastBestShape, ...curBestShapes, ...badMoveShape
+    ...pastBestShape, ...curBestShapes, ...badMoveShape
   ]
 
   return h('div.analyse-boardWrapper', {
