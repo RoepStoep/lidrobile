@@ -5,6 +5,7 @@ import popupWidget from './shared/popup'
 import i18n from '../i18n'
 import friendsApi, { Friend } from '../lidraughts/friends'
 import * as utils from '../utils'
+import challengeForm from './challengeForm'
 
 let isOpen = false
 
@@ -69,7 +70,7 @@ function renderFriend(user: Friend) {
 
   return (
     <li className="list_item" key={userId} oncreate={helper.ontapY(action)}>
-      <div className="friends-name">
+      <div className="friend_name">
         { user.patron ?
           <span className="patron is-green" data-icon="" />
           :
@@ -77,11 +78,23 @@ function renderFriend(user: Friend) {
         }
         <span>{userFullName}</span>
       </div>
-      { user.playing ?
-        <span className="friend_tv" data-icon="1" oncreate={helper.ontapY(onTapTv)}> </span>
-        :
-        null
-      }
+      <div className="onlineFriends_actions">
+        <span data-icon="U" oncreate={helper.ontapY((e: Event) => {
+          e.stopPropagation()
+          close()
+          challengeForm.open(userId)
+        })} />
+        <span data-icon="c" oncreate={helper.ontapY((e: Event) => {
+          e.stopPropagation()
+          close()
+          router.set(`/inbox/new/${userId}`)
+        })} />
+        { user.playing ?
+          <span className="friend_tv" data-icon="1" oncreate={helper.ontapY(onTapTv)}> </span>
+          :
+          null
+        }
+      </div>
     </li>
   )
 }
