@@ -88,7 +88,6 @@ export type Rankings = Record<RankingKey, ReadonlyArray<RankingUser>>
 export interface UserGamePlayer {
   readonly id?: string
   readonly user?: LightUser
-  readonly userId: string
   readonly name?: string
   readonly aiLevel?: number
   readonly rating?: number
@@ -120,6 +119,10 @@ export interface UserGame {
   readonly bookmarks: number
   readonly bookmarked?: boolean
   readonly analysed?: boolean
+  readonly tournament?: {
+    name: string
+    id: string
+  }
 }
 
 export interface UserGameWithDate extends UserGame {

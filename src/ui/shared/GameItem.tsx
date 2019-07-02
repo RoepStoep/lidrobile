@@ -33,7 +33,8 @@ export default {
       (g.winner ? (g.status.name !== 'mate' ? '. ' : '') + i18n(g.winner === 'white' ? 'whiteIsVictorious' : 'blackIsVictorious') + '.' : '')
     const knownVariant = gameApi.isSupportedVariantKey(g.variant.key)
     const icon = knownVariant ? (g.source === 'import' ? '/' : utils.gameIcon(g.perf) || '') : ''
-    const perspectiveColor: Color = userId ? g.players.white.userId === userId ? 'white' : 'black' : 'white'
+    const whiteUser = g.players.white.user
+    const perspectiveColor: Color = userId ? whiteUser && whiteUser.id === userId ? 'white' : 'black' : 'white'
     const evenOrOdd = index % 2 === 0 ? 'even' : 'odd'
     const star = g.bookmarked ? 't' : 's'
     const withStar = session.isConnected() ? ' withStar' : ''
@@ -43,8 +44,19 @@ export default {
       <li data-id={g.id} data-pid={player.id} className={`userGame ${evenOrOdd}${withStar}`}>
         {knownVariant ? renderBoard(g.fen, perspectiveColor, g.variant.key, boardTheme) : emptyBoard(perspectiveColor, boardTheme)}
         <div className="userGame-infos">
+          <div className="userGame-header">
+            <div className="userGame-iconWrapper">
+              <span className="variant-icon" data-icon={icon} />
+              <div className="userGame-titleWrapper">
+                <p className="userGame-title">{title}</p>
+                <p className="userGame-date">{g.date}</p>
+              </div>
+            </div>
+            { session.isConnected() ?
+              <button className="iconStar" data-icon={star} /> : null
+            }
+          </div>
           <div className="userGame-versus">
-            <span className="variant-icon" data-icon={icon} />
             <div className="game-result">
               <div className="userGame-players">
                 {renderPlayer(g.players, 'white')}
@@ -62,11 +74,13 @@ export default {
           </div>
           <div className="userGame-meta">
             {!knownVariant ? <p className="warning" data-icon="j">{i18n('unsupportedVariant', g.variant.name)}</p> : null}
-            <p className="game-infos">
-            {g.date} • {title}
-            </p>
             {g.opening ?
               <p className="opening">{g.opening.name}</p> : null
+            }
+            {g.tournament ?
+              <p className="tournament" data-id={g.tournament.id}>
+                <span className="fa fa-trophy"/>{g.tournament.name}
+              </p> : null
             }
             {g.analysed ?
               <p className="analysis">
@@ -76,9 +90,6 @@ export default {
             }
           </div>
         </div>
-        { session.isConnected() ?
-          <button className="iconStar" data-icon={star} /> : null
-        }
       </li>
     )
   }
@@ -137,9 +148,7 @@ function emptyBoard(orientation: Color, boardTheme: string) {
 function renderPlayer(players: { white: UserGamePlayer, black: UserGamePlayer}, color: Color) {
   let player = players[color]
   let playerName: string
-  // TODO fetch title info from server; refactor
-  if (player.userId) playerName = player.userId
-  else if (!player.aiLevel) playerName = playerApi.playerName(player)
+  if (player.user) playerName = playerApi.lightPlayerName(player.user)
   else if (player.aiLevel) {
     playerName = playerApi.aiName({ ai: player.aiLevel })
   }

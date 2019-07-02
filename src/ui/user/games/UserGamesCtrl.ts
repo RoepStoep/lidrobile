@@ -76,7 +76,7 @@ export default function UserGamesCtrl(userId: string, filter?: string): IUserGam
   function prepareData(xhrData: xhr.FilterResult) {
     if (xhrData.paginator && xhrData.paginator.currentPageResults) {
       xhrData.paginator.currentPageResults.forEach(g => {
-        g.date = window.moment(g.timestamp).fromNow()
+        g.date = window.moment(g.timestamp).calendar()
       })
     }
     return xhrData
@@ -175,7 +175,8 @@ export default function UserGamesCtrl(userId: string, filter?: string): IUserGam
         window.plugins.toast.show(i18n('unsupportedVariant', g.variant.name), 'short', 'center')
         return
       }
-      const userColor: Color = g.players.white.userId === userId ? 'white' : 'black'
+      const whiteUser = g.players.white.user
+      const userColor: Color = whiteUser && whiteUser.id === userId ? 'white' : 'black'
       positionsCache.set(g.id, { fen: g.fen, orientation: userColor, variant: g.variant.key })
       const mePlaying = session.getUserId() === userId
       if (mePlaying && playerId !== undefined) {
