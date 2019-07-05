@@ -102,7 +102,7 @@ export function renderVariantSelector(ctrl: AnalyseCtrl) {
 
 function viewOnlyBoard(color: Color, bounds: Bounds, isSmall: boolean, fen: string, variant: VariantKey, pos: '1' | '2') {
   return h('section.board_wrapper.analyse-boardWrapper', {
-    className: (isSmall ? 'halfsize' : '') + 'pos' + pos
+    className: (isSmall ? 'halfsize ' : '') + 'pos' + pos
   }, h(ViewOnlyBoard, { orientation: color, bounds, fen, variant }))
 }
 
