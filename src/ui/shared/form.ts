@@ -117,8 +117,8 @@ export default {
     label: string,
     options: ReadonlyArray<{ label: string, value: T, dataIcon?: string }>,
     prop: StoredProp<T>,
+    wrap: boolean = false,
     callback?: (v: T) => void,
-    wrap: boolean = false
   ) {
     const selected = prop()
     return h('div.form-multipleChoiceContainer', [

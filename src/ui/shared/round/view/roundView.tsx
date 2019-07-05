@@ -363,6 +363,7 @@ function renderPlayTable(ctrl: OnlineRound, player: Player, material: Material, 
 
   return (
     <section className={classN}>
+      <div className="playTable-inner">
       {renderAntagonistInfo(ctrl, player, material, position, isPortrait, isCrazy)}
       { !isCrazy && ctrl.clock ?
         renderClock(ctrl.clock, player.color, ctrl.vm.goneBerserk[player.color], runningColor) :
@@ -374,6 +375,7 @@ function renderPlayTable(ctrl: OnlineRound, player: Player, material: Material, 
       { playable && (myTurn && position === 'player' || !myTurn && position === 'opponent') ?
         renderExpiration(ctrl, position, myTurn) : null
       }
+      </div>
     </section>
   )
 }

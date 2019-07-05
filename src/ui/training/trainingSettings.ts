@@ -78,6 +78,7 @@ export interface ISettingsCtrl {
             { label: 'Russian', value: 'russian', dataIcon: '' },
           ],
           settings.training.variant,
+          false,
           ctrl.settings.setVariant
         )
       ]),

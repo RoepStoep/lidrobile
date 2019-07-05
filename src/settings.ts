@@ -130,7 +130,8 @@ export default {
     cevalInfinite: store.prop<boolean>('settings.ceval.infinite', false),
     showBestMove: store.prop('settings.analyse.showBestMove', true),
     showComments: store.prop('settings.analyse.showComments', true),
-    smallBoard: store.prop('settings.analyse.smallBoard', true),
+    smallBoard: store.prop<boolean>('settings.analyse.smallBoard', true),
+    boardPosition: store.prop<'1' | '2'>('settings.analyse.boardPosition', '1'),
     fullCapture: store.prop<boolean>('settings.fullCapture', false),
     explorer: {
       db: store.prop('settings.analyse.explorer.db', 'lidraughts'),
