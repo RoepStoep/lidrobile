@@ -3,11 +3,49 @@ import { san2alg } from '../../../../utils/draughtsFormat'
 import * as helper from '../../../helper'
 import OnlineRound from '../OnlineRound'
 
+export function renderReplay(ctrl: OnlineRound) {
+  return h('div.replay', {
+    oncreate: (vnode: Mithril.DOMNode) => {
+      setTimeout(() => autoScroll(vnode.dom as HTMLElement), 100)
+      helper.ontapY((e: Event) => onReplayTap(ctrl, e), undefined, getMoveEl)(vnode)
+    },
+    onupdate: (vnode: Mithril.DOMNode) => autoScroll(vnode.dom as HTMLElement),
+  }, renderMoves(ctrl))
+}
+
+export function renderInlineReplay(ctrl: OnlineRound) {
+  return h('div.replay_inline', {
+    oncreate: (vnode: Mithril.DOMNode) => {
+      setTimeout(() => autoScrollInline(vnode.dom as HTMLElement), 100)
+      helper.ontapX((e: Event) => onReplayTap(ctrl, e), undefined, getMoveEl)(vnode)
+    },
+    onupdate: (vnode: Mithril.DOMNode) => autoScrollInline(vnode.dom as HTMLElement),
+  }, renderMoves(ctrl))
+}
+
+function renderMoves(ctrl: OnlineRound) {
+  return ctrl.data.steps.filter(s => s.san !== null).map(s => h('move.replayMove', {
+    className: s.ply === ctrl.vm.ply ? 'current' : '',
+    'data-ply': s.ply,
+  }, [
+    s.ply & 1 ? renderIndex(s.ply, true) : null,
+    ctrl.isAlgebraic() ? san2alg(s.san) : s.san!
+  ]))
+}
+
 function autoScroll(movelist?: HTMLElement) {
   if (!movelist) return
   requestAnimationFrame(() => {
     const plyEl = movelist.querySelector('.current') as HTMLElement
     if (plyEl) movelist.scrollTop = plyEl.offsetTop - movelist.offsetHeight / 2 + plyEl.offsetHeight / 2
+  })
+}
+
+function autoScrollInline(movelist?: HTMLElement) {
+  if (!movelist) return
+  requestAnimationFrame(() => {
+    const plyEl = movelist.querySelector('.current') as HTMLElement
+    if (plyEl) movelist.scrollLeft = plyEl.offsetLeft - movelist.offsetWidth / 2 + plyEl.offsetWidth / 2
   })
 }
 
@@ -22,35 +60,6 @@ function onReplayTap(ctrl: OnlineRound, e: Event) {
   if (el && el.dataset.ply) {
     ctrl.jump(Number(el.dataset.ply))
   }
-}
-
-export function renderTable(ctrl: OnlineRound) {
-  const steps = ctrl.data.steps
-
-  return (
-    <div className="replay">
-      <div className="gameMovesList native_scroller"
-        oncreate={(vnode: Mithril.DOMNode) => {
-          setTimeout(() => autoScroll(vnode.dom as HTMLElement), 100)
-        }}
-        onupdate={(vnode: Mithril.DOMNode) => autoScroll(vnode.dom as HTMLElement)}
-      >
-        <div className="moves"
-          oncreate={helper.ontap((e: Event) => onReplayTap(ctrl, e), undefined, undefined, getMoveEl)}
-        >
-            {
-              steps.filter(s => s.san !== null).map(s => h('move.replayMove', {
-                className: s.ply === ctrl.vm.ply ? 'current' : '',
-                'data-ply': s.ply,
-              }, [
-                s.ply & 1 ? h('index', renderIndex(s.ply, true)) : null,
-                ctrl.isAlgebraic() ? san2alg(s.san) : s.san!
-              ]))
-            }
-        </div>
-      </div>
-    </div>
-  )
 }
 
 function renderIndexText(ply: Ply, withDots?: boolean): string {

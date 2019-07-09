@@ -11,15 +11,20 @@
     > div
       flex 0 1 auto
   .tabs-view-wrapper
-    height calc(((100vw * 0.85 - 40px) * 0.28) * 3 + 40px)
+    height calc(((100vw - 40px) * 0.28) * 3 + 40px)
+    @media only screen and (min-width 600px)
+      height calc(((100vw - 40px) * 0.2) * 3 + 40px)
     background-image url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMTAuMCAyMTAuMCI+PGcgb3BhY2l0eT0iLjEiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2ZmZiIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2Utd2lkdGg9IjYiPjxnIGZpbGw9IiMwMDAiPjxwYXRoIGQ9Ik0gMTAsMTQwIGMgMCw2MCAxOTAsNjAgMTkwLDAgbCAwLC0zNSBsIC0xOTAsMCB6Ii8+PHBhdGggZD0iTSAxMCwxMDUgYyAwLDYwIDE5MCw2MCAxOTAsMCBsIDAsLTM1IGwgLTE5MCwwIHoiLz48cGF0aCBkPSJNIDEwLDcwIGMgMCw2MCAxOTAsNjAgMTkwLDAgYyAwLC02MCAtMTkwLC02MCAtMTkwLDAgeiIvPjwvZz48L2c+PC9zdmc+")
     background-repeat no-repeat
     background-size 100% 100%
   .newGame-pools
     padding 10px
     > .newGame-pool
+      fluid-type(16px, 35px)
       box-shadow none
-      height calc((100vw * 0.85 - 40px) * 0.28)
+      height calc((100vw - 40px) * 0.28)
+      @media only screen and (min-width 600px)
+        height calc((100vw - 40px) * 0.2)
       background-color transpWhite01
       border 1px solid lighten(#3d3d3d, 20%)
       color inherit
