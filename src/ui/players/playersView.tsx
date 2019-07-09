@@ -2,7 +2,7 @@ import * as h from 'mithril/hyperscript'
 import * as utils from '../../utils'
 import router from '../../router'
 import * as helper from '../helper'
-import { menuButton, friendsButton, userStatus } from '../shared/common'
+import { header as mainHeader, userStatus } from '../shared/common'
 import { backArrow } from '../shared/icons'
 import settings from '../../settings'
 import i18n from '../../i18n'
@@ -16,17 +16,12 @@ import { isSupportedPerf } from '../../lidraughts/game'
 import PlayersCtrl from './PlayersCtrl'
 
 export function header(ctrl: PlayersCtrl) {
-  return [
-    <nav>
-      {menuButton()}
-      <div className="main_header_title">{i18n('players')}</div>
-      <div className="buttons">
-        {friendsButton()}
-        <button className="main_header_button" key="searchPlayers" data-icon="y"
-          oncreate={helper.ontap(ctrl.goSearch)}/>
-      </div>
-    </nav>
-  ]
+  return mainHeader(h('div.players_main_header', [
+    h('div.main_header_title', i18n('players')),
+    h('button.main_header_button[data-icon=y]', {
+      oncreate: helper.ontap(ctrl.goSearch)
+    })
+  ]))
 }
 
 export function body(ctrl: PlayersCtrl) {
