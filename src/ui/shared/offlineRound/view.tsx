@@ -10,6 +10,7 @@ import { OfflineRoundInterface, Position, Material } from '../round'
 import Replay from './Replay'
 import { IDraughtsClock, IStageClock } from '../clock/interfaces'
 import { formatClockTime } from '../round/clock/clockView'
+import { autoScroll, autoScrollInline, onReplayTap, getMoveEl } from '../round/util'
 
 /*function getChecksCount(ctrl: OfflineRoundInterface, color: Color) {
   const sit = ctrl.replay.situation()
@@ -135,23 +136,27 @@ export function renderNewGameButton(ctrl: OfflineRoundInterface) {
   ] : null
 }
 
-export function renderReplayTable(ctrl: Replay) {
-  const curPly = ctrl.ply
-  const shouldDisplay = !helper.isPortrait()
-
-  if (!shouldDisplay) return null
-
-  return (
-    <div key="replay-table" className="replay">
-      <div className="gameMovesList native_scroller"
-        oncreate={(vnode: Mithril.DOMNode) => { autoScroll(vnode.dom as HTMLElement) }}
-        onupdate={(vnode: Mithril.DOMNode) => setTimeout(autoScroll.bind(undefined, vnode.dom), 100)}
-      >
-        {renderTable(ctrl, curPly)}
-      </div>
-    </div>
-  )
+export function renderReplay(ctrl: OfflineRoundInterface) {
+  return h('div.replay', {
+    oncreate: (vnode: Mithril.DOMNode) => {
+      setTimeout(() => autoScroll(vnode.dom as HTMLElement), 100)
+      helper.ontapY((e: Event) => onReplayTap(ctrl, e), undefined, getMoveEl)(vnode)
+    },
+    onupdate: (vnode: Mithril.DOMNode) => autoScroll(vnode.dom as HTMLElement),
+  }, renderMoves(ctrl.replay))
 }
+
+
+export function renderInlineReplay(ctrl: OfflineRoundInterface) {
+  return h('div.replay_inline', {
+    oncreate: (vnode: Mithril.DOMNode) => {
+      setTimeout(() => autoScrollInline(vnode.dom as HTMLElement), 100)
+      helper.ontapX((e: Event) => onReplayTap(ctrl, e), undefined, getMoveEl)(vnode)
+    },
+    onupdate: (vnode: Mithril.DOMNode) => autoScrollInline(vnode.dom as HTMLElement),
+  }, renderMoves(ctrl.replay))
+}
+
 
 export function renderBackwardButton(ctrl: OfflineRoundInterface) {
   return h('button.action_bar_button.fa.fa-step-backward', {
@@ -171,21 +176,14 @@ export function renderForwardButton(ctrl: OfflineRoundInterface) {
   })
 }
 
-function renderTable(ctrl: Replay, curPly: number) {
-  const steps = ctrl.situations
-  return (
-    <div className="moves">
-      {
-        steps.filter(s => s.san !== undefined).map(s => h('move.replayMove', {
-          className: s.ply === curPly ? 'current' : '',
-          'data-ply': s.ply,
-        }, [
-          s.ply & 1 ? h('index', renderIndex(s.ply, true)) : null,
-          ctrl.isAlgebraic() ? san2alg(s.san) : s.san!
-        ]))
-      }
-    </div>
-  )
+function renderMoves(replay: Replay) {
+  return replay.situations.filter(s => s.san !== undefined).map(s => h('move.replayMove', {
+    className: s.ply === replay.ply ? 'current' : '',
+    'data-ply': s.ply,
+  }, [
+    s.ply & 1 ? h('index', renderIndex(s.ply, true)) : null,
+    replay.isAlgebraic() ? san2alg(s.san) : s.san!
+  ]))
 }
 
 function renderIndexText(ply: Ply, withDots?: boolean): string {
@@ -198,12 +196,6 @@ function renderIndex(ply: Ply, withDots?: boolean): Mithril.Children {
 
 function plyToTurn(ply: number): number {
   return Math.floor((ply - 1) / 2) + 1
-}
-
-function autoScroll(movelist: HTMLElement) {
-  if (!movelist) return
-  const plyEl = movelist.querySelector('.current') as HTMLElement
-  if (plyEl) movelist.scrollTop = plyEl.offsetTop - movelist.offsetHeight / 2 + plyEl.offsetHeight / 2
 }
 
 function renderClock(clock: IDraughtsClock, color: Color) {

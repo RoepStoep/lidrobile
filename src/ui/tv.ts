@@ -7,11 +7,9 @@ import * as sleepUtils from '../utils/sleep'
 import { handleXhrError } from '../utils'
 import redraw from '../utils/redraw'
 import * as xhr from '../xhr'
-import { LoadingBoard } from './shared/common'
 import settings from '../settings'
 import OnlineRound from './shared/round/OnlineRound'
-import roundView from './shared/round/view/roundView'
-import { emptyTV } from './shared/round/view/roundView'
+import roundView, { emptyTV, LoadingBoard  } from './shared/round/view/roundView'
 
 interface TVAttrs {
   id: string

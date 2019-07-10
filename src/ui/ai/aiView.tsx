@@ -4,8 +4,10 @@ import Board from '../shared/Board'
 import {
   renderAntagonist,
   renderGameActionsBar,
-  renderReplayTable
+  renderReplay,
+  renderInlineReplay
 } from '../shared/offlineRound/view'
+import { hasSpaceForReplay } from '../shared/round/util'
 import * as helper from '../helper'
 import actions from './actions'
 import newGameMenu from './newAiGame'
@@ -15,8 +17,8 @@ export function renderContent(ctrl: AiRound) {
 
   const material = ctrl.draughtsground.getMaterialDiff()
   const isPortrait = helper.isPortrait()
+  const vd = helper.viewportDim()
   const bounds = getBoardBounds(helper.viewportDim(), isPortrait)
-  const replayTable = renderReplayTable(ctrl.replay)
 
   const aiName = (
     <h2>
@@ -38,6 +40,7 @@ export function renderContent(ctrl: AiRound) {
 
   if (isPortrait) {
     return h.fragment({ key: orientationKey }, [
+      hasSpaceForReplay(vd, bounds) ? renderReplay(ctrl) : renderInlineReplay(ctrl),
       renderAntagonist(ctrl, aiName, material[ctrl.data.opponent.color], 'opponent', isPortrait),
       board,
       renderAntagonist(ctrl, ctrl.playerName(), material[ctrl.data.player.color], 'player', isPortrait),
@@ -49,8 +52,8 @@ export function renderContent(ctrl: AiRound) {
       <section key="table" className="table">
         <section className="playersTable offline">
           {renderAntagonist(ctrl, aiName, material[ctrl.data.opponent.color], 'opponent', isPortrait)}
-          {replayTable}
-          {renderAntagonist(ctrl, '', material[ctrl.data.player.color], 'player', isPortrait)}
+          {renderReplay(ctrl)}
+          {renderAntagonist(ctrl, ctrl.playerName(), material[ctrl.data.player.color], 'player', isPortrait)}
         </section>
         {renderGameActionsBar(ctrl)}
       </section>
