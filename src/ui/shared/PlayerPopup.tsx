@@ -65,6 +65,12 @@ function content(mini: any, player: Player, opponent: Player, score?: Score) {
           </p> : null
         }
       </div>
+      { user.engine || user.booster ?
+        <div className="warning">
+          {user.engine ? i18n('thisPlayerUsesDraughtsComputerAssistance') : ''}
+          {user.booster ? i18n('thisPlayerArtificiallyIncreasesTheirRating') : ''}
+        </div> : null
+      }
       { mini.perfs ?
         <div className="mini_perfs">
         {Object.keys(mini.perfs).map((p: PerfKey) => {
