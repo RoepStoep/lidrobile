@@ -52,7 +52,7 @@ function request<T>(url: string, type: 'json' | 'text', opts?: RequestOpts, feed
     method: 'GET',
     headers: {
       'X-Requested-With': 'XMLHttpRequest',
-      'Accept': 'application/vnd.lichess.v' + globalConfig.apiVersion + '+json'
+      'Accept': 'application/vnd.lidraughts.v' + globalConfig.apiVersion + '+json'
     }
   }
 

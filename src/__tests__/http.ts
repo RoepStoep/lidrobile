@@ -144,7 +144,7 @@ describe('HTTP fetch wrapper', () => {
       credentials: 'include',
       headers: new Headers({
         'X-Requested-With': 'XMLHttpRequest',
-        'Accept': 'application/vnd.lichess.v1+json'
+        'Accept': 'application/vnd.lidraughts.v1+json'
       })
     })
   })
@@ -174,7 +174,7 @@ describe('HTTP fetch wrapper', () => {
       credentials: 'include',
       headers: new Headers({
         'X-Requested-With': 'XMLHttpRequest',
-        'Accept': 'application/vnd.lichess.v1+json',
+        'Accept': 'application/vnd.lidraughts.v1+json',
         'Content-Type': 'application/json; charset=UTF-8'
       }),
       body: '{}'

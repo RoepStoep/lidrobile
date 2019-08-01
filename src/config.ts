@@ -7,7 +7,7 @@ export interface Config {
 }
 
 const defaults = {
-  apiVersion: 4,
+  apiVersion: 2,
   fetchTimeoutMs: 10000
 }
 

@@ -26,7 +26,7 @@ export default function ImporterCtrl(): IImporterCtrl {
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
         'X-Requested-With': 'XMLHttpRequest',
-        'Accept': 'application/vnd.lichess.v' + globalConfig.apiVersion + '+json'
+        'Accept': 'application/vnd.lidraughts.v' + globalConfig.apiVersion + '+json'
       },
       body: serializeQueryParameters(data)
     }, true)

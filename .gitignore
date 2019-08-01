@@ -22,5 +22,6 @@ npm-debug.log
 .DS_Store
 .tags
 .tags1
+.metals
 
 /ul_web_hooks

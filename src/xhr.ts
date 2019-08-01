@@ -176,7 +176,7 @@ export function status() {
       const warnCount = Number(storage.get(key)) || 0
       if (warnCount === 0) {
         window.navigator.notification.alert(
-          'A new version of lichess mobile is available. Please upgrade as soon as possible.',
+          'A new version of lidraughts mobile is available. Please upgrade as soon as possible.',
           () => {
             storage.set(key, 1)
           }

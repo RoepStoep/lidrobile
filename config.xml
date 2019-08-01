@@ -1,15 +1,14 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget android-versionCode="6001049" id="org.lichess.mobileapp" version="6.1.4" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
-    <name>lichess</name>
-    <description>lichess.org mobile application</description>
-    <author email="vincent.velociter@gmail.com" href="https://github.com/veloce/lichobile">Vincent Velociter</author>
+<widget android-versionCode="6001049" id="org.lidraughts.mobileapp" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+    <name>lidraughts</name>
+    <description>lidraughts.org mobile application</description>
+    <author email="stefan.schermann@gmail.com" href="https://github.com/RoepStoep/lidrobile">Stefan Schermann</author>
     <content src="index.html" />
-    <access origin="https://lichess.org" />
-    <access origin="https://*.lichess.org" />
-    <access origin="https://*.lichess.ovh" />
+    <access origin="https://lidraughts.org" />
+    <access origin="https://*.lidraughts.org" />
     <access origin="https://sentry.io" />
     <access origin="https://veloce.github.io" />
-    <access origin="https://listage.ovh" />
+    <access origin="http://lidraughts-stage.org" />
     <icon src="res/icon.png" />
     <hook src="scripts/link_locales.js" type="before_prepare" />
     <platform name="android">
@@ -86,7 +85,7 @@
     <preference name="AndroidLaunchMode" value="singleInstance" />
     <preference name="DefaultVolumeStream" value="media" />
     <universal-links>
-        <host name="lichess.org" scheme="https">
+        <host name="lidraughts.org" scheme="https">
             <path event="analysis" url="/analysis" />
             <path event="analysisPosition" url="/analysis/*" />
             <path event="challenge" url="/challenge/*" />

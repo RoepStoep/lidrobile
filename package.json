@@ -1,27 +1,27 @@
 {
-    "name": "lichobile",
-    "version": "6.1.4",
-    "description": "lichess.org mobile application",
+    "name": "lidrobile",
+    "version": "1.0.0",
+    "description": "lidraughts.org mobile application",
     "main": "app.js",
     "repository": {
         "type": "git",
-        "url": "https://github.com/veloce/lichobile.git"
+        "url": "https://github.com/RoepStoep/lidrobile.git"
     },
     "keywords": [
-        "lichess",
-        "chess",
+        "lidraughts",
+        "draughts",
         "application",
         "mobile",
         "realtime",
         "android",
         "ios"
     ],
-    "author": "Vincent Velociter (https://github.com/veloce)",
+    "author": "Stefan Schermann (forked from https://github.com/veloce/lichobile by Vincent Velociter)",
     "license": "GPL-3.0-or-later",
     "bugs": {
-        "url": "https://github.com/veloce/lichobile/issues"
+        "url": "https://github.com/RoepStoep/lidrobile/issues"
     },
-    "homepage": "https://github.com/veloce/lichobile",
+    "homepage": "https://github.com/RoepStoep/lidrobile",
     "devDependencies": {
         "@types/jest": "24.0.11",
         "babel-core": "6.26.3",
@@ -86,7 +86,7 @@
         "hammerjs": "2.0.8",
         "ionic-plugin-keyboard": "2.2.1",
         "localforage": "1.5.5",
-        "lodash": "4.17.11",
+        "lodash": "4.17.15",
         "mithril": "github:MithrilJS/mithril.js#v2.0.0-rc.4",
         "moment": "2.21.0",
         "onesignal-cordova-plugin": "2.4.7",
