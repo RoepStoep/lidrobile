@@ -1,6 +1,6 @@
 import * as h from 'mithril/hyperscript'
 import { batchRequestAnimationFrame } from '../../utils/batchRAF'
-import Chessground from '../../chessground/Chessground'
+import Draughtsground from '../../draughtsground/Draughtsground'
 import { uciToMove } from '../../utils/chessFormat'
 import settings from '../../settings'
 import { Bounds } from './Board'
@@ -28,7 +28,7 @@ interface Config {
 }
 
 interface State {
-  ground: Chessground
+  ground: Draughtsground
   pieceTheme: string
   boardTheme: string
 }
@@ -37,7 +37,7 @@ const ViewOnlyBoard: Mithril.Component<Attrs, State> = {
   oninit({ attrs }) {
     this.pieceTheme = settings.general.theme.piece()
     this.boardTheme = settings.general.theme.board()
-    this.ground = new Chessground(makeConfig(attrs))
+    this.ground = new Draughtsground(makeConfig(attrs))
   },
 
   oncreate({ attrs, dom }) {

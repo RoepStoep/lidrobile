@@ -1,6 +1,6 @@
 import * as throttle from 'lodash/throttle'
-import Chessground from '../../../chessground/Chessground'
-import * as cg from '../../../chessground/interfaces'
+import Draughtsground from '../../../draughtsground/Draughtsground'
+import * as cg from '../../../draughtsground/interfaces'
 import redraw from '../../../utils/redraw'
 import { saveOfflineGameData, removeOfflineGameData } from '../../../utils/offlineGames'
 import { hasNetwork, boardOrientation, handleXhrError } from '../../../utils'
@@ -53,7 +53,7 @@ interface VM {
 export default class OnlineRound implements OnlineRoundInterface {
   public id: string
   public data!: OnlineGameData
-  public chessground: Chessground
+  public chessground: Draughtsground
   public clock: ClockCtrl | null
   public correspondenceClock!: CorresClockCtrl
   public chat: Chat | null

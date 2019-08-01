@@ -1,5 +1,5 @@
-import cgFen from '../../../chessground/fen'
-import { key2pos } from '../../../chessground/util'
+import cgFen from '../../../draughtsground/fen'
+import { key2pos } from '../../../draughtsground/util'
 import svgPieces from './pieces'
 
 type BoardPos = [number, number]

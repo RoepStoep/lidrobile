@@ -1,6 +1,6 @@
 import settings from '../../settings'
 import redraw from '../../utils/redraw'
-import Chessground from '../../chessground/Chessground'
+import Draughtsground from '../../draughtsground/Draughtsground'
 import BoardBrush, { Shape } from './BoardBrush'
 
 export interface Bounds {
@@ -10,7 +10,7 @@ export interface Bounds {
 
 export interface Attrs {
   variant: VariantKey
-  chessground: Chessground
+  chessground: Draughtsground
   bounds: Bounds
   wrapperClasses?: string
   customPieceTheme?: string

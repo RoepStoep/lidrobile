@@ -1,4 +1,4 @@
-import * as cg from '../../chessground/interfaces'
+import * as cg from '../../draughtsground/interfaces'
 import settings from '../../settings'
 import { batchRequestAnimationFrame } from '../../utils/batchRAF'
 

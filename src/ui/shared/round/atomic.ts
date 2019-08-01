@@ -1,8 +1,8 @@
-import Chessground from '../../../chessground/Chessground'
-import * as cg from '../../../chessground/interfaces'
-import { key2pos, pos2key } from '../../../chessground/util'
+import Draughtsground from '../../../draughtsground/Draughtsground'
+import * as cg from '../../../draughtsground/interfaces'
+import { key2pos, pos2key } from '../../../draughtsground/util'
 
-function capture(chessgroundCtrl: Chessground, key: Key) {
+function capture(chessgroundCtrl: Draughtsground, key: Key) {
   const exploding: Key[] = []
   const diff: cg.PiecesDiff = {}
   const orig = key2pos(key)
@@ -22,7 +22,7 @@ function capture(chessgroundCtrl: Chessground, key: Key) {
 }
 
 // needs to explicitly destroy the capturing pawn
-function enpassant(chessgroundCtrl: Chessground, key: Key, color: Color) {
+function enpassant(chessgroundCtrl: Draughtsground, key: Key, color: Color) {
   const pos = key2pos(key)
   const pawnPos = [pos[0], pos[1] + (color === 'white' ? -1 : 1)] as cg.Pos
   capture(chessgroundCtrl, pos2key(pawnPos))

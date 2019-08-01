@@ -1,6 +1,6 @@
 import * as debounce from 'lodash/debounce'
-import Chessground from '../../chessground/Chessground'
-import * as cgDrag from '../../chessground/drag'
+import Draughtsground from '../../draughtsground/Draughtsground'
+import * as cgDrag from '../../draughtsground/drag'
 import router from '../../router'
 import redraw from '../../utils/redraw'
 import settings from '../../settings'
@@ -51,7 +51,7 @@ export default class Editor {
   public menu: MenuInterface
   public pasteFenPopup: MenuInterface
   public continuePopup: ContinuePopupCtrl
-  public chessground: Chessground
+  public chessground: Draughtsground
 
   public positions: Mithril.Stream<Array<BoardPosition>>
   public endgamesPositions: Mithril.Stream<Array<BoardPosition>>
@@ -99,7 +99,7 @@ export default class Editor {
       redraw()
     })
 
-    this.chessground = new Chessground({
+    this.chessground = new Draughtsground({
       batchRAF: batchRequestAnimationFrame,
       fen: initFen,
       orientation: 'white',

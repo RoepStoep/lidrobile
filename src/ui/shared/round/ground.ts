@@ -1,5 +1,5 @@
-import Chessground from '../../../chessground/Chessground'
-import * as cg from '../../../chessground/interfaces'
+import Draughtsground from '../../../draughtsground/Draughtsground'
+import * as cg from '../../../draughtsground/interfaces'
 import redraw from '../../../utils/redraw'
 import { batchRequestAnimationFrame } from '../../../utils/batchRAF'
 import * as gameApi from '../../../lichess/game'
@@ -81,7 +81,7 @@ function make(
   userNewPiece: (role: Role, key: Key, meta: AfterMoveMeta) => void,
   onMove: (orig: Key, dest: Key, capturedPiece?: Piece) => void,
   onNewPiece: () => void
-): Chessground {
+): Draughtsground {
   const config = makeConfig(data, fen)
   config.movable!.events = {
     after: userMove,
@@ -92,14 +92,14 @@ function make(
     dropNewPiece: onNewPiece
   }
   config.viewOnly = data.player.spectator
-  return new Chessground(config)
+  return new Draughtsground(config)
 }
 
-function reload(ground: Chessground, data: OnlineGameData, fen: string, flip: boolean) {
+function reload(ground: Draughtsground, data: OnlineGameData, fen: string, flip: boolean) {
   ground.reconfigure(makeConfig(data, fen, flip))
 }
 
-function promote(ground: Chessground, key: Key, role: Role) {
+function promote(ground: Draughtsground, key: Key, role: Role) {
   const pieces: cg.Pieces = {}
   const piece = ground.state.pieces[key]
   if (piece && piece.role === 'pawn') {

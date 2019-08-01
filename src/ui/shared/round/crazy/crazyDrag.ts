@@ -1,4 +1,4 @@
-import { State } from '../../../../chessground/state'
+import { State } from '../../../../draughtsground/state'
 import { BoardInterface } from '../'
 
 function isDraggable(data: State, color: Color) {

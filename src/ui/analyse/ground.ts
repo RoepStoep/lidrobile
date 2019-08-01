@@ -1,5 +1,5 @@
-import Chessground from '../../chessground/Chessground'
-import * as cg from '../../chessground/interfaces'
+import Draughtsground from '../../draughtsground/Draughtsground'
+import * as cg from '../../draughtsground/interfaces'
 import settings from '../../settings'
 import { batchRequestAnimationFrame } from '../../utils/batchRAF'
 import { AnalyseData } from '../../lichess/interfaces/analyse'
@@ -60,10 +60,10 @@ export default {
     onMove: (orig: Key, dest: Key, capturedPiece?: Piece) => void,
     onNewPiece: (piece: Piece, pos: Key) => void
   ) {
-    return new Chessground(makeConfig(data, config, orientation, onMove, onNewPiece))
+    return new Draughtsground(makeConfig(data, config, orientation, onMove, onNewPiece))
   },
 
-  promote(ground: Chessground, key: Key, role: Role) {
+  promote(ground: Draughtsground, key: Key, role: Role) {
     const pieces: {[i: string]: Piece } = {}
     const piece = ground.state.pieces[key]
     if (piece && piece.role === 'pawn') {

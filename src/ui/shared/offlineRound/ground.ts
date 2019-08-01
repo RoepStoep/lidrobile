@@ -1,5 +1,5 @@
-import Chessground from '../../../chessground/Chessground'
-import * as cg from '../../../chessground/interfaces'
+import Draughtsground from '../../../draughtsground/Draughtsground'
+import * as cg from '../../../draughtsground/interfaces'
 import * as gameApi from '../../../lichess/game'
 import settings from '../../../settings'
 import { OfflineGameData } from '../../../lichess/interfaces/game'
@@ -70,18 +70,18 @@ function make(
     move: onMove,
     dropNewPiece: onNewPiece
   }
-  return new Chessground(config)
+  return new Draughtsground(config)
 }
 
-function reload(ground: Chessground, data: OfflineGameData, sit: GameSituation) {
+function reload(ground: Draughtsground, data: OfflineGameData, sit: GameSituation) {
   ground.reconfigure(makeConfig(data, sit))
 }
 
-function changeOTBMode(ground: Chessground, flip: boolean) {
+function changeOTBMode(ground: Draughtsground, flip: boolean) {
   ground.setOtbMode(flip ? 'flip' : 'facing')
 }
 
-function promote(ground: Chessground, key: Key, role: Role) {
+function promote(ground: Draughtsground, key: Key, role: Role) {
   const pieces: {[k: string]: Piece } = {}
   const piece = ground.state.pieces[key]
   if (piece && piece.role === 'pawn') {
@@ -93,7 +93,7 @@ function promote(ground: Chessground, key: Key, role: Role) {
   }
 }
 
-function end(ground: Chessground) {
+function end(ground: Draughtsground) {
   ground.stop()
 }
 

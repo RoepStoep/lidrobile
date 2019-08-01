@@ -17,7 +17,7 @@ const pieceScores: {[id: string]: number} = {
   king: 0
 }
 
-export default class Chessground {
+export default class Draughtsground {
   public state: State
   public dom?: cg.DOM
 

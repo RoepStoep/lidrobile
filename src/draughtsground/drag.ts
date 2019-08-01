@@ -1,6 +1,6 @@
 import * as cg from './interfaces'
 import { State } from './state'
-import Chessground from './Chessground'
+import Draughtsground from './Draughtsground'
 import * as board from './board'
 import * as util from './util'
 import { anim } from './anim'
@@ -25,7 +25,7 @@ export interface DragCurrent {
   scheduledAnimationFrame?: boolean
 }
 
-export function dragNewPiece(ctrl: Chessground, piece: Piece, e: TouchEvent, force?: boolean): void {
+export function dragNewPiece(ctrl: Draughtsground, piece: Piece, e: TouchEvent, force?: boolean): void {
 
   const key: Key = 'a0'
   const s = ctrl.state
@@ -69,7 +69,7 @@ export function dragNewPiece(ctrl: Chessground, piece: Piece, e: TouchEvent, for
   processDrag(ctrl)
 }
 
-export function start(ctrl: Chessground, e: TouchEvent) {
+export function start(ctrl: Draughtsground, e: TouchEvent) {
   // support one finger touch only
   if (e.touches && e.touches.length > 1) return
   e.preventDefault()
@@ -128,7 +128,7 @@ export function start(ctrl: Chessground, e: TouchEvent) {
   ctrl.redraw()
 }
 
-export function move(ctrl: Chessground, e: TouchEvent) {
+export function move(ctrl: Draughtsground, e: TouchEvent) {
   if (e.touches && e.touches.length > 1) return
   const state = ctrl.state
 
@@ -146,7 +146,7 @@ export function move(ctrl: Chessground, e: TouchEvent) {
   }
 }
 
-export function end(ctrl: Chessground, e: TouchEvent) {
+export function end(ctrl: Draughtsground, e: TouchEvent) {
   const state = ctrl.state
   const draggable = state.draggable
   const cur = draggable.current
@@ -196,7 +196,7 @@ export function end(ctrl: Chessground, e: TouchEvent) {
   ctrl.redraw()
 }
 
-export function cancel(ctrl: Chessground) {
+export function cancel(ctrl: Draughtsground) {
   const state = ctrl.state
   if (ctrl.dom) removeDragElements(ctrl.dom)
   if (state.draggable.current) {
@@ -220,7 +220,7 @@ function getKeyAtDomPos(state: State, pos: NumberPair, bounds: ClientRect): Key 
   return null
 }
 
-function processDrag(ctrl: Chessground) {
+function processDrag(ctrl: Draughtsground) {
   const state = ctrl.state
   const dom = ctrl.dom!
   const cur = state.draggable.current

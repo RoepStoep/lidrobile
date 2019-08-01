@@ -1,4 +1,4 @@
-import * as cgUtil from '../../../chessground/util'
+import * as cgUtil from '../../../draughtsground/util'
 import { Bounds } from '../Board'
 import { Shape } from '.'
 import { Brush } from './brushes'

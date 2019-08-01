@@ -1,4 +1,4 @@
-import Chessground from '../../../chessground/Chessground'
+import Draughtsground from '../../../draughtsground/Draughtsground'
 import Replay from '../offlineRound/Replay'
 import { OnlineGameData, OfflineGameData, GameData, GameStatus } from '../../../lichess/interfaces/game'
 import { AnalyseData } from '../../../lichess/interfaces/analyse'
@@ -10,12 +10,12 @@ export type Position = 'player' | 'opponent'
 export type Material = { pieces: { [k: string]: number }, score: number }
 
 export interface BoardInterface {
-  chessground: Chessground
+  chessground: Draughtsground
   canDrop(): boolean
 }
 
 export interface PromotingInterface {
-  chessground: Chessground
+  chessground: Draughtsground
   data: GameData | AnalyseData | TrainingData
   player: () => Color
 }

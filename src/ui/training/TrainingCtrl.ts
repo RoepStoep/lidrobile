@@ -1,7 +1,7 @@
 import * as cloneDeep from 'lodash/cloneDeep'
 import * as debounce from 'lodash/debounce'
 import * as throttle from 'lodash/throttle'
-import Chessground from '../../chessground/Chessground'
+import Draughtsground from '../../draughtsground/Draughtsground'
 import { build as makeTree, ops as treeOps, path as treePath, TreeWrapper, Tree } from '../shared/tree'
 import router from '../../router'
 import { ErrorResponse } from '../../http'
@@ -28,7 +28,7 @@ import { Database } from './database'
 export default class TrainingCtrl implements PromotingInterface {
   data!: Data
   menu: IMenuCtrl
-  chessground!: Chessground
+  chessground!: Draughtsground
   database: Database
 
   // current tree state, cursor, and denormalized node lists
@@ -300,7 +300,7 @@ export default class TrainingCtrl implements PromotingInterface {
     }
 
     if (!this.chessground) {
-      this.chessground = new Chessground(makeGround(this, this.userMove))
+      this.chessground = new Draughtsground(makeGround(this, this.userMove))
     } else {
       this.chessground.set(config)
     }

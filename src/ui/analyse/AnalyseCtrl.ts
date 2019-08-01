@@ -1,7 +1,7 @@
 import * as debounce from 'lodash/debounce'
 import router from '../../router'
-import Chessground from '../../chessground/Chessground'
-import * as cg from '../../chessground/interfaces'
+import Draughtsground from '../../draughtsground/Draughtsground'
+import * as cg from '../../draughtsground/interfaces'
 import * as chess from '../../chess'
 import * as chessFormat from '../../utils/chessFormat'
 import { build as makeTree, path as treePath, ops as treeOps, TreeWrapper, Tree } from '../shared/tree'
@@ -45,7 +45,7 @@ export default class AnalyseCtrl {
   menu: IMainMenuCtrl
   continuePopup: ContinuePopupController
   notes: NotesCtrl | null
-  chessground!: Chessground
+  chessground!: Draughtsground
   ceval: ICevalCtrl
   retro: IRetroCtrl | null
   explorer: IExplorerCtrl

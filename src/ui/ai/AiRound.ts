@@ -1,5 +1,5 @@
 import i18n from '../../i18n'
-import Chessground from '../../chessground/Chessground'
+import Draughtsground from '../../draughtsground/Draughtsground'
 import router from '../../router'
 import * as chess from '../../chess'
 import * as chessFormat from '../../utils/chessFormat'
@@ -35,7 +35,7 @@ interface InitPayload {
 
 export default class AiRound implements AiRoundInterface, PromotingInterface {
   public data!: OfflineGameData
-  public chessground!: Chessground
+  public chessground!: Draughtsground
   public replay!: Replay
   public actions: AiActionsCtrl
   public newGameMenu: NewAiGameCtrl

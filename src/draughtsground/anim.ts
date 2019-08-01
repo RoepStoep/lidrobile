@@ -1,7 +1,7 @@
 import * as cg from './interfaces'
 import * as util from './util'
 import { State } from './state'
-import Chessground from './Chessground'
+import Draughtsground from './Draughtsground'
 
 export type Mutation<A> = (state: State) => A
 
@@ -39,11 +39,11 @@ interface AnimPieces {
   [key: string]: AnimPiece
 }
 
-export function anim<A>(mutation: Mutation<A>, ctrl: Chessground): A {
+export function anim<A>(mutation: Mutation<A>, ctrl: Draughtsground): A {
   return ctrl.state.animation.enabled ? animate(mutation, ctrl) : skip(mutation, ctrl)
 }
 
-export function skip<A>(mutation: Mutation<A>, ctrl: Chessground): A {
+export function skip<A>(mutation: Mutation<A>, ctrl: Draughtsground): A {
   const result = mutation(ctrl.state)
   ctrl.redraw()
   return result
@@ -133,7 +133,7 @@ function roundBy(n: number, by: number) {
   return Math.round(n * by) / by
 }
 
-function step(ctrl: Chessground, now: number) {
+function step(ctrl: Draughtsground, now: number) {
   const state = ctrl.state
   const cur = state.animation.current
   // animation was cancelled
@@ -160,7 +160,7 @@ function step(ctrl: Chessground, now: number) {
   }
 }
 
-function animate<A>(mutation: Mutation<A>, ctrl: Chessground): A {
+function animate<A>(mutation: Mutation<A>, ctrl: Draughtsground): A {
   const state = ctrl.state
   const prevPieces: cg.Pieces = {...state.pieces}
   const result = mutation(state)

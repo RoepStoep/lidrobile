@@ -1,6 +1,6 @@
 import redraw from '../../../utils/redraw'
-import Chessground from '../../../chessground/Chessground'
-import * as cg from '../../../chessground/interfaces'
+import Draughtsground from '../../../draughtsground/Draughtsground'
+import * as cg from '../../../draughtsground/interfaces'
 import * as helper from '../../helper'
 import settings from '../../../settings'
 import * as h from 'mithril/hyperscript'
@@ -15,7 +15,7 @@ interface Promoting {
 
 let promoting: Promoting | null = null
 
-function promote(ground: Chessground, key: Key, role: Role) {
+function promote(ground: Draughtsground, key: Key, role: Role) {
   const pieces: {[k: string]: Piece } = {}
   const piece = ground.state.pieces[key]
   if (piece && piece.role === 'pawn') {
@@ -27,7 +27,7 @@ function promote(ground: Chessground, key: Key, role: Role) {
   }
 }
 
-function start(chessground: Chessground, orig: Key, dest: Key, callback: PromoteCallback) {
+function start(chessground: Draughtsground, orig: Key, dest: Key, callback: PromoteCallback) {
   const piece = chessground.state.pieces[dest]
   if (piece && piece.role === 'pawn' && (
     (dest[1] === '1' && chessground.state.turnColor === 'white') ||
@@ -43,13 +43,13 @@ function start(chessground: Chessground, orig: Key, dest: Key, callback: Promote
   return false
 }
 
-function finish(ground: Chessground, role: Role) {
+function finish(ground: Draughtsground, role: Role) {
   if (promoting) promote(ground, promoting.dest, role)
   if (promoting && promoting.callback) promoting.callback(promoting.orig, promoting.dest, role)
   promoting = null
 }
 
-function cancel(chessground: Chessground, cgConfig?: cg.SetConfig) {
+function cancel(chessground: Draughtsground, cgConfig?: cg.SetConfig) {
   if (promoting) {
     promoting = null
     if (cgConfig) chessground.set(cgConfig)
