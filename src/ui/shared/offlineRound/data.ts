@@ -1,8 +1,8 @@
 import session from '../../../session'
 import { oppositeColor } from '../../../utils'
 import i18n from '../../../i18n'
-import { standardFen } from '../../../lichess/variant'
-import { OfflineGameData } from '../../../lichess/interfaces/game'
+import { standardFen } from '../../../lidraughts/variant'
+import { OfflineGameData } from '../../../lidraughts/interfaces/game'
 import { ClockState } from '../clock/interfaces'
 
 const standardVariant: Variant = {

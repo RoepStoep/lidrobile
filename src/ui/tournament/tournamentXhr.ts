@@ -1,5 +1,5 @@
 import { fetchJSON } from '../../http'
-import { Tournament, PlayerInfo, TournamentCreateResponse, TournamentLists, StandingPage } from '../../lichess/interfaces/tournament'
+import { Tournament, PlayerInfo, TournamentCreateResponse, TournamentLists, StandingPage } from '../../lidraughts/interfaces/tournament'
 
 export function currentTournaments(): Promise<TournamentLists> {
   return fetchJSON('/tournament', {}, true)

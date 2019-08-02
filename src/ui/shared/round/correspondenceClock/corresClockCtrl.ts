@@ -1,5 +1,5 @@
 import { formatClockTime } from './corresClockView'
-import { CorrespondenceClockData } from '../../../../lichess/interfaces/game'
+import { CorrespondenceClockData } from '../../../../lidraughts/interfaces/game'
 
 interface LastUpdate {
   white: number

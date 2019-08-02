@@ -14,7 +14,7 @@ import * as xhr from './xhr'
 import TrainingCtrl from './TrainingCtrl'
 import { connectingHeader } from '../shared/common'
 import { syncAndLoadNewPuzzle, puzzleLoadFailure } from './offlineService'
-import { PuzzleData } from '../../lichess/interfaces/training'
+import { PuzzleData } from '../../lidraughts/interfaces/training'
 import database from './database'
 
 interface Attrs {

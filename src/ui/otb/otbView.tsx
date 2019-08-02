@@ -100,7 +100,7 @@ function renderGameActionsBar(ctrl: OtbRound) {
         <button className="fa fa-cloud-upload action_bar_button"
           oncreate={helper.ontap(
             ctrl.importGamePopup.open,
-            () => window.plugins.toast.show(i18n('Import game to lichess'), 'short', 'bottom')
+            () => window.plugins.toast.show(i18n('Import game to lidraughts'), 'short', 'bottom')
           )}
         /> : null
       }

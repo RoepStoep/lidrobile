@@ -8,7 +8,7 @@ import { dropShadowHeader as headerWidget, backButton } from './shared/common'
 import * as helper from './helper'
 import layout from './layout'
 import i18n from '../i18n'
-import { TimelineEntry } from '../lichess/interfaces'
+import { TimelineEntry } from '../lidraughts/interfaces'
 
 export const supportedTypes = ['follow', 'game-end', 'tour-join', 'study-create', 'study-like']
 

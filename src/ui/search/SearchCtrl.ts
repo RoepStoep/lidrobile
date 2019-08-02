@@ -1,6 +1,6 @@
 import { batchRequestAnimationFrame } from '../../utils/batchRAF'
-import { Paginator } from '../../lichess/interfaces'
-import { UserGameWithDate } from '../../lichess/interfaces/user'
+import { Paginator } from '../../lidraughts/interfaces'
+import { UserGameWithDate } from '../../lidraughts/interfaces/user'
 import settings from '../../settings'
 import { handleXhrError, serializeQueryParameters } from '../../utils'
 import redraw from '../../utils/redraw'

@@ -1,6 +1,6 @@
 import { askWorker } from './utils/worker'
-import { GameStatus, KingMoves } from './lichess/interfaces/game'
-import { VariantKey, Variant } from './lichess/interfaces/variant'
+import { GameStatus, KingMoves } from './lidraughts/interfaces/game'
+import { VariantKey, Variant } from './lidraughts/interfaces/variant'
 
 const worker = new Worker('vendor/scaladraughts.js')
 

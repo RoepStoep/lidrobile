@@ -1,7 +1,7 @@
 import * as h from 'mithril/hyperscript'
 
 import i18n from '../../i18n'
-import * as gameApi from '../../lichess/game'
+import * as gameApi from '../../lidraughts/game'
 import settings from '../../settings'
 
 import * as helper from '../helper'

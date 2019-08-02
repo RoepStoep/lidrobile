@@ -1,7 +1,7 @@
 import settings from './settings'
 import session from './session'
 import router from './router'
-import challengesApi from './lichess/challenges'
+import challengesApi from './lidraughts/challenges'
 import { fetchText } from './http'
 
 interface Payload {

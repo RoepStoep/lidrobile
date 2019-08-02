@@ -2,10 +2,10 @@ import * as h from 'mithril/hyperscript'
 import router from '../../router'
 import { dropShadowHeader, backButton as renderBackbutton } from '../shared/common'
 import { getLanguageNativeName } from '../../utils/langs'
-import { hasNetwork, lichessAssetSrc, gameIcon } from '../../utils'
+import { hasNetwork, lidraughtsAssetSrc, gameIcon } from '../../utils'
 import { linkify } from '../../utils/html'
-import { perfTypes, provisionalDeviation } from '../../lichess/perfs'
-import { Perf } from '../../lichess/interfaces/user'
+import { perfTypes, provisionalDeviation } from '../../lidraughts/perfs'
+import { Perf } from '../../lidraughts/interfaces/user'
 import * as xhr from '../../xhr'
 import i18n from '../../i18n'
 import countries from '../../utils/countries'
@@ -100,7 +100,7 @@ function renderProfile(user: ProfileUser) {
             {location}
             {country && hasNetwork() ?
             <span className="country">
-              {location ? ',' : ''} <img className="flag" src={lichessAssetSrc('images/flags/' + user.profile.country + '.png')} />
+              {location ? ',' : ''} <img className="flag" src={lidraughtsAssetSrc('images/flags/' + user.profile.country + '.png')} />
               {country}
             </span> : null
             }

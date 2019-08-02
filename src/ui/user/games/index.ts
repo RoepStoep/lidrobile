@@ -3,7 +3,7 @@ import socket from '../../../socket'
 import layout from '../../layout'
 import { header as headerWidget, backButton } from '../../shared/common'
 import { renderBody } from './gamesView'
-import { GameFilter } from '../../../lichess/interfaces/user'
+import { GameFilter } from '../../../lidraughts/interfaces/user'
 import UserGamesCtrl, { IUserGamesCtrl } from './UserGamesCtrl'
 import { userTitle } from '../userView'
 

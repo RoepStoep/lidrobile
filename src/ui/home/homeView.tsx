@@ -9,7 +9,7 @@ import { renderTimelineEntry, timelineOnTap } from '../timeline'
 import MiniBoard from '../shared/miniBoard'
 import { renderQuickSetup } from '../newGameForm'
 import newGameForm from '../newGameForm'
-import { TournamentListItem } from '../../lichess/interfaces/tournament'
+import { TournamentListItem } from '../../lidraughts/interfaces/tournament'
 import { renderTournamentList } from '../tournament/tournamentsListView'
 
 import { Ctrl } from '.'
@@ -148,7 +148,7 @@ function renderPlayban(endsAt: Date) {
       <br />
       <p>
         We apologize for the temporary inconvenience,<br />
-        and wish you great games on lichess.org.<br />
+        and wish you great games on lidraughts.org.<br />
         Thank you for reading!
       </p>
     </div>

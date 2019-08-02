@@ -5,9 +5,9 @@ import { getLanguageNativeName } from '../../utils/langs'
 import session from '../../session'
 import i18n from '../../i18n'
 import spinner from '../../spinner'
-import { playerName } from '../../lichess/player'
-import { Player } from '../../lichess/interfaces/game'
-import { Score } from '../../lichess/interfaces/user'
+import { playerName } from '../../lidraughts/player'
+import { Player } from '../../lidraughts/interfaces/game'
+import { Score } from '../../lidraughts/interfaces/user'
 import * as helper from '../helper'
 
 import popupWidget from './popup'
@@ -61,7 +61,7 @@ function content(mini: any, player: Player, opponent: Player, score?: Score) {
         </div>
         { user.profile && user.profile.country ?
           <p className="country">
-            <img className="flag" src={utils.lichessAssetSrc('images/flags/' + user.profile.country + '.png')} />
+            <img className="flag" src={utils.lidraughtsAssetSrc('images/flags/' + user.profile.country + '.png')} />
             {countries[user.profile.country]}
           </p> : user.language ?
           <p className="language">

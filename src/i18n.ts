@@ -96,11 +96,11 @@ function loadMomentLocale(code: string): string {
 }
 
 const untranslated: StringMap = {
-  apiUnsupported: 'Your version of lichess app is too old! Please upgrade for free to the latest version.',
-  apiDeprecated: 'Upgrade for free to the latest lichess app! Support for this version will be dropped on %s.',
+  apiUnsupported: 'Your version of lidraughts app is too old! Please upgrade for free to the latest version.',
+  apiDeprecated: 'Upgrade for free to the latest lidraughts app! Support for this version will be dropped on %s.',
   resourceNotFoundError: 'Resource not found.',
-  lichessIsUnavailableError: 'lichess.org is temporarily down for maintenance.',
-  lichessIsUnreachable: 'lichess.org is unreachable.',
+  lidraughtsIsUnavailableError: 'lidraughts.org is temporarily down for maintenance.',
+  lidraughtsIsUnreachable: 'lidraughts.org is unreachable.',
   mustSignIn: 'You must sign in to see this.',
   mustSignInToJoin: 'You must sign in to join it.',
   boardThemeBrown: 'Brown',
@@ -130,7 +130,7 @@ const untranslated: StringMap = {
   toATypeGame: 'To a %s game',
   unsupportedVariant: 'Variant %s is not supported in this version',
   language: 'Language',
-  notesSynchronizationHasFailed: 'Notes synchronization with lichess has failed, please try later.',
+  notesSynchronizationHasFailed: 'Notes synchronization with lidraughts has failed, please try later.',
   challengeDeclined: 'Challenge declined',
   persistentChallengeCreated: 'Correspondence challenge created. It will remain active for two weeks. You will get notified when your friend accepts it. You can cancel it from the "Correspondence" page.',
   youAreChallenging: 'You are challenging %s',

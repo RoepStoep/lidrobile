@@ -1,7 +1,7 @@
 import router from '../../router'
 import { Session } from '../../session'
 import settings from '../../settings'
-import { PuzzleData, PuzzleOutcome } from '../../lichess/interfaces/training'
+import { PuzzleData, PuzzleOutcome } from '../../lidraughts/interfaces/training'
 
 import * as xhr from './xhr'
 import { Database, UserOfflineData } from './database'

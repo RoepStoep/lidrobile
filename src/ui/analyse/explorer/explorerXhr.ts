@@ -1,8 +1,8 @@
 import { fetchJSON } from '../../../http'
 import { ExplorerData } from './interfaces'
 
-const explorerEndpoint = 'https://explorer.lichess.ovh'
-const tablebaseEndpoint = 'https://tablebase.lichess.ovh'
+const explorerEndpoint = 'https://explorer.lidraughts.ovh'
+const tablebaseEndpoint = 'https://tablebase.lidraughts.ovh'
 
 export interface OpeningConf {
   db: string
@@ -22,7 +22,7 @@ export function openingXhr(variant: VariantKey, fen: string, config: OpeningConf
   }
   if (config.db === 'masters') url = '/master'
   else {
-    url = '/lichess'
+    url = '/lidraughts'
     params.variant = variant
     params['speeds[]'] = config.speeds
     params['ratings[]'] = config.ratings

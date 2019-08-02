@@ -11,13 +11,13 @@ import { hasNetwork, handleXhrError, serializeQueryParameters } from './utils'
 import i18n from './i18n'
 import push from './push'
 import settings from './settings'
-import { TempBan } from './lichess/interfaces'
-import friendsApi from './lichess/friends'
-import challengesApi from './lichess/challenges'
+import { TempBan } from './lidraughts/interfaces'
+import friendsApi from './lidraughts/friends'
+import challengesApi from './lidraughts/challenges'
 import storage, { StoredProp } from './storage'
 import asyncStorage from './asyncStorage'
 
-import { LobbyData, NowPlayingGame } from './lichess/interfaces'
+import { LobbyData, NowPlayingGame } from './lidraughts/interfaces'
 
 type PrefValue = number | string | boolean
 interface Prefs {
@@ -125,7 +125,7 @@ function myTurnGames() {
 }
 
 function showSavedPrefToast(data: string): string {
-  window.plugins.toast.show('✓ Your preferences have been saved on lichess server.', 'short', 'center')
+  window.plugins.toast.show('✓ Your preferences have been saved on lidraughts server.', 'short', 'center')
   return data
 }
 
@@ -183,7 +183,7 @@ function savePreferences(): Promise<string> {
   .then(showSavedPrefToast)
 }
 
-function lichessBackedProp<T extends string | number | boolean>(path: string, prefRequest: () => Promise<string>, defaultVal: T): StoredProp<T> {
+function lidraughtsBackedProp<T extends string | number | boolean>(path: string, prefRequest: () => Promise<string>, defaultVal: T): StoredProp<T> {
   return function() {
     if (arguments.length) {
       let oldPref: T
@@ -344,7 +344,7 @@ export default {
   },
   nowPlaying,
   myTurnGames,
-  lichessBackedProp,
+  lidraughtsBackedProp,
   setKidMode,
   confirmEmail,
   currentBan,

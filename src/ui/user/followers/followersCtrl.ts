@@ -5,8 +5,8 @@ import { handleXhrError } from '../../../utils'
 import socket from '../../../socket'
 import challengeForm from '../../challengeForm'
 
-import { Related } from '../../../lichess/interfaces/user'
-import { Paginator } from '../../../lichess/interfaces'
+import { Related } from '../../../lidraughts/interfaces/user'
+import { Paginator } from '../../../lidraughts/interfaces'
 
 import { IRelationCtrl } from '../interfaces'
 

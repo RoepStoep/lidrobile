@@ -1,4 +1,4 @@
-import { AnalyseDataWithTree } from '../../lichess/interfaces/analyse'
+import { AnalyseDataWithTree } from '../../lidraughts/interfaces/analyse'
 
 import { CloudEval } from './evalCache'
 import AnalyseCtrl from './AnalyseCtrl'

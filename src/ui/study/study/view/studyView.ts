@@ -1,5 +1,5 @@
 import * as h from 'mithril/hyperscript'
-import { Study } from '../../../../lichess/interfaces/study'
+import { Study } from '../../../../lidraughts/interfaces/study'
 import { header, backButton } from '../../../shared/common'
 import * as helper from '../../../helper'
 import layout from '../../../layout'

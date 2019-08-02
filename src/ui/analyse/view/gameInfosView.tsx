@@ -1,8 +1,8 @@
 import i18n from '../../../i18n'
 import router from '../../../router'
-import { playerName } from '../../../lichess/player'
-import * as gameApi from '../../../lichess/game'
-import gameStatusApi from '../../../lichess/status'
+import { playerName } from '../../../lidraughts/player'
+import * as gameApi from '../../../lidraughts/game'
+import gameStatusApi from '../../../lidraughts/status'
 import * as helper from '../../helper'
 
 import AnalyseCtrl from '../AnalyseCtrl'

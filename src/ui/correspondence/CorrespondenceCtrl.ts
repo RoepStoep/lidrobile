@@ -1,13 +1,13 @@
 import * as Zanimo from 'zanimo'
 import * as uniqBy from 'lodash/uniqBy'
 import redraw from '../../utils/redraw'
-import challengesApi from '../../lichess/challenges'
+import challengesApi from '../../lidraughts/challenges'
 import session from '../../session'
 import settings from '../../settings'
 import * as xhr from '../../xhr'
 import socket from '../../socket'
-import { CorrespondenceSeek } from '../../lichess/interfaces'
-import { Challenge } from '../../lichess/interfaces/challenge'
+import { CorrespondenceSeek } from '../../lidraughts/interfaces'
+import { Challenge } from '../../lidraughts/interfaces/challenge'
 
 export type PublicPool = ReadonlyArray<CorrespondenceSeek> | null
 export type Challenges = ReadonlyArray<Challenge> | null

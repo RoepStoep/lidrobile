@@ -1,4 +1,4 @@
-import { OnlineGameData, GameStep } from '../../../lichess/interfaces/game'
+import { OnlineGameData, GameStep } from '../../../lidraughts/interfaces/game'
 
 export function firstPly(d: OnlineGameData): number {
   return d.steps[0].ply

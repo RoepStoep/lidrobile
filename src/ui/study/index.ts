@@ -1,5 +1,5 @@
 import socket from '../../socket'
-import { PagerCategory, PagerOrder } from '../../lichess/interfaces/study'
+import { PagerCategory, PagerOrder } from '../../lidraughts/interfaces/study'
 import * as helper from '../helper'
 import { header } from '../shared/common'
 import layout from '../layout'

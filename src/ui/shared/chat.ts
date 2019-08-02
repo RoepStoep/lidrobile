@@ -3,8 +3,8 @@ import * as helper from '../helper'
 import redraw from '../../utils/redraw'
 import i18n from '../../i18n'
 import asyncStorage from '../../asyncStorage'
-import { Player } from '../../lichess/interfaces/game'
-import { ChatMsg } from '../../lichess/interfaces/chat'
+import { Player } from '../../lidraughts/interfaces/game'
+import { ChatMsg } from '../../lidraughts/interfaces/chat'
 import router from '../../router'
 import socket from '../../socket'
 import { closeIcon } from '../shared/icons'
@@ -62,7 +62,7 @@ export class Chat {
 
   public append = (msg: ChatMsg) => {
     this.lines.push(msg)
-    if (msg.u !== 'lichess') {
+    if (msg.u !== 'lidraughts') {
       this.nbUnread++
     }
     redraw()
@@ -192,7 +192,7 @@ export function chatView(ctrl: Chat, header?: string) {
 }
 
 function renderPlayerMsg(player: Player, msg: ChatMsg, i: number, all: ChatMsg[]) {
-  const lichessTalking = msg.u === 'lichess'
+  const lidraughtsTalking = msg.u === 'lidraughts'
   const playerTalking = msg.c ? msg.c === player.color :
     player.user && msg.u === player.user.username
 
@@ -207,22 +207,22 @@ function renderPlayerMsg(player: Player, msg: ChatMsg, i: number, all: ChatMsg[]
 
   return h('li.chat_msg.allow_select', {
     className: helper.classSet({
-      system: lichessTalking,
+      system: lidraughtsTalking,
       player: !!playerTalking,
-      opponent: !lichessTalking && !playerTalking,
+      opponent: !lidraughtsTalking && !playerTalking,
       'close_balloon': closeBalloon
     })
   }, msg.t)
 }
 
 function renderSpectatorMsg(msg: ChatMsg) {
-  const lichessTalking = msg.u === 'lichess'
+  const lidraughtsTalking = msg.u === 'lidraughts'
 
   return h('li.spectator_chat_msg.allow_select', {
     className: helper.classSet({
-      system: lichessTalking,
+      system: lidraughtsTalking,
     })
-  }, lichessTalking ? msg.t : [
+  }, lidraughtsTalking ? msg.t : [
     h('strong', msg.u),
     h.trust('&nbsp;'), h.trust('&nbsp;'),
     h('span', msg.t)

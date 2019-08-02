@@ -1,9 +1,9 @@
 import storage from '../storage'
 import * as cloneDeep from 'lodash/cloneDeep'
 import * as difference from 'lodash/difference'
-import { AnalyseData } from '../lichess/interfaces/analyse'
-import { NowPlayingGame } from '../lichess/interfaces'
-import { OnlineGameData, OfflineGameData } from '../lichess/interfaces/game'
+import { AnalyseData } from '../lidraughts/interfaces/analyse'
+import { NowPlayingGame } from '../lidraughts/interfaces'
+import { OnlineGameData, OfflineGameData } from '../lidraughts/interfaces/game'
 import { GameSituation } from '../draughts'
 
 const otbStorageKey = 'otb.current'

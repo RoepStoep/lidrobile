@@ -1,4 +1,4 @@
-import { Challenge } from '../../lichess/interfaces/challenge'
+import { Challenge } from '../../lidraughts/interfaces/challenge'
 
 export interface ChallengeState {
   pingTimeoutId: number

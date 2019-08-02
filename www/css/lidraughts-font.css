@@ -1,14 +1,14 @@
 @charset "UTF-8";
 
 @font-face {
-  font-family: "lichess";
-  src: url("../fonts/lichess.ttf") format("truetype");
+  font-family: "lidraughts";
+  src: url("../fonts/lidraughts.ttf") format("truetype");
   font-weight: normal;
   font-style: normal;
 }
 
 [data-icon]:before {
-  font-family: "lichess" !important;
+  font-family: "lidraughts" !important;
   content: attr(data-icon);
   font-style: normal !important;
   font-weight: normal !important;
@@ -21,7 +21,7 @@
 
 [class^="icon-"]:before,
 [class*=" icon-"]:before {
-  font-family: "lichess" !important;
+  font-family: "lidraughts" !important;
   font-style: normal !important;
   font-weight: normal !important;
   font-variant: normal !important;

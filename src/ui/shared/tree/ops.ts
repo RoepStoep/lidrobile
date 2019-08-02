@@ -1,5 +1,5 @@
 import { Tree } from './interfaces'
-import { Pockets } from '../../../lichess/interfaces/game'
+import { Pockets } from '../../../lidraughts/interfaces/game'
 
 function mainlineChild(node: Tree.Node): Tree.Node | undefined {
   return node.children[0]

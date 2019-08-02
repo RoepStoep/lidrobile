@@ -2,16 +2,16 @@ import router from '../../router'
 import session from '../../session'
 import loginModal from '../loginModal'
 import spinner from '../../spinner'
-import challengesApi from '../../lichess/challenges'
+import challengesApi from '../../lidraughts/challenges'
 import * as helper from '../helper'
 import popupWidget from '../shared/popup'
 import i18n from '../../i18n'
 import * as h from 'mithril/hyperscript'
-import { Challenge, ChallengeUser } from '../../lichess/interfaces/challenge'
+import { Challenge, ChallengeUser } from '../../lidraughts/interfaces/challenge'
 import { ChallengeState } from './interfaces'
 
 function publicUrl(challenge: Challenge) {
-  return 'https://lichess.org/' + challenge.id
+  return 'https://lidraughts.org/' + challenge.id
 }
 
 function gameInfos(challenge: Challenge) {
@@ -87,7 +87,7 @@ export function awaitInvitePopup(ctrl: ChallengeState, challenge: Challenge) {
         gameInfos(challenge),
         h('br'),
         h('p.explanation', i18n('toInviteSomeoneToPlayGiveThisUrl')),
-        h('input.lichess_game_url', {
+        h('input.lidraughts_game_url', {
           value: publicUrl(challenge),
           readonly: true
         }),

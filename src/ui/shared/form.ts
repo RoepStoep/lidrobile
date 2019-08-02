@@ -3,7 +3,7 @@ import * as h from 'mithril/hyperscript'
 import i18n from '../../i18n'
 import redraw from '../../utils/redraw'
 import { StoredProp } from '../../storage'
-import { LichessPropOption } from '../../lichess/prefs'
+import { LichessPropOption } from '../../lidraughts/prefs'
 import * as helper from '../helper'
 
 type SelectOption = ReadonlyArray<string>
@@ -135,7 +135,7 @@ export default {
     ])
   },
 
-  lichessPropToOption([value, label, labelArg]: LichessPropOption) {
+  lidraughtsPropToOption([value, label, labelArg]: LichessPropOption) {
     const l = labelArg !== undefined ? i18n(label, labelArg) : i18n(label)
     return {
       label: l,

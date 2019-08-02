@@ -11,9 +11,9 @@ import { newSri, autoredraw, hasNetwork } from './utils'
 import { tellWorker, askWorker } from './utils/worker'
 import * as xhr from './xhr'
 import i18n from './i18n'
-import friendsApi, { Friend } from './lichess/friends'
-import challengesApi from './lichess/challenges'
-import { ChallengesData } from './lichess/interfaces/challenge'
+import friendsApi, { Friend } from './lidraughts/friends'
+import challengesApi from './lidraughts/challenges'
+import { ChallengesData } from './lidraughts/interfaces/challenge'
 import session from './session'
 
 export interface LichessMessage<T> {

@@ -1,7 +1,7 @@
 import { fetchJSON, fetchText } from '../../http'
-import { Paginator } from '../../lichess/interfaces'
-import { AnalyseData } from '../../lichess/interfaces/analyse'
-import { Study, PagerOrder, PagerData, PagerCategory } from '../../lichess/interfaces/study'
+import { Paginator } from '../../lidraughts/interfaces'
+import { AnalyseData } from '../../lidraughts/interfaces/analyse'
+import { Study, PagerOrder, PagerData, PagerCategory } from '../../lidraughts/interfaces/study'
 
 interface StudyXhrData {
   analysis: AnalyseData

@@ -1,4 +1,4 @@
-import { Pockets } from '../../../lichess/interfaces/game'
+import { Pockets } from '../../../lidraughts/interfaces/game'
 import { Shape as BrushShape } from '../BoardBrush'
 
 export namespace Tree {

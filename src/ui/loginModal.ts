@@ -5,7 +5,7 @@ import redraw from '../utils/redraw'
 import socket from '../socket'
 import signals from '../signals'
 import push from '../push'
-import challengesApi from '../lichess/challenges'
+import challengesApi from '../lidraughts/challenges'
 import { handleXhrError } from '../utils'
 import * as helper from './helper'
 import i18n from '../i18n'
@@ -87,7 +87,7 @@ export default {
           i18n('forgotPassword') + ' ',
           h('br'),
           h('a', {
-            oncreate: helper.ontap(() => window.open(`https://lichess.org/password/reset`, '_blank', 'location=no'))
+            oncreate: helper.ontap(() => window.open(`https://lidraughts.org/password/reset`, '_blank', 'location=no'))
           }, [i18n('passwordReset')])
         ])
       ])

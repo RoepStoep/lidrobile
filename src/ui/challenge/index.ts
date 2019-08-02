@@ -6,9 +6,9 @@ import router from '../../router'
 import * as sleepUtils from '../../utils/sleep'
 import { handleXhrError } from '../../utils'
 import { acceptChallenge, declineChallenge, cancelChallenge, getChallenge } from '../../xhr'
-import { Challenge } from '../../lichess/interfaces/challenge'
-import challengesApi from '../../lichess/challenges'
-import { standardFen } from '../../lichess/variant'
+import { Challenge } from '../../lidraughts/interfaces/challenge'
+import challengesApi from '../../lidraughts/challenges'
+import { standardFen } from '../../lidraughts/variant'
 import i18n from '../../i18n'
 import * as stream from 'mithril/stream'
 import layout from '../layout'
@@ -117,7 +117,7 @@ const ChallengeScreen: Mithril.Component<Attrs, ChallengeState> = {
 
     const challenge = this.challenge()
 
-    const header = headerWidget('lichess.org')
+    const header = headerWidget('lidraughts.org')
 
     if (challenge) {
       board = viewOnlyBoardContent(

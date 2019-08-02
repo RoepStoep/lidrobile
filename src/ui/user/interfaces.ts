@@ -1,5 +1,5 @@
-import { Related } from '../../lichess/interfaces/user'
-import { Paginator } from '../../lichess/interfaces'
+import { Related } from '../../lidraughts/interfaces/user'
+import { Paginator } from '../../lidraughts/interfaces'
 
 export interface IRelationCtrl {
   related: Mithril.Stream<Related[] | null>

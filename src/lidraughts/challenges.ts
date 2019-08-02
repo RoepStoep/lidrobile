@@ -3,7 +3,7 @@ import sound from '../sound'
 import settings from '../settings'
 import * as throttle from 'lodash/throttle'
 import { getChallenges } from '../xhr'
-import { Challenge, ChallengesData, isTimeControlClock, isTimeControlCorrespondence } from '../lichess/interfaces/challenge'
+import { Challenge, ChallengesData, isTimeControlClock, isTimeControlCorrespondence } from '../lidraughts/interfaces/challenge'
 
 let incoming: ReadonlyArray<Challenge> = []
 let sending: ReadonlyArray<Challenge> = []

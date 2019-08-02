@@ -5,7 +5,7 @@ import router from '../../router'
 import * as utils from '../../utils'
 import challengeForm from '../challengeForm'
 import * as stream from 'mithril/stream'
-import { UserFullProfile } from '../../lichess/interfaces/user'
+import { UserFullProfile } from '../../lidraughts/interfaces/user'
 
 export interface IUserCtrl {
   user: Mithril.Stream<ProfileUser | undefined>

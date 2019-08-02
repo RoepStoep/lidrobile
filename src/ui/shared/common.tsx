@@ -10,13 +10,13 @@ import * as helper from '../helper'
 import gamesMenu from '../gamesMenu'
 import newGameForm from '../newGameForm'
 import session from '../../session'
-import challengesApi from '../../lichess/challenges'
-import friendsApi from '../../lichess/friends'
+import challengesApi from '../../lidraughts/challenges'
+import friendsApi from '../../lidraughts/friends'
 import i18n from '../../i18n'
 import friendsPopup from '../friendsPopup'
 import ViewOnlyBoard from './ViewOnlyBoard'
 import { backArrow } from './icons'
-import { BaseUser } from '../../lichess/interfaces/user'
+import { BaseUser } from '../../lidraughts/interfaces/user'
 
 export const LoadingBoard = {
   view() {

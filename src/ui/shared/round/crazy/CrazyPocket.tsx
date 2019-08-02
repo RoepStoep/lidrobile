@@ -1,6 +1,6 @@
 import settings from '../../../../settings'
 import * as draughtsgroundDrag from '../../../../draughtsground/drag'
-import { Pockets } from '../../../../lichess/interfaces/game'
+import { Pockets } from '../../../../lidraughts/interfaces/game'
 
 import { BoardInterface } from '../'
 import crazyDrag from './crazyDrag'

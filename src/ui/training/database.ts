@@ -1,5 +1,5 @@
 import asyncStorage from '../../asyncStorage'
-import { PuzzleOutcome, PuzzleData, UserData } from '../../lichess/interfaces/training'
+import { PuzzleOutcome, PuzzleData, UserData } from '../../lidraughts/interfaces/training'
 
 const db = {
   fetch,

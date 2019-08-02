@@ -13,7 +13,7 @@ import * as chessFormat from '../../utils/chessFormat'
 import session from '../../session'
 import sound from '../../sound'
 import settings from '../../settings'
-import { PuzzleData } from '../../lichess/interfaces/training'
+import { PuzzleData } from '../../lidraughts/interfaces/training'
 import promotion from '../shared/offlineRound/promotion'
 import { PromotingInterface } from '../shared/round'
 
@@ -208,7 +208,7 @@ export default class TrainingCtrl implements PromotingInterface {
   }
 
   public share = () => {
-    window.plugins.socialsharing.share(null, null, null, `https://lichess.org/training/${this.data.puzzle.id}`)
+    window.plugins.socialsharing.share(null, null, null, `https://lidraughts.org/training/${this.data.puzzle.id}`)
   }
 
   public goToAnalysis = () => {

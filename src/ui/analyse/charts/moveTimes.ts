@@ -3,7 +3,7 @@ import { axisLeft } from 'd3-axis'
 import { scaleLinear } from 'd3-scale'
 import { area as d3Area } from 'd3-shape'
 
-import { AnalyseData } from '../../../lichess/interfaces/analyse'
+import { AnalyseData } from '../../../lidraughts/interfaces/analyse'
 
 interface Point {
   ply: number

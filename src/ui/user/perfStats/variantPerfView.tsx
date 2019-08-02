@@ -7,7 +7,7 @@ import { timeMonth, timeYear } from 'd3-time'
 import router from '../../../router'
 import i18n from '../../../i18n'
 import * as helper from '../../helper'
-import { GraphPoint } from '../../../lichess/interfaces/user'
+import { GraphPoint } from '../../../lidraughts/interfaces/user'
 
 import { State } from '.'
 

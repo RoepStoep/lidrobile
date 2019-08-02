@@ -4,9 +4,9 @@ import redraw from '../../utils/redraw'
 import { timeline as timelineXhr } from '../../xhr'
 import { hasNetwork, noop } from '../../utils'
 import { isForeground, setForeground } from '../../utils/appMode'
-import { PongMessage, TimelineEntry, DailyPuzzle } from '../../lichess/interfaces'
-import { TournamentListItem } from '../../lichess/interfaces/tournament'
-import { PuzzleData } from '../../lichess/interfaces/training'
+import { PongMessage, TimelineEntry, DailyPuzzle } from '../../lidraughts/interfaces'
+import { TournamentListItem } from '../../lidraughts/interfaces/tournament'
+import { PuzzleData } from '../../lidraughts/interfaces/training'
 import session from '../../session'
 import signals from '../../signals'
 import * as helper from '../helper'
@@ -124,7 +124,7 @@ export default {
   },
 
   view() {
-    const header = dropShadowHeader('lichess.org')
+    const header = dropShadowHeader('lidraughts.org')
 
     return layout.free(header, body(this.ctrl))
   }

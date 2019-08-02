@@ -1,4 +1,4 @@
-import { User } from '../../lichess/interfaces/user'
+import { User } from '../../lidraughts/interfaces/user'
 
 export interface PagedThreads {
   currentPage: number

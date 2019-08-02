@@ -1,7 +1,7 @@
-import { UserFullProfile, GameFilter, UserGameWithDate, PerfStats } from '../../lichess/interfaces/user'
-import { Paginator } from '../../lichess/interfaces'
-import { OnlineGameData } from '../../lichess/interfaces/game'
-import { Related } from '../../lichess/interfaces/user'
+import { UserFullProfile, GameFilter, UserGameWithDate, PerfStats } from '../../lidraughts/interfaces/user'
+import { Paginator } from '../../lidraughts/interfaces'
+import { OnlineGameData } from '../../lidraughts/interfaces/game'
+import { Related } from '../../lidraughts/interfaces/user'
 import { fetchJSON } from '../../http'
 
 export interface FilterResult {

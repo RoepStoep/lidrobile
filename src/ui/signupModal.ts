@@ -54,7 +54,7 @@ function renderCheckEmail() {
     h('h1.signup-emailCheck.withIcon[data-icon=E]', i18n('checkYourEmail')),
     h('p', i18n('weHaveSentYouAnEmailClickTheLink')),
     h('p', i18n('ifYouDoNotSeeTheEmailCheckOtherPlaces')),
-    h('p', 'Not receiving it? Visit https://lichess.org/contact to request a manual confirmation.')
+    h('p', 'Not receiving it? Visit https://lidraughts.org/contact to request a manual confirmation.')
   ]
 }
 
@@ -67,7 +67,7 @@ function renderForm() {
       'By registering, you agree to be bound by our ',
       h('a', {
         oncreate: helper.ontap(() =>
-        window.open('https://lichess.org/terms-of-service', '_blank', 'location=no')
+        window.open('https://lidraughts.org/terms-of-service', '_blank', 'location=no')
         )},
         'Terms of Service'
       ), '.'

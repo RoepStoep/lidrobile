@@ -1,8 +1,8 @@
 import * as helper from '../helper'
 import ViewOnlyBoard from './ViewOnlyBoard'
-import * as gameApi from '../../lichess/game'
+import * as gameApi from '../../lidraughts/game'
 import { noop } from '../../utils'
-import { MiniBoardGameObj } from '../../lichess/interfaces'
+import { MiniBoardGameObj } from '../../lidraughts/interfaces'
 import * as h from 'mithril/hyperscript'
 
 interface Bounds {

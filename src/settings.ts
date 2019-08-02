@@ -114,7 +114,7 @@ export default {
     showComments: store.prop('settings.analyse.showComments', true),
     smallBoard: store.prop('settings.analyse.smallBoard', true),
     explorer: {
-      db: store.prop('settings.analyse.explorer.db', 'lichess'),
+      db: store.prop('settings.analyse.explorer.db', 'lidraughts'),
       availableRatings: [1600, 1800, 2000, 2200, 2500],
       rating: store.prop('settings.analyse.explorer.rating', [1600, 1800, 2000, 2200, 2500]),
       availableSpeeds: ['bullet', 'blitz', 'rapid', 'classical'],

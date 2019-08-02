@@ -2,7 +2,7 @@ import Draughtsground from '../../draughtsground/Draughtsground'
 import * as cg from '../../draughtsground/interfaces'
 import settings from '../../settings'
 import { batchRequestAnimationFrame } from '../../utils/batchRAF'
-import { AnalyseData } from '../../lichess/interfaces/analyse'
+import { AnalyseData } from '../../lidraughts/interfaces/analyse'
 
 
 function makeConfig(

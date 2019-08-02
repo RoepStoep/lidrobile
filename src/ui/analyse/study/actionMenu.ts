@@ -66,7 +66,7 @@ export default {
   }
 }
 
-const baseUrl = 'https://lichess.org/'
+const baseUrl = 'https://lidraughts.org/'
 
 function renderStudyMenu(ctrl: AnalyseCtrl) {
 

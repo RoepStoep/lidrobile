@@ -5,7 +5,7 @@ import redraw from '../../utils/redraw'
 import { serializeQueryParameters, handleXhrError } from '../../utils'
 import { fetchJSON } from '../../http'
 import * as helper from '../helper'
-import { OnlineGameData } from '../../lichess/interfaces/game'
+import { OnlineGameData } from '../../lidraughts/interfaces/game'
 import * as stream from 'mithril/stream'
 
 export interface IImporterCtrl {

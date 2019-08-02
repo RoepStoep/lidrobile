@@ -8,8 +8,8 @@ import session from '../../../session'
 import * as xhr from '../userXhr'
 import { toggleGameBookmark } from '../../../xhr'
 import redraw from '../../../utils/redraw'
-import { Paginator } from '../../../lichess/interfaces'
-import { GameFilter, UserFullProfile, UserGameWithDate } from '../../../lichess/interfaces/user'
+import { Paginator } from '../../../lidraughts/interfaces'
+import { GameFilter, UserFullProfile, UserGameWithDate } from '../../../lidraughts/interfaces/user'
 
 export interface IUserGamesCtrl {
   scrollState: ScrollState
@@ -137,7 +137,7 @@ export default function UserGamesCtrl(userId: string, filter?: string): IUserGam
     const paginator = scrollState.paginator
     const nextPage = paginator && paginator.nextPage
     if ((target.scrollTop + target.offsetHeight + 50) > content.offsetHeight) {
-      // lichess doesn't allow for more than 39 pages
+      // lidraughts doesn't allow for more than 39 pages
       if (!scrollState.isLoadingNextPage && nextPage && nextPage < 40) {
         loadNextPage(nextPage)
       }

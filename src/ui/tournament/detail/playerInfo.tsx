@@ -3,7 +3,7 @@ import router from '../../../router'
 import * as utils from '../../../utils'
 import redraw from '../../../utils/redraw'
 import * as helper from '../../helper'
-import { PlayerInfo, PlayerInfoPairing } from '../../../lichess/interfaces/tournament'
+import { PlayerInfo, PlayerInfoPairing } from '../../../lidraughts/interfaces/tournament'
 import i18n from '../../../i18n'
 import { closeIcon } from '../../shared/icons'
 

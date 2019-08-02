@@ -4,7 +4,7 @@ import * as debounce from 'lodash/debounce'
 import explorerConfig from './explorerConfig'
 import { openingXhr, tablebaseXhr } from './explorerXhr'
 import { isSynthetic } from '../util'
-import * as gameApi from '../../../lichess/game'
+import * as gameApi from '../../../lidraughts/game'
 import { IExplorerCtrl, ExplorerData } from './interfaces'
 import AnalyseCtrl from '../AnalyseCtrl'
 

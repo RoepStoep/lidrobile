@@ -5,7 +5,7 @@ import session, { Session } from '../../session'
 import i18n from '../../i18n'
 import { hasNetwork, noop } from '../../utils'
 import { getOfflineGames } from '../../utils/offlineGames'
-import friendsApi from '../../lichess/friends'
+import friendsApi from '../../lidraughts/friends'
 
 import loginModal from '../loginModal'
 import newGameForm from '../newGameForm'
@@ -19,7 +19,7 @@ import CloseSwipeHandler from '../shared/sideMenu/CloseSwipeHandler'
 
 import * as menu from '.'
 
-const pingHelp = 'PING: Network lag between you and lichess; SERVER: Time to process a move on lichess server'
+const pingHelp = 'PING: Network lag between you and lidraughts; SERVER: Time to process a move on lidraughts server'
 
 export default {
   onbeforeupdate() {

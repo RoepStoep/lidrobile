@@ -1,7 +1,7 @@
 import i18n from '../../i18n'
 import router from '../../router'
 import { validateFen, positionLooksLegit } from '../../utils/fen'
-import { specialFenVariants } from '../../lichess/variant'
+import { specialFenVariants } from '../../lidraughts/variant'
 import popupWidget from '../shared/popup'
 import * as helper from '../helper'
 import playMachineForm from '../playMachineForm'

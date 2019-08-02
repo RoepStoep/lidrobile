@@ -1,12 +1,12 @@
 import * as h from 'mithril/hyperscript'
 import * as utils from '../../utils'
 import i18n from '../../i18n'
-import gameStatusApi from '../../lichess/status'
-import { isGameData } from '../../lichess/interfaces'
-import { GameData } from '../../lichess/interfaces/game'
-import { AnalyseData } from '../../lichess/interfaces/analyse'
-import * as playerApi from '../../lichess/player'
-import * as gameApi from '../../lichess/game'
+import gameStatusApi from '../../lidraughts/status'
+import { isGameData } from '../../lidraughts/interfaces'
+import { GameData } from '../../lidraughts/interfaces/game'
+import { AnalyseData } from '../../lidraughts/interfaces/analyse'
+import * as playerApi from '../../lidraughts/player'
+import * as gameApi from '../../lidraughts/game'
 import CountdownTimer from './CountdownTimer'
 
 interface Attrs {

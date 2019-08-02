@@ -2,8 +2,8 @@ import i18n from '../i18n'
 import globalConfig from '../config'
 import { ErrorResponse } from '../http'
 import redraw from './redraw'
-import { GameData } from '../lichess/interfaces/game'
-import { TournamentClock } from '../lichess/interfaces/tournament'
+import { GameData } from '../lidraughts/interfaces/game'
+import { TournamentClock } from '../lidraughts/interfaces/tournament'
 
 let sri: string
 
@@ -99,13 +99,13 @@ export function handleXhrError(error: ErrorResponse): void {
   let message: string
 
   if (!status || status === 0)
-    message = 'lichessIsUnreachable'
+    message = 'lidraughtsIsUnreachable'
   else if (status === 401)
     message = 'unauthorizedError'
   else if (status === 404)
     message = 'resourceNotFoundError'
   else if (status === 503)
-    message = 'lichessIsUnavailableError'
+    message = 'lidraughtsIsUnavailableError'
   else if (status >= 500)
     message = 'Server error.'
   else
@@ -259,7 +259,7 @@ export function mapObject<K extends string, T, U>(obj: Record<K, T>, f: (x: T) =
   return res
 }
 
-export function lichessAssetSrc(path: string) {
+export function lidraughtsAssetSrc(path: string) {
   return `${globalConfig.apiEndPoint}/assets/${path}`
 }
 

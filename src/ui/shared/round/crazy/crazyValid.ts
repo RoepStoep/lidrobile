@@ -1,5 +1,5 @@
-import * as gameApi from '../../../../lichess/game'
-import { GameData, PossibleDrops } from '../../../../lichess/interfaces/game'
+import * as gameApi from '../../../../lidraughts/game'
+import { GameData, PossibleDrops } from '../../../../lidraughts/interfaces/game'
 
 export default {
   drop(data: GameData, role: Role, key: Key, possibleDrops?: PossibleDrops) {

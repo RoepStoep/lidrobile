@@ -2,7 +2,7 @@ import * as throttle from 'lodash/throttle'
 import * as h from 'mithril/hyperscript'
 import router from '../../router'
 import i18n from '../../i18n'
-import { UserGameWithDate } from '../../lichess/interfaces/user'
+import { UserGameWithDate } from '../../lidraughts/interfaces/user'
 import spinner from '../../spinner'
 
 import * as helper from '../helper'

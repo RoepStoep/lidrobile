@@ -4,8 +4,8 @@ import * as utils from '../../utils'
 import redraw from '../../utils/redraw'
 import router from '../../router'
 import ButtonHandler from './button'
-import { UserGamePlayer } from '../../lichess/interfaces/user'
-import { Player } from '../../lichess/interfaces/game'
+import { UserGamePlayer } from '../../lidraughts/interfaces/user'
+import { Player } from '../../lidraughts/interfaces/game'
 import { Bounds } from '../shared/Board'
 
 export interface ViewportDim {

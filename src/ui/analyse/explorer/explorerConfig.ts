@@ -34,7 +34,7 @@ interface Controller {
 export default {
 
   controller(variant: Variant, onClose: (changed: boolean) => void) {
-    const available = ['lichess']
+    const available = ['lidraughts']
     if (variant.key === 'standard' || variant.key === 'fromPosition') {
       available.push('masters')
     }

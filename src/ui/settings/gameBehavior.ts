@@ -5,7 +5,7 @@ import { hasNetwork } from '../../utils'
 import settings from '../../settings'
 import session from '../../session'
 import { StoredProp } from '../../storage'
-import { Takeback, SubmitMove, AutoQueen, AutoThreefold, SubmitMoveChoices, TakebackChoices, AutoQueenChoices, AutoThreefoldChoices } from '../../lichess/prefs'
+import { Takeback, SubmitMove, AutoQueen, AutoThreefold, SubmitMoveChoices, TakebackChoices, AutoQueenChoices, AutoThreefoldChoices } from '../../lidraughts/prefs'
 import * as helper from '../helper'
 import { dropShadowHeader, backButton } from '../shared/common'
 import formWidgets from '../shared/form'
@@ -27,11 +27,11 @@ export default {
 
   oninit() {
     this.ctrl = {
-      premove: session.lichessBackedProp<boolean>('prefs.premove', session.savePreferences, true),
-      takeback: session.lichessBackedProp<number>('prefs.takeback', session.savePreferences, Takeback.ALWAYS),
-      autoQueen: session.lichessBackedProp<number>('prefs.autoQueen', session.savePreferences, AutoQueen.PREMOVE),
-      autoThreefold: session.lichessBackedProp<number>('prefs.autoThreefold', session.savePreferences, AutoThreefold.TIME),
-      submitMove: session.lichessBackedProp<number>('prefs.submitMove', session.savePreferences, SubmitMove.CORRESPONDENCE_ONLY)
+      premove: session.lidraughtsBackedProp<boolean>('prefs.premove', session.savePreferences, true),
+      takeback: session.lidraughtsBackedProp<number>('prefs.takeback', session.savePreferences, Takeback.ALWAYS),
+      autoQueen: session.lidraughtsBackedProp<number>('prefs.autoQueen', session.savePreferences, AutoQueen.PREMOVE),
+      autoThreefold: session.lidraughtsBackedProp<number>('prefs.autoThreefold', session.savePreferences, AutoThreefold.TIME),
+      submitMove: session.lidraughtsBackedProp<number>('prefs.submitMove', session.savePreferences, SubmitMove.CORRESPONDENCE_ONLY)
     }
   },
 
@@ -70,13 +70,13 @@ function renderLichessPrefs(ctrl: Ctrl) {
         { label: i18n('yes'), value: true },
       ], ctrl.premove)),
     h('li.list_item', formWidgets.renderMultipleChoiceButton(
-      i18n('takebacksWithOpponentApproval'), TakebackChoices.map(formWidgets.lichessPropToOption), ctrl.takeback
+      i18n('takebacksWithOpponentApproval'), TakebackChoices.map(formWidgets.lidraughtsPropToOption), ctrl.takeback
     )),
     h('li.list_item', formWidgets.renderMultipleChoiceButton(
-      i18n('promoteToQueenAutomatically'), AutoQueenChoices.map(formWidgets.lichessPropToOption), ctrl.autoQueen
+      i18n('promoteToQueenAutomatically'), AutoQueenChoices.map(formWidgets.lidraughtsPropToOption), ctrl.autoQueen
     )),
     h('li.list_item', formWidgets.renderMultipleChoiceButton(
-      i18n('claimDrawOnThreefoldRepetitionAutomatically').replace(/\%s/g, ''), AutoThreefoldChoices.map(formWidgets.lichessPropToOption), ctrl.autoThreefold
+      i18n('claimDrawOnThreefoldRepetitionAutomatically').replace(/\%s/g, ''), AutoThreefoldChoices.map(formWidgets.lidraughtsPropToOption), ctrl.autoThreefold
     )),
     h('li.list_item', [
       h('div.label', i18n('moveConfirmation')),

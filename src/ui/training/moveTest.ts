@@ -1,6 +1,6 @@
 import { path as treePath, Tree } from '../shared/tree'
 import { decomposeUci } from '../../utils/chessFormat'
-import { Puzzle, Line, LineFeedback  } from '../../lichess/interfaces/training'
+import { Puzzle, Line, LineFeedback  } from '../../lidraughts/interfaces/training'
 import { MoveRequest } from '../../draughts'
 import { Mode, Feedback } from './interfaces'
 

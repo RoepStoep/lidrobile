@@ -3,7 +3,7 @@ import * as throttle from 'lodash/throttle'
 import redraw from '../../utils/redraw'
 import * as utils from '../../utils'
 import router from '../../router'
-import { User } from '../../lichess/interfaces/user'
+import { User } from '../../lidraughts/interfaces/user'
 import * as xhr from './playerXhr'
 
 export interface IPlayersCtrl {

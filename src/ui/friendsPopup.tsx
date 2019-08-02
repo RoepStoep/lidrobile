@@ -3,7 +3,7 @@ import * as helper from './helper'
 import router from '../router'
 import popupWidget from './shared/popup'
 import i18n from '../i18n'
-import friendsApi, { Friend } from '../lichess/friends'
+import friendsApi, { Friend } from '../lidraughts/friends'
 import * as utils from '../utils'
 
 let isOpen = false

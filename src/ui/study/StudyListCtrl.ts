@@ -3,8 +3,8 @@ import { handleXhrError } from '../../utils'
 import { batchRequestAnimationFrame } from '../../utils/batchRAF'
 import redraw from '../../utils/redraw'
 import router from '../../router'
-import { Paginator } from '../../lichess/interfaces'
-import { PagerData, PagerCategory, PagerOrder } from '../../lichess/interfaces/study'
+import { Paginator } from '../../lidraughts/interfaces'
+import { PagerData, PagerCategory, PagerOrder } from '../../lidraughts/interfaces/study'
 import * as xhr from './studyXhr'
 
 export interface PagerDataWithDate extends PagerData {
@@ -109,7 +109,7 @@ export default class StudyListCtrl {
     const paginator = this.state.paginator
     const nextPage = paginator && paginator.nextPage
     if ((target.scrollTop + target.offsetHeight + 50) > content.offsetHeight) {
-      // lichess doesn't allow for more than 39 pages
+      // lidraughts doesn't allow for more than 39 pages
       if (!this.state.isLoading && nextPage && nextPage < 40) {
         this.loadNextPage(nextPage)
       }

@@ -1,8 +1,8 @@
 const fs = require('fs');
 
 module.exports = function() {
-  const plistFile = 'platforms/ios/lichess/lichess-Info.plist';
-  const searchedText = 'org.lichess.mobileapp'
+  const plistFile = 'platforms/ios/lidraughts/lidraughts-Info.plist';
+  const searchedText = 'org.lidraughts.mobileapp'
 
   let plistText = fs.readFileSync(plistFile).toString();
 

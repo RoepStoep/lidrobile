@@ -1,6 +1,6 @@
 import router from '../../../router'
 import * as helper from '../../helper'
-import { OnlineGameData } from '../../../lichess/interfaces/game'
+import { OnlineGameData } from '../../../lidraughts/interfaces/game'
 import { ExplorerData, Game, Move, Player } from './interfaces'
 import AnalyseCtrl from '../AnalyseCtrl'
 import settings from '../../../settings'
@@ -96,7 +96,7 @@ function link(ctrl: AnalyseCtrl, e: Event) {
   const orientation = ctrl.draughtsground.state.orientation
   const el = getTR(e)
   const gameId = el && el.dataset['id']
-  if (gameId && ctrl.explorer.config.data.db.selected() === 'lichess') {
+  if (gameId && ctrl.explorer.config.data.db.selected() === 'lidraughts') {
     router.set(`/analyse/online/${gameId}/${orientation}`)
   } else if (gameId) {
     xhr.importMasterGame(gameId, orientation)

@@ -1,4 +1,4 @@
-import { Study } from '../../../lichess/interfaces/study'
+import { Study } from '../../../lidraughts/interfaces/study'
 import socket from '../../../socket'
 import session from '../../../session'
 import settings from '../../../settings'

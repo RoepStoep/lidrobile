@@ -6,8 +6,8 @@ import i18n from '../../../i18n'
 import router from '../../../router'
 import * as helper from '../../helper'
 import { closeIcon } from '../../shared/icons'
-import { GameData } from '../../../lichess/interfaces/game'
-import { AnalyseData } from '../../../lichess/interfaces/analyse'
+import { GameData } from '../../../lidraughts/interfaces/game'
+import { AnalyseData } from '../../../lidraughts/interfaces/analyse'
 import { readNote, syncNote } from './roundXhr'
 
 let notesHeight: number

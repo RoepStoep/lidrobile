@@ -1,5 +1,5 @@
 import { fetchJSON } from '../../http'
-import { PuzzleData, PuzzleSyncData, RoundData, PuzzleOutcome } from '../../lichess/interfaces/training'
+import { PuzzleData, PuzzleSyncData, RoundData, PuzzleOutcome } from '../../lidraughts/interfaces/training'
 
 export function round(outcome: PuzzleOutcome): Promise<RoundData> {
   return fetchJSON(`/training/${outcome.id}/round2`, {

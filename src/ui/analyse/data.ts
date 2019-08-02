@@ -1,5 +1,5 @@
-import { getLichessVariant, getInitialFen } from '../../lichess/variant'
-import { AnalyseData } from '../../lichess/interfaces/analyse'
+import { getLichessVariant, getInitialFen } from '../../lidraughts/variant'
+import { AnalyseData } from '../../lidraughts/interfaces/analyse'
 import { playerFromFen, plyFromFen } from '../../utils/fen'
 import { oppositeColor } from '../../utils'
 

@@ -1,6 +1,6 @@
 import redraw from '../../../utils/redraw'
 import { currentSri } from '../../../utils'
-import { ChatMsg } from '../../../lichess/interfaces/chat'
+import { ChatMsg } from '../../../lidraughts/interfaces/chat'
 
 import analyseSocketHandler from '../analyseSocketHandler'
 import StudyCtrl from './StudyCtrl'

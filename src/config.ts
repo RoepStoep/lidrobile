@@ -11,6 +11,6 @@ const defaults = {
   fetchTimeoutMs: 10000
 }
 
-const config = Object.assign({}, defaults, window.lichess)
+const config = Object.assign({}, defaults, window.lidraughts)
 
 export default config as Config

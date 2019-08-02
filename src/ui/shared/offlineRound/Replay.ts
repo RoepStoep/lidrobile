@@ -1,6 +1,6 @@
 import i18n from '../../../i18n'
 import * as chess from '../../../draughts'
-import { GameStatus } from '../../../lichess/interfaces/game'
+import { GameStatus } from '../../../lidraughts/interfaces/game'
 
 export default class Replay {
   private variant!: VariantKey

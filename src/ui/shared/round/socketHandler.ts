@@ -1,9 +1,9 @@
 import i18n from '../../../i18n'
 import socket, { RedirectObj, LichessMessageAny, MessageHandlers } from '../../../socket'
-import * as gameApi from '../../../lichess/game'
-import { GameCrowd, ApiEnd } from '../../../lichess/interfaces/game'
-import { ChatMsg } from '../../../lichess/interfaces/chat'
-import { Move, Drop } from '../../../lichess/interfaces/move'
+import * as gameApi from '../../../lidraughts/game'
+import { GameCrowd, ApiEnd } from '../../../lidraughts/interfaces/game'
+import { ChatMsg } from '../../../lidraughts/interfaces/chat'
+import { Move, Drop } from '../../../lidraughts/interfaces/move'
 import redraw from '../../../utils/redraw'
 import sound from '../../../sound'
 import vibrate from '../../../vibrate'
@@ -13,7 +13,7 @@ import * as xhr from './roundXhr'
 export default function(ctrl: OnlineRound, onFeatured?: () => void, onUserTVRedirect?: () => void) {
 
   function reload(o: LichessMessageAny) {
-    // lichess trick for mobile API BC
+    // lidraughts trick for mobile API BC
     if (o && o.t)
       handlers[o.t](o.d)
     else

@@ -2,7 +2,7 @@ import router from '../../router'
 import { gameIcon } from '../../utils'
 import i18n from '../../i18n'
 import spinner from '../../spinner'
-import { Related } from '../../lichess/interfaces/user'
+import { Related } from '../../lidraughts/interfaces/user'
 import * as helper from '../helper'
 import { IRelationCtrl } from './interfaces'
 

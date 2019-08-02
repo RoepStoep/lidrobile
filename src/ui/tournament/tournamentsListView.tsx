@@ -2,7 +2,7 @@ import * as h from 'mithril/hyperscript'
 import i18n from '../../i18n'
 import router from '../../router'
 import { pad, formatTournamentDuration, formatTournamentTimeControl, capitalize } from '../../utils'
-import { TournamentListItem } from '../../lichess/interfaces/tournament'
+import { TournamentListItem } from '../../lidraughts/interfaces/tournament'
 import * as helper from '../helper'
 import TabNavigation from '../shared/TabNavigation'
 import TabView from '../shared/TabView'
@@ -82,7 +82,7 @@ function renderTournamentListItem(tournament: TournamentListItem, index: number)
 
   return (
     <li key={tournament.id}
-      className={'list_item tournament_item' + evenOrOdd + (tournament.createdBy === 'lichess' ? ' official' : '')}
+      className={'list_item tournament_item' + evenOrOdd + (tournament.createdBy === 'lidraughts' ? ' official' : '')}
       data-id={tournament.id}
       data-icon={tournament.perf.icon}
     >

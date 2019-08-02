@@ -1,4 +1,4 @@
-import { PossibleDrops } from '../../../lichess/interfaces/game'
+import { PossibleDrops } from '../../../lidraughts/interfaces/game'
 
 export default {
   drop(role: Role, key: Key, possibleDrops?: PossibleDrops | null) {

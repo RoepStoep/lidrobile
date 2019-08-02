@@ -1,5 +1,5 @@
 import { fixCrazySan } from '../../utils/chessFormat'
-import { AnalyseData } from '../../lichess/interfaces/analyse'
+import { AnalyseData } from '../../lidraughts/interfaces/analyse'
 import { Tree } from '../shared/tree'
 import { Eval, NodeEvals } from './ceval/interfaces'
 

@@ -2,7 +2,7 @@ import redraw from '../../utils/redraw'
 import settings from '../../settings'
 import { handleXhrError, loadLocalJsonFile } from '../../utils'
 import * as xhr from './tournamentXhr'
-import { TournamentListItem, TournamentLists } from '../../lichess/interfaces/tournament'
+import { TournamentListItem, TournamentLists } from '../../lidraughts/interfaces/tournament'
 
 export default class TournamentsListCtrl {
   tournaments: TournamentLists | undefined
@@ -46,9 +46,9 @@ function supported(t: TournamentListItem) {
 }
 
 function sortByLichessAndDate(a: TournamentListItem, b: TournamentListItem) {
-  if (a.createdBy === 'lichess' && b.createdBy === 'lichess') {
+  if (a.createdBy === 'lidraughts' && b.createdBy === 'lidraughts') {
     return a.startsAt - b.startsAt
-  } else if (a.createdBy === 'lichess') {
+  } else if (a.createdBy === 'lidraughts') {
     return -1
   } else {
     return 1

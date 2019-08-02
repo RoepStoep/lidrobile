@@ -1,5 +1,5 @@
-import { GameData } from '../../../../lichess/interfaces/game'
-import * as gameApi from '../../../../lichess/game'
+import { GameData } from '../../../../lidraughts/interfaces/game'
+import * as gameApi from '../../../../lidraughts/game'
 import sound from '../../../../sound'
 import { formatClockTime } from './clockView'
 

@@ -1,4 +1,4 @@
-import { VariantKey } from '../lichess/interfaces/variant'
+import { VariantKey } from '../lidraughts/interfaces/variant'
 
 interface XNavigator extends Navigator {
   hardwareConcurrency: number

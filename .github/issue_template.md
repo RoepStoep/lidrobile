@@ -32,7 +32,7 @@ Before opening an issue, please check a similar issue is not already open (or cl
 <!-- Please supply full details of your development environment including: -->
 - phone hardware
 - phone operating system version
-- version of lichess mobile
+- version of lidraughts mobile
 
 **Other information:**
 

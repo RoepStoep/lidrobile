@@ -1,7 +1,7 @@
 import { fetchJSON } from '../../http'
-import { DailyPuzzle } from '../../lichess/interfaces'
-import { OnlineGameData } from '../../lichess/interfaces/game'
-import { TournamentListItem } from '../../lichess/interfaces/tournament'
+import { DailyPuzzle } from '../../lidraughts/interfaces'
+import { OnlineGameData } from '../../lidraughts/interfaces/game'
+import { TournamentListItem } from '../../lidraughts/interfaces/tournament'
 
 interface FeaturedTournamentData {
   featured: TournamentListItem[]

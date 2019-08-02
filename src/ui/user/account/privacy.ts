@@ -1,7 +1,7 @@
 import * as h from 'mithril/hyperscript'
 import i18n from '../../../i18n'
 import session from '../../../session'
-import { LichessPropOption, ChallengeChoices, Challenge } from '../../../lichess/prefs'
+import { LichessPropOption, ChallengeChoices, Challenge } from '../../../lidraughts/prefs'
 import { StoredProp } from '../../../storage'
 import { dropShadowHeader, backButton } from '../../shared/common'
 import formWidgets from '../../shared/form'
@@ -18,8 +18,8 @@ export default {
 
   oninit() {
     this.ctrl = {
-      follow: session.lichessBackedProp<boolean>('prefs.follow', session.savePreferences, true),
-      challenge: session.lichessBackedProp<number>('prefs.challenge', session.savePreferences, Challenge.ALWAYS)
+      follow: session.lidraughtsBackedProp<boolean>('prefs.follow', session.savePreferences, true),
+      challenge: session.lidraughtsBackedProp<number>('prefs.challenge', session.savePreferences, Challenge.ALWAYS)
     }
   },
 

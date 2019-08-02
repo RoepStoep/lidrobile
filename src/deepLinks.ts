@@ -5,7 +5,7 @@ import signupModal from './ui/signupModal'
 import { handleXhrError } from './utils'
 import { cleanFenUri } from './utils/fen'
 import { getChallenge } from './xhr'
-import { analysableVariants } from './lichess/game'
+import { analysableVariants } from './lidraughts/game'
 
 export default {
   init() {
@@ -64,7 +64,7 @@ function handleVariantProfile (eventData: UniversalLinks.EventData) {
 }
 
 // handle link like:
-// https://www.en.lichess.org/analysis/2b1rrk1/p4Np1/6Pp/q2p3Q/n1pP4/b1P1B3/P1BK1P2/1R4R1_w_-_-_0_1
+// https://www.en.lidraughts.org/analysis/2b1rrk1/p4Np1/6Pp/q2p3Q/n1pP4/b1P1B3/P1BK1P2/1R4R1_w_-_-_0_1
 function handleAnalysisPosition (eventData: UniversalLinks.EventData) {
   let pathSuffix = eventData.path.replace('/analysis', '')
 
@@ -79,7 +79,7 @@ function handleAnalysisPosition (eventData: UniversalLinks.EventData) {
   router.set(`/analyse/variant/${variant}/fen/${encodeURIComponent(pathSuffix)}`)
 }
 
-// handle links like https://lichess.org/editor/1k6/1r6/2K5/Q7/8/8/8/8_w_-_-
+// handle links like https://lidraughts.org/editor/1k6/1r6/2K5/Q7/8/8/8/8_w_-_-
 function handleEditorPosition (eventData: UniversalLinks.EventData) {
   let pathSuffix = eventData.path.replace('/editor', '')
   pathSuffix = cleanFenUri(pathSuffix)

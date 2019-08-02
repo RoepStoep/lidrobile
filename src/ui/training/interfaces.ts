@@ -1,4 +1,4 @@
-import { Game, PuzzleData } from '../../lichess/interfaces/training'
+import { Game, PuzzleData } from '../../lidraughts/interfaces/training'
 
 export interface Data extends PuzzleData {
   game: PimpedGame

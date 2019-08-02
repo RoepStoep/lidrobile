@@ -1,5 +1,5 @@
 import { OfflineRoundInterface } from '../round/index'
-import { GameStatus } from '../../../lichess/interfaces/game'
+import { GameStatus } from '../../../lidraughts/interfaces/game'
 
 export function setResult(ctrl: OfflineRoundInterface, status?: GameStatus, winner?: Color) {
   const sit = ctrl.replay.situation()

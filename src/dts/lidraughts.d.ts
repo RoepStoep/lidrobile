@@ -53,7 +53,7 @@ interface LidraughtsOptions {
 }
 
 interface Window {
-  lichess: LidraughtsOptions
+  lidraughts: LidraughtsOptions
   moment: any
   shouldRotateToOrientation: () => boolean
   AppVersion: { version: string }

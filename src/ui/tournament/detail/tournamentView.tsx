@@ -2,8 +2,8 @@ import * as h from 'mithril/hyperscript'
 import router from '../../../router'
 import session from '../../../session'
 import i18n from '../../../i18n'
-import { Tournament, StandingPlayer, PodiumPlace, Spotlight, Verdicts } from '../../../lichess/interfaces/tournament'
-import { Opening } from '../../../lichess/interfaces/game'
+import { Tournament, StandingPlayer, PodiumPlace, Spotlight, Verdicts } from '../../../lidraughts/interfaces/tournament'
+import { Opening } from '../../../lidraughts/interfaces/game'
 import { formatTournamentDuration, formatTournamentTimeControl } from '../../../utils'
 import * as helper from '../../helper'
 import settings from '../../../settings'
@@ -42,7 +42,7 @@ export function tournamentBody(ctrl: TournamentCtrl) {
 export function renderFooter(ctrl: TournamentCtrl) {
   const t = ctrl.tournament
   if (!t) return null
-  const tUrl = 'https://lichess.org/tournament/' + t.id
+  const tUrl = 'https://lidraughts.org/tournament/' + t.id
 
   return (
     <div className="actions_bar">
@@ -95,7 +95,7 @@ function tournamentTimeInfo(data: Tournament) {
 function tournamentCreatorInfo(data: Tournament, startsAt: string) {
   return (
     <div className="tournamentCreatorInfo">
-      {data.createdBy === 'lichess' ? i18n('tournamentOfficial') : i18n('by', data.createdBy)}
+      {data.createdBy === 'lidraughts' ? i18n('tournamentOfficial') : i18n('by', data.createdBy)}
       &nbsp;•&nbsp;{startsAt}
     </div>
   )

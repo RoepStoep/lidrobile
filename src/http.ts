@@ -28,7 +28,7 @@ function addQuerystring(url: string, querystring: string): string {
   return res
 }
 
-// lichess can return either json or text
+// lidraughts can return either json or text
 // for convenience, this wrapper returns a promise with the response body already
 // extracted
 function request<T>(url: string, type: 'json' | 'text', opts?: RequestOpts, feedback = false): Promise<T> {

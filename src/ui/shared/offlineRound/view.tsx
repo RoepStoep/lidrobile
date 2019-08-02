@@ -1,8 +1,8 @@
 import * as h from 'mithril/hyperscript'
 /*import * as utils from '../../../utils'*/
 import i18n from '../../../i18n'
-import * as gameApi from '../../../lichess/game'
-import gameStatusApi from '../../../lichess/status'
+import * as gameApi from '../../../lidraughts/game'
+import gameStatusApi from '../../../lidraughts/status'
 import { fixCrazySan } from '../../../utils/chessFormat'
 import { renderMaterial } from '../../shared/round/view/roundView'
 import * as helper from '../../helper'

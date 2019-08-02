@@ -5,9 +5,9 @@ import storage from './storage'
 import settings from './settings'
 import i18n from './i18n'
 import session from './session'
-import { TimelineData, LobbyData, HookData, Pool, HumanSeekSetup, CorrespondenceSeek, ApiStatus } from './lichess/interfaces'
-import { ChallengesData, Challenge } from './lichess/interfaces/challenge'
-import { OnlineGameData } from './lichess/interfaces/game'
+import { TimelineData, LobbyData, HookData, Pool, HumanSeekSetup, CorrespondenceSeek, ApiStatus } from './lidraughts/interfaces'
+import { ChallengesData, Challenge } from './lidraughts/interfaces/challenge'
+import { OnlineGameData } from './lidraughts/interfaces/game'
 
 interface GameSetup {
   variant: string
@@ -232,7 +232,7 @@ function createToken() {
 
 export function openWebsiteAuthPage(path: string) {
   const openAnon = () => {
-    window.open(`https://lichess.org${path}`, '_blank', 'location=yes')
+    window.open(`https://lidraughts.org${path}`, '_blank', 'location=yes')
   }
   if (session.isConnected()) {
     createToken()
