@@ -74,25 +74,15 @@ export default {
         ['boardThemeMetal', 'metal']
       ],
       availablePieceThemes: [
-        ['cburnett', 'Colin M.L. Burnett'],
-        ['merida' ],
-        ['pirouetti' ],
-        ['alpha' ],
-        ['spatial' ],
-        ['reilly' ],
-        ['companion' ],
-        ['kosal' ],
-        ['leipzig' ],
-        ['fantasy' ],
-        ['shapes' ],
-        ['letter' ],
-        ['chessnut' ],
-        ['chess7' ],
-        ['riohacha' ],
-        ['symmetric' ],
+        ['wide_crown'],
+        ['wide' ],
+        ['narrow_edge' ],
+        ['narrow' ],
+        ['fabirovsky' ],
+        ['basic' ]
       ],
       board: store.prop('settings.theme.board', 'brown'),
-      piece: store.prop('settings.theme.piece', 'cburnett')
+      piece: store.prop('settings.theme.piece', 'wide_crown')
     },
     vibrateOnGameEvents: store.prop('settings.vibrateOnGameEvents', false),
     notifications: {
