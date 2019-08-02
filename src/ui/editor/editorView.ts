@@ -12,14 +12,14 @@ import Editor from './Editor'
 import menu from './menu'
 
 export default function view(ctrl: Editor) {
-  const color = ctrl.chessground.state.orientation
+  const color = ctrl.draughtsground.state.orientation
   const opposite = color === 'white' ? 'black' : 'white'
   const isPortrait = helper.isPortrait()
   const bounds = helper.getBoardBounds(helper.viewportDim(), isPortrait)
 
   const board = h(Board, {
     variant: ctrl.data.game.variant.key,
-    chessground: ctrl.chessground,
+    draughtsground: ctrl.draughtsground,
     bounds
   })
 
@@ -69,7 +69,7 @@ function renderActionsBar(ctrl: Editor) {
     }),
     h('button.action_bar_button[data-icon=B]', {
       key: 'toggleOrientation',
-      oncreate: helper.ontap(ctrl.chessground.toggleOrientation)
+      oncreate: helper.ontap(ctrl.draughtsground.toggleOrientation)
     }),
     h('button.action_bar_button[data-icon=U]', {
       key: 'continueFromHere',

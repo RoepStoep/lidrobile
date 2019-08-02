@@ -73,8 +73,7 @@ export function arrow(brush: Brush, orig: BoardPos, dest: BoardPos, current: boo
 export function piece(theme: string, pos: BoardPos, piece: Piece, bounds: Bounds) {
   const o = pos2px(pos, bounds)
   const size = bounds.width / 8
-  let name = piece.color === 'white' ? 'w' : 'b'
-  name += (piece.role === 'knight' ? 'n' : piece.role[0]).toUpperCase()
+  let name = piece.color[0] + (piece.role === 'man' ? 'Q' : piece.role[0]).toUpperCase();
   const href = `images/pieces/${theme}/${name}.svg`
   return {
     tag: 'image',

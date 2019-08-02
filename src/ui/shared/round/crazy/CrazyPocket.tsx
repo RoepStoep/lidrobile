@@ -1,5 +1,5 @@
 import settings from '../../../../settings'
-import * as chessgroundDrag from '../../../../draughtsground/drag'
+import * as draughtsgroundDrag from '../../../../draughtsground/drag'
 import { Pockets } from '../../../../lichess/interfaces/game'
 
 import { BoardInterface } from '../'
@@ -26,8 +26,8 @@ const CrazyPocket: Mithril.Component<Attrs, State> = {
   oninit(vnode) {
     const { ctrl } = vnode.attrs
     const onstart = (e: TouchEvent) => crazyDrag(ctrl, e)
-    const onmove = (e: TouchEvent) => chessgroundDrag.move(ctrl.chessground, e)
-    const onend = (e: TouchEvent) => chessgroundDrag.end(ctrl.chessground, e)
+    const onmove = (e: TouchEvent) => draughtsgroundDrag.move(ctrl.draughtsground, e)
+    const onend = (e: TouchEvent) => draughtsgroundDrag.end(ctrl.draughtsground, e)
 
     this.pocketOnCreate = function({ dom }: Mithril.DOMNode) {
       dom.addEventListener('touchstart', onstart)

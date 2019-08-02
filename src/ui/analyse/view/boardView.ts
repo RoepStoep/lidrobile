@@ -60,7 +60,7 @@ export default function renderBoard(
     playerBar(ctrl, ctrl.topColor()),
     h(Board, {
       variant: ctrl.data.game.variant.key,
-      chessground: ctrl.chessground,
+      draughtsground: ctrl.draughtsground,
       bounds,
       shapes,
       clearableShapes: ctrl.node.shapes,

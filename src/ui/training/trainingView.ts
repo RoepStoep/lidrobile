@@ -33,7 +33,7 @@ export function renderContent(ctrl: TrainingCtrl, key: string, bounds: Bounds) {
   const board = h(Board, {
     variant: ctrl.data.game.variant.key,
     bounds,
-    chessground: ctrl.chessground
+    draughtsground: ctrl.draughtsground
   })
 
   return h.fragment({ key }, [

@@ -10,7 +10,7 @@ export interface Bounds {
 
 export interface Attrs {
   variant: VariantKey
-  chessground: Draughtsground
+  draughtsground: Draughtsground
   bounds: Bounds
   wrapperClasses?: string
   customPieceTheme?: string
@@ -32,7 +32,7 @@ interface State {
 export default {
   oninit(vnode) {
 
-    const { chessground, canClearShapes } = vnode.attrs
+    const { draughtsground: chessground, canClearShapes } = vnode.attrs
 
     this.wrapperOnCreate = ({ dom }) => {
       if (canClearShapes) {
@@ -68,7 +68,7 @@ export default {
   },
 
   view(vnode) {
-    const { variant, chessground, bounds, wrapperClasses, customPieceTheme, shapes, clearableShapes, alert } = vnode.attrs
+    const { variant, draughtsground: chessground, bounds, wrapperClasses, customPieceTheme, shapes, clearableShapes, alert } = vnode.attrs
 
     const boardClass = [
       'display_board',

@@ -26,10 +26,10 @@ export function renderContent(ctrl: OtbRound, pieceTheme?: string) {
     'otb': true,
     'mode_flip': flip,
     'mode_facing': !flip,
-    'turn_white': ctrl.chessground.state.turnColor === 'white',
-    'turn_black': ctrl.chessground.state.turnColor === 'black'
+    'turn_white': ctrl.draughtsground.state.turnColor === 'white',
+    'turn_black': ctrl.draughtsground.state.turnColor === 'black'
   })
-  const material = ctrl.chessground.getMaterialDiff()
+  const material = ctrl.draughtsground.getMaterialDiff()
   const playerName = i18n(ctrl.data.player.color)
   const opponentName = i18n(ctrl.data.opponent.color)
   const replayTable = renderReplayTable(ctrl.replay)
@@ -38,7 +38,7 @@ export function renderContent(ctrl: OtbRound, pieceTheme?: string) {
 
   const board = h(Board, {
     variant: ctrl.data.game.variant.key,
-    chessground: ctrl.chessground,
+    draughtsground: ctrl.draughtsground,
     bounds,
     wrapperClasses,
     customPieceTheme: pieceTheme

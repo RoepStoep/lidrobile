@@ -11,5 +11,5 @@ export default function(ctrl: Editor, e: TouchEvent) {
     role: (role as Role),
     color: (color as Color)
   }
-  ctrl.chessground.dragNewPiece(e, piece, true)
+  ctrl.draughtsground.dragNewPiece(e, piece, true)
 }

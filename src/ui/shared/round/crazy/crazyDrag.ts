@@ -14,12 +14,12 @@ export default function(ctrl: BoardInterface, e: TouchEvent) {
     color = <Color>(e.target as HTMLElement).getAttribute('data-color'),
     nb = (e.target as HTMLElement).getAttribute('data-nb')
   if (!role || !color || nb === '0') return
-  if (!isDraggable(ctrl.chessground.state, color)) return
+  if (!isDraggable(ctrl.draughtsground.state, color)) return
   e.stopPropagation()
   e.preventDefault()
   const piece = {
     role,
     color
   }
-  ctrl.chessground.dragNewPiece(e, piece)
+  ctrl.draughtsground.dragNewPiece(e, piece)
 }

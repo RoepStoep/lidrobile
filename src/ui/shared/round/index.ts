@@ -10,12 +10,12 @@ export type Position = 'player' | 'opponent'
 export type Material = { pieces: { [k: string]: number }, score: number }
 
 export interface BoardInterface {
-  chessground: Draughtsground
+  draughtsground: Draughtsground
   canDrop(): boolean
 }
 
 export interface PromotingInterface {
-  chessground: Draughtsground
+  draughtsground: Draughtsground
   data: GameData | AnalyseData | TrainingData
   player: () => Color
 }

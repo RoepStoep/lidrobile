@@ -18,7 +18,7 @@ export default function makeConfig(
     turnColor: ctrl.node.ply % 2 === 0 ? 'white' : 'black',
     highlight: {
       lastMove: settings.game.highlights(),
-      check: settings.game.highlights()
+      kingMoves: settings.game.kingMoves()
     },
     movable: {
       free: false,

@@ -113,6 +113,7 @@ export default {
     magnified: store.prop<boolean>('settings.pieceMagnified', true),
     pieceNotation: store.prop<boolean>('settings.pieceNotation', true),
     zenMode: store.prop<boolean>('settings.zenMode', false),
+    kingMoves: store.prop<boolean>('settings.kingMoves', true),
     clockPosition: store.prop<'right' | 'left'>('settings.game.inversedClockPos', 'right'),
     pieceMove: store.prop<'tap' | 'drag' | 'both'>('settings.game.pieceMove', 'both'),
   },

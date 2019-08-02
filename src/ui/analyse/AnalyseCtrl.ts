@@ -45,7 +45,7 @@ export default class AnalyseCtrl {
   menu: IMainMenuCtrl
   continuePopup: ContinuePopupController
   notes: NotesCtrl | null
-  chessground!: Draughtsground
+  draughtsground!: Draughtsground
   ceval: ICevalCtrl
   retro: IRetroCtrl | null
   explorer: IExplorerCtrl
@@ -335,7 +335,7 @@ export default class AnalyseCtrl {
     this.ceval.stop()
     this.debouncedExplorerSetStep()
     this.updateHref()
-    promotion.cancel(this.chessground, this.cgConfig)
+    promotion.cancel(this.draughtsground, this.cgConfig)
     if (pathChanged) {
       if (this.retro) this.retro.onJump()
       else {
@@ -399,8 +399,8 @@ export default class AnalyseCtrl {
   uciMove = (uci: string) => {
     const move = chessFormat.decomposeUci(uci)
     if (uci[1] === '@') {
-      this.chessground.apiNewPiece({
-        color: this.chessground.state.movable.color as Color,
+      this.draughtsground.apiNewPiece({
+        color: this.draughtsground.state.movable.color as Color,
         role: chessFormat.sanToRole[uci[0]]
       }, move[1])
     } else if (!move[2]) {
@@ -538,7 +538,7 @@ export default class AnalyseCtrl {
   private userMove = (orig: Key, dest: Key, captured?: Piece) => {
     if (captured) sound.capture()
     else sound.move()
-    if (!promotion.start(this.chessground, orig, dest, this.sendMove)) this.sendMove(orig, dest)
+    if (!promotion.start(this.draughtsground, orig, dest, this.sendMove)) this.sendMove(orig, dest)
   }
 
   private userNewPiece = (piece: Piece, pos: Key) => {
@@ -672,10 +672,10 @@ export default class AnalyseCtrl {
 
     this.cgConfig = config
     this.data.game.player = color
-    if (!this.chessground) {
-      this.chessground = ground.make(this.data, config, this.orientation, this.userMove, this.userNewPiece)
+    if (!this.draughtsground) {
+      this.draughtsground = ground.make(this.data, config, this.orientation, this.userMove, this.userNewPiece)
     } else {
-      this.chessground.set(config)
+      this.draughtsground.set(config)
     }
 
     if (!dests) this.getNodeSituation()

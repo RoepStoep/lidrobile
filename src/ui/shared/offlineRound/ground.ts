@@ -18,7 +18,7 @@ function makeConfig(data: OfflineGameData, sit: GameSituation): cg.InitConfig {
     orientation: boardOrientation(data),
     turnColor: sit.player,
     lastMove: lastUci ? uciToMoveOrDrop(lastUci) : null,
-    check: sit.check,
+    captureLength: undefined,
     otb: data.game.id === 'offline_otb',
     coordinates: settings.game.coords(),
     otbMode: settings.otb.flipPieces() ? 'flip' : 'facing',
@@ -26,7 +26,7 @@ function makeConfig(data: OfflineGameData, sit: GameSituation): cg.InitConfig {
     autoCastle: data.game.variant.key === 'standard',
     highlight: {
       lastMove: settings.game.highlights(),
-      check: settings.game.highlights()
+      kingMoves: settings.game.kingMoves()
     },
     movable: {
       free: false,
@@ -81,13 +81,13 @@ function changeOTBMode(ground: Draughtsground, flip: boolean) {
   ground.setOtbMode(flip ? 'flip' : 'facing')
 }
 
-function promote(ground: Draughtsground, key: Key, role: Role) {
+function promote(ground: Draughtsground, key: Key) {
   const pieces: {[k: string]: Piece } = {}
   const piece = ground.state.pieces[key]
-  if (piece && piece.role === 'pawn') {
+  if (piece && piece.role === 'man') {
     pieces[key] = {
       color: piece.color,
-      role: role
+      role: 'king'
     }
     ground.setPieces(pieces)
   }

@@ -81,7 +81,7 @@ export default {
       },
       flip() {
         s.flip = !s.flip
-        root.chessground.set({
+        root.draughtsground.set({
           orientation: s.flip ? oppositeColor(root.orientation) : root.orientation
         })
       },

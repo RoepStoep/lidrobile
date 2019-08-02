@@ -51,7 +51,7 @@ export default class Editor {
   public menu: MenuInterface
   public pasteFenPopup: MenuInterface
   public continuePopup: ContinuePopupCtrl
-  public chessground: Draughtsground
+  public draughtsground: Draughtsground
 
   public positions: Mithril.Stream<Array<BoardPosition>>
   public endgamesPositions: Mithril.Stream<Array<BoardPosition>>
@@ -99,7 +99,7 @@ export default class Editor {
       redraw()
     })
 
-    this.chessground = new Draughtsground({
+    this.draughtsground = new Draughtsground({
       batchRAF: batchRequestAnimationFrame,
       fen: initFen,
       orientation: 'white',
@@ -109,7 +109,7 @@ export default class Editor {
       },
       highlight: {
         lastMove: false,
-        check: false
+        kingMoves: settings.game.kingMoves()
       },
       animation: {
         duration: 300
@@ -145,8 +145,8 @@ export default class Editor {
   }, 250)
 
   public onstart = (e: TouchEvent) => drag(this, e)
-  public onmove = (e: TouchEvent) => cgDrag.move(this.chessground, e)
-  public onend = (e: TouchEvent) => cgDrag.end(this.chessground, e)
+  public onmove = (e: TouchEvent) => cgDrag.move(this.draughtsground, e)
+  public onend = (e: TouchEvent) => cgDrag.end(this.draughtsground, e)
 
   public editorOnCreate = (vn: Mithril.DOMNode) => {
     if (!vn.dom) return
@@ -168,7 +168,7 @@ export default class Editor {
   }
 
   public computeFen = () =>
-    this.chessground.getFen() + ' ' + this.fenMetadatas()
+    this.draughtsground.getFen() + ' ' + this.fenMetadatas()
 
   public loadNewFen = (newFen: string) => {
     if (validateFen(newFen))

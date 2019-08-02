@@ -37,7 +37,7 @@ export default class OtbRound implements OtbRoundInterface, PromotingInterface {
   public actions: any // TODO
   public newGameMenu: NewOtbGameCtrl
   public importGamePopup: ImportGameController
-  public chessground!: Draughtsground
+  public draughtsground!: Draughtsground
   public replay!: Replay
   public vm: OtbVM
   public clock?: IChessClock
@@ -113,10 +113,10 @@ export default class OtbRound implements OtbRoundInterface, PromotingInterface {
       this.clock = undefined
     }
 
-    if (!this.chessground) {
-      this.chessground = ground.make(this.data, this.replay.situation(), this.userMove, this.onUserNewPiece, this.onMove, this.onNewPiece)
+    if (!this.draughtsground) {
+      this.draughtsground = ground.make(this.data, this.replay.situation(), this.userMove, this.onUserNewPiece, this.onMove, this.onNewPiece)
     } else {
-      ground.reload(this.chessground, this.data, this.replay.situation())
+      ground.reload(this.draughtsground, this.data, this.replay.situation())
     }
 
     redraw()
@@ -192,12 +192,12 @@ export default class OtbRound implements OtbRoundInterface, PromotingInterface {
     )
   }
 
-  private onPromotion = (orig: Key, dest: Key, role: Role) => {
-    this.replay.addMove(orig, dest, role)
+  private onPromotion = (orig: Key, dest: Key) => {
+    this.replay.addMove(orig, dest)
   }
 
   private userMove = (orig: Key, dest: Key) => {
-    if (!promotion.start(this.chessground, orig, dest, this.onPromotion)) {
+    if (!promotion.start(this.draughtsground, orig, dest, this.onPromotion)) {
       this.replay.addMove(orig, dest)
     }
   }
@@ -205,7 +205,7 @@ export default class OtbRound implements OtbRoundInterface, PromotingInterface {
   private onMove = (_: Key, dest: Key, capturedPiece: Piece) => {
     if (capturedPiece) {
       if (this.data.game.variant.key === 'atomic') {
-        atomic.capture(this.chessground, dest)
+        atomic.capture(this.draughtsground, dest)
         sound.explosion()
       }
       else sound.capture()
@@ -240,13 +240,12 @@ export default class OtbRound implements OtbRoundInterface, PromotingInterface {
       }
 
       const lastUci = sit.uciMoves.length ? sit.uciMoves[sit.uciMoves.length - 1] : null
-      this.chessground.set({
+      this.draughtsground.set({
         fen: sit.fen,
         turnColor: sit.player,
         lastMove: lastUci ? chessFormat.uciToMoveOrDrop(lastUci) : null,
         dests: sit.dests,
-        movableColor: sit.player,
-        check: sit.check
+        movableColor: sit.player
       })
     }
   }
@@ -276,7 +275,7 @@ export default class OtbRound implements OtbRoundInterface, PromotingInterface {
     if (this.clock && this.clock.isRunning()) {
       this.clock.startStop()
     }
-    this.chessground.stop()
+    this.draughtsground.stop()
     setTimeout(() => {
       this.actions.open()
       redraw()
@@ -288,7 +287,7 @@ export default class OtbRound implements OtbRoundInterface, PromotingInterface {
   }
 
   public jump = (ply: number): false => {
-    this.chessground.cancelMove()
+    this.draughtsground.cancelMove()
     if (ply < 0 || ply >= this.replay.situations.length) return false
     this.replay.ply = ply
     this.apply(this.replay.situation())

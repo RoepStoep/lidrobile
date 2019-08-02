@@ -53,7 +53,7 @@ interface VM {
 export default class OnlineRound implements OnlineRoundInterface {
   public id: string
   public data!: OnlineGameData
-  public chessground: Draughtsground
+  public draughtsground: Draughtsground
   public clock: ClockCtrl | null
   public correspondenceClock!: CorresClockCtrl
   public chat: Chat | null
@@ -134,7 +134,7 @@ export default class OnlineRound implements OnlineRoundInterface {
 
     this.notes = this.data.game.speed === 'correspondence' ? new NotesCtrl(this.data) : null
 
-    this.chessground = ground.make(
+    this.draughtsground = ground.make(
       this.data,
       cfg.game.fen,
       this.userMove,
@@ -231,7 +231,7 @@ export default class OnlineRound implements OnlineRoundInterface {
       else router.set('/tv', true)
       return
     }
-    this.chessground.set({
+    this.draughtsground.set({
       orientation: boardOrientation(this.data, this.vm.flip)
     })
   }
@@ -276,15 +276,14 @@ export default class OnlineRound implements OnlineRoundInterface {
     const config: cg.SetConfig = {
       fen: s.fen,
       lastMove: s.uci ? chessFormat.uciToMove(s.uci) : null,
-      check: s.check,
       turnColor: this.vm.ply % 2 === 0 ? 'white' : 'black'
     }
     if (!this.replaying()) {
       config.movableColor = gameApi.isPlayerPlaying(this.data) ? this.data.player.color : null
       config.dests = gameApi.parsePossibleMoves(this.data.possibleMoves)
     }
-    this.chessground.set(config)
-    if (this.replaying()) this.chessground.stop()
+    this.draughtsground.set(config)
+    if (this.replaying()) this.draughtsground.stop()
     if (s.san && isFwd) {
       if (s.san.indexOf('x') !== -1) sound.throttledCapture()
       else sound.throttledMove()
@@ -294,7 +293,7 @@ export default class OnlineRound implements OnlineRoundInterface {
 
   public userJump = (ply: number): void => {
     this.cancelMove()
-    this.chessground.selectSquare(null)
+    this.draughtsground.selectSquare(null)
     this.jump(ply)
   }
 
@@ -324,7 +323,7 @@ export default class OnlineRound implements OnlineRoundInterface {
       u: orig + dest
     }
     if (prom) {
-      move.u += (prom === 'knight' ? 'n' : prom[0])
+      move.u = orig + dest;
     }
     const sendBlur = this.getBlurAndReset()
     if (this.data.pref.submitMove && !isPremove) {
@@ -436,22 +435,7 @@ export default class OnlineRound implements OnlineRoundInterface {
         enpassantPieces[p.key] = null
       }
 
-      const castlePieces: {[index: string]: Piece | null} = {}
-      if (o.castle && !this.chessground.state.autoCastle) {
-        const c = o.castle
-        castlePieces[c.king[0]] = null
-        castlePieces[c.rook[0]] = null
-        castlePieces[c.king[1]] = {
-          role: 'king',
-          color: c.color
-        }
-        castlePieces[c.rook[1]] = {
-          role: 'rook',
-          color: c.color
-        }
-      }
-
-      const pieces = Object.assign({}, enpassantPieces, castlePieces)
+      const pieces = Object.assign({}, enpassantPieces)
       const newConf = {
         turnColor: d.game.player,
         dests: playing ?
@@ -460,14 +444,14 @@ export default class OnlineRound implements OnlineRoundInterface {
       }
       if (isMove(o)) {
         const move = chessFormat.uciToMove(o.uci)
-        this.chessground.apiMove(
+        this.draughtsground.apiMove(
           move[0],
           move[1],
           pieces,
           newConf
         )
       } else if (isDrop(o)) {
-        this.chessground.apiNewPiece(
+        this.draughtsground.apiNewPiece(
           {
             role: o.role,
             color: playedColor
@@ -478,13 +462,13 @@ export default class OnlineRound implements OnlineRoundInterface {
       }
 
       if (o.promotion) {
-        ground.promote(this.chessground, o.promotion.key, o.promotion.pieceClass)
+        ground.promote(this.draughtsground, o.promotion.key, o.promotion.pieceClass)
       }
 
       if (o.enpassant) {
         const p = o.enpassant
         if (d.game.variant.key === 'atomic') {
-          atomic.enpassant(this.chessground, p.key, p.color)
+          atomic.enpassant(this.draughtsground, p.key, p.color)
         } else {
           sound.capture()
         }
@@ -518,13 +502,13 @@ export default class OnlineRound implements OnlineRoundInterface {
     }
 
     if (!this.replaying() && playedColor !== d.player.color &&
-      (this.chessground.state.premovable.current || this.chessground.state.predroppable.current)) {
+      (this.draughtsground.state.premovable.current || this.draughtsground.state.predroppable.current)) {
       // atrocious hack to prevent race condition
       // with explosions and premoves
       // https://github.com/ornicar/lila/issues/343
       const premoveDelay = d.game.variant.key === 'atomic' ? 100 : 1
       setTimeout(() => {
-        this.chessground.playPremove()
+        this.draughtsground.playPremove()
         this.playPredrop()
       }, premoveDelay)
     }
@@ -548,7 +532,7 @@ export default class OnlineRound implements OnlineRoundInterface {
     this.makeCorrespondenceClock()
     if (this.clock && this.data.clock) this.clock.setClock(this.data, this.data.clock.white, this.data.clock.black)
     this.lastMoveMillis = undefined
-    if (!this.replaying()) ground.reload(this.chessground, this.data, rCfg.game.fen, this.vm.flip)
+    if (!this.replaying()) ground.reload(this.draughtsground, this.data, rCfg.game.fen, this.vm.flip)
     redraw()
   }
 
@@ -566,7 +550,7 @@ export default class OnlineRound implements OnlineRoundInterface {
     d.opponent.offeringDraw = false
 
     this.userJump(this.lastPly())
-    this.chessground.stop()
+    this.draughtsground.stop()
 
     if (o.ratingDiff) {
       d.player.ratingDiff = o.ratingDiff[d.player.color]
@@ -677,7 +661,7 @@ export default class OnlineRound implements OnlineRoundInterface {
   private onMove = (_: Key, dest: Key, capturedPiece?: Piece) => {
     if (capturedPiece) {
       if (this.data.game.variant.key === 'atomic') {
-        atomic.capture(this.chessground, dest)
+        atomic.capture(this.draughtsground, dest)
         sound.explosion()
       }
       else {
@@ -697,7 +681,7 @@ export default class OnlineRound implements OnlineRoundInterface {
   }
 
   private playPredrop() {
-    return this.chessground.playPredrop((drop: cg.Drop) => {
+    return this.draughtsground.playPredrop((drop: cg.Drop) => {
       return crazyValid.drop(this.data, drop.role, drop.key, this.data.possibleDrops)
     })
   }

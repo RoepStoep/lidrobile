@@ -25,8 +25,7 @@ function pos2px(pos: BoardPos): BoardPos {
 }
 
 function makePiece(pos: BoardPos, piece: Piece) {
-  let name = piece.color === 'white' ? 'w' : 'b'
-  name += (piece.role === 'knight' ? 'n' : piece.role[0]).toUpperCase()
+  const name = piece.color[0] + (piece.role === 'man' ? 'Q' : piece.role[0]).toUpperCase();
   return '<svg x="' + pos[0] + '" y="' + pos[1] + '" width="45" height="45">' +
     svgPieces[name] +
     '</svg>'

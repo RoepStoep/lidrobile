@@ -44,7 +44,7 @@ export default {
   view() {
     let content: Mithril.Children, header: Mithril.Children
 
-    if (this.round.data && this.round.chessground) {
+    if (this.round.data && this.round.draughtsground) {
       header = renderHeader(h(GameTitle, { data: this.round.data }))
       content = renderContent(this.round)
     } else {
