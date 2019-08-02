@@ -2,7 +2,7 @@ import Draughtsground from '../../../draughtsground/Draughtsground'
 import Replay from '../offlineRound/Replay'
 import { OnlineGameData, OfflineGameData, GameData, GameStatus } from '../../../lichess/interfaces/game'
 import { AnalyseData } from '../../../lichess/interfaces/analyse'
-import { GameSituation } from '../../../chess'
+import { GameSituation } from '../../../draughts'
 import { Data as TrainingData } from '../../training/interfaces'
 import { ClockTypeWithNone } from '../clock/interfaces'
 

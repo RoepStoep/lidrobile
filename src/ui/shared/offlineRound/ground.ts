@@ -7,7 +7,7 @@ import { AfterMoveMeta } from '../../../lichess/interfaces/move'
 import { boardOrientation } from '../../../utils'
 import { uciToMoveOrDrop } from '../../../utils/chessFormat'
 import { batchRequestAnimationFrame } from '../../../utils/batchRAF'
-import { GameSituation } from '../../../chess'
+import { GameSituation } from '../../../draughts'
 
 function makeConfig(data: OfflineGameData, sit: GameSituation): cg.InitConfig {
   const lastUci = sit.uciMoves.length ? sit.uciMoves[sit.uciMoves.length - 1] : null

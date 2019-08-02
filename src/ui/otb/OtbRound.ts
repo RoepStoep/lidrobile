@@ -1,7 +1,7 @@
 import sound from '../../sound'
 import router from '../../router'
 import Draughtsground from '../../draughtsground/Draughtsground'
-import * as chess from '../../chess'
+import * as chess from '../../draughts'
 import * as chessFormat from '../../utils/chessFormat'
 import settings from '../../settings'
 import gameStatusApi from '../../lichess/status'

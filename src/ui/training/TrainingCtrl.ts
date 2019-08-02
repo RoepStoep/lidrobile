@@ -8,7 +8,7 @@ import { ErrorResponse } from '../../http'
 import redraw from '../../utils/redraw'
 import { hasNetwork, handleXhrError } from '../../utils'
 import signals from '../../signals'
-import * as chess from '../../chess'
+import * as chess from '../../draughts'
 import * as chessFormat from '../../utils/chessFormat'
 import session from '../../session'
 import sound from '../../sound'
@@ -343,7 +343,7 @@ export default class TrainingCtrl implements PromotingInterface {
       variant: this.data.game.variant.key,
       fen: this.node.fen,
       path: this.path,
-      pgnMoves: this.node.pgnMoves
+      pgnMoves: this.node.pdnMoves
     }
     if (prom) move.promotion = prom
     this.sendMoveRequest(move, true)
@@ -359,11 +359,11 @@ export default class TrainingCtrl implements PromotingInterface {
         uci: situation.uci,
         children: [],
         dests: situation.dests,
-        check: situation.check,
+        kingMoves: situation.kingMoves,
         end: situation.end,
         player: situation.player,
         san: situation.san,
-        pgnMoves: situation.pgnMoves
+        pgnMoves: situation.pdnMoves
       }
       if (path === undefined) {
         console.error('Cannot addNode, missing path', node)

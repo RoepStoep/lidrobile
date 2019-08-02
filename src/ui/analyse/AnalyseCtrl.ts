@@ -2,7 +2,7 @@ import * as debounce from 'lodash/debounce'
 import router from '../../router'
 import Draughtsground from '../../draughtsground/Draughtsground'
 import * as cg from '../../draughtsground/interfaces'
-import * as chess from '../../chess'
+import * as draughts from '../../draughts'
 import * as chessFormat from '../../utils/chessFormat'
 import { build as makeTree, path as treePath, ops as treeOps, TreeWrapper, Tree } from '../shared/tree'
 import redraw from '../../utils/redraw'
@@ -512,7 +512,7 @@ export default class AnalyseCtrl {
   private canEvalGet = (node: Tree.Node): boolean => node.ply < 15
 
   private sendMove = (orig: Key, dest: Key, prom?: Role) => {
-    const move: chess.MoveRequest = {
+    const move: draughts.MoveRequest = {
       orig,
       dest,
       variant: this.data.game.variant.key,
@@ -520,7 +520,7 @@ export default class AnalyseCtrl {
       path: this.path
     }
     if (prom) move.promotion = prom
-    chess.move(move)
+    draughts.move(move)
     .then(this.addNode)
     .catch(err => console.error('send move error', move, err))
   }
@@ -541,7 +541,7 @@ export default class AnalyseCtrl {
         fen: this.node.fen,
         path: this.path
       }
-      chess.drop(drop)
+      draughts.drop(drop)
       .then(this.addNode)
       .catch(err => {
         // catching false drops here
@@ -551,7 +551,7 @@ export default class AnalyseCtrl {
     } else this.jump(this.path)
   }
 
-  private addNode = ({ situation, path }: chess.MoveResponse) => {
+  private addNode = ({ situation, path }: draughts.MoveResponse) => {
     const curNode = this.node
     const node = {
       id: situation.id,
@@ -560,14 +560,12 @@ export default class AnalyseCtrl {
       children: [],
       dests: situation.dests,
       drops: situation.drops,
-      check: situation.check,
       end: situation.end,
       player: situation.player,
-      checkCount: situation.checkCount,
+      kingMoves: situation.kingMoves,
       uci: situation.uci,
       san: situation.san,
-      crazyhouse: situation.crazyhouse,
-      pgnMoves: curNode && curNode.pgnMoves ? curNode.pgnMoves.concat(situation.pgnMoves) : situation.pgnMoves
+      pdnMoves: curNode && curNode.pdnMoves ? curNode.pdnMoves.concat(situation.pdnMoves) : situation.pdnMoves
     }
     if (path === undefined) {
       console.error('Cannot addNode, missing path', node)
@@ -673,7 +671,7 @@ export default class AnalyseCtrl {
 
   private getNodeSituation = debounce(() => {
     if (this.node && !this.node.dests) {
-      chess.situation({
+      draughts.situation({
         variant: this.data.game.variant.key,
         fen: this.node.fen,
         path: this.path

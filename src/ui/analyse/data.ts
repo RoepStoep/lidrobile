@@ -43,7 +43,7 @@ export function makeDefaultData(variantKey: VariantKey, fen?: string): AnalyseDa
         fen: initialFen,
         ply,
         crazyhouse: undefined,
-        pgnMoves: []
+        pdnMoves: []
       }
     ],
     userAnalysis: true

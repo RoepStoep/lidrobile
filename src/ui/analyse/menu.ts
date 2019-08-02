@@ -2,7 +2,7 @@ import * as h from 'mithril/hyperscript'
 import router from '../../router'
 import i18n from '../../i18n'
 import session from '../../session'
-import * as chess from '../../chess'
+import * as chess from '../../draughts'
 import redraw from '../../utils/redraw'
 import { handleXhrError  } from '../../utils'
 import popupWidget from '../shared/popup'
@@ -177,7 +177,7 @@ function offlinePgnExport(ctrl: AnalyseCtrl) {
     chess.pgnDump({
       variant: ctrl.data.game.variant.key,
       initialFen: ctrl.data.game.initialFen,
-      pgnMoves: endSituation.pgnMoves || [],
+      pgnMoves: endSituation.pdnMoves || [],
       white,
       black
     })

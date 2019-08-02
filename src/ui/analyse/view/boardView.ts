@@ -85,8 +85,7 @@ export function playerBar(ctrl: AnalyseCtrl, color: Color) {
     const winner = ctrl.data.game.winner
     result = winner === undefined ? '½' : winner === color ? '1' : '0'
   }
-  const checkCount = ctrl.node.checkCount
-  const showRight = ctrl.node.clock || checkCount
+  const showRight = ctrl.node.clock
   return h('div.analyse-player_bar', {
     className: ctrl.settings.s.smallBoard ? 'halfsize' : ''
   }, [
@@ -95,17 +94,16 @@ export function playerBar(ctrl: AnalyseCtrl, color: Color) {
       h('span.name', (title ? title + ' ' : '') + pName + (elo ? ` (${elo})` : '')),
     ]),
     showRight ? h('div.player_bar_clock', [
-      h(Clock, { ctrl, color }),
-      checkCount ? renderCheckCount(ctrl.bottomColor() === 'white', checkCount) : null
+      h(Clock, { ctrl, color })
     ]) : null,
   ])
 }
 
-function renderCheckCount(whitePov: boolean, checkCount: { white: number, black: number }) {
+/*function renderCheckCount(whitePov: boolean, checkCount: { white: number, black: number }) {
   const w = h('span.color-icon.white', '+' + checkCount.black)
   const b = h('span.color-icon.black', '+' + checkCount.white)
   return h('div.analyse-checkCount', whitePov ? [w, b] : [b, w])
-}
+}*/
 
 function moveOrDropShape(uci: string, brush: string): Shape[] {
   const move = chessFormat.uciToMove(uci)

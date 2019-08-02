@@ -57,8 +57,8 @@ export namespace Tree {
     readonly fail?: boolean
     puzzle?: string
     // added locally during analysis by chess worker
-    checkCount?: { white: number, black: number }
-    readonly pgnMoves?: ReadonlyArray<string>
+    kingMoves?: { white: number, black: number, whiteKing: string, blackKing: string }
+    readonly pdnMoves?: ReadonlyArray<string>
     player?: Color
     end?: boolean
     crazyhouse?: {

@@ -480,9 +480,7 @@ export default class OnlineRound implements OnlineRoundInterface {
       ply: this.lastPly() + 1,
       fen: o.fen,
       san: o.san,
-      uci: o.uci,
-      check: o.check,
-      crazy: o.crazyhouse
+      uci: o.uci
     })
     gameApi.setOnGame(d, playedColor, true)
 

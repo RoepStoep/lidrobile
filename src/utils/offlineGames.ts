@@ -4,7 +4,7 @@ import * as difference from 'lodash/difference'
 import { AnalyseData } from '../lichess/interfaces/analyse'
 import { NowPlayingGame } from '../lichess/interfaces'
 import { OnlineGameData, OfflineGameData } from '../lichess/interfaces/game'
-import { GameSituation } from '../chess'
+import { GameSituation } from '../draughts'
 
 const otbStorageKey = 'otb.current'
 const aiStorageKey = 'ai.current'
@@ -31,16 +31,14 @@ export function getAnalyseData(data: StoredOfflineGame, orientation: Color): Ana
       id: o.id || (o as any).nodeId,
       fen: o.fen,
       ply: o.ply,
-      check: o.check,
-      checkCount: o.checkCount,
+      kingMoves: o.kingMoves,
       // uciMoves contains at least situation last move
       // bc layer TODO remove in version 5.4
       uci: o.uci || o.uciMoves[o.uciMoves.length - 1],
-      san: o.san || o.pgnMoves.length ? o.pgnMoves[o.pgnMoves.length - 1] : undefined,
+      san: o.san || o.pdnMoves.length ? o.pdnMoves[o.pdnMoves.length - 1] : undefined,
       dests: o.dests,
       drops: o.drops,
-      crazyhouse: o.crazyhouse,
-      pgnMoves: o.pgnMoves,
+      pdnMoves: o.pdnMoves,
       end: o.end,
       player: o.player,
       children: []

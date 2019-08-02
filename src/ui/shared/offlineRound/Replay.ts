@@ -1,5 +1,5 @@
 import i18n from '../../../i18n'
-import * as chess from '../../../chess'
+import * as chess from '../../../draughts'
 import { GameStatus } from '../../../lichess/interfaces/game'
 
 export default class Replay {
@@ -41,7 +41,7 @@ export default class Replay {
     chess.move({
       variant: this.variant,
       fen: sit.fen,
-      pgnMoves: sit.pgnMoves,
+      pgnMoves: sit.pdnMoves,
       uciMoves: sit.uciMoves,
       promotion,
       orig,
@@ -56,7 +56,7 @@ export default class Replay {
     chess.drop({
       variant: this.variant,
       fen: sit.fen,
-      pgnMoves: sit.pgnMoves,
+      pgnMoves: sit.pdnMoves,
       uciMoves: sit.uciMoves,
       role,
       pos: key
@@ -70,7 +70,7 @@ export default class Replay {
     chess.threefoldTest({
       variant: this.variant,
       initialFen: this.initialFen,
-      pgnMoves: sit.pgnMoves
+      pgnMoves: sit.pdnMoves
     })
     .then(resp => {
       if (resp.threefoldRepetition) {
@@ -87,7 +87,7 @@ export default class Replay {
     return chess.pgnDump({
       variant: this.variant,
       initialFen: this.initialFen,
-      pgnMoves: sit.pgnMoves,
+      pgnMoves: sit.pdnMoves,
       white,
       black
     })

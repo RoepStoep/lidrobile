@@ -1,8 +1,8 @@
 import { askWorker } from './utils/worker'
-import { GameStatus, CheckCount, Pockets } from './lichess/interfaces/game'
+import { GameStatus, KingMoves } from './lichess/interfaces/game'
 import { VariantKey, Variant } from './lichess/interfaces/variant'
 
-const worker = new Worker('vendor/scalachess.js')
+const worker = new Worker('vendor/scaladraughts.js')
 
 // warmup
 worker.postMessage({ topic: 'init', payload: { variant: 'standard'}})
@@ -19,16 +19,12 @@ export interface GameSituation {
   readonly playable: boolean
   readonly status?: GameStatus
   readonly winner?: Color
-  readonly check: boolean
-  readonly checkCount?: CheckCount
+  readonly kingMoves?: KingMoves
   readonly san?: San
   readonly uci?: Uci
-  readonly pgnMoves: ReadonlyArray<string>
+  readonly pdnMoves: ReadonlyArray<string>
   readonly uciMoves: ReadonlyArray<string>
   readonly promotion?: string
-  readonly crazyhouse?: {
-    readonly pockets: Pockets
-  }
 }
 
 export interface InitRequest {

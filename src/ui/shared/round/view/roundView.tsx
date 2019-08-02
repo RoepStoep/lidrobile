@@ -26,7 +26,6 @@ import promotion from '../promotion'
 import gameButton from './button'
 import { chatView } from '../../chat'
 import { notesView } from '../notes'
-import CrazyPocket from '../crazy/CrazyPocket'
 import { view as renderCorrespondenceClock } from '../correspondenceClock/corresClockView'
 import { renderTable as renderReplayTable } from './replay'
 import OnlineRound from '../OnlineRound'
@@ -312,8 +311,7 @@ function renderAntagonistInfo(ctrl: OnlineRound, player: Player, material: Mater
 
 function renderPlayTable(ctrl: OnlineRound, player: Player, material: Material, position: Position, isPortrait: boolean) {
   const runningColor = ctrl.isClockRunning() ? ctrl.data.game.player : undefined
-  const step = ctrl.plyStep(ctrl.vm.ply)
-  const isCrazy = !!step.crazy
+  const isCrazy = false
   const playable = gameApi.playable(ctrl.data)
   const myTurn = gameApi.isPlayerTurn(ctrl.data)
   const classN = 'playTable' + (isCrazy ? ' crazy' : '') +
@@ -322,14 +320,6 @@ function renderPlayTable(ctrl: OnlineRound, player: Player, material: Material, 
   return (
     <section className={classN}>
       {renderAntagonistInfo(ctrl, player, material, position, isPortrait, isCrazy)}
-      { !!step.crazy ?
-        h(CrazyPocket, {
-          ctrl,
-          crazyData: step.crazy,
-          color: player.color,
-          position
-        }) : null
-      }
       { !isCrazy && ctrl.clock ?
         renderClock(ctrl.clock, player.color, ctrl.vm.goneBerserk[player.color], runningColor) :
         !isCrazy && ctrl.correspondenceClock ?

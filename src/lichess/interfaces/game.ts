@@ -178,10 +178,11 @@ export interface GameStatus {
   readonly name: string
 }
 
-export interface CheckCount {
+export interface KingMoves {
   readonly white: number
   readonly black: number
-  readonly [color: string]: number
+  readonly whiteKing: string
+  readonly blackKing: string
 }
 
 export interface Pocket {
@@ -200,13 +201,9 @@ export interface GameStep {
   readonly fen: string
   readonly san: string | null
   readonly uci: string | null
-  readonly check: boolean
-  readonly checkCount?: CheckCount
+  readonly kingMoves?: KingMoves
   readonly dests?: DestsMap
   readonly drops?: ReadonlyArray<string>
-  readonly crazy?: {
-    readonly pockets: Pockets
-  }
 }
 
 export interface Opening {

@@ -1,7 +1,7 @@
 import i18n from '../../i18n'
 import Draughtsground from '../../draughtsground/Draughtsground'
 import router from '../../router'
-import * as chess from '../../chess'
+import * as chess from '../../draughts'
 import * as chessFormat from '../../utils/chessFormat'
 import sound from '../../sound'
 import vibrate from '../../vibrate'

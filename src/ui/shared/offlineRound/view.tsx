@@ -6,7 +6,6 @@ import gameStatusApi from '../../../lichess/status'
 import { fixCrazySan } from '../../../utils/chessFormat'
 import { renderMaterial } from '../../shared/round/view/roundView'
 import * as helper from '../../helper'
-import CrazyPocket from '../../shared/round/crazy/CrazyPocket'
 import { OfflineRoundInterface, Position, Material } from '../round'
 import settings from '../../../settings'
 import Replay from './Replay'
@@ -24,9 +23,8 @@ let pieceNotation: boolean
     return 0
 }*/
 
-export function renderAntagonist(ctrl: OfflineRoundInterface, content: Mithril.Children, material: Material, position: Position, isPortrait: boolean, otbFlip?: boolean, customPieceTheme?: string, clock?: IChessClock) {
-  const sit = ctrl.replay.situation()
-  const isCrazy = !!sit.crazyhouse
+export function renderAntagonist(ctrl: OfflineRoundInterface, content: Mithril.Children, material: Material, position: Position, isPortrait: boolean, otbFlip?: boolean, _?: string, clock?: IChessClock) {
+  const isCrazy = false
   const key = isPortrait ? position + '-portrait' : position + '-landscape'
   const antagonist = position === 'player' ? ctrl.data.player : ctrl.data.opponent
   const antagonistColor = antagonist.color
@@ -52,16 +50,7 @@ export function renderAntagonist(ctrl: OfflineRoundInterface, content: Mithril.C
         </div> : null
         }
       </div>
-      {sit.crazyhouse ?
-        h(CrazyPocket, {
-          ctrl,
-          crazyData: sit.crazyhouse,
-          color: antagonistColor,
-          position,
-          customPieceTheme
-        })
-        :
-        clock ? renderClock(clock, antagonistColor) : null}
+      {clock ? renderClock(clock, antagonistColor) : null}
     </section>
   )
 }
