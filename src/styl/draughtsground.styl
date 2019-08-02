@@ -11,8 +11,8 @@ square
   position absolute
   top: 0
   left: 0
-  width 12.5%
-  height 12.5%
+  width 10.0%
+  height 10.0%
   &.move-dest
     background radial-gradient(rgba(20, 85, 30, 0.5) 22%, #208530 0, rgba(0, 0, 0, 0.3) 0, rgba(0, 0, 0, 0) 0)
     &.occupied
@@ -39,8 +39,8 @@ piece
   position absolute
   top 0
   left 0
-  width 12.5%
-  height 12.5%
+  width 10.0%
+  height 10.0%
   background-size cover
   &.anim
     z-index 3
@@ -53,6 +53,10 @@ piece
     height: 25%
   &.ghost
     opacity 0.3
+  &.temprole
+    z-index: 3
+  &.temppiece
+    z-index: 1
 
 .cg-square-target
   position absolute

@@ -219,7 +219,7 @@ export default class AiRound implements AiRoundInterface, PromotingInterface {
 
   public onEngineDrop = (bestdrop: string) => {
     const pos = chessFormat.uciToDropPos(bestdrop)
-    const role = chessFormat.uciToDropRole(bestdrop)
+    const role = 'man' as Role; //chessFormat.uciToDropRole(bestdrop)
     const piece = { role, color: this.data.opponent.color }
     this.vm.engineSearching = false
     this.draughtsground.apiNewPiece(piece, pos)

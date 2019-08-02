@@ -32,7 +32,7 @@ interface State {
 export default {
   oninit(vnode) {
 
-    const { draughtsground: chessground, canClearShapes } = vnode.attrs
+    const { draughtsground: draughtsground, canClearShapes } = vnode.attrs
 
     this.wrapperOnCreate = ({ dom }) => {
       if (canClearShapes) {
@@ -46,11 +46,11 @@ export default {
     }
 
     this.boardOnCreate = ({ dom }: Mithril.DOMNode) => {
-      chessground.attach(dom as HTMLElement)
+      draughtsground.attach(dom as HTMLElement)
     }
 
     this.boardOnRemove = () => {
-      chessground.detach()
+      draughtsground.detach()
     }
 
     this.shapesCleared = false
@@ -68,11 +68,11 @@ export default {
   },
 
   view(vnode) {
-    const { variant, draughtsground: chessground, bounds, wrapperClasses, customPieceTheme, shapes, clearableShapes, alert } = vnode.attrs
+    const { variant, draughtsground: draughtsgroundground, bounds, wrapperClasses, customPieceTheme, shapes, clearableShapes, alert } = vnode.attrs
 
     const boardClass = [
       'display_board',
-      'orientation-' + chessground.state.orientation,
+      'orientation-' + draughtsgroundground.state.orientation,
       this.boardTheme,
       customPieceTheme || this.pieceTheme,
       variant
@@ -106,7 +106,7 @@ export default {
           allShapes.length > 0 ?
             BoardBrush(
               bounds,
-              chessground.state.orientation,
+              draughtsgroundground.state.orientation,
               allShapes,
               this.pieceTheme
             ) : null

@@ -19,7 +19,7 @@ function start(ctrl: OnlineRoundInterface, orig: Key, dest: Key, isPremove: bool
 
 function finish(ctrl: OnlineRoundInterface, role: Role) {
   if (promoting) {
-    ground.promote(ctrl.draughtsground, promoting[1], role)
+    ground.promote(ctrl.draughtsground, promoting[1])
     ctrl.sendMove(promoting[0], promoting[1], role)
   }
   promoting = null

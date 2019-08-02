@@ -1,5 +1,5 @@
 import { path as treePath, Tree } from '../shared/tree'
-import { decomposeUci, sanToRole } from '../../utils/chessFormat'
+import { decomposeUci } from '../../utils/chessFormat'
 import { Puzzle, Line, LineFeedback  } from '../../lichess/interfaces/training'
 import { MoveRequest } from '../../chess'
 import { Mode, Feedback } from './interfaces'
@@ -61,7 +61,6 @@ export default function moveTest(
     else {
       node.puzzle = 'good'
       const opponentUci = decomposeUci(nextUci)
-      const promotion = opponentUci[2] ?  sanToRole[opponentUci[2].toUpperCase()] : null
       const move: MoveRequest = {
         variant: 'standard',
         orig: opponentUci[0],
@@ -69,7 +68,6 @@ export default function moveTest(
         fen: node.fen,
         path: path
       }
-      if (promotion) move.promotion = promotion
 
       return move
     }

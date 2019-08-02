@@ -16,7 +16,6 @@ function makeConfig(
   return {
     fen: config.fen,
     batchRAF: batchRequestAnimationFrame,
-    check: config.check,
     lastMove: config.lastMove,
     turnColor: config.turnColor,
     orientation,
@@ -43,7 +42,7 @@ function makeConfig(
     },
     highlight: {
       lastMove: settings.game.highlights(),
-      check: settings.game.highlights()
+      kingMoves: settings.game.kingMoves()
     },
     animation: {
       enabled: settings.game.animations(),
@@ -63,13 +62,13 @@ export default {
     return new Draughtsground(makeConfig(data, config, orientation, onMove, onNewPiece))
   },
 
-  promote(ground: Draughtsground, key: Key, role: Role) {
+  promote(ground: Draughtsground, key: Key) {
     const pieces: {[i: string]: Piece } = {}
     const piece = ground.state.pieces[key]
-    if (piece && piece.role === 'pawn') {
+    if (piece && piece.role === 'man') {
       pieces[key] = {
         color: piece.color,
-        role: role
+        role: 'king'
       }
       ground.setPieces(pieces)
     }

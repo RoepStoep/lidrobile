@@ -24,7 +24,7 @@ interface Config {
   minimalDom: boolean
   coordinates: boolean
   fixed: boolean
-  lastMove: KeyPair | null
+  lastMove: Key[] | null
 }
 
 interface State {

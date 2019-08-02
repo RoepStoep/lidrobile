@@ -1,50 +1,15 @@
 import * as isObject from 'lodash/isObject'
 
-const uciRoleMap: {[k: string]: Role } = {
-  P: 'pawn',
-  B: 'bishop',
-  N: 'knight',
-  R: 'rook',
-  Q: 'queen',
-  p: 'pawn',
-  b: 'bishop',
-  n: 'knight',
-  r: 'rook',
-  q: 'queen',
+export function uciToMove(uci: string): Key[] {
+    return decomposeUci(uci);
 }
 
-export interface SanToRole {
-  [san: string]: Role
-}
-
-export const sanToRole: SanToRole = {
-  P: 'pawn',
-  N: 'knight',
-  B: 'bishop',
-  R: 'rook',
-  Q: 'queen'
-}
-
-export function uciToMove(uci: string): KeyPair {
-  return [<Key>uci.substr(0, 2), <Key>uci.substr(2, 2)]
-}
-
-export function uciToMoveOrDrop(uci: string): KeyPair {
-  if (uci[1] === '@') return [<Key>uci.substr(2, 2), <Key>uci.substr(2, 2)]
-  return [<Key>uci.substr(0, 2), <Key>uci.substr(2, 2)]
-}
-
-export function uciToProm(uci: string): Role | undefined {
-  const p = uci.substr(4, 1)
-  return uciRoleMap[p]
+export function uciToMoveOrDrop(uci: string): Key[] {
+  return uciToMove(uci)
 }
 
 export function uciToDropPos(uci: string): Key {
   return <Key>uci.substr(2, 2)
-}
-
-export function uciToDropRole(uci: string): Role {
-  return uciRoleMap[uci.substr(0, 1)]
 }
 
 export function uciTolastDrop(uci: string): KeyPair {
@@ -55,8 +20,14 @@ export function fixCrazySan(san: San): San {
   return san[0] === 'P' ? san.slice(1) : san
 }
 
-export function decomposeUci(uci: Uci): [Key, Key, SanChar] {
-  return [<Key>uci.slice(0, 2), <Key>uci.slice(2, 4), <SanChar>uci.slice(4, 5)]
+export function decomposeUci(uci: Uci): Key[] {
+  const uciArray: Key[] = new Array<Key>();
+  if (uci.length > 1) {
+      for (let i = 0; i < uci.length; i += 2) {
+        uciArray.push(uci.substr(i, 2) as Key);
+      }
+  }
+  return uciArray;
 }
 
 function isString(o: DestsMap | string): o is string {
@@ -78,68 +49,54 @@ export function readDests(lines?: DestsMap | string): DestsMap | null {
 }
 
 export const piotr2key: {[i: string]: Key } = {
-  'a': 'a1',
-  'b': 'b1',
-  'c': 'c1',
-  'd': 'd1',
-  'e': 'e1',
-  'f': 'f1',
-  'g': 'g1',
-  'h': 'h1',
-  'i': 'a2',
-  'j': 'b2',
-  'k': 'c2',
-  'l': 'd2',
-  'm': 'e2',
-  'n': 'f2',
-  'o': 'g2',
-  'p': 'h2',
-  'q': 'a3',
-  'r': 'b3',
-  's': 'c3',
-  't': 'd3',
-  'u': 'e3',
-  'v': 'f3',
-  'w': 'g3',
-  'x': 'h3',
-  'y': 'a4',
-  'z': 'b4',
-  'A': 'c4',
-  'B': 'd4',
-  'C': 'e4',
-  'D': 'f4',
-  'E': 'g4',
-  'F': 'h4',
-  'G': 'a5',
-  'H': 'b5',
-  'I': 'c5',
-  'J': 'd5',
-  'K': 'e5',
-  'L': 'f5',
-  'M': 'g5',
-  'N': 'h5',
-  'O': 'a6',
-  'P': 'b6',
-  'Q': 'c6',
-  'R': 'd6',
-  'S': 'e6',
-  'T': 'f6',
-  'U': 'g6',
-  'V': 'h6',
-  'W': 'a7',
-  'X': 'b7',
-  'Y': 'c7',
-  'Z': 'd7',
-  '0': 'e7',
-  '1': 'f7',
-  '2': 'g7',
-  '3': 'h7',
-  '4': 'a8',
-  '5': 'b8',
-  '6': 'c8',
-  '7': 'd8',
-  '8': 'e8',
-  '9': 'f8',
-  '!': 'g8',
-  '?': 'h8'
-}
+  'a': '01',
+  'b': '02',
+  'c': '03',
+  'd': '04',
+  'e': '05',
+  'f': '06',
+  'g': '07',
+  'h': '08',
+  'i': '09',
+  'j': '10',
+  'k': '11',
+  'l': '12',
+  'm': '13',
+  'n': '14',
+  'o': '15',
+  'p': '16',
+  'q': '17',
+  'r': '18',
+  's': '19',
+  't': '20',
+  'u': '21',
+  'v': '22',
+  'w': '23',
+  'x': '24',
+  'y': '25',
+  'z': '26',
+  'A': '27',
+  'B': '28',
+  'C': '29',
+  'D': '30',
+  'E': '31',
+  'F': '32',
+  'G': '33',
+  'H': '34',
+  'I': '35',
+  'J': '36',
+  'K': '37',
+  'L': '38',
+  'M': '39',
+  'N': '40',
+  'O': '41',
+  'P': '42',
+  'Q': '43',
+  'R': '44',
+  'S': '45',
+  'T': '46',
+  'U': '47',
+  'V': '48',
+  'W': '49',
+  'X': '50'
+};

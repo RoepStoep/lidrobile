@@ -6,7 +6,7 @@ export default {
 
     if (!data.game.offline && !gameApi.isPlayerTurn(data)) return false
 
-    if (role === 'pawn' && (key[1] === '1' || key[1] === '8')) return false
+    if (role === 'man' && (key[1] === '1' || key[1] === '10')) return false
 
     if (possibleDrops === undefined || possibleDrops === null) return true
 

@@ -398,17 +398,7 @@ export default class AnalyseCtrl {
 
   uciMove = (uci: string) => {
     const move = chessFormat.decomposeUci(uci)
-    if (uci[1] === '@') {
-      this.draughtsground.apiNewPiece({
-        color: this.draughtsground.state.movable.color as Color,
-        role: chessFormat.sanToRole[uci[0]]
-      }, move[1])
-    } else if (!move[2]) {
-      this.sendMove(move[0], move[1])
-    }
-    else {
-      this.sendMove(move[0], move[1], chessFormat.sanToRole[move[2].toUpperCase()])
-    }
+    this.sendMove(move[0], move[1])
     this.explorer.loading(true)
   }
 

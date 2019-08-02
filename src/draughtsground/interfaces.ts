@@ -10,7 +10,7 @@ export interface InitConfig {
   orientation?: Color
   turnColor?: Color
   captureLength?: number;
-  lastMove?: KeyPair | null
+  lastMove?: Key[] | null
   selected?: Key
   coordinates?: boolean
   symmetricCoordinates?: boolean
@@ -76,7 +76,7 @@ export interface InitConfig {
 export interface SetConfig {
   orientation?: Color
   fen?: string
-  lastMove?: KeyPair | null
+  lastMove?: Key[] | null
   captureLength?: number;
   turnColor?: Color
   movableColor?: Color | 'both' | null

@@ -95,7 +95,7 @@ function isPromotable(p: AnimPiece): boolean {
   return (p.piece.color === 'white' && p.pos[1] === 1) || (p.piece.color === 'black' && p.pos[1] === 10);
 }
 
-function computePlan(prevPieces: cg.Pieces, current: State, dom: cg.DOM, fadeOnly: boolean = false, noCaptSequences: boolean = false): AnimPlan {
+function computePlan(prevPieces: cg.Pieces, current: State, fadeOnly: boolean = false, noCaptSequences: boolean = false): AnimPlan {
   
   let missingsW: AnimPiece[] = [], missingsB: AnimPiece[] = [],
     newsW: AnimPiece[] = [], newsB: AnimPiece[] = [];
@@ -311,7 +311,7 @@ function animate<A>(mutation: Mutation<A>, ctrl: Draughtsground, fadeOnly: boole
   const prevPieces: cg.Pieces = {...state.pieces}
   const result = mutation(state)
   const plan = ctrl.dom !== undefined ?
-    computePlan(prevPieces, state, ctrl.dom, fadeOnly, noCaptSequences) : undefined
+    computePlan(prevPieces, state, fadeOnly, noCaptSequences) : undefined
   if (plan !== undefined && !util.isObjectEmpty(plan.anims)) {
     const alreadyRunning = state.animation.current && state.animation.current.start !== null
     state.animation.current = {

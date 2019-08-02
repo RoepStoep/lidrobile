@@ -24,8 +24,7 @@ function arrowMargin(current: boolean, bounds: Bounds) {
 }
 
 function pos2px(pos: BoardPos, bounds: Bounds) {
-  const squareSize = bounds.width / 8
-  return [(pos[0] - 0.5) * squareSize, (8.5 - pos[1]) * squareSize]
+  return [(2 * pos[0] - (pos[1] % 2 !== 0 ? 0.5 : 1.5)) * bounds.width / 10, (pos[1] - 0.5) * bounds.height / 10];
 }
 
 export function circle(brush: Brush, pos: BoardPos, current: boolean, bounds: Bounds) {
@@ -72,8 +71,8 @@ export function arrow(brush: Brush, orig: BoardPos, dest: BoardPos, current: boo
 
 export function piece(theme: string, pos: BoardPos, piece: Piece, bounds: Bounds) {
   const o = pos2px(pos, bounds)
-  const size = bounds.width / 8
-  let name = piece.color[0] + (piece.role === 'man' ? 'Q' : piece.role[0]).toUpperCase();
+  const size = bounds.width / 10
+  let name = piece.color[0] + piece.role[0].toUpperCase();
   const href = `images/pieces/${theme}/${name}.svg`
   return {
     tag: 'image',
@@ -109,7 +108,7 @@ export function defs(brushes: Brush[]) {
 }
 
 export function orient(pos: BoardPos, color: Color): [number, number] {
-  return color === 'white' ? pos : [9 - pos[0], 9 - pos[1]]
+  return color === 'white' ? pos : [6 - pos[0], 11 - pos[1]];
 }
 
 export function renderShape(

@@ -29,12 +29,11 @@ function makeConfig(data: OnlineGameData, fen: string, flip: boolean = false): c
     orientation: boardOrientation(data, flip),
     turnColor: data.game.player,
     lastMove,
-    check: lastStep.check,
     coordinates: settings.game.coords(),
     autoCastle: data.game.variant.key === 'standard',
     highlight: {
       lastMove: settings.game.highlights(),
-      check: settings.game.highlights()
+      kingMoves: settings.game.kingMoves()
     },
     movable: {
       free: false,
@@ -99,13 +98,13 @@ function reload(ground: Draughtsground, data: OnlineGameData, fen: string, flip:
   ground.reconfigure(makeConfig(data, fen, flip))
 }
 
-function promote(ground: Draughtsground, key: Key, role: Role) {
+function promote(ground: Draughtsground, key: Key) {
   const pieces: cg.Pieces = {}
   const piece = ground.state.pieces[key]
-  if (piece && piece.role === 'pawn') {
+  if (piece && piece.role === 'man') {
     pieces[key] = {
       color: piece.color,
-      role: role
+      role: 'king'
     }
     ground.setPieces(pieces)
   }

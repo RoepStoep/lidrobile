@@ -462,7 +462,7 @@ export default class OnlineRound implements OnlineRoundInterface {
       }
 
       if (o.promotion) {
-        ground.promote(this.draughtsground, o.promotion.key, o.promotion.pieceClass)
+        ground.promote(this.draughtsground, o.promotion.key)
       }
 
       if (o.enpassant) {
