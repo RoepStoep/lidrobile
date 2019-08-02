@@ -1,22 +1,17 @@
-export const emptyFen = '8/8/8/8/8/8/8/8 w - - 0 1'
+import * as fenUtil from '../draughtsground/fen'
+
+export const emptyFen = 'W:W:B:H0:F1'
 
 export function readFen(fen: string) {
-  const parts = fen.split(' ')
+  const parts = fen.split(':')
   return {
-    color: parts[1],
-    castles: {
-      K: parts[2].includes('K'),
-      Q: parts[2].includes('Q'),
-      k: parts[2].includes('k'),
-      q: parts[2].includes('q')
-    },
-    enpassant: parts[3],
-    halfmove: Number(parts[4]),
-    moves: Number(parts[5])
+    color: parts[0].toLowerCase(),
+    halfmove: Number(parts[3].slice(1)),
+    moves: Number(parts[4].slice(1))
   }
 }
 
-// clean a FEN string from a lichess.org URI path.
+// clean a FEN string from a lidraughts.org URI path.
 export function cleanFenUri(fenUri: string): string {
   let fen = fenUri.replace(/_/g, ' ')
   if (fen[0] === '/') fen = fen.substring(1)
@@ -24,84 +19,50 @@ export function cleanFenUri(fenUri: string): string {
 }
 
 export function validateFen(fen: string, variant: VariantKey = 'standard') {
-  const tokens = fen.split(/\s+/)
-  const rows = tokens[0].split('/')
+  const tokens = fen.split(':')
+  if (!validateTokens(tokens))
+    return false
 
-  if (variant === 'threeCheck')
-    return validateThreeCheck(tokens, rows) && validateTokens(tokens) && validateRows(rows)
+  const fields = tokens[1].split(',').concat(tokens[2].split(','))
+  if (!validateFields(fields))
+    return false
 
-  else if (variant === 'crazyhouse')
-    return validateCrazy(tokens, rows) && validateTokens(tokens) && validateCrazyRows(rows)
-
+  if (variant === 'frisian' || variant === 'frysk')
+    return validateFrisian(tokens)
   else
-    return validateStandard(tokens, rows) && validateTokens(tokens) && validateRows(rows)
+    return true
 }
 
-function validateStandard(tokens: string[], rows: string[]) {
-  /* 6 space-seperated fields? */
-  if (tokens.length !== 6) {
+function validateFrisian(tokens: string[]) {
+  /* we need at least one extra field */
+  if (tokens.length < 4) {
     return false
   }
 
-  /* 1st field contains 8 rows? */
-  if (rows.length !== 8) {
+  /* king moves for both players */
+  if (tokens[tokens.length - 1].indexOf('+') === 0 && tokens[tokens.length - 1].indexOf('+', 1) !== -1) {
     return false
   }
 
   return true
 }
 
-function validateThreeCheck(tokens: string[], rows: string[]) {
-  /* 7 space-seperated fields? */
-  if (tokens.length !== 7) {
-    return false
-  }
-
-  /* 1st field contains 8 rows? */
-  if (rows.length !== 8) {
-    return false
-  }
-
-  return true
-}
-
-function validateCrazy(tokens: string[], rows: string[]) {
-  /* 6 space-seperated fields? */
-  if (tokens.length !== 6) {
-    return false
-  }
-
-  /* 1st field contains 9 rows? */
-  if (rows.length !== 9) {
-    return false
-  }
-
-  return true
-}
-
-function validateRows(rows: string[]): boolean {
-  /* every row is valid? */
-  for (let i = 0; i < rows.length; i++) {
-    /* check for right sum of fields AND not two numbers in succession */
-    let sum_fields = 0
-    let previous_was_number = false
-
-    for (let k = 0; k < rows[i].length; k++) {
-      if (!isNaN(Number(rows[i][k]))) {
-        if (previous_was_number) {
-          return false
-        }
-        sum_fields += parseInt(rows[i][k], 10)
-        previous_was_number = true
-      } else {
-        if (!/^[prnbqkPRNBQK]$/.test(rows[i][k])) {
-          return false
-        }
-        sum_fields += 1
-        previous_was_number = false
-      }
+function validateFields(fields: string[]): boolean {
+  /* every field is valid? */
+  for (let i = 0; i < fields.length; i++) {
+    let field = fields[i], first = field.slice(0, 1)
+    /* pieces color */
+    if (first === 'W' || first === 'B') {
+      field = field.slice(1);
+      first = field.slice(0, 1);
     }
-    if (sum_fields !== 8) {
+    /* piece type */
+    if (first === 'K' || first === 'G' || first === 'P') {
+      field = field.slice(1);
+    }
+    /* remaining must be field number 1 - 50*/
+    const fieldNumber = Number(field)
+    if (isNaN(fieldNumber) || fieldNumber < 1 || fieldNumber > 50) {
       return false
     }
   }
@@ -109,61 +70,26 @@ function validateRows(rows: string[]): boolean {
   return true
 }
 
-function validateCrazyRows(rows: string[]): boolean {
-  /* every row is valid? */
-  for (let i = 0; i < rows.length - 1; i++) {
-    /* check for right sum of fields AND not two numbers in succession */
-    let sum_fields = 0
-    let previous_was_number = false
-
-    for (let k = 0; k < rows[i].length; k++) {
-      if (!isNaN(Number(rows[i][k]))) {
-        if (previous_was_number) {
-          return false
-        }
-        sum_fields += parseInt(rows[i][k], 10)
-        previous_was_number = true
-      } else {
-        if (!/^[prnbqkPRNBQK]$/.test(rows[i][k])) {
-          return false
-        }
-        sum_fields += 1
-        previous_was_number = false
-      }
-    }
-    if (sum_fields !== 8) {
-      return false
-    }
-  }
-
-  return true
-}
-
-// fen validation taken from https://github.com/jhlywa/chess.js/blob/master/chess.js
-// modified for lichobile
+// fen validation, frisian: 
+// W:W31,32,33,34,35,36,37,38,39,40:B1,2,3,4,5,6,7,8,9,10:H0:F1:+0+0
 function validateTokens(tokens: string[]): boolean {
+  /* pieces are required, the rest is optional (unofficial) */
+  if (tokens.length < 3 || tokens.length > 6) {
+    return false;
+  }
+
+  /* first must be side to move */
+  if (tokens[0] !== 'W' || tokens[0] !== 'B') {
+    return false;
+  }
+
   /* move number field is a integer value > 0? */
-  if (isNaN(Number(tokens[5])) || (parseInt(tokens[5], 10) <= 0)) {
+  if (tokens.length > 4 && (isNaN(Number(tokens[4].slice(1))) || (parseInt(tokens[4], 10) <= 0))) {
     return false
   }
 
   /* half move counter is an integer >= 0? */
-  if (isNaN(Number(tokens[4])) || (parseInt(tokens[4], 10) < 0)) {
-    return false
-  }
-
-  /* 4th field is a valid e.p.-string? */
-  if (!/^(-|[abcdefgh][36])$/.test(tokens[3])) {
-    return false
-  }
-
-  /* 3th field is a valid castle-string? */
-  if ( !/^(KQ?k?q?|Qk?q?|kq?|q|-)$/.test(tokens[2])) {
-    return false
-  }
-
-  /* 2nd field is "w" (white) or "b" (black)? */
-  if (!/^(w|b)$/.test(tokens[1])) {
+  if (tokens.length > 3 && (isNaN(Number(tokens[3].slice(1))) || (parseInt(tokens[3], 10) < 0))) {
     return false
   }
 
@@ -172,8 +98,23 @@ function validateTokens(tokens: string[]): boolean {
 
 
 export function positionLooksLegit(fen: string) {
-  const pieces = fen.split(' ')[0]
-  return (pieces.match(/k/g) || []).length === 1 && (pieces.match(/K/g) || []).length === 1
+  const pieces = fenUtil.read(fen);
+  const totals = {
+    white: 0,
+    black: 0
+  };
+  for (const pos in pieces) {
+      if (pieces[pos] && (pieces[pos].role === 'king' || pieces[pos].role === 'man')) {
+          if (pieces[pos].role === 'man') {
+              if (pieces[pos].color === 'white' && (pos === "01" || pos === "02" || pos === "03" || pos === "04" || pos === "05"))
+                  return false;
+              else if (pieces[pos].color === 'black' && (pos === "46" || pos === "47" || pos === "48" || pos === "49" || pos === "50"))
+                  return false;
+          }
+          totals[pieces[pos].color]++;
+      }
+  }
+  return totals.white !== 0 && totals.black !== 0 && (totals.white + totals.black) < 50;
 }
 
 export function playerFromFen(fen?: string): Color {
