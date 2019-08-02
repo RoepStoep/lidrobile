@@ -23,9 +23,17 @@ export function configureBoard(state: State, config: cg.InitConfig): void {
   // if a fen was provided, replace the pieces
   if (config.fen) {
     state.pieces = fen.read(config.fen)
+
+    // show kingmoves for frisian variants
+    if (state.highlight && state.highlight.kingMoves !== null) {
+      const kingMoves = fen.readKingMoves(config.fen);
+      if (kingMoves != null) doSetKingMoves(state, kingMoves);
+    }
   }
 
-  if (config.hasOwnProperty('check')) board.setCheck(state, config.check || false)
+  if (config.captureLength !== undefined)
+    state.movable.captLen = config.captureLength;
+
   if (config.hasOwnProperty('lastMove') && !config.lastMove) state.lastMove = null
 
   // fix move/premove dests
@@ -41,6 +49,11 @@ export function setNewBoardState(d: State, config: cg.SetConfig): void {
 
   if (config.fen) {
     d.pieces = fen.read(config.fen)
+    // kingmoves for frisian variants
+    if (d.highlight && d.highlight.kingMoves !== null) {
+      const kingMoves = fen.readKingMoves(config.fen);
+      if (kingMoves != null) doSetKingMoves(d, kingMoves);
+    }
   }
 
   if (config.orientation !== undefined) d.orientation = config.orientation
@@ -54,8 +67,9 @@ export function setNewBoardState(d: State, config: cg.SetConfig): void {
     d.movable.color = config.movableColor
   }
 
-  // set check after setting turn color
-  if (config.hasOwnProperty('check')) board.setCheck(d, config.check || false)
+  if (config.captureLength !== undefined) {
+    d.movable.captLen = config.captureLength;
+  }
 
   if (config.hasOwnProperty('lastMove') && !config.lastMove) d.lastMove = null
   else if (config.lastMove) d.lastMove = config.lastMove
@@ -63,6 +77,30 @@ export function setNewBoardState(d: State, config: cg.SetConfig): void {
   // fix move/premove dests
   if (d.selected) {
     board.setSelected(d, d.selected)
+  }
+}
+
+export function setKingMoves(state: State, kingMoves: cg.KingMoves) {
+  for (let f = 1; f <= 50; f++) {
+    const key = (f < 10 ? '0' + f.toString() : f.toString()) as Key,
+      piece = state.pieces[key];
+    if (piece && piece.kingMoves)
+      piece.kingMoves = undefined;
+  }
+  doSetKingMoves(state, kingMoves);
+}
+
+function doSetKingMoves(state: State, kingMoves: cg.KingMoves) {
+  if (kingMoves.white.count > 0 && kingMoves.white.key) {
+    const piece = state.pieces[kingMoves.white.key];
+    if (piece && piece.role === 'king' && piece.color === 'white')
+      piece.kingMoves = kingMoves.white.count;
+  }
+
+  if (kingMoves.black.count > 0 && kingMoves.black.key) {
+    const piece = state.pieces[kingMoves.black.key];
+    if (piece && piece.role === 'king' && piece.color === 'black')
+      piece.kingMoves = kingMoves.black.count;
   }
 }
 

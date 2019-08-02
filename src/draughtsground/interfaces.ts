@@ -1,8 +1,4 @@
-export type Coord = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8
-export type File = 'a' | 'b' | 'c' | 'd' | 'e' | 'f' | 'g' | 'h'
-export type Rank = Coord
-
-export type Pos = [Coord, Coord]
+export type Pos = [number, number]
 
 export type Pieces = {[index: string]: Piece}
 
@@ -13,7 +9,7 @@ export interface InitConfig {
   fen?: string
   orientation?: Color
   turnColor?: Color
-  check?: Color | boolean
+  captureLength?: number;
   lastMove?: KeyPair | null
   selected?: Key
   coordinates?: boolean
@@ -25,7 +21,7 @@ export interface InitConfig {
   otbMode?: OtbMode
   highlight?: {
     lastMove?: boolean
-    check?: boolean
+    kingMoves?: boolean
   }
   animation?: {
     enabled?: boolean
@@ -81,7 +77,7 @@ export interface SetConfig {
   orientation?: Color
   fen?: string
   lastMove?: KeyPair | null
-  check?: Color | boolean
+  captureLength?: number;
   turnColor?: Color
   movableColor?: Color | 'both' | null
   dests?: DestsMap | null
@@ -116,6 +112,15 @@ export interface Exploding {
   keys: Key[]
 }
 
+export interface PlayerKingMoves {
+  count: number;
+  key?: Key;
+}
+export interface KingMoves {
+  white: PlayerKingMoves;
+  black: PlayerKingMoves;
+}
+
 export interface Drop {
   role: Role
   key: Key
@@ -142,3 +147,5 @@ export interface PrevData {
   turnColor: Color | null
   otbMode: OtbMode | null
 }
+
+export type KHz = number;

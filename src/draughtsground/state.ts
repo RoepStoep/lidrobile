@@ -9,9 +9,7 @@ export interface State {
   check: Key | null // square currently in check "a2"
   lastMove: Key[] | null // squares part of the last move ["c3", "c4"]
   selected: Key | null // square currently selected "a1"
-  coordinates: boolean // include coords attributes
-  symmetricCoordinates: boolean // symmetric coords for otb
-  autoCastle: boolean // immediately complete the castle by moving the rook after king move
+  coordinates: number // include coords attributes
   viewOnly: boolean // don't bind events: the user will never be able to move pieces around
   fixed: boolean // board is viewOnly and pieces won't move
   exploding: cg.Exploding | null
@@ -19,7 +17,7 @@ export interface State {
   otbMode: cg.OtbMode
   highlight: {
     lastMove: boolean // add last-move class to squares
-    check: boolean // add check class to squares
+    kingMoves: boolean | null; // show amount of king moves for frisian variants
   }
   batchRAF: (renderFunction: (ts?: number) => void) => void
   animation: {
@@ -31,6 +29,7 @@ export interface State {
     free: boolean // all moves are valid - board editor
     color: Color | 'both' | null // color that can move.
     dests: DestsMap | null // valid moves. {"a2" ["a3" "a4"] "b1" ["a3" "c3"]}
+    captLen: number | null
     showDests: boolean // whether to add the move-dest class on squares
     dropped: KeyPair | null // last dropped [orig, dest], not to be animated
     events: {
@@ -41,7 +40,7 @@ export interface State {
   premovable: {
     enabled: boolean // allow premoves for color that can not move
     showDests: boolean // whether to add the premove-dest class on squares
-    castle: boolean // whether to allow king castle premoves
+    variant: string | null // whether to allow king castle premoves
     current: KeyPair | null // keys of the current saved premove ["e2" "e4"]
     dests: Key[] | null // premove destinations for the current selection
     events: {
@@ -89,18 +88,16 @@ export function makeDefaults(): State {
     check: null,
     lastMove: null,
     selected: null,
-    coordinates: true,
-    symmetricCoordinates: false,
+    coordinates: 2,
     otb: false,
     otbMode: 'facing' as cg.OtbMode,
-    autoCastle: false,
     viewOnly: false,
     fixed: false,
     exploding: null,
     batchRAF: requestAnimationFrame.bind(window),
     highlight: {
       lastMove: true,
-      check: true
+      kingMoves: true
     },
     animation: {
       enabled: true,
@@ -112,13 +109,14 @@ export function makeDefaults(): State {
       color: 'both' as Color | 'both',
       dests: null,
       dropped: null,
+      captLen: null,
       showDests: true,
       events: {}
     },
     premovable: {
       enabled: true,
       showDests: true,
-      castle: true,
+      variant: null,
       dests: null,
       current: null,
       events: {}

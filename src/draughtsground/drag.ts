@@ -27,7 +27,7 @@ export interface DragCurrent {
 
 export function dragNewPiece(ctrl: Draughtsground, piece: Piece, e: TouchEvent, force?: boolean): void {
 
-  const key: Key = 'a0'
+  const key: Key = '00'
   const s = ctrl.state
   const dom = ctrl.dom!
 
@@ -205,19 +205,31 @@ export function cancel(ctrl: Draughtsground) {
   }
 }
 
-function getKeyAtDomPos(state: State, pos: NumberPair, bounds: ClientRect): Key | null {
+export function getKeyAtDomPos(state: State, pos: NumberPair, bounds: ClientRect): Key | null {
+
   if (typeof bounds !== 'object') {
     throw new Error('function getKeyAtDomPos require bounds object arg')
   }
   const asWhite = state.orientation === 'white'
-  const x = Math.ceil(8 * ((pos[0] - bounds.left) / bounds.width))
-  const ox = (asWhite ? x : 9 - x) as cg.Coord
-  const y = Math.ceil(8 - (8 * ((pos[1] - bounds.top) / bounds.height)))
-  const oy = (asWhite ? y : 9 - y) as cg.Coord
-  if (ox > 0 && ox < 9 && oy > 0 && oy < 9) {
-    return util.pos2key([ox, oy])
+
+  let row = Math.ceil(10 * ((pos[1] - bounds.top) / bounds.height));
+  if (!asWhite) row = 11 - row;
+  let col = Math.ceil(10 * ((pos[0] - bounds.left) / bounds.width));
+  if (!asWhite) col = 11 - col;
+
+  if (row % 2 !== 0) {
+    if (col % 2 !== 0)
+      return null;
+    else
+      col = col / 2;
+  } else {
+    if (col % 2 === 0)
+      return null;
+    else
+      col = (col + 1) / 2;
   }
-  return null
+
+  return (col > 0 && col < 6 && row > 0 && row < 11) ? util.pos2key([col, row]) : null;
 }
 
 function processDrag(ctrl: Draughtsground) {

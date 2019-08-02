@@ -33,15 +33,17 @@ export function renderBoard(d: State, dom: cg.DOM) {
   const allChange = boundsChange || orientationChange
   const pieces = d.pieces
   const anims = d.animation.current && d.animation.current.plan.anims
-  const capturedPieces = d.animation.current && d.animation.current.plan.captured
+  const temporaryPieces = d.animation.current && d.animation.current.plan.captures
+  const temporaryRoles = d.animation.current && d.animation.current.plan.tempRole
   const squares: Map<Key, string> = computeSquareClasses(d)
   const samePieces: Set<Key> = new Set()
   const sameSquares: Set<Key> = new Set()
   const movedPieces: Map<string, cg.PieceNode[]> = new Map()
   const movedSquares: Map<string, cg.SquareNode[]> = new Map()
   const piecesKeys = Object.keys(pieces) as Array<Key>
-  let squareClassAtKey, pieceAtKey, anim, captured, translate
+  let squareClassAtKey, pieceAtKey, anim, tempPiece, tempRole, translate
   let mvdset, mvd
+  let animDoubleKey = (d.animation.current && d.animation.current.lastMove && d.animation.current.lastMove.length > 2 && d.animation.current.lastMove[0] === d.animation.current.lastMove[d.animation.current.lastMove.length - 1]) ? d.animation.current.lastMove[0] : undefined;
 
   let otbTurnFlipChange, otbModeChange, otbChange = false
   if (d.otb) {
@@ -59,50 +61,70 @@ export function renderBoard(d: State, dom: cg.DOM) {
     pieceAtKey = pieces[k]
     squareClassAtKey = squares.get(k)
     anim = anims && anims[k]
-    captured = capturedPieces && capturedPieces[k]
+    tempPiece = temporaryPieces && temporaryPieces[k]
+    tempRole = temporaryRoles && temporaryRoles[k]
     if (isPieceNode(el)) {
       // if piece not being dragged anymore, remove dragging style
       if (el.cgDragging && (!d.draggable.current || d.draggable.current.orig !== k)) {
         el.classList.remove('dragging')
         el.classList.remove('magnified')
-        translate = posToTranslate(util.key2pos(k), asWhite)
+        translate = posToTranslate(util.key2pos(k), asWhite, 0)
         positionPiece(d, el, el.cgColor, translate)
         el.cgDragging = false
       }
-      // remove captured class if it still remains
-      if (!captured && el.cgCaptured) {
-        el.cgCaptured = false
-        el.classList.remove('captured')
-      }
-      // there is now a piece at this dom key
-      if (pieceAtKey) {
+      if (el.classList.contains('temporary') && tempPiece) {
+        // piece belongs here, check if it still has the right properties
+        const fullPieceName = pieceNameOf(tempPiece) + " temporary";
+        if (el.cgPiece !== fullPieceName)
+          el.className = fullPieceName;
+        samePieces.add(k);
+      } else if (pieceAtKey) {
         const pieceAtKeyName = pieceNameOf(pieceAtKey)
+        // there is now a piece at this dom key
         // continue animation if already animating and same color
         // (otherwise it could animate a captured piece)
         if (anim && el.cgAnimating && el.cgPiece === pieceAtKeyName) {
-          translate = posToTranslate(util.key2pos(k), asWhite)
-          translate[0] += anim[1][0]
-          translate[1] += anim[1][1]
-          el.classList.add('anim')
+          animDoubleKey = undefined; // only needed to get the animation started
+          const pos = util.key2pos(k);
+          pos[0] += anim[2];
+          pos[1] += anim[3];
+          if (d.animation.current && d.animation.current.plan.nextPlan && d.animation.current.plan.nextPlan.anims[k] && !util.isObjectEmpty(d.animation.current.plan.nextPlan.anims[k])) {
+            pos[0] += d.animation.current.plan.nextPlan.anims[k][2];
+            pos[1] += d.animation.current.plan.nextPlan.anims[k][3];
+          }
+          el.classList.add('anim');
+          if (tempRole) {
+            el.className = el.className.replace(pieceAtKey.role, tempRole);
+            el.classList.add('temprole');
+          } else if (el.classList.contains('temprole')) {
+            el.classList.remove('temprole');
+            if (pieceAtKey.role === 'king')
+              el.className = el.className.replace('man', 'king');
+            else if (pieceAtKey.role === 'man')
+              el.className = el.className.replace('king', 'man');
+          }
+          translate = posToTranslate(pos, asWhite, anim[4])
           positionPiece(d, el, el.cgColor, translate)
         } else if (el.cgAnimating) {
-          translate = posToTranslate(util.key2pos(k), asWhite)
+          el.cgAnimating = false;
+          el.classList.remove('anim');
+          if (el.classList.contains('temprole')) {
+            el.classList.remove('temprole');
+            if (pieceAtKey.role === 'king')
+              el.className = el.className.replace('man', 'king');
+            else if (pieceAtKey.role === 'man')
+              el.className = el.className.replace('king', 'man');
+          }
+          translate = posToTranslate(util.key2pos(k), asWhite, 0)
           positionPiece(d, el, el.cgColor, translate)
-          el.classList.remove('anim')
-          el.cgAnimating = false
         }
-        // same piece, no change: flag as same
-        if (el.cgPiece === pieceAtKeyName && !allChange && !otbChange && (!captured || !el.cgCaptured)) {
+        // same piece: flag as same. Exception for capture ending on the start square, as no pieces are added or removed
+        if (el.cgPiece === pieceAtKeyName && !allChange && !otbChange && k !== animDoubleKey) {
           samePieces.add(k)
         }
         // different piece: flag as moved unless it is a captured piece
         else {
-          if (captured && pieceNameOf(captured) === el.cgPiece) {
-            el.classList.add('captured')
-            el.cgCaptured = true
-          } else {
             movedPieces.set(el.cgPiece, (movedPieces.get(el.cgPiece) || []).concat(el))
-          }
         }
       }
       // no piece: flag as moved
@@ -132,14 +154,14 @@ export function renderBoard(d: State, dom: cg.DOM) {
       mvd = mvdset && mvdset.pop()
       if (mvd) {
         mvd.cgKey = k
-        translate = posToTranslate(util.key2pos(k), asWhite)
+        translate = posToTranslate(util.key2pos(k), asWhite, 0)
         positionSquare(d, mvd, translate)
       }
       else {
         const se = document.createElement('square') as cg.SquareNode
         se.className = squareClass
         se.cgKey = k
-        translate = posToTranslate(util.key2pos(k), asWhite)
+        translate = posToTranslate(util.key2pos(k), asWhite, 0)
         positionSquare(d, se, translate)
         boardElement.insertBefore(se, boardElement.firstChild)
       }
@@ -153,38 +175,62 @@ export function renderBoard(d: State, dom: cg.DOM) {
     let p = pieces[k]
     const pieceClass = p.role + p.color
     anim = anims && anims[k]
-    if (!samePieces.has(k)) {
+    tempPiece = temporaryPieces && temporaryPieces[k];
+    if (!samePieces.has(k) && !tempPiece) {
       mvdset = movedPieces.get(pieceClass)
       mvd = mvdset && mvdset.pop()
       // a equivalent piece was moved
       if (mvd) {
         // apply dom changes
         mvd.cgKey = k
-        translate = posToTranslate(util.key2pos(k), asWhite)
+        const pos = util.key2pos(k);
+        let shift: number;
         if (anim) {
-          mvd.cgAnimating = true
-          translate[0] += anim[1][0]
-          translate[1] += anim[1][1]
-        }
+          mvd.cgAnimating = true;
+          mvd.classList.add('anim');
+          pos[0] += anim[2];
+          pos[1] += anim[3];
+          shift = anim[4];
+        } else shift = 0
+        translate = posToTranslate(pos, asWhite, shift)
         positionPiece(d, mvd, mvd.cgColor, translate)
       }
       // no piece in moved set: insert the new piece
       else {
         const pe = document.createElement('piece') as cg.PieceNode
         const pName = pieceNameOf(p)
+        const pos = util.key2pos(k)
         pe.className = pName
         pe.cgPiece = pName
         pe.cgColor = p.color
         pe.cgKey = k
-        translate = posToTranslate(util.key2pos(k), asWhite)
+        let shift: number;
         if (anim) {
-          pe.cgAnimating = true
-          translate[0] += anim[1][0]
-          translate[1] += anim[1][1]
-        }
+          pe.cgAnimating = true;
+          pos[0] += anim[2];
+          pos[1] += anim[3];
+          shift = anim[4];
+        } else shift = 0
+        translate = posToTranslate(pos, asWhite, shift)
         positionPiece(d, pe, p.color, translate)
         boardElement.appendChild(pe)
       }
+    }
+  }
+
+  for (const i in temporaryPieces) {
+    tempPiece = temporaryPieces[i];
+    const k = i as Key;
+    if (tempPiece && !samePieces.has(k)) {
+      const pe = document.createElement('piece') as cg.PieceNode
+      const pName = pieceNameOf(tempPiece) + " temporary"
+      const pos = util.key2pos(k);
+      pe.className = pName
+      pe.cgPiece = pName;
+      pe.cgKey = k;
+      translate = posToTranslate(pos, asWhite, 0)
+      positionPiece(d, pe, tempPiece.color, translate)
+      boardElement.appendChild(pe)
     }
   }
 
@@ -194,35 +240,27 @@ export function renderBoard(d: State, dom: cg.DOM) {
   movedSquares.forEach(els => els.forEach(rmEl))
 }
 
-export function makeCoords(el: HTMLElement, withSymm: boolean) {
-  const coords = document.createDocumentFragment()
-  coords.appendChild(renderCoords(util.ranks, 'ranks'))
-  coords.appendChild(renderCoords(util.files, 'files' + (withSymm ? ' withSymm' : '')))
-  el.appendChild(coords)
-}
-
-export function makeSymmCoords(el: HTMLElement) {
-  const coords = document.createDocumentFragment()
-  coords.appendChild(renderCoords(util.invRanks, 'ranks symm'))
-  coords.appendChild(renderCoords(util.invFiles, 'files symm'))
-  el.appendChild(coords)
-}
-
-function posToTranslateBase(pos: cg.Pos, asWhite: boolean, xFactor: number, yFactor: number): NumberPair {
-  return [
-    (asWhite ? pos[0] - 1 : 8 - pos[0]) * xFactor,
-    (asWhite ? 8 - pos[1] : pos[1] - 1) * yFactor
-  ]
+function posToTranslateBase(pos: cg.Pos, asWhite: boolean, xFactor: number, yFactor: number, shift: number): NumberPair {
+  if (shift !== 0) {
+    return [
+      (!asWhite ? 4.5 - ((shift - 0.5) + pos[0]) : (shift - 0.5) + pos[0]) * xFactor,
+      (!asWhite ? 10 - pos[1] : pos[1] - 1) * yFactor
+    ];
+  } else {
+    return [
+      (!asWhite ? 4.5 - ((pos[1] % 2 !== 0 ? -0.5 : -1) + pos[0]) : (pos[1] % 2 !== 0 ? -0.5 : -1) + pos[0]) * xFactor,
+      (!asWhite ? 10 - pos[1] : pos[1] - 1) * yFactor
+    ];
+  }
 }
 
 const posToTranslateAbs = (bounds: ClientRect) => {
-  const xFactor = bounds.width / 8
-  const yFactor = bounds.height / 8
-  return (pos: cg.Pos, asWhite: boolean) => posToTranslateBase(pos, asWhite, xFactor, yFactor)
-}
+  const xFactor = bounds.width / 5, yFactor = bounds.height / 10;
+  return (pos: cg.Pos, asWhite: boolean, shift: number) => posToTranslateBase(pos, asWhite, xFactor, yFactor, shift);
+};
 
-const posToTranslateRel: (pos: cg.Pos, asWhite: boolean) => NumberPair =
-  (pos, asWhite) => posToTranslateBase(pos, asWhite, 12.5, 12.5)
+const posToTranslateRel: (pos: cg.Pos, asWhite: boolean, shift: number) => NumberPair =
+  (pos, asWhite, shift: number) => posToTranslateBase(pos, asWhite, 20.0, 10.0, shift);
 
 function positionPiece(d: State, el: HTMLElement, color: Color, pos: NumberPair) {
   if (d.fixed) {
@@ -264,7 +302,6 @@ function computeSquareClasses(d: State): Map<Key, string> {
     if (k) addSquare(squares, k, 'last-move')
   })
 
-  if (d.check && d.highlight.check) addSquare(squares, d.check, 'check')
   if (d.selected) {
     addSquare(squares, d.selected, 'selected')
     const dests = d.movable.dests && d.movable.dests[d.selected]
@@ -287,7 +324,19 @@ function computeSquareClasses(d: State): Map<Key, string> {
   return squares
 }
 
-function renderCoords(elems: Array<number | string>, klass: string) {
+export function renderFieldnumbers(el: HTMLElement, s: State, bounds: ClientRect) {
+  const asWhite = s.orientation !== 'black';
+  for (var f = 1; f <= 50; f++) {
+    const field = document.createElement('fieldnumber');
+    field.className = 'black'
+    field.textContent = f.toString();
+    const coords = posToTranslateAbs(bounds)(util.key2pos(util.allKeys[f - 1]), asWhite, 0);
+    field.style.transform = util.translate(coords);
+    el.appendChild(field);
+  }
+}
+
+export function renderCoords(elems: Array<number | string>, klass: string) {
   const el = document.createElement('li-coords')
   el.className = klass
   elems.forEach((content: number | string, i: number) => {

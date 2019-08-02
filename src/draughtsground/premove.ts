@@ -1,88 +1,120 @@
-import * as util from './util'
 import * as cg from './interfaces'
+import { field2key, movesDown, movesUp, movesHorizontal } from './util'
 
-type Mobility = (x1: number, y1: number, x2: number, y2: number) => boolean
+export default function premove(pieces: cg.Pieces, key: Key, variant?: string | null): Key[] {
 
-function diff(a: number, b: number): number {
-  return Math.abs(a - b)
-}
+  const piece = pieces[key],
+    field: number = Number(key);
 
-function pawn(color: Color): Mobility {
-  return (x1, y1, x2, y2) => diff(x1, x2) < 2 && (
-    color === 'white' ? (
-      // allow 2 squares from 1 and 8, for horde
-      y2 === y1 + 1 || (y1 <= 2 && y2 === (y1 + 2) && x1 === x2)
-    ) : (
-      y2 === y1 - 1 || (y1 >= 7 && y2 === (y1 - 2) && x1 === x2)
-    )
-  )
-}
+  if (piece === undefined || isNaN(field)) return new Array<Key>();
 
-const knight: Mobility = (x1, y1, x2, y2) => {
-  const xd = diff(x1, x2)
-  const yd = diff(y1, y2)
-  return (xd === 1 && yd === 2) || (xd === 2 && yd === 1)
-}
+  const frisianVariant = variant && variant !== null && (variant === "frisian" || variant === "frysk");
 
-const bishop: Mobility = (x1, y1, x2, y2) => {
-  return diff(x1, x2) === diff(y1, y2)
-}
-
-const rook: Mobility = (x1, y1, x2, y2) => {
-  return x1 === x2 || y1 === y2
-}
-
-const queen: Mobility = (x1, y1, x2, y2) => {
-  return bishop(x1, y1, x2, y2) || rook(x1, y1, x2, y2)
-}
-
-function king(color: Color, rookFiles: number[], canCastle: boolean): Mobility {
-  return (x1, y1, x2, y2)  => (
-    diff(x1, x2) < 2 && diff(y1, y2) < 2
-  ) || (
-    canCastle && y1 === y2 && y1 === (color === 'white' ? 1 : 8) && (
-      (x1 === 5 && (x2 === 3 || x2 === 7)) || util.containsX(rookFiles, x2)
-    )
-  )
-}
-
-function rookFilesOf(pieces: cg.Pieces, color: Color): number[] {
-  let piece: Piece
-  return Object.keys(pieces)
-  .filter(key => {
-    piece = pieces[key]
-    return piece && piece.color === color && piece.role === 'rook'
-  })
-  .map((key: Key) => util.key2pos(key)[0])
-}
-
-export default function premove(pieces: cg.Pieces, key: Key, canCastle: boolean): Key[] {
-  const piece = pieces[key]
-  const pos = util.key2pos(key)
-  let mobility: Mobility
+  const dests: Key[] = new Array<Key>();
   switch (piece.role) {
-    case 'pawn':
-      mobility = pawn(piece.color)
-      break
-    case 'knight':
-      mobility = knight
-      break
-    case 'bishop':
-      mobility = bishop
-      break
-    case 'rook':
-      mobility = rook
-      break
-    case 'queen':
-      mobility = queen
-      break
+
+    case 'man':
+
+      //
+      //It is always impossible to premove a capture if the first field in that direction contains a piece of our own color:
+      //enemy pieces can never land there because you only take pieces from the board after capture sequence is completed
+      //
+
+      for (let i = 0; i < (frisianVariant ? 3 : 2); i++) {
+        let f = movesUp[field][i];
+        if (f != -1) {
+
+          const key = field2key(f);
+          if (piece.color === 'white' && i < 2)
+            dests.push(key);
+
+          const pc = pieces[key];
+          if (pc === undefined || pc.color !== piece.color) {
+            f = movesUp[f][i];
+            if (f !== -1)
+              dests.push(field2key(f));
+          }
+
+        }
+      }
+
+      for (let i = 0; i < (frisianVariant ? 3 : 2); i++) {
+        let f = movesDown[field][i];
+        if (f != -1) {
+
+          const key = field2key(f);
+          if (piece.color === 'black' && i < 2)
+            dests.push(key);
+
+          const pc = pieces[key];
+          if (pc === undefined || pc.color !== piece.color) {
+            f = movesDown[f][i];
+            if (f !== -1)
+              dests.push(field2key(f));
+          }
+
+        }
+      }
+
+      if (frisianVariant) {
+        for (let i = 0; i < 2; i++) {
+          let f = movesHorizontal[field][i];
+          if (f != -1) {
+
+            const pc = pieces[field2key(f)];
+            if (pc === undefined || pc.color !== piece.color) {
+              f = movesHorizontal[f][i];
+              if (f !== -1)
+                dests.push(field2key(f));
+            }
+
+          }
+        }
+      }
+
+      break;
+
     case 'king':
-      mobility = king(piece.color, rookFilesOf(pieces, piece.color), canCastle)
-      break
+
+      //
+      //As far as I can tell there is no configuration of pieces that makes any square theoretically impossible to be premovable 
+      //
+
+      for (let i = 0; i < (frisianVariant ? 3 : 2); i++) {
+        let f = movesUp[field][i], k = 0;
+        while (f != -1) {
+          if (i < 2 || k > 0)
+            dests.push(field2key(f));
+          f = movesUp[f][i];
+          k++;
+        }
+      }
+
+      for (let i = 0; i < (frisianVariant ? 3 : 2); i++) {
+        let f = movesDown[field][i], k = 0;
+        while (f != -1) {
+          if (i < 2 || k > 0)
+            dests.push(field2key(f));
+          f = movesDown[f][i];
+          k++;
+        }
+      }
+
+      if (frisianVariant) {
+        for (let i = 0; i < 2; i++) {
+          let f = movesHorizontal[field][i], k = 0;
+          while (f != -1) {
+            if (k > 0)
+              dests.push(field2key(f));
+            f = movesHorizontal[f][i];
+            k++;
+          }
+        }
+      }
+
+      break;
+
   }
-  return util.allKeys.map(util.key2pos)
-  .filter(pos2 =>
-    (pos[0] !== pos2[0] || pos[1] !== pos2[1]) && mobility(pos[0], pos[1], pos2[0], pos2[1])
-  )
-  .map(util.pos2key)
-}
+
+  return dests;
+};
