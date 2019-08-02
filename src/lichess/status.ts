@@ -40,7 +40,7 @@ function toLabel(status: string, winner: Color | undefined, variant: VariantKey)
     case 'aborted':
       return i18n('gameAborted')
     case 'mate':
-      return i18n('checkmate')
+      return ''
     case 'resign':
       return i18n(winner === 'white' ? 'blackResigned' : 'whiteResigned')
     case 'stalemate':
@@ -66,10 +66,8 @@ function toLabel(status: string, winner: Color | undefined, variant: VariantKey)
       return 'Cheat detected'
     case 'variantEnd':
       switch (variant) {
-        case 'kingOfTheHill':
-          return 'King in the center'
-        case 'threeCheck':
-          return 'Three checks'
+        case 'breakthrough':
+          return 'Promotion'
         default:
           return 'Variant ending'
       }

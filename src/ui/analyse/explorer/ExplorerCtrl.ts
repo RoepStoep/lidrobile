@@ -134,7 +134,6 @@ function tablebaseRelevant(variant: VariantKey, fen: string) {
   const parts = fen.split(/\s/)
   const pieceCount = parts[0].split(/[nbrqkp]/i).length - 1
 
-  if (variant === 'standard' || variant === 'chess960') return pieceCount <= 8
-  else if (variant === 'atomic' || variant === 'antichess') return pieceCount <= 7
+  if (variant === 'standard' || variant === 'fromPosition') return pieceCount <= 0
   else return false
 }

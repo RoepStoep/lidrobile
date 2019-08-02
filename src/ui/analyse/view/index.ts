@@ -25,7 +25,6 @@ import { Tab } from '../tabs'
 import AnalyseCtrl from '../AnalyseCtrl'
 import renderCeval, { EvalBox } from '../ceval/cevalView'
 import renderExplorer, { getTitle as getExplorerTitle } from '../explorer/explorerView'
-import renderCrazy from '../crazy/crazyView'
 import { view as renderContextMenu } from '../contextMenu'
 import Replay from './Replay'
 import retroView from '../retrospect/retroView'
@@ -52,7 +51,6 @@ export function renderContent(ctrl: AnalyseCtrl, isPortrait: boolean, bounds: Bo
   return h.fragment({ key: isPortrait ? 'portrait' : 'landscape' }, [
     renderBoard(ctrl, bounds, availTabs),
     h('div.analyse-tableWrapper', [
-      ctrl.data.game.variant.key === 'crazyhouse' ? renderCrazy(ctrl) : null,
       renderAnalyseTable(ctrl, availTabs),
       renderActionsBar(ctrl)
     ])

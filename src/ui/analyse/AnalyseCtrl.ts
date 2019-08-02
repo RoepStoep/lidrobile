@@ -644,9 +644,9 @@ export default class AnalyseCtrl {
   private updateBoard() {
     const node = this.node
 
-    if (this.data.game.variant.key === 'threeCheck' && !node.checkCount) {
+    /*if (this.data.game.variant.key === 'threeCheck' && !node.checkCount) {
       node.checkCount = util.readCheckCount(node.fen)
-    }
+    }*/
 
     const color: Color = node.ply % 2 === 0 ? 'white' : 'black'
     const dests = chessFormat.readDests(node.dests)

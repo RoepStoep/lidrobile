@@ -18,7 +18,6 @@ import promotion from '../shared/offlineRound/promotion'
 import ground from '../shared/offlineRound/ground'
 import makeData from '../shared/offlineRound/data'
 import { setResult } from '../shared/offlineRound'
-import atomic from '../shared/round/atomic'
 import crazyValid from '../shared/round/crazy/crazyValid'
 import { AiRoundInterface, AiVM, PromotingInterface } from '../shared/round'
 import { ClockType } from '../shared/clock/interfaces'
@@ -255,13 +254,9 @@ export default class AiRound implements AiRoundInterface, PromotingInterface {
     }
   }
 
-  private onMove = (_: Key, dest: Key, capturedPiece: Piece) => {
+  private onMove = (_: Key, __: Key, capturedPiece: Piece) => {
     if (capturedPiece) {
-      if (this.data.game.variant.key === 'atomic') {
-        atomic.capture(this.draughtsground, dest)
-        sound.explosion()
-      }
-      else sound.capture()
+      sound.capture()
     } else {
       sound.move()
     }

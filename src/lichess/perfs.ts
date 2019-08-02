@@ -10,14 +10,10 @@ const perfMap: { [k: string]: Perf } = {
   rapid: { name: 'Rapid', shortName: 'Rapid' },
   classical: { name: 'Classical', shortName: 'Classic' },
   correspondence: { name: 'Correspondence', shortName: 'Corresp.' },
-  crazyhouse: { name: 'Crazyhouse', shortName: 'Crazy' },
-  chess960: { name: 'Chess960', shortName: '960' },
-  kingOfTheHill: { name: 'King Of The Hill', shortName: 'KotH' },
-  threeCheck: { name: 'Three-check', shortName: '3check' },
-  antichess: { name: 'Antichess', shortName: 'Antichess' },
-  atomic: { name: 'Atomic', shortName: 'Atomic' },
-  horde: { name: 'Horde', shortName: 'Horde' },
-  racingKings: { name: 'Racing Kings', shortName: 'Racing' }
+  frisian: { name: 'Frisian', shortName: 'Frisian' },
+  frysk: { name: 'Frysk!', shortName: 'Frysk!' },
+  breaktrough: { name: 'Breaktrough', shortName: 'Breaktrough' },
+  antidraughts: { name: 'Antidraughts', shortName: 'Antidraughts' }
 }
 
 export const perfTypes = Object.keys(perfMap).map(k =>

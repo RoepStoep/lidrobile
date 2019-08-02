@@ -199,11 +199,7 @@ export function getRandomArbitrary(min: number, max: number): number {
 }
 
 export function boardOrientation(data: GameData, flip?: boolean): 'black' | 'white' {
-  if (data.game.variant.key === 'racingKings') {
-    return flip ? 'black' : 'white'
-  } else {
-    return flip ? data.opponent.color : data.player.color
-  }
+  return flip ? data.opponent.color : data.player.color
 }
 
 export function pad(num: number, size: number): string {

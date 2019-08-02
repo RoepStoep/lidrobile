@@ -1,5 +1,5 @@
 import * as h from 'mithril/hyperscript'
-import * as utils from '../../../utils'
+/*import * as utils from '../../../utils'*/
 import i18n from '../../../i18n'
 import * as gameApi from '../../../lichess/game'
 import gameStatusApi from '../../../lichess/status'
@@ -15,14 +15,14 @@ import { formatClockTime } from '../round/clock/clockView'
 
 let pieceNotation: boolean
 
-function getChecksCount(ctrl: OfflineRoundInterface, color: Color) {
+/*function getChecksCount(ctrl: OfflineRoundInterface, color: Color) {
   const sit = ctrl.replay.situation()
   if (sit.checkCount)
     return utils.oppositeColor(color) === 'white' ?
       sit.checkCount.white : sit.checkCount.black
   else
     return 0
-}
+}*/
 
 export function renderAntagonist(ctrl: OfflineRoundInterface, content: Mithril.Children, material: Material, position: Position, isPortrait: boolean, otbFlip?: boolean, customPieceTheme?: string, clock?: IChessClock) {
   const sit = ctrl.replay.situation()
@@ -48,10 +48,7 @@ export function renderAntagonist(ctrl: OfflineRoundInterface, content: Mithril.C
           {isCrazy && clock ? renderClock(clock, antagonistColor) : ''}
         </div>
         { !isCrazy ? <div className="ratingAndMaterial">
-          {ctrl.data.game.variant.key === 'horde' ? null : renderMaterial(material)}
-          { ctrl.data.game.variant.key === 'threeCheck' ?
-            <div className="checkCount">&nbsp;+{getChecksCount(ctrl, antagonistColor)}</div> : null
-          }
+          {renderMaterial(material)}
         </div> : null
         }
       </div>

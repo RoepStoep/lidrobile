@@ -123,19 +123,12 @@ function slidingMovesTo(s: Square, deltas: number[], board: Board): Square[] {
 }
 
 function isCheck(variant: VariantKey, board: Board): boolean {
-  if (variant === 'antichess' || variant === 'racingKings') return false
+  if (variant === 'frisian') return false
 
   const turn = board.turn,
   ksq = turn ? board.K : board.k
 
   if (typeof ksq !== 'number') return false
-
-  // no check when kings are touching in atomic
-  if (variant === 'atomic' &&
-    typeof board.k !== 'undefined' &&
-    typeof board.K !== 'undefined' &&
-    squareDist(board.k, board.K) <= 1)
-  return false
 
   const p = turn ? 'p' : 'P',
   n = turn ? 'n' : 'N',
@@ -202,7 +195,7 @@ function makeMove(variant: VariantKey, board: Board, uci: string) {
   delete board.pieces[from]
 
   // atomic explosion
-  if (variant === 'atomic' && capture) {
+  if (variant === 'frisian' && capture) {
     delete board.pieces[to]
     kingMovesTo(to).forEach((o) => {
       if (board.pieces[o] !== 'p' && board.pieces[o] !== 'P') delete board.pieces[o]

@@ -8,14 +8,10 @@ function tupleOf(x: number) {
 
 const offlineAvailableVariants: [string, VariantKey][] = [
   ['Standard', 'standard'],
-  ['Crazyhouse', 'crazyhouse'],
-  ['Chess960', 'chess960'],
-  ['King of the Hill', 'kingOfTheHill'],
-  ['Three-check', 'threeCheck'],
-  ['Antichess', 'antichess'],
-  ['Atomic', 'atomic'],
-  ['Horde', 'horde'],
-  ['Racing Kings', 'racingKings']
+  ['Frisian', 'frisian'],
+  ['Frysk!', 'frysk'],
+  ['Breakthrough', 'breakthrough'],
+  ['Antidraughts', 'antidraughts']
 ]
 
 export interface GameSettings {
@@ -93,9 +89,7 @@ export default {
   },
 
   game: {
-    supportedVariants: ['standard', 'chess960', 'antichess', 'fromPosition',
-      'kingOfTheHill', 'threeCheck', 'atomic', 'horde', 'racingKings', 'crazyhouse'
-    ],
+    supportedVariants: ['standard', 'antidraughts', 'breakthrough', 'fromPosition', 'frisian', 'frysk'],
     animations: store.prop<boolean>('settings.gameAnimations', true),
     highlights: store.prop<boolean>('settings.boardHighlights', true),
     pieceDestinations: store.prop<boolean>('settings.pieceDestinations', true),
@@ -109,9 +103,7 @@ export default {
   },
 
   analyse: {
-    supportedVariants: ['standard', 'chess960', 'antichess', 'fromPosition',
-      'kingOfTheHill', 'threeCheck', 'atomic', 'horde', 'racingKings', 'crazyhouse'
-    ],
+    supportedVariants: ['standard', 'antidraughts', 'breakthrough', 'fromPosition', 'frisian', 'frysk'],
     availableVariants: offlineAvailableVariants,
     syntheticVariant: store.prop<VariantKey>('settings.analyse.syntheticVariant', 'standard'),
     enableCeval: store.prop('settings.analyse.enableCeval', false),
@@ -292,14 +284,10 @@ export default {
       color: store.prop('settings.game.ai.color', 'random'),
       availableVariants: [
         ['Standard', '1'],
-        ['Crazyhouse', '10'],
-        ['Chess960', '2'],
-        ['King of the Hill', '4'],
-        ['Three-check', '5'],
-        ['Antichess', '6'],
-        ['Atomic', '7'],
-        ['Horde', '8'],
-        ['Racing Kings', '9'],
+        ['Frisian', '10'],
+        ['Antidraughts', '6'],
+        ['Frysk!', '8'],
+        ['Breakthrough', '9'],
         ['From Position', '3']
       ],
       variant: store.prop('settings.game.ai.variant', '1'),
@@ -317,14 +305,10 @@ export default {
     human: {
       availableVariants: [
         ['Standard', '1'],
-        ['Crazyhouse', '10'],
-        ['Chess960', '2'],
-        ['King of the Hill', '4'],
-        ['Three-check', '5'],
-        ['Antichess', '6'],
-        ['Atomic', '7'],
-        ['Horde', '8'],
-        ['Racing Kings', '9']
+        ['Frisian', '10'],
+        ['Antidraughts', '6'],
+        ['Frysk!', '8'],
+        ['Breakthrough', '9']
       ],
       availableRatingRanges: {
         min: range(800, 2900, 100).map(tupleOf),
@@ -351,14 +335,10 @@ export default {
     challenge: {
       availableVariants: [
         ['Standard', '1'],
-        ['Crazyhouse', '10'],
-        ['Chess960', '2'],
-        ['King of the Hill', '4'],
-        ['Three-check', '5'],
-        ['Antichess', '6'],
-        ['Atomic', '7'],
-        ['Horde', '8'],
-        ['Racing Kings', '9'],
+        ['Frisian', '10'],
+        ['Antidraughts', '6'],
+        ['Frysk!', '8'],
+        ['Breakthrough', '9'],
         ['From Position', '3']
       ],
       color: store.prop('settings.game.invite.color', 'random'),
@@ -379,14 +359,10 @@ export default {
   tournament: {
     availableVariants: [
       ['Standard', '1'],
-      ['Crazyhouse', '10'],
-      ['Chess960', '2'],
-      ['King of the Hill', '4'],
-      ['Three-check', '5'],
-      ['Antichess', '6'],
-      ['Atomic', '7'],
-      ['Horde', '8'],
-      ['Racing Kings', '9']
+      ['Frisian', '10'],
+      ['Antidraughts', '6'],
+      ['Frysk!', '8'],
+      ['Breakthrough', '9']
     ],
     availableModes: [
       ['Casual', '0'],

@@ -10,16 +10,7 @@ import { boardOrientation } from '../../../utils'
 import * as chessFormat from '../../../utils/chessFormat'
 
 function makeConfig(data: OnlineGameData, fen: string, flip: boolean = false): cg.InitConfig {
-  const lastStep = data.steps[data.steps.length - 1]
-  const lastMove = data.game.lastMove ?
-    chessFormat.uciToMove(data.game.lastMove) :
-    (
-      data.game.variant.key === 'crazyhouse' &&
-      lastStep &&
-      lastStep.uci !== null
-    ) ?
-      chessFormat.uciTolastDrop(lastStep.uci) :
-      null
+  const lastMove = data.game.lastMove ? chessFormat.uciToMove(data.game.lastMove) : null
 
   const pieceMoveConf = settings.game.pieceMove()
 
@@ -48,14 +39,13 @@ function makeConfig(data: OnlineGameData, fen: string, flip: boolean = false): c
     premovable: {
       enabled: data.pref.enablePremove,
       showDests: settings.game.pieceDestinations(),
-      castle: data.game.variant.key !== 'antichess',
       events: {
         set: () => redraw(),
         unset: redraw
       }
     },
     predroppable: {
-      enabled: data.pref.enablePremove && data.game.variant.key === 'crazyhouse',
+      enabled: false,
       events: {
         set: () => redraw(),
         unset: redraw
@@ -65,7 +55,7 @@ function makeConfig(data: OnlineGameData, fen: string, flip: boolean = false): c
       enabled: pieceMoveConf === 'drag' || pieceMoveConf === 'both',
       distance: 3,
       magnified: settings.game.magnified(),
-      preventDefault: data.game.variant.key !== 'crazyhouse'
+      preventDefault: true
     },
     selectable: {
       enabled: pieceMoveConf === 'tap' || pieceMoveConf === 'both'

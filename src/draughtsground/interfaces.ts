@@ -40,7 +40,6 @@ export interface InitConfig {
   premovable?: {
     enabled?: boolean
     showDests?: boolean
-    castle?: boolean
     dests?: Key[]
     events?: {
       set?: (orig: Key, dest: Key, metadata?: SetPremoveMetadata) => void

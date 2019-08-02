@@ -34,9 +34,9 @@ export function validateFen(fen: string, variant: VariantKey = 'standard') {
 }
 
 function validateFrisian(tokens: string[]) {
-  /* we need at least one extra field */
+  /* extra field can be omitted */
   if (tokens.length < 4) {
-    return false
+    return true
   }
 
   /* king moves for both players */

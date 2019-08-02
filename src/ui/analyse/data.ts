@@ -3,14 +3,6 @@ import { AnalyseData } from '../../lichess/interfaces/analyse'
 import { playerFromFen, plyFromFen } from '../../utils/fen'
 import { oppositeColor } from '../../utils'
 
-const emptyPocket = {
-  queen: 0,
-  rook: 0,
-  knight: 0,
-  bishop: 0,
-  pawn: 0
-}
-
 export function makeDefaultData(variantKey: VariantKey, fen?: string): AnalyseData {
   const player = playerFromFen(fen)
   const ply = plyFromFen(fen)
@@ -50,9 +42,7 @@ export function makeDefaultData(variantKey: VariantKey, fen?: string): AnalyseDa
       {
         fen: initialFen,
         ply,
-        crazyhouse: variant.key === 'crazyhouse' ? {
-          pockets: [emptyPocket, emptyPocket]
-        } : undefined,
+        crazyhouse: undefined,
         pgnMoves: []
       }
     ],

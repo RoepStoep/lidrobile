@@ -9,7 +9,7 @@ import { UserGame } from './interfaces/user'
 import { GameData, OnlineGameData, Player } from './interfaces/game'
 import { AnalyseData, OnlineAnalyseData } from './interfaces/analyse'
 
-export const analysableVariants = ['standard', 'crazyhouse', 'chess960', 'fromPosition', 'kingOfTheHill', 'threeCheck', 'atomic', 'antichess', 'horde', 'racingKings']
+export const analysableVariants = ['standard', 'antidraughts', 'breakthrough', 'fromPosition', 'frisian', 'frysk']
 
 export function parsePossibleMoves(dests?: StringMap | string): DestsMap {
   if (!dests) return {}

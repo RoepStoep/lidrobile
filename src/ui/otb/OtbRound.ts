@@ -14,7 +14,6 @@ import promotion from '../shared/offlineRound/promotion'
 import ground from '../shared/offlineRound/ground'
 import makeData from '../shared/offlineRound/data'
 import { setResult } from '../shared/offlineRound'
-import atomic from '../shared/round/atomic'
 import crazyValid from '../shared/round/crazy/crazyValid'
 import { OtbRoundInterface, OtbVM, PromotingInterface } from '../shared/round'
 import Replay from '../shared/offlineRound/Replay'
@@ -202,13 +201,9 @@ export default class OtbRound implements OtbRoundInterface, PromotingInterface {
     }
   }
 
-  private onMove = (_: Key, dest: Key, capturedPiece: Piece) => {
+  private onMove = (_: Key, __: Key, capturedPiece: Piece) => {
     if (capturedPiece) {
-      if (this.data.game.variant.key === 'atomic') {
-        atomic.capture(this.draughtsground, dest)
-        sound.explosion()
-      }
-      else sound.capture()
+      sound.capture()
     } else sound.move()
   }
 

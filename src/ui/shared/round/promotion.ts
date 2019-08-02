@@ -38,7 +38,6 @@ export default {
     if (!promoting) return null
 
     const pieces = ['queen', 'knight', 'rook', 'bishop']
-    if (ctrl.data.game.variant.key === 'antichess') pieces.push('king')
 
     return h('div.overlay.open', {
       oncreate: helper.ontap(cancel.bind(undefined, ctrl))

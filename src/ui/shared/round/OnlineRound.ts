@@ -28,7 +28,6 @@ import { NotesCtrl } from './notes'
 import ClockCtrl from './clock/ClockCtrl'
 import CorresClockCtrl from './correspondenceClock/corresClockCtrl'
 import socketHandler from './socketHandler'
-import atomic from './atomic'
 import * as xhr from './roundXhr'
 import crazyValid from './crazy/crazyValid'
 import { OnlineRoundInterface } from './'
@@ -464,15 +463,6 @@ export default class OnlineRound implements OnlineRoundInterface {
       if (o.promotion) {
         ground.promote(this.draughtsground, o.promotion.key)
       }
-
-      if (o.enpassant) {
-        const p = o.enpassant
-        if (d.game.variant.key === 'atomic') {
-          atomic.enpassant(this.draughtsground, p.key, p.color)
-        } else {
-          sound.capture()
-        }
-      }
     }
 
     if (o.clock) {
@@ -503,14 +493,10 @@ export default class OnlineRound implements OnlineRoundInterface {
 
     if (!this.replaying() && playedColor !== d.player.color &&
       (this.draughtsground.state.premovable.current || this.draughtsground.state.predroppable.current)) {
-      // atrocious hack to prevent race condition
-      // with explosions and premoves
-      // https://github.com/ornicar/lila/issues/343
-      const premoveDelay = d.game.variant.key === 'atomic' ? 100 : 1
       setTimeout(() => {
         this.draughtsground.playPremove()
         this.playPredrop()
-      }, premoveDelay)
+      }, 1)
     }
 
     if (this.data.game.speed === 'correspondence') {
@@ -658,15 +644,9 @@ export default class OnlineRound implements OnlineRoundInterface {
     }
   }
 
-  private onMove = (_: Key, dest: Key, capturedPiece?: Piece) => {
+  private onMove = (_: Key, __: Key, capturedPiece?: Piece) => {
     if (capturedPiece) {
-      if (this.data.game.variant.key === 'atomic') {
-        atomic.capture(this.draughtsground, dest)
-        sound.explosion()
-      }
-      else {
-        sound.capture()
-      }
+      sound.capture()
     } else {
       sound.move()
     }

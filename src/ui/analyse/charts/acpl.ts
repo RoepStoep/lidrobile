@@ -127,7 +127,7 @@ function makeSerieData(d: AnalyseData): Point[] {
     }
     else if (node.san && node.san.indexOf('#') > 0) {
       cp = color === 1 ? Infinity : -Infinity
-      if (d.game.variant.key === 'antichess') cp = -cp
+      if (d.game.variant.key === 'antidraughts') cp = -cp
     }
     else if (node.eval && node.eval.cp !== undefined) {
       cp = node.eval.cp
