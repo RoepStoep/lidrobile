@@ -5,6 +5,7 @@ npm-debug.log
 /*.keystore
 /build.json
 /scripts/deploy-stage.sh
+/dev.bat
 
 /platforms
 /plugins
@@ -17,7 +18,6 @@ npm-debug.log
 /node_modules
 /env.json
 /env-*.json
-!/env-stage.json
 
 .DS_Store
 .tags
