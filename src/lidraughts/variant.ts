@@ -75,7 +75,7 @@ export default function getVariant(key: VariantKey): DocVariant {
   return variantMap[key]
 }
 
-export function getLichessVariant(key: VariantKey): Variant {
+export function getLidraughtsVariant(key: VariantKey): Variant {
   const dv = variantMap[key]
   return {
     key,

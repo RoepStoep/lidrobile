@@ -16,18 +16,18 @@ import challengesApi from './lidraughts/challenges'
 import { ChallengesData } from './lidraughts/interfaces/challenge'
 import session from './session'
 
-export interface LichessMessage<T> {
+export interface LidraughtsMessage<T> {
   t: string
   d?: T
 }
 
-export type LichessMessageAny = LichessMessage<{}>
+export type LidraughtsMessageAny = LidraughtsMessage<{}>
 
 interface Options {
   name: string
   debug?: boolean
   pingDelay?: number
-  sendOnOpen?: ReadonlyArray<LichessMessageAny>
+  sendOnOpen?: ReadonlyArray<LidraughtsMessageAny>
   registeredEvents: string[]
   isAuth?: boolean
 }
@@ -37,7 +37,7 @@ interface SocketConfig {
   params?: StringMap
 }
 
-type MessageHandler<D, P extends LichessMessage<D>> = (data?: D, payload?: P) => void
+type MessageHandler<D, P extends LidraughtsMessage<D>> = (data?: D, payload?: P) => void
 type MessageHandlerGeneric = MessageHandler<{}, any>
 
 export interface MessageHandlers {
@@ -63,12 +63,12 @@ interface ConnectionSetup {
   handlers: SocketHandlers
 }
 
-interface FollowingEntersPayload extends LichessMessage<Friend> {
+interface FollowingEntersPayload extends LidraughtsMessage<Friend> {
   playing: boolean
   patron: boolean
 }
 
-interface FollowingOnlinePayload extends LichessMessage<Array<string>> {
+interface FollowingOnlinePayload extends LidraughtsMessage<Array<string>> {
   playing: Array<string>
   patrons: Array<string>
 }

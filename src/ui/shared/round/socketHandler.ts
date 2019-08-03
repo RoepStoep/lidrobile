@@ -1,5 +1,5 @@
 import i18n from '../../../i18n'
-import socket, { RedirectObj, LichessMessageAny, MessageHandlers } from '../../../socket'
+import socket, { RedirectObj, LidraughtsMessageAny, MessageHandlers } from '../../../socket'
 import * as gameApi from '../../../lidraughts/game'
 import { GameCrowd, ApiEnd } from '../../../lidraughts/interfaces/game'
 import { ChatMsg } from '../../../lidraughts/interfaces/chat'
@@ -12,7 +12,7 @@ import * as xhr from './roundXhr'
 
 export default function(ctrl: OnlineRound, onFeatured?: () => void, onUserTVRedirect?: () => void) {
 
-  function reload(o: LichessMessageAny) {
+  function reload(o: LidraughtsMessageAny) {
     // lidraughts trick for mobile API BC
     if (o && o.t)
       handlers[o.t](o.d)

@@ -198,7 +198,7 @@ function renderLinks(user?: Session) {
       }
       {hasNetwork() ?
       <li className="side_link" data-route="/tv">
-        <span data-icon="1"/>{i18n('watchLichessTV')}
+        <span data-icon="1"/>{i18n('watchLidraughtsTV')}
       </li> : null
       }
       {hasNetwork() ?

@@ -140,7 +140,7 @@ function renderWebsiteLinks(ctrl: IUserCtrl, user: ProfileUser) {
         <a className="external_link"
           oncreate={helper.ontapY(() => xhr.openWebsiteAuthPage('/patron'))}
         >
-          Lichess Patron
+          Lidraughts Patron
         </a>
       </p> : null
       }

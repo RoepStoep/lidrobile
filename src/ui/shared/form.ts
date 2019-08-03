@@ -3,7 +3,7 @@ import * as h from 'mithril/hyperscript'
 import i18n from '../../i18n'
 import redraw from '../../utils/redraw'
 import { StoredProp } from '../../storage'
-import { LichessPropOption } from '../../lidraughts/prefs'
+import { LidraughtsPropOption } from '../../lidraughts/prefs'
 import * as helper from '../helper'
 
 type SelectOption = ReadonlyArray<string>
@@ -61,10 +61,10 @@ export default {
     ]
   },
 
-  renderLichessPropSelect(
+  renderLidraughtsPropSelect(
     label: string,
     name: string,
-    options: ReadonlyArray<LichessPropOption>,
+    options: ReadonlyArray<LidraughtsPropOption>,
     settingsProp: StoredProp<number>,
     isDisabled?: boolean
   ) {
@@ -80,7 +80,7 @@ export default {
           const val = (e.target as HTMLSelectElement).value
           settingsProp(~~val)
         }
-      }, options.map(e => renderLichessPropOption(e[1], e[0], prop, e[2])))
+      }, options.map(e => renderLidraughtsPropOption(e[1], e[0], prop, e[2])))
     ]
   },
 
@@ -135,7 +135,7 @@ export default {
     ])
   },
 
-  lidraughtsPropToOption([value, label, labelArg]: LichessPropOption) {
+  lidraughtsPropToOption([value, label, labelArg]: LidraughtsPropOption) {
     const l = labelArg !== undefined ? i18n(label, labelArg) : i18n(label)
     return {
       label: l,
@@ -184,7 +184,7 @@ function renderOption(label: string, value: string, prop: string, labelArg?: str
   }, l)
 }
 
-function renderLichessPropOption(label: string, value: number, prop: number, labelArg?: string) {
+function renderLidraughtsPropOption(label: string, value: number, prop: number, labelArg?: string) {
   const l = labelArg ? i18n(label, labelArg) : i18n(label)
   return h('option', {
     key: value,

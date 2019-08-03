@@ -1,7 +1,7 @@
 import * as h from 'mithril/hyperscript'
 import i18n from '../../../i18n'
 import session from '../../../session'
-import { LichessPropOption, ChallengeChoices, Challenge } from '../../../lidraughts/prefs'
+import { LidraughtsPropOption, ChallengeChoices, Challenge } from '../../../lidraughts/prefs'
 import { StoredProp } from '../../../storage'
 import { dropShadowHeader, backButton } from '../../shared/common'
 import formWidgets from '../../shared/form'
@@ -37,7 +37,7 @@ function renderBody(ctrl: Ctrl) {
         'follow', ctrl.follow)),
       h('li.list_item', [
         h('div.label', i18n('letOtherPlayersChallengeYou')),
-        h('div.select_input.no_label.settingsChoicesBlock', formWidgets.renderLichessPropSelect('', 'challenge', <Array<LichessPropOption>>ChallengeChoices, ctrl.challenge))
+        h('div.select_input.no_label.settingsChoicesBlock', formWidgets.renderLidraughtsPropSelect('', 'challenge', <Array<LidraughtsPropOption>>ChallengeChoices, ctrl.challenge))
       ])
     ])
   ]

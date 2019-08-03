@@ -77,7 +77,7 @@ export default {
           ])
         ]),
         h('div.signup', [
-          i18n('newToLichess') + ' ',
+          i18n('newToLidraughts') + ' ',
           h('br'),
           h('a', {
             oncreate: helper.ontap(signupModal.open)

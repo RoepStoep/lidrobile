@@ -97,7 +97,7 @@ function renderTitle(ctrl: OnlineRound) {
       return h('div.main_header_title.withSub', {
         key: 'tv'
       }, [
-        h('h1.header-gameTitle', [h('span.withIcon[data-icon=1]'), 'Lichess TV']),
+        h('h1.header-gameTitle', [h('span.withIcon[data-icon=1]'), 'Lidraughts TV']),
         h('h2.header-subTitle', tvChannelSelector(ctrl))
       ])
     }

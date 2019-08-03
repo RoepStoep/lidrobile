@@ -1,4 +1,4 @@
-import { getLichessVariant, getInitialFen } from '../../lidraughts/variant'
+import { getLidraughtsVariant, getInitialFen } from '../../lidraughts/variant'
 import { AnalyseData } from '../../lidraughts/interfaces/analyse'
 import { playerFromFen, plyFromFen } from '../../utils/fen'
 import { oppositeColor } from '../../utils'
@@ -6,7 +6,7 @@ import { oppositeColor } from '../../utils'
 export function makeDefaultData(variantKey: VariantKey, fen?: string): AnalyseData {
   const player = playerFromFen(fen)
   const ply = plyFromFen(fen)
-  const variant = getLichessVariant(variantKey)
+  const variant = getLidraughtsVariant(variantKey)
 
   const initialFen = fen || getInitialFen(variantKey)
 

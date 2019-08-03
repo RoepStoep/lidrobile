@@ -41,7 +41,7 @@ export default {
     return layout.free(header,
       h('ul.native_scroller.page.settings_list.game',
         renderAppPrefs().concat(hasNetwork() && session.isConnected() ?
-          renderLichessPrefs(ctrl) : []
+          renderLidraughtsPrefs(ctrl) : []
         )
     ))
   }
@@ -62,7 +62,7 @@ function renderAppPrefs() {
   ]
 }
 
-function renderLichessPrefs(ctrl: Ctrl) {
+function renderLidraughtsPrefs(ctrl: Ctrl) {
   return [
     h('li.list_item', formWidgets.renderMultipleChoiceButton(
       i18n('premovesPlayingDuringOpponentTurn'), [
@@ -80,7 +80,7 @@ function renderLichessPrefs(ctrl: Ctrl) {
     )),
     h('li.list_item', [
       h('div.label', i18n('moveConfirmation')),
-      h('div.select_input.no_label.settingsChoicesBlock', formWidgets.renderLichessPropSelect('', 'moveConfirmation', SubmitMoveChoices, ctrl.submitMove))
+      h('div.select_input.no_label.settingsChoicesBlock', formWidgets.renderLidraughtsPropSelect('', 'moveConfirmation', SubmitMoveChoices, ctrl.submitMove))
     ])
   ]
 }

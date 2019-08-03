@@ -17,7 +17,7 @@ export default class TournamentsListCtrl {
       data.started = data.started.filter(supported)
       data.created = data.created.filter(supported)
       data.finished = data.finished.filter(supported)
-      data.started.sort(sortByLichessAndDate)
+      data.started.sort(sortByLidraughtsAndDate)
       data.finished.sort(sortByEndDate)
       this.tournaments = data
       redraw()
@@ -45,7 +45,7 @@ function supported(t: TournamentListItem) {
   return settings.game.supportedVariants.indexOf(t.variant.key) !== -1
 }
 
-function sortByLichessAndDate(a: TournamentListItem, b: TournamentListItem) {
+function sortByLidraughtsAndDate(a: TournamentListItem, b: TournamentListItem) {
   if (a.createdBy === 'lidraughts' && b.createdBy === 'lidraughts') {
     return a.startsAt - b.startsAt
   } else if (a.createdBy === 'lidraughts') {

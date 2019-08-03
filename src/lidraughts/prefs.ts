@@ -1,4 +1,4 @@
-export interface LichessPropOption extends Array<number | string> {
+export interface LidraughtsPropOption extends Array<number | string> {
     0: number
     1: string
     2: string
@@ -13,7 +13,7 @@ export const AutoQueenChoices = [
   [ AutoQueen.NEVER, 'never' ],
   [ AutoQueen.ALWAYS, 'always' ],
   [ AutoQueen.PREMOVE, 'whenPremoving' ]
-] as Array<LichessPropOption>
+] as Array<LidraughtsPropOption>
 
 export const SubmitMove = {
   NEVER: 0,
@@ -26,7 +26,7 @@ export const SubmitMoveChoices = [
   [ SubmitMove.CORRESPONDENCE_ONLY, 'inCorrespondenceGames' ],
   [ SubmitMove.CORRESPONDENCE_UNLIMITED, 'Correspondence and unlimited' ],
   [ SubmitMove.ALWAYS, 'always' ]
-] as Array<LichessPropOption>
+] as Array<LidraughtsPropOption>
 
 export const ConfirmResign = {
   NO: 0,
@@ -35,7 +35,7 @@ export const ConfirmResign = {
 export const ConfirmResignChoices = [
   [ ConfirmResign.NO, 'no' ],
   [ ConfirmResign.YES, 'yes' ]
-] as Array<LichessPropOption>
+] as Array<LidraughtsPropOption>
 
 export const AutoThreefold = {
   NEVER: 1,
@@ -46,7 +46,7 @@ export const AutoThreefoldChoices = [
   [ AutoThreefold.NEVER, 'never' ],
   [ AutoThreefold.ALWAYS, 'always' ],
   [ AutoThreefold.TIME, 'whenTimeRemainingLessThanThirtySeconds' ]
-] as Array<LichessPropOption>
+] as Array<LidraughtsPropOption>
 
 export const Takeback = {
   NEVER: 1,
@@ -57,7 +57,7 @@ export const TakebackChoices = [
   [ Takeback.NEVER, 'never' ],
   [ Takeback.ALWAYS, 'always' ],
   [ Takeback.CASUAL, 'inCasualGamesOnly' ]
-] as Array<LichessPropOption>
+] as Array<LidraughtsPropOption>
 
 export const Animation = {
   NONE: 0,
@@ -70,7 +70,7 @@ export const AnimationChoices = [
   [ Animation.FAST, 'fast' ],
   [ Animation.NORMAL, 'normal' ],
   [ Animation.SLOW, 'slow' ]
-] as Array<LichessPropOption>
+] as Array<LidraughtsPropOption>
 
 export const Replay = {
   NEVER: 0,
@@ -81,7 +81,7 @@ export const ReplayChoices = [
   [ Replay.NEVER, 'never' ],
   [ Replay.SLOW, 'onSlowGames' ],
   [ Replay.ALWAYS, 'always' ]
-] as Array<LichessPropOption>
+] as Array<LidraughtsPropOption>
 
 export const ClockTenths = {
   NEVER: 0,
@@ -92,7 +92,7 @@ export const ClockTenthsChoices = [
   [ ClockTenths.NEVER, 'never' ],
   [ ClockTenths.LOWTIME, 'whenTimeRemainingLessThanTenSeconds' ],
   [ ClockTenths.ALWAYS, 'always' ]
-] as Array<LichessPropOption>
+] as Array<LidraughtsPropOption>
 
 export const Challenge = {
   NEVER: 1,
@@ -105,7 +105,7 @@ export const ChallengeChoices = [
   [ Challenge.RATING, 'ifRatingIsPlusMinusX', '500' ],
   [ Challenge.FRIEND, 'onlyFriends' ],
   [ Challenge.ALWAYS, 'always' ]
-] as Array<LichessPropOption>
+] as Array<LidraughtsPropOption>
 
 export const Message = {
   NEVER: 1,
@@ -116,4 +116,4 @@ export const MessageChoices = [
   [ Message.NEVER, 'never' ],
   [ Message.FRIEND, 'onlyFriends' ],
   [ Message.ALWAYS, 'always' ]
-] as Array<LichessPropOption>
+] as Array<LidraughtsPropOption>
