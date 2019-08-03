@@ -1,16 +1,14 @@
-import * as h from 'mithril/hyperscript'
+/*import * as h from 'mithril/hyperscript'
 import { oppositeColor } from '../../../utils'
-import CrazyPocket from '../../shared/round/crazy/CrazyPocket'
+import CrazyPocket from '../../shared/round/crazy/CrazyPocket'*/
 
 import AnalyseCtrl from '../AnalyseCtrl'
 
-export default function renderCrazy(ctrl: AnalyseCtrl) {
+export default function renderCrazy(_: AnalyseCtrl) {
 
-  const crazyData = ctrl.node.crazyhouse
+  return null
 
-  if (!crazyData) return null
-
-  return h('div.analyse-crazyPockets', {
+  /*return h('div.analyse-crazyPockets', {
     key: 'crazyPockets'
   }, [
     h(CrazyPocket, {
@@ -23,5 +21,5 @@ export default function renderCrazy(ctrl: AnalyseCtrl) {
       crazyData,
       color: oppositeColor(ctrl.orientation)
     })
-  ])
+  ])*/
 }

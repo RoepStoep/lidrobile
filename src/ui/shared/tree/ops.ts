@@ -1,5 +1,5 @@
 import { Tree } from './interfaces'
-import { Pockets } from '../../../lidraughts/interfaces/game'
+import { countGhosts, fenCompare } from '../../../draughtsground/fen'
 
 function mainlineChild(node: Tree.Node): Tree.Node | undefined {
   return node.children[0]
@@ -72,50 +72,177 @@ export function countChildrenAndComments(node: Tree.Node) {
   return count
 }
 
-interface Crazy {
-  crazy?: {
-    pockets: Pockets
-  }
+export function copyNode(node: Tree.Node, copyChildren: boolean = false): Tree.Node {
+  return {
+    id: node.id,
+    ply: node.ply,
+    displayPly: node.displayPly,
+    fen: node.fen,
+    uci: node.uci,
+    san: node.san,
+    children: copyChildren ? node.children : new Array(),
+    drops: node.drops,
+    comments: node.comments,
+    dests: node.dests,
+    captLen: node.captLen,
+    threat: node.threat,
+    ceval: node.ceval,
+    eval: node.eval,
+    opening: node.opening,
+    glyphs: node.glyphs,
+    clock: node.clock,
+    parentClock: node.parentClock,
+    shapes: node.shapes,
+    comp: node.comp,
+    threefold: node.threefold,
+    fail: node.fail,
+    puzzle: node.puzzle,
+    pdnMoves: node.pdnMoves,
+    player: node.player,
+    end: node.end,
+    gamebook: node.gamebook
+  } as Tree.Node;
 }
 
-export function reconstruct(parts: Array<Partial<Tree.Node & Crazy>>): Tree.Node {
-  const proot: any = parts[0]
-  // adapt to offline format which use crazyhouse field name
-  if (proot.crazy !== undefined) {
-    proot.crazyhouse = proot.crazy
-    proot.crazy = undefined
+export function mergeNodes(curNode: Tree.Node, newNode: Tree.Node, mergeChildren = false) {
+
+  const curGhosts = countGhosts(curNode.fen);
+
+  if (curNode.mergedNodes)
+    curNode.mergedNodes.push(copyNode(newNode));
+  else
+    curNode.mergedNodes = [copyNode(curNode), copyNode(newNode)];
+
+  curNode.id = curNode.id.slice(0, 1) + newNode.id.slice(1, 2);
+  curNode.fen = newNode.fen;
+
+  if (curNode.dests && newNode.dests)
+    curNode.dests = newNode.dests;
+
+  if (curNode.san && newNode.san) {
+    const curX = curNode.san.indexOf('x'), newX = newNode.san.indexOf('x');
+    if (curX != -1 && newX != -1)
+      curNode.san = curNode.san.slice(0, curX) + newNode.san.slice(newX);
   }
-  proot.id = ''
-  const root = proot as Tree.Node
-  let node: Tree.Node = root
-  for (let i = 1, nb = parts.length; i < nb; i++) {
-    const np = parts[i]
-    if (np.crazy !== undefined) {
-      np.crazyhouse = np.crazy
-      np.crazy = undefined
+
+  if (curNode.uci && newNode.uci) {
+    if (curGhosts === 1)
+      curNode.uci = curNode.uci.substr(0, 4) + newNode.uci.substr(2, 2);
+    else
+      curNode.uci = curNode.uci + newNode.uci.substr(2, 2);
+  }
+
+  if (curNode.displayPly && countGhosts(newNode.fen) == 0)
+    curNode.ply = curNode.displayPly;
+
+  if (newNode.captLen)
+    curNode.captLen = newNode.captLen;
+
+  curNode.clock = newNode.clock;
+  curNode.parentClock = newNode.parentClock;
+  curNode.puzzle = newNode.puzzle;
+  curNode.eval = newNode.eval;
+  if (newNode.glyphs) curNode.glyphs = newNode.glyphs;
+  newNode.comments && newNode.comments.forEach(function (c) {
+    if (!curNode.comments) curNode.comments = [c];
+    else if (!curNode.comments.filter(function (d) {
+      return d.text === c.text;
+    }).length) curNode.comments.push(c);
+  });
+
+  if (mergeChildren && newNode.children) {
+    newNode.children.forEach(function (child: Tree.Node) {
+      if (countGhosts(child.fen) !== 0)
+        child.displayPly = child.ply + 1;
+    });
+    if (curNode.children)
+      curNode.children.concat(newNode.children);
+    else curNode.children = newNode.children;
+  }
+
+}
+
+export function reconstruct(parts: Array<Tree.Node>): Tree.Node {
+  const root = copyNode(parts[0], true), nb = parts.length;
+  let node = root, i: number;
+  root.id = '';
+  for (i = 1; i < nb; i++) {
+    const n = copyNode(parts[i], true);
+    const ghosts = countGhosts(node.fen);
+    if (ghosts !== 0) {
+      mergeNodes(node, n, true);
+      node.ply = n.ply;
+    } else {
+      if (countGhosts(n.fen) !== 0)
+        n.displayPly = n.ply + 1;
+      if (node.children) {
+        node.children.forEach(function (child: Tree.Node) {
+          if (countGhosts(child.fen) !== 0)
+            child.displayPly = child.ply + 1;
+        });
+        node.children.unshift(n);
+      } else node.children = [n];
+      node = n;
     }
-    const n = np as Tree.Node
-    if (node.children) node.children.unshift(n)
-    else node.children = [n]
-    node = n
   }
-  node.children = node.children || []
-  return root
+  node.children = node.children || [];
+  return root;
 }
 
-// adds n2 into n1
-export function merge(n1: Tree.Node, n2: Tree.Node): void {
-  n1.eval = n2.eval
-  if (n2.glyphs) n1.glyphs = n2.glyphs
-  n2.comments && n2.comments.forEach(c => {
-    if (!n1.comments) n1.comments = [c]
-    else if (!n1.comments.filter(d => d.text === c.text).length) n1.comments.push(c)
-  })
-  n2.children.forEach(c => {
-    const existing = childById(n1, c.id)
-    if (existing) merge(existing, c)
-    else n1.children.push(c)
-  })
+// adds n2 into n1, returns any halfway multicapture variation that was merged, thus changing the currently played move (accomodates puzzle solution clicked halfway through move)
+export function merge(n1: Tree.Node, n2: Tree.Node, n2Expanded?: Tree.Node): Tree.Node | undefined {
+  n1.eval = n2.eval;
+  if (n2.glyphs) n1.glyphs = n2.glyphs;
+  n2.comments && n2.comments.forEach(function (c) {
+    if (!n1.comments) n1.comments = [c];
+    else if (!n1.comments.filter(function (d) {
+      return d.text === c.text;
+    }).length) n1.comments.push(c);
+  });
+  var mergedChildren: Tree.Node | undefined = undefined;
+  n2.children.forEach(function (c) {
+    const existing = childById(n1, c.id);
+    if (existing) mergedChildren = merge(existing, c, n2Expanded);
+    else if (n2Expanded) {
+      var ghostChild = false;
+      for (var i = 0; !ghostChild && i < n1.children.length; i++) {
+        if (countGhosts(n1.children[i].fen) > 0) {
+          var expandedChild = n2Expanded.children.length != 0 ? n2Expanded.children[0] : undefined;
+          while (expandedChild && !fenCompare(expandedChild.fen, n2.fen))
+            expandedChild = expandedChild.children.length != 0 ? expandedChild.children[0] : undefined;
+          if (expandedChild && fenCompare(expandedChild.fen, n2.fen) && expandedChild.children.length != 0 && countGhosts(expandedChild.children[0].fen) > 0) {
+            // found the corresponding node in the expanded tree
+            var walkPly = expandedChild.children[0].ply;
+            var childNode: Tree.Node | undefined = expandedChild.children[0];
+            var matchNode = copyNode(childNode);
+            while (childNode && childNode.ply <= walkPly && !fenCompare(matchNode.fen, n1.children[i].fen)) {
+              childNode = childNode.children.length != 0 ? childNode.children[0] : undefined;
+              if (childNode) {
+                mergeNodes(matchNode, childNode);
+              }
+            }
+            if (fenCompare(matchNode.fen, n1.children[i].fen)) {
+              while (childNode && childNode.ply <= walkPly) {
+                childNode = childNode.children.length != 0 ? childNode.children[0] : undefined;
+                if (childNode) {
+                  mergeNodes(n1.children[i], childNode);
+                }
+              }
+              const existing = childById(n1, c.id);
+              if (existing) {
+                merge(existing, c, n2Expanded);
+                mergedChildren = n1.children[i];
+                ghostChild = true;
+              }
+            }
+          }
+        }
+      }
+      if (!ghostChild) n1.children.push(c);
+    }
+    else n1.children.push(c);
+  });
+  return mergedChildren;
 }
 
 export function hasBranching(node: Tree.Node, maxDepth: number): boolean {

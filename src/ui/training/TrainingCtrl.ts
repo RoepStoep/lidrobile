@@ -262,7 +262,8 @@ export default class TrainingCtrl implements PromotingInterface {
       {
         fen: this.data.puzzle.fen,
         ply: this.data.puzzle.initialPly - 1,
-        id: ''
+        id: '',
+        children: []
       },
       this.data.game.treeParts
     ]))
@@ -295,7 +296,6 @@ export default class TrainingCtrl implements PromotingInterface {
       orientation: this.data.puzzle.color,
       movableColor: this.gameOver() ? null : this.data.puzzle.color,
       dests: dests || null,
-      check: !!node.check,
       lastMove: node.uci ? chessFormat.uciToMove(node.uci) : null
     }
 

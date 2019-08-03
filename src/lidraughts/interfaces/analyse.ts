@@ -16,7 +16,7 @@ export interface AnalyseData {
   readonly userAnalysis: boolean
   readonly tournament?: Tournament
   readonly forecast?: any
-  treeParts: Array<Partial<Tree.Node>>
+  treeParts: Array<Tree.Node>
   readonly evalPut?: boolean
   // practiceGoal?: PracticeGoal
   readonly pref: any

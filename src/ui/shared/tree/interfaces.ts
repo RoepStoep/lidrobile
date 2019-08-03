@@ -1,4 +1,3 @@
-import { Pockets } from '../../../lidraughts/interfaces/game'
 import { Shape as BrushShape } from '../BoardBrush'
 
 export namespace Tree {
@@ -33,17 +32,19 @@ export namespace Tree {
   }
 
   export interface Node {
-    readonly id: string
-    readonly ply: Ply
-    readonly fen: Fen
-    readonly uci?: Uci
-    readonly san?: San
+    id: string
+    ply: Ply
+    displayPly?: Ply;
+    fen: Fen
+    uci?: Uci
+    san?: San
     children: Node[]
+    mergedNodes?: Node[]
     drops?: string | ReadonlyArray<string> | undefined | null
     comments?: Comment[]
     // TODO maybe don't keep both formats for dests & drops
     dests?: string | DestsMap
-    readonly check?: boolean
+    captLen?: number
     threat?: ClientEval
     ceval?: ClientEval
     eval?: ServerEval
@@ -57,13 +58,9 @@ export namespace Tree {
     readonly fail?: boolean
     puzzle?: string
     // added locally during analysis by chess worker
-    kingMoves?: { white: number, black: number, whiteKing: string, blackKing: string }
     readonly pdnMoves?: ReadonlyArray<string>
     player?: Color
     end?: boolean
-    crazyhouse?: {
-      readonly pockets: Pockets
-    }
     // added locally by study gamebook ctrl
     gamebook?: Gamebook
   }

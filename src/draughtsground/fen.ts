@@ -137,10 +137,21 @@ export function readKingMoves(fen: string): cg.KingMoves | null {
   return result;
 }
 
+export function fenCompare(fen1: string, fen2: string) {
+  const fenParts1: string[] = fen1.split(':');
+  const fenParts2: string[] = fen2.split(':');
+  if (fenParts1.length < 3 || fenParts2.length < 3) return false;
+  for (let i = 0; i < 3; i++) {
+      if (fenParts1[i] !== fenParts2[i]) return false;
+  }
+  return true;
+}
+
 export default {
   initial,
   read,
   write,
   countGhosts,
-  readKingMoves
+  readKingMoves,
+  fenCompare
 }

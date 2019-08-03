@@ -40,10 +40,11 @@ export function makeDefaultData(variantKey: VariantKey, fen?: string): AnalyseDa
     },
     treeParts: [
       {
+        id: '',
         fen: initialFen,
         ply,
-        crazyhouse: undefined,
-        pdnMoves: []
+        pdnMoves: [],
+        children: []
       }
     ],
     userAnalysis: true

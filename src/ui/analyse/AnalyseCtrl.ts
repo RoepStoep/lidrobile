@@ -432,13 +432,7 @@ export default class AnalyseCtrl {
   gameOver(): boolean {
     if (!this.node) return false
     // node.end boolean is fetched async for online games (along with the dests)
-    if (this.node.end === undefined) {
-      if (this.node.check) {
-        const san = this.node.san
-        const checkmate = !!(san && san[san.length - 1] === '#')
-        return checkmate
-      }
-    } else {
+    if (this.node.end !== undefined) {
       return this.node.end
     }
 
@@ -654,7 +648,6 @@ export default class AnalyseCtrl {
       orientation: this.settings.s.flip ? oppositeColor(this.orientation) : this.orientation,
       movableColor: this.gameOver() ? null : color,
       dests: dests || null,
-      check: !!node.check,
       lastMove: node.uci ? chessFormat.uciToMoveOrDrop(node.uci) : null
     }
 

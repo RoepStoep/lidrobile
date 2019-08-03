@@ -1,5 +1,4 @@
 import * as h from 'mithril/hyperscript'
-import router from '../../router'
 import * as helper from '../helper'
 import socket from '../../socket'
 import layout from '../layout'
@@ -44,8 +43,8 @@ function externalLink(text: string, url: string): Mithril.Child {
   }, text)
 }
 
-function internalLink(text: string, route: string): Mithril.Child {
+/*function internalLink(text: string, route: string): Mithril.Child {
   return h('a', {
     onclick: () => router.set(route)
   }, text)
-}
+}*/
