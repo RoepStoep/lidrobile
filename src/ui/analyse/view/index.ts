@@ -6,7 +6,6 @@ import * as utils from '../../../utils'
 import { emptyFen } from '../../../utils/fen'
 import continuePopup from '../../shared/continuePopup'
 import spinner from '../../../spinner'
-import { view as renderPromotion } from '../../shared/offlineRound/promotion'
 import ViewOnlyBoard from '../../shared/ViewOnlyBoard'
 import { notesView } from '../../shared/round/notes'
 import { Bounds } from '../../shared/Board'
@@ -59,7 +58,6 @@ export function renderContent(ctrl: AnalyseCtrl, isPortrait: boolean, bounds: Bo
 
 export function overlay(ctrl: AnalyseCtrl) {
   return [
-    renderPromotion(ctrl),
     ctrl.study ? studyActionMenu.view(ctrl.study.actionMenu) : menu.view(ctrl.menu),
     ctrl.study && ctrl.study.chat ? chatView(ctrl.study.chat) : null,
     analyseSettings.view(ctrl.settings),

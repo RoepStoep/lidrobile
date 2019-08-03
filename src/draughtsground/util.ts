@@ -11,16 +11,16 @@ const key2posn = (k: number) => [(k - 1) % 5 + 1, ((k - 1) + (5 - (k - 1) % 5)) 
 
 export function boardpos(pos: cg.Pos, asWhite: boolean): BoardPos {
   return {
-    left: (asWhite ? pos[0] - 1 : 8 - pos[0]) * 12.5,
-    bottom: (asWhite ? pos[1] - 1 : 8 - pos[1]) * 12.5
+    left: (asWhite ? pos[0] - 1 : 10 - pos[0]) * 10.0,
+    bottom: (asWhite ? pos[1] - 1 : 10 - pos[1]) * 10.0
   }
 }
 
 export function posToTranslate(pos: cg.Pos, asWhite: boolean, bounds: ClientRect): NumberPair {
   return [
-    (asWhite ? pos[0] - 1 : 8 - pos[0]) * bounds.width / 8,
-    (asWhite ? 8 - pos[1] : pos[1] - 1) * bounds.height / 8
-  ]
+    (!asWhite ? 4.5 - ((pos[1] % 2 !== 0 ? -0.5 : -1) + pos[0]) : (pos[1] % 2 !== 0 ? -0.5 : -1) + pos[0]) * bounds.width / 5,
+    (!asWhite ? 10 - pos[1] : pos[1] - 1) * bounds.height / 10
+  ];
 }
 
 export const allKeys: Key[] = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28', '29', '30', '31', '32', '33', '34', '35', '36', '37', '38', '39', '40', '41', '42', '43', '44', '45', '46', '47', '48', '49', '50'];

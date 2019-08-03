@@ -8,12 +8,13 @@ export interface GameData {
   readonly opponent: Player
   readonly correspondence?: CorrespondenceClockData
   readonly clock?: ClockData
-  readonly steps: Array<GameStep>
+  steps: Array<GameStep>
   readonly tournament?: Tournament
   note?: string
   readonly chat?: Array<ChatMsg>
   possibleMoves?: StringMap
   possibleDrops?: PossibleDrops
+  captureLength?: number
   userTV?: string
   tv?: string
   readonly pref?: any
@@ -197,11 +198,11 @@ export interface Pocket {
 export type Pockets = [Pocket, Pocket]
 
 export interface GameStep {
-  readonly ply: number
-  readonly fen: string
-  readonly san: string | null
-  readonly uci: string | null
-  readonly kingMoves?: KingMoves
+  ply: number
+  fen: string
+  san: string | null
+  uci: string | null
+  readonly captLen?: number;
   readonly dests?: DestsMap
   readonly drops?: ReadonlyArray<string>
 }

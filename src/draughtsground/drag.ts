@@ -171,6 +171,9 @@ export function end(ctrl: Draughtsground, e: TouchEvent) {
     }
     else {
       board.userMove(state, cur.orig, dest)
+      // if we can continue capturing keep the piece selected, so all target squares can be clicked one after the other
+      if (state.movable.captLen !== null && state.movable.captLen > 1)
+        board.setSelected(state, dest);
     }
   }
   // board editor mode: delete any piece dropped off the board

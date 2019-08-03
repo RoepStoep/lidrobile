@@ -4,7 +4,6 @@ import { hasNetwork } from '../../utils'
 import session from '../../session'
 import settings from '../../settings'
 import Board, { Bounds } from '../shared/Board'
-import { view as renderPromotion } from '../shared/offlineRound/promotion'
 import { header, connectingHeader } from '../shared/common'
 import * as helper from '../helper'
 
@@ -49,7 +48,6 @@ export function renderContent(ctrl: TrainingCtrl, key: string, bounds: Bounds) {
 
 export function overlay(ctrl: TrainingCtrl) {
   return [
-    renderPromotion(ctrl),
     menu.view(ctrl.menu)
   ]
 }

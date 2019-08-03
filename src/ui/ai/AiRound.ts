@@ -14,7 +14,6 @@ import { StoredOfflineGame, setCurrentAIGame } from '../../utils/offlineGames'
 import { OfflineGameData, GameStatus } from '../../lidraughts/interfaces/game'
 import redraw from '../../utils/redraw'
 
-import promotion from '../shared/offlineRound/promotion'
 import ground from '../shared/offlineRound/ground'
 import makeData from '../shared/offlineRound/data'
 import { setResult } from '../shared/offlineRound'
@@ -244,14 +243,8 @@ export default class AiRound implements AiRoundInterface, PromotingInterface {
     return !sit.end && sit.player !== this.data.player.color
   }
 
-  private onPromotion = (orig: Key, dest: Key) => {
-    this.replay.addMove(orig, dest)
-  }
-
   private userMove = (orig: Key, dest: Key) => {
-    if (!promotion.start(this.draughtsground, orig, dest, this.onPromotion)) {
-      this.replay.addMove(orig, dest)
-    }
+    this.replay.addMove(orig, dest)
   }
 
   private onMove = (_: Key, __: Key, capturedPiece: Piece) => {

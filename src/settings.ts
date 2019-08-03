@@ -93,7 +93,7 @@ export default {
     animations: store.prop<boolean>('settings.gameAnimations', true),
     highlights: store.prop<boolean>('settings.boardHighlights', true),
     pieceDestinations: store.prop<boolean>('settings.pieceDestinations', true),
-    coords: store.prop<boolean>('settings.coords', true),
+    coords: store.prop<number>('settings.coords', 2),
     magnified: store.prop<boolean>('settings.pieceMagnified', true),
     pieceNotation: store.prop<boolean>('settings.pieceNotation', true),
     zenMode: store.prop<boolean>('settings.zenMode', false),

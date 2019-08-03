@@ -3,7 +3,6 @@ import * as utils from '../../utils'
 import i18n from '../../i18n'
 import Board from '../shared/Board'
 import { renderAntagonist, renderReplayTable, renderBackwardButton, renderForwardButton } from '../shared/offlineRound/view'
-import { view as renderPromotion } from '../shared/offlineRound/promotion'
 import * as helper from '../helper'
 import actions from './actions'
 import newGameMenu from './newOtbGame'
@@ -15,8 +14,7 @@ export function overlay(ctrl: OtbRound) {
   return [
     actions.view(ctrl.actions),
     newGameMenu.view(ctrl.newGameMenu),
-    importGamePopup.view(ctrl.importGamePopup),
-    renderPromotion(ctrl)
+    importGamePopup.view(ctrl.importGamePopup)
   ]
 }
 

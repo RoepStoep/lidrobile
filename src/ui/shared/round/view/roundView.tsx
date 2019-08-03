@@ -22,7 +22,6 @@ import Board from '../../../shared/Board'
 import popupWidget from '../../../shared/popup'
 import Clock from '../clock/clockView'
 import ClockCtrl from '../clock/ClockCtrl'
-import promotion from '../promotion'
 import gameButton from './button'
 import { chatView } from '../../chat'
 import { notesView } from '../notes'
@@ -52,7 +51,6 @@ function overlay(ctrl: OnlineRound) {
   return [
     ctrl.chat ? chatView(ctrl.chat, chatHeader) : null,
     ctrl.notes ? notesView(ctrl.notes) : null,
-    promotion.view(ctrl),
     renderGamePopup(ctrl),
     renderSubmitMovePopup(ctrl),
     h(PlayerPopup, {

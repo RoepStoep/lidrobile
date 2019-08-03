@@ -9,7 +9,16 @@ import * as h from 'mithril/hyperscript'
 function renderBody() {
   return [
     h('ul.native_scroller.page.settings_list.game', [
-      h('li.list_item', formWidgets.renderCheckbox(i18n('boardCoordinates'), 'coords', settings.game.coords)),
+      h('li.list_item',
+        formWidgets.renderMultipleChoiceButton(
+          i18n('boardCoordinates'), [
+            { label: i18n('no'), value: 0 },
+            { label: i18n('insideTheBoard'), value: 1 },
+            { label: i18n('outsideTheBoard'), value: 2 },
+          ],
+          settings.game.coords
+        )
+      ),
       h('li.list_item', formWidgets.renderCheckbox(i18n('pieceAnimation'), 'animations',
         settings.game.animations)),
       h('li.list_item', formWidgets.renderCheckbox('Magnified dragged piece', 'magnified',

@@ -14,7 +14,6 @@ import session from '../../session'
 import sound from '../../sound'
 import settings from '../../settings'
 import { PuzzleData } from '../../lidraughts/interfaces/training'
-import promotion from '../shared/offlineRound/promotion'
 import { PromotingInterface } from '../shared/round'
 
 import moveTest from './moveTest'
@@ -96,7 +95,6 @@ export default class TrainingCtrl implements PromotingInterface {
       if (this.node.san && this.node.san.indexOf('x') !== -1) sound.throttledCapture()
       else sound.throttledMove()
     }
-    promotion.cancel(this.draughtsground)
   }
 
   public userJump = (path: Tree.Path, withSound: boolean) => {
@@ -393,9 +391,7 @@ export default class TrainingCtrl implements PromotingInterface {
   private userMove = (orig: Key, dest: Key, captured?: Piece) => {
     if (captured) sound.capture()
     else sound.move()
-    if (!promotion.start(this.draughtsground, orig, dest, this.sendMove)) {
-      this.sendMove(orig, dest)
-    }
+    this.sendMove(orig, dest)
   }
 
   private revertUserMove = (path: Tree.Path) => {

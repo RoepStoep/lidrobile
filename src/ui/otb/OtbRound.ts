@@ -10,7 +10,6 @@ import { oppositeColor } from '../../utils'
 import { StoredOfflineGame, setCurrentOTBGame } from '../../utils/offlineGames'
 import redraw from '../../utils/redraw'
 
-import promotion from '../shared/offlineRound/promotion'
 import ground from '../shared/offlineRound/ground'
 import makeData from '../shared/offlineRound/data'
 import { setResult } from '../shared/offlineRound'
@@ -191,14 +190,8 @@ export default class OtbRound implements OtbRoundInterface, PromotingInterface {
     )
   }
 
-  private onPromotion = (orig: Key, dest: Key) => {
-    this.replay.addMove(orig, dest)
-  }
-
   private userMove = (orig: Key, dest: Key) => {
-    if (!promotion.start(this.draughtsground, orig, dest, this.onPromotion)) {
-      this.replay.addMove(orig, dest)
-    }
+    this.replay.addMove(orig, dest)
   }
 
   private onMove = (_: Key, __: Key, capturedPiece: Piece) => {

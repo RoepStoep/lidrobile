@@ -1,16 +1,23 @@
 import Draughtsground from '../../../draughtsground/Draughtsground'
 import * as cg from '../../../draughtsground/interfaces'
+import { countGhosts } from '../../../draughtsground/fen'
 import redraw from '../../../utils/redraw'
 import { batchRequestAnimationFrame } from '../../../utils/batchRAF'
 import * as gameApi from '../../../lidraughts/game'
-import { OnlineGameData } from '../../../lidraughts/interfaces/game'
+import { OnlineGameData, GameStep } from '../../../lidraughts/interfaces/game'
 import { AfterMoveMeta } from '../../../lidraughts/interfaces/move'
 import settings from '../../../settings'
 import { boardOrientation } from '../../../utils'
-import * as chessFormat from '../../../utils/draughtsFormat'
+import * as draughtsFormat from '../../../utils/draughtsFormat'
 
-function makeConfig(data: OnlineGameData, fen: string, flip: boolean = false): cg.InitConfig {
-  const lastMove = data.game.lastMove ? chessFormat.uciToMove(data.game.lastMove) : null
+function makeConfig(data: OnlineGameData, fen: string, flip: boolean = false, step?: GameStep): cg.InitConfig {
+  const lastMove = (step && step.uci !== null) ? 
+    draughtsFormat.uciToMove(step.uci) :
+    (data.game.lastMove ? draughtsFormat.uciToMove(data.game.lastMove) : null)
+
+  const turnColor = step ? 
+    ((step.ply - (countGhosts(step.fen) == 0 ? 0 : 1)) % 2 === 0 ? 'white' : 'black') :
+    data.game.player;
 
   const pieceMoveConf = settings.game.pieceMove()
 
@@ -18,13 +25,13 @@ function makeConfig(data: OnlineGameData, fen: string, flip: boolean = false): c
     fen: fen,
     batchRAF: batchRequestAnimationFrame,
     orientation: boardOrientation(data, flip),
-    turnColor: data.game.player,
+    turnColor: turnColor,
+    captureLength: data.captureLength,
     lastMove,
     coordinates: settings.game.coords(),
-    autoCastle: data.game.variant.key === 'standard',
     highlight: {
       lastMove: settings.game.highlights(),
-      kingMoves: settings.game.kingMoves()
+      kingMoves: settings.game.kingMoves() && (data.game.variant.key === 'frisian' || data.game.variant.key === 'frysk')
     },
     movable: {
       free: false,
@@ -39,6 +46,7 @@ function makeConfig(data: OnlineGameData, fen: string, flip: boolean = false): c
     premovable: {
       enabled: data.pref.enablePremove,
       showDests: settings.game.pieceDestinations(),
+      variant: data.game.variant.key,
       events: {
         set: () => redraw(),
         unset: redraw
@@ -69,9 +77,10 @@ function make(
   userMove: (orig: Key, dest: Key, meta: AfterMoveMeta) => void,
   userNewPiece: (role: Role, key: Key, meta: AfterMoveMeta) => void,
   onMove: (orig: Key, dest: Key, capturedPiece?: Piece) => void,
-  onNewPiece: () => void
+  onNewPiece: () => void, 
+  step?: GameStep
 ): Draughtsground {
-  const config = makeConfig(data, fen)
+  const config = makeConfig(data, fen, undefined, step)
   config.movable!.events = {
     after: userMove,
     afterNewPiece: userNewPiece
@@ -84,8 +93,8 @@ function make(
   return new Draughtsground(config)
 }
 
-function reload(ground: Draughtsground, data: OnlineGameData, fen: string, flip: boolean) {
-  ground.reconfigure(makeConfig(data, fen, flip))
+function reload(ground: Draughtsground, data: OnlineGameData, fen: string, flip: boolean, step?: GameStep) {
+  ground.reconfigure(makeConfig(data, fen, flip, step))
 }
 
 function promote(ground: Draughtsground, key: Key) {

@@ -152,7 +152,7 @@ export function selectSquare(state: State, key: Key, force?: boolean): void {
       unselect(state)
     } else if ((state.selectable.enabled || force) && state.selected !== key) {
       if (userMove(state, state.selected, key)) {
-        //If we can continue capturing keep the piece selected to enable quickly clicking all target squares one after the other
+        // if we can continue capturing keep the piece selected, so all target squares can be clicked one after the other
         if (state.movable.captLen !== null && state.movable.captLen > 1)
           setSelected(state, key);
       }
@@ -232,20 +232,26 @@ export function isDraggable(state: State, orig: Key): boolean {
   )
 }
 
-export function playPremove(state: State): void {
+export function playPremove(state: State): boolean {
   const move = state.premovable.current
-  if (!move) return
+  if (!move) return false
+  let success = false;
   const orig = move[0], dest = move[1]
   if (canMove(state, orig, dest)) {
-    if (baseUserMove(state, orig, dest)) {
+    const moveResult = baseUserMove(state, orig, dest)
+    if (moveResult) {
+      const metadata: cg.MoveMetadata = { premove: true };
+      if (typeof moveResult !== 'boolean') 
+        metadata.captured = moveResult;
       setTimeout(() => {
-        if (state.movable.events.after) state.movable.events.after(orig, dest, {
-          premove: true
-        })
+        if (state.movable.events.after) 
+          state.movable.events.after(orig, dest, metadata)
       })
+      success = true;
     }
   }
   unsetPremove(state)
+  return success
 }
 
 export function playPredrop(state: State, validate: (d: cg.Drop) => boolean): boolean {

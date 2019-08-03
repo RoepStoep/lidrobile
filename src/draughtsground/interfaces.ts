@@ -12,9 +12,7 @@ export interface InitConfig {
   captureLength?: number;
   lastMove?: Key[] | null
   selected?: Key
-  coordinates?: boolean
-  symmetricCoordinates?: boolean
-  autoCastle?: boolean
+  coordinates?: number
   viewOnly?: boolean
   fixed?: boolean
   otb?: boolean
@@ -41,6 +39,7 @@ export interface InitConfig {
     enabled?: boolean
     showDests?: boolean
     dests?: Key[]
+    variant?: VariantKey,
     events?: {
       set?: (orig: Key, dest: Key, metadata?: SetPremoveMetadata) => void
       unset?: () => void

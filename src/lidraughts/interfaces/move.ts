@@ -19,6 +19,7 @@ export interface MoveOrDrop {
   readonly uci: string
   readonly san: string
   readonly dests: StringMap
+  readonly captLen?: number
   readonly status?: GameStatus
   readonly winner?: Color
   readonly crazyhouse?: {

@@ -207,7 +207,13 @@ export default class Draughtsground {
   playPremove = (): boolean => {
 
     if (this.state.premovable.current) {
-      if (Boolean(anim(board.playPremove, this))) return true
+      const dest = this.state.premovable.current ? this.state.premovable.current[1] : '00';
+      if (Boolean(anim(board.playPremove, this))) {
+        // if we can continue capturing keep the piece selected, so all target squares can be clicked one after the other
+        if (this.state.movable.captLen !== null && this.state.movable.captLen > 1)
+          board.setSelected(this.state, dest);
+        return true;
+      }
       // if the premove couldn't be played, redraw to clear it up
       this.redraw()
     }

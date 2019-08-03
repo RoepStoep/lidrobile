@@ -1,6 +1,7 @@
 import * as throttle from 'lodash/throttle'
 import Draughtsground from '../../../draughtsground/Draughtsground'
 import * as cg from '../../../draughtsground/interfaces'
+import { countGhosts } from '../../../draughtsground/fen'
 import redraw from '../../../utils/redraw'
 import { saveOfflineGameData, removeOfflineGameData } from '../../../utils/offlineGames'
 import { hasNetwork, boardOrientation, handleXhrError } from '../../../utils'
@@ -16,14 +17,13 @@ import vibrate from '../../../vibrate'
 import gameStatusApi from '../../../lidraughts/status'
 import * as gameApi from '../../../lidraughts/game'
 import { MiniUser } from '../../../lidraughts/interfaces'
-import { OnlineGameData, Player, ApiEnd } from '../../../lidraughts/interfaces/game'
+import { OnlineGameData, GameStep, Player, ApiEnd } from '../../../lidraughts/interfaces/game'
 import { Score } from '../../../lidraughts/interfaces/user'
 import { MoveRequest, DropRequest, MoveOrDrop, AfterMoveMeta, isMove, isDrop, isMoveRequest, isDropRequest } from '../../../lidraughts/interfaces/move'
-import * as chessFormat from '../../../utils/draughtsFormat'
+import * as draughtsFormat from '../../../utils/draughtsFormat'
 import { Chat } from '../../shared/chat'
 
 import ground from './ground'
-import promotion from './promotion'
 import { NotesCtrl } from './notes'
 import ClockCtrl from './clock/ClockCtrl'
 import CorresClockCtrl from './correspondenceClock/corresClockCtrl'
@@ -84,6 +84,7 @@ export default class OnlineRound implements OnlineRoundInterface {
     userTv?: string,
     onUserTVRedirect?: () => void
   ) {
+    cfg.steps = this.mergeSteps(cfg.steps);
     this.goingBack = goingBack
     this.id = id
     this.setData(cfg)
@@ -139,7 +140,8 @@ export default class OnlineRound implements OnlineRoundInterface {
       this.userMove,
       this.onUserNewPiece,
       this.onMove,
-      this.onNewPiece
+      this.onNewPiece,
+      this.plyStep(this.vm.ply)
     )
 
     this.clock = this.data.clock ? new ClockCtrl(this.data, {
@@ -269,19 +271,22 @@ export default class OnlineRound implements OnlineRoundInterface {
 
   public jump = (ply: number) => {
     if (ply < this.firstPly() || ply > this.lastPly()) return false
+    const plyDiff = Math.abs(ply - this.vm.ply)
     const isFwd = ply > this.vm.ply
     this.vm.ply = ply
     const s = this.plyStep(ply)
+    const ghosts = countGhosts(s.fen)
     const config: cg.SetConfig = {
       fen: s.fen,
-      lastMove: s.uci ? chessFormat.uciToMove(s.uci) : null,
-      turnColor: this.vm.ply % 2 === 0 ? 'white' : 'black'
+      lastMove: s.uci ? draughtsFormat.uciToMove(s.uci) : null,
+      turnColor: (this.vm.ply - (ghosts == 0 ? 0 : 1)) % 2 === 0 ? 'white' : 'black'
     }
     if (!this.replaying()) {
       config.movableColor = gameApi.isPlayerPlaying(this.data) ? this.data.player.color : null
       config.dests = gameApi.parsePossibleMoves(this.data.possibleMoves)
+      config.captureLength = this.data.captureLength;
     }
-    this.draughtsground.set(config)
+    this.draughtsground.set(config, plyDiff > 1)
     if (this.replaying()) this.draughtsground.stop()
     if (s.san && isFwd) {
       if (s.san.indexOf('x') !== -1) sound.throttledCapture()
@@ -424,9 +429,11 @@ export default class OnlineRound implements OnlineRoundInterface {
 
     d.possibleMoves = activeColor ? o.dests : undefined
     d.possibleDrops = activeColor ? o.drops : undefined
+    d.captureLength = o.captLen;
 
     if (!this.replaying()) {
-      this.vm.ply++
+      const ghosts = countGhosts(o.fen);
+      this.vm.ply = d.game.turns + (ghosts > 0 ? 1 : 0);
 
       const enpassantPieces: {[index: string]: Piece | null} = {}
       if (o.enpassant) {
@@ -439,10 +446,10 @@ export default class OnlineRound implements OnlineRoundInterface {
         turnColor: d.game.player,
         dests: playing ?
           gameApi.parsePossibleMoves(d.possibleMoves) : <DestsMap>{},
-        check: o.check
+          captureLength: d.captureLength
       }
       if (isMove(o)) {
-        const move = chessFormat.uciToMove(o.uci)
+        const move = draughtsFormat.uciToMove(o.uci)
         this.draughtsground.apiMove(
           move[0],
           move[1],
@@ -455,7 +462,7 @@ export default class OnlineRound implements OnlineRoundInterface {
             role: o.role,
             color: playedColor
           },
-          chessFormat.uciToDropPos(o.uci),
+          draughtsFormat.uciToDropPos(o.uci),
           newConf
         )
       }
@@ -477,7 +484,7 @@ export default class OnlineRound implements OnlineRoundInterface {
 
     d.game.threefold = !!o.threefold
     d.steps.push({
-      ply: this.lastPly() + 1,
+      ply: d.game.turns,
       fen: o.fen,
       san: o.san,
       uci: o.uci
@@ -504,6 +511,7 @@ export default class OnlineRound implements OnlineRoundInterface {
   }
 
   public onReload = (rCfg: OnlineGameData) => {
+    rCfg.steps = this.mergeSteps(rCfg.steps);
     if (rCfg.steps.length !== this.data.steps.length) {
       this.vm.ply = rCfg.steps[rCfg.steps.length - 1].ply
     }
@@ -516,7 +524,7 @@ export default class OnlineRound implements OnlineRoundInterface {
     this.makeCorrespondenceClock()
     if (this.clock && this.data.clock) this.clock.setClock(this.data, this.data.clock.white, this.data.clock.black)
     this.lastMoveMillis = undefined
-    if (!this.replaying()) ground.reload(this.draughtsground, this.data, rCfg.game.fen, this.vm.flip)
+    if (!this.replaying()) ground.reload(this.draughtsground, this.data, rCfg.game.fen, this.vm.flip, this.plyStep(this.vm.ply))
     redraw()
   }
 
@@ -629,9 +637,7 @@ export default class OnlineRound implements OnlineRoundInterface {
 
   private userMove = (orig: Key, dest: Key, meta: AfterMoveMeta) => {
     const hasPremove = !!meta.premove
-    if (!promotion.start(this, orig, dest, hasPremove)) {
-      this.sendMove(orig, dest, undefined, hasPremove)
-    }
+    this.sendMove(orig, dest, undefined, hasPremove)
   }
 
   private onUserNewPiece = (role: Role, key: Key, meta: AfterMoveMeta) => {
@@ -684,4 +690,47 @@ export default class OnlineRound implements OnlineRoundInterface {
     }
     this.data = cfg
   }
+
+  private mergeSteps(steps: GameStep[]): GameStep[] {
+
+    const mergedSteps: GameStep[] = new Array<GameStep>();
+    if (steps.length == 0)
+      return mergedSteps;
+    else
+      mergedSteps.push(steps[0]);
+    if (steps.length == 1) return mergedSteps;;
+
+    for (let i = 1; i < steps.length; i++) {
+      const step = steps[i - 1];
+      if (step.captLen === undefined) {
+          mergedSteps.push(steps[i]);
+      } else if (step.captLen < 2 || step.ply < steps[i].ply) {
+          // captures split over multiple steps have the same ply. If a multicapture is reported in one step, the ply does increase
+          mergedSteps.push(steps[i]);
+      } else {
+
+          const originalStep = steps[i];
+          for (let m = 0; m < step.captLen - 1 && i + 1 < steps.length; m++) {
+              if (m === 0 && originalStep.uci !== null)
+                originalStep.uci = originalStep.uci.substr(0, 4);
+              i++;
+              this.mergeStep(originalStep, steps[i]);
+          }
+          if (countGhosts(originalStep.fen) > 0)
+              originalStep.ply++;
+
+          mergedSteps.push(originalStep);
+      }
+    }
+
+    return mergedSteps;
+  }
+
+  private mergeStep(originalStep: GameStep, mergeStep: GameStep) {
+    originalStep.ply = mergeStep.ply
+    originalStep.fen = mergeStep.fen;
+    originalStep.san = (originalStep.san !== null && mergeStep.san !== null) ? (originalStep.san.slice(0, originalStep.san.indexOf('x') + 1) + mergeStep.san.substr(mergeStep.san.indexOf('x') + 1)) : originalStep.san;
+    originalStep.uci = (originalStep.uci !== null && mergeStep.uci !== null) ? (originalStep.uci + mergeStep.uci.substr(2, 2)) : originalStep.uci;
+  }
+
 }

@@ -22,7 +22,7 @@ interface Config {
   orientation: Color
   viewOnly: boolean
   minimalDom: boolean
-  coordinates: boolean
+  coordinates: number
   fixed: boolean
   lastMove: Key[] | null
 }
@@ -98,7 +98,7 @@ function makeConfig({ fen, lastMove, orientation, fixed = true }: Attrs) {
     viewOnly: true,
     fixed,
     minimalDom: true,
-    coordinates: false,
+    coordinates: 0,
     fen,
     lastMove: lastMove ? uciToMove(lastMove) : null,
     orientation: orientation || 'white'

@@ -22,8 +22,6 @@ function makeConfig(data: OfflineGameData, sit: GameSituation): cg.InitConfig {
     otb: data.game.id === 'offline_otb',
     coordinates: settings.game.coords(),
     otbMode: settings.otb.flipPieces() ? 'flip' : 'facing',
-    symmetricCoordinates: data.game.id === 'offline_otb',
-    autoCastle: data.game.variant.key === 'standard',
     highlight: {
       lastMove: settings.game.highlights(),
       kingMoves: settings.game.kingMoves()

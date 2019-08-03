@@ -19,7 +19,6 @@ import { Study, findTag } from '../../lidraughts/interfaces/study'
 import { Opening } from '../../lidraughts/interfaces/game'
 import settings from '../../settings'
 import { handleXhrError, oppositeColor, hasNetwork, noop } from '../../utils'
-import promotion from '../shared/offlineRound/promotion'
 import continuePopup, { Controller as ContinuePopupController } from '../shared/continuePopup'
 import { NotesCtrl } from '../shared/round/notes'
 
@@ -336,7 +335,6 @@ export default class AnalyseCtrl {
     this.ceval.stop()
     this.debouncedExplorerSetStep()
     this.updateHref()
-    promotion.cancel(this.draughtsground, this.cgConfig)
     if (pathChanged) {
       if (this.retro) this.retro.onJump()
       else {
@@ -449,7 +447,7 @@ export default class AnalyseCtrl {
   }
 
   mainlinePathToPly(ply: Ply): Tree.Path {
-    return treeOps.takePathWhile(this.mainline, n => n.ply <= ply)
+    return treeOps.takePathWhile(this.mainline, n => (n.displayPly ? n.displayPly : n.ply) <= ply);
   }
 
   hasAnyComputerAnalysis = () => {
@@ -523,7 +521,7 @@ export default class AnalyseCtrl {
   private userMove = (orig: Key, dest: Key, captured?: Piece) => {
     if (captured) sound.capture()
     else sound.move()
-    if (!promotion.start(this.draughtsground, orig, dest, this.sendMove)) this.sendMove(orig, dest)
+    this.sendMove(orig, dest)
   }
 
   private userNewPiece = (piece: Piece, pos: Key) => {

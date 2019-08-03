@@ -6,7 +6,6 @@ import {
   renderGameActionsBar,
   renderReplayTable
 } from '../shared/offlineRound/view'
-import { view as renderPromotion } from '../shared/offlineRound/promotion'
 import * as helper from '../helper'
 import actions from './actions'
 import newGameMenu from './newAiGame'
@@ -62,8 +61,7 @@ export function renderContent(ctrl: AiRound) {
 export function overlay(ctrl: AiRound) {
   return [
     actions.view(ctrl.actions),
-    newGameMenu.view(ctrl.newGameMenu),
-    renderPromotion(ctrl)
+    newGameMenu.view(ctrl.newGameMenu)
   ]
 }
 
