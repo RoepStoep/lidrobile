@@ -5,7 +5,7 @@ import settings from '../../../settings'
 import { OfflineGameData } from '../../../lidraughts/interfaces/game'
 import { AfterMoveMeta } from '../../../lidraughts/interfaces/move'
 import { boardOrientation } from '../../../utils'
-import { uciToMoveOrDrop } from '../../../utils/chessFormat'
+import { uciToMoveOrDrop } from '../../../utils/draughtsFormat'
 import { batchRequestAnimationFrame } from '../../../utils/batchRAF'
 import { GameSituation } from '../../../draughts'
 

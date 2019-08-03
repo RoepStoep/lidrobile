@@ -41,7 +41,7 @@ export default class Replay {
     chess.move({
       variant: this.variant,
       fen: sit.fen,
-      pgnMoves: sit.pdnMoves,
+      pdnMoves: sit.pdnMoves,
       uciMoves: sit.uciMoves,
       promotion,
       orig,
@@ -56,7 +56,7 @@ export default class Replay {
     chess.drop({
       variant: this.variant,
       fen: sit.fen,
-      pgnMoves: sit.pdnMoves,
+      pdnMoves: sit.pdnMoves,
       uciMoves: sit.uciMoves,
       role,
       pos: key
@@ -70,7 +70,7 @@ export default class Replay {
     chess.threefoldTest({
       variant: this.variant,
       initialFen: this.initialFen,
-      pgnMoves: sit.pdnMoves
+      pdnMoves: sit.pdnMoves
     })
     .then(resp => {
       if (resp.threefoldRepetition) {
@@ -84,10 +84,10 @@ export default class Replay {
 
   public pgn = (white: string, black: string) => {
     const sit = this.situation()
-    return chess.pgnDump({
+    return chess.pdnDump({
       variant: this.variant,
       initialFen: this.initialFen,
-      pgnMoves: sit.pdnMoves,
+      pdnMoves: sit.pdnMoves,
       white,
       black
     })

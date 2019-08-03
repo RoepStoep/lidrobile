@@ -173,11 +173,10 @@ export function renderBoard(d: State, dom: cg.DOM) {
   for (let j = 0, jlen = piecesKeys.length; j < jlen; j++) {
     let k = piecesKeys[j] as Key
     let p = pieces[k]
-    const pieceClass = p.role + p.color
     anim = anims && anims[k]
     tempPiece = temporaryPieces && temporaryPieces[k];
     if (!samePieces.has(k) && !tempPiece) {
-      mvdset = movedPieces.get(pieceClass)
+      mvdset = movedPieces.get(pieceNameOf(p))
       mvd = mvdset && mvdset.pop()
       // a equivalent piece was moved
       if (mvd) {
@@ -289,7 +288,18 @@ function isSquareNode(el: cg.PieceNode | cg.SquareNode): el is cg.SquareNode {
 }
 
 function pieceNameOf(p: Piece) {
-  return p.role + ' ' + p.color
+  if (p.role === 'ghostman') {
+    return `${p.color} man ghost`;
+  } else if (p.role === 'ghostking') {
+    if (p.kingMoves && p.kingMoves > 0)
+      return `${p.color} king ghost king${p.kingMoves}`;
+    else
+      return `${p.color} king ghost`;
+  } else if (p.role === 'king' && p.kingMoves && p.kingMoves > 0) {
+    return `${p.color} king king${p.kingMoves}`;
+  } else {
+    return `${p.color} ${p.role}`;
+  }
 }
 
 function addSquare(squares: Map<Key, string>, key: Key, klass: string) {

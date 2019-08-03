@@ -15,6 +15,7 @@ export interface GameSituation {
   readonly player: Color
   readonly dests: DestsMap
   readonly drops?: ReadonlyArray<string>
+  readonly captureLength?: number
   readonly end: boolean
   readonly playable: boolean
   readonly status?: GameStatus
@@ -64,7 +65,7 @@ export interface MoveRequest {
   readonly fen: string
   readonly orig: Key
   readonly dest: Key
-  readonly pgnMoves?: ReadonlyArray<string>
+  readonly pdnMoves?: ReadonlyArray<string>
   readonly uciMoves?: ReadonlyArray<string>
   promotion?: Role
   readonly path?: string
@@ -80,7 +81,7 @@ export interface DropRequest {
   readonly fen: string
   readonly pos: Key
   readonly role: Role
-  readonly pgnMoves?: ReadonlyArray<string>
+  readonly pdnMoves?: ReadonlyArray<string>
   readonly uciMoves?: ReadonlyArray<string>
   readonly path?: string
 }
@@ -88,7 +89,7 @@ export interface DropRequest {
 export interface ThreefoldTestRequest {
   readonly variant: VariantKey
   readonly initialFen: string
-  readonly pgnMoves: ReadonlyArray<string>
+  readonly pdnMoves: ReadonlyArray<string>
 }
 
 export interface ThreefoldTestResponse {
@@ -96,24 +97,24 @@ export interface ThreefoldTestResponse {
   readonly status: GameStatus
 }
 
-export interface PgnDumpRequest {
+export interface PdnDumpRequest {
   readonly variant: VariantKey
   readonly initialFen: string
-  readonly pgnMoves: ReadonlyArray<string>
+  readonly pdnMoves: ReadonlyArray<string>
   readonly white?: string
   readonly black?: string
   readonly date?: string
 }
 
-export interface PgnDumpResponse {
-  readonly pgn: string
+export interface PdnDumpResponse {
+  readonly pdn: string
 }
 
-export interface PgnReadRequest {
-  readonly pgn: string
+export interface PdnReadRequest {
+  readonly pdn: string
 }
 
-export interface PgnReadResponse {
+export interface PdnReadResponse {
   readonly variant: Variant
   readonly setup: GameSituation
   readonly replay: ReadonlyArray<GameSituation>
@@ -147,10 +148,10 @@ export function threefoldTest(payload: ThreefoldTestRequest): Promise<ThreefoldT
   return askWorker(worker, { topic: 'threefoldTest', payload })
 }
 
-export function pgnDump(payload: PgnDumpRequest): Promise<PgnDumpResponse> {
-  return askWorker(worker, { topic: 'pgnDump', payload })
+export function pdnDump(payload: PdnDumpRequest): Promise<PdnDumpResponse> {
+  return askWorker(worker, { topic: 'pdnDump', payload })
 }
 
-export function pgnRead(payload: PgnReadRequest): Promise<PgnReadResponse> {
-  return askWorker(worker, { topic: 'pgnRead', payload })
+export function pdnRead(payload: PdnReadRequest): Promise<PdnReadResponse> {
+  return askWorker(worker, { topic: 'pdnRead', payload })
 }

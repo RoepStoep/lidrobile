@@ -2,7 +2,7 @@ import i18n from '../../i18n'
 import Draughtsground from '../../draughtsground/Draughtsground'
 import router from '../../router'
 import * as chess from '../../draughts'
-import * as chessFormat from '../../utils/chessFormat'
+import * as chessFormat from '../../utils/draughtsFormat'
 import sound from '../../sound'
 import vibrate from '../../vibrate'
 import settings from '../../settings'
@@ -168,8 +168,8 @@ export default class AiRound implements AiRoundInterface, PromotingInterface {
 
   public sharePGN = () => {
     this.replay.pgn(this.white(), this.black())
-    .then((data: chess.PgnDumpResponse) =>
-      window.plugins.socialsharing.share(data.pgn)
+    .then((data: chess.PdnDumpResponse) =>
+      window.plugins.socialsharing.share(data.pdn)
     )
   }
 

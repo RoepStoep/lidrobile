@@ -3,7 +3,7 @@ import router from '../../router'
 import Draughtsground from '../../draughtsground/Draughtsground'
 import * as cg from '../../draughtsground/interfaces'
 import * as draughts from '../../draughts'
-import * as chessFormat from '../../utils/chessFormat'
+import * as draughtsFormat from '../../utils/draughtsFormat'
 import { build as makeTree, path as treePath, ops as treeOps, TreeWrapper, Tree } from '../shared/tree'
 import redraw from '../../utils/redraw'
 import session from '../../session'
@@ -178,7 +178,7 @@ export default class AnalyseCtrl {
   }
 
   canDrop = () => {
-    return true
+    return false
   }
 
   player = () => {
@@ -325,8 +325,9 @@ export default class AnalyseCtrl {
 
   jump = (path: Tree.Path, direction?: 'forward' | 'backward') => {
     const pathChanged = path !== this.path
+    const oldPly = this.node.displayPly ? this.node.displayPly : this.node.ply
     this.setPath(path)
-    this.updateBoard()
+    this.updateBoard(Math.abs(oldPly - (this.node.displayPly ? this.node.displayPly : this.node.ply)) > 1)
     this.fetchOpening()
     if (this.node && this.node.san && direction === 'forward') {
       if (this.node.san.indexOf('x') !== -1) sound.throttledCapture()
@@ -397,7 +398,7 @@ export default class AnalyseCtrl {
   }
 
   uciMove = (uci: string) => {
-    const move = chessFormat.decomposeUci(uci)
+    const move = draughtsFormat.decomposeUci(uci)
     this.sendMove(move[0], move[1])
     this.explorer.loading(true)
   }
@@ -554,9 +555,9 @@ export default class AnalyseCtrl {
       children: [],
       dests: situation.dests,
       drops: situation.drops,
+      captLen: situation.captureLength,
       end: situation.end,
       player: situation.player,
-      kingMoves: situation.kingMoves,
       uci: situation.uci,
       san: situation.san,
       pdnMoves: curNode && curNode.pdnMoves ? curNode.pdnMoves.concat(situation.pdnMoves) : situation.pdnMoves
@@ -633,7 +634,7 @@ export default class AnalyseCtrl {
 
   private debouncedStartCeval = debounce(this.startCeval, 800)
 
-  private updateBoard() {
+  private updateBoard(noCaptSequences: boolean = false) {
     const node = this.node
 
     /*if (this.data.game.variant.key === 'threeCheck' && !node.checkCount) {
@@ -641,14 +642,15 @@ export default class AnalyseCtrl {
     }*/
 
     const color: Color = node.ply % 2 === 0 ? 'white' : 'black'
-    const dests = chessFormat.readDests(node.dests)
+    const dests = draughtsFormat.readDests(node.dests)
     const config = {
       fen: node.fen,
       turnColor: color,
       orientation: this.settings.s.flip ? oppositeColor(this.orientation) : this.orientation,
       movableColor: this.gameOver() ? null : color,
       dests: dests || null,
-      lastMove: node.uci ? chessFormat.uciToMoveOrDrop(node.uci) : null
+      captureLength: node.captLen,
+      lastMove: node.uci ? draughtsFormat.uciToMoveOrDrop(node.uci) : null
     }
 
     this.cgConfig = config
@@ -656,7 +658,7 @@ export default class AnalyseCtrl {
     if (!this.draughtsground) {
       this.draughtsground = ground.make(this.data, config, this.orientation, this.userMove, this.userNewPiece)
     } else {
-      this.draughtsground.set(config)
+      this.draughtsground.set(config, noCaptSequences)
     }
 
     if (!dests) this.getNodeSituation()
@@ -672,6 +674,7 @@ export default class AnalyseCtrl {
       .then(({ situation, path }) => {
         this.tree.updateAt(path, (node: Tree.Node) => {
           node.dests = situation.dests
+          node.captLen = situation.captureLength
           node.end = situation.end
           node.player = situation.player
         })

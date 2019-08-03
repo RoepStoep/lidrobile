@@ -49,8 +49,8 @@ interface AnimPieces {
 
 interface SamePieces { [key: string]: boolean }
 
-export function anim<A>(mutation: Mutation<A>, ctrl: Draughtsground): A {
-  return ctrl.state.animation.enabled ? animate(mutation, ctrl) : skip(mutation, ctrl)
+export function anim<A>(mutation: Mutation<A>, ctrl: Draughtsground, fadeOnly: boolean = false, noCaptSequences: boolean = false): A {
+  return ctrl.state.animation.enabled ? animate(mutation, ctrl, fadeOnly, noCaptSequences) : skip(mutation, ctrl)
 }
 
 export function skip<A>(mutation: Mutation<A>, ctrl: Draughtsground): A {
@@ -263,9 +263,9 @@ function getVector(preP: cg.Pos, newP: cg.Pos): AnimVector {
     return [preP[0] - newP[0], preP[1] - newP[1], 0, 0, 0];
 }
 
-function roundBy(n: number, by: number) {
+/*function roundBy(n: number, by: number) {
   return Math.round(n * by) / by
-}
+}*/
 
 function step(ctrl: Draughtsground, now: number) {
   const state = ctrl.state
@@ -286,18 +286,19 @@ function step(ctrl: Draughtsground, now: number) {
         lastMove: state.lastMove
       };
       cur = state.animation.current;
-      rest = 1;
+      rest = 1
     } else {
       state.animation.current = null;
     }
   }
 
   if (state.animation.current !== null) {
+    if (rest > 0.999) rest = 0.999;
     const ease = easeInOutCubic(rest);
     for (let i in cur.plan.anims) {
       const cfg = cur.plan.anims[i];
-      cfg[2] = roundBy(cfg[0] * ease, 10);
-      cfg[3] = roundBy(cfg[1] * ease, 10);
+      cfg[2] = cfg[0] * ease;
+      cfg[3] = cfg[1] * ease;
     }
     ctrl.redrawSync()
     state.batchRAF((n: number) => step(ctrl, n))

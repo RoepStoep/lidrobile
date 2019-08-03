@@ -1,4 +1,4 @@
-import { fixCrazySan, decomposeUci } from '../../../utils/chessFormat'
+import { fixCrazySan, decomposeUci } from '../../../utils/draughtsFormat'
 
 type Square = number
 

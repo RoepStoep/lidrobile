@@ -144,8 +144,10 @@ export default class Draughtsground {
     return diff
   }
 
-  set(config: cg.SetConfig): void {
-    anim(state => setNewBoardState(state, config), this)
+  set(config: cg.SetConfig, noCaptSequences: boolean = false): void {
+    anim(state => setNewBoardState(state, config), this, false, noCaptSequences)
+    if (this.state.selected && !this.state.pieces[this.state.selected])
+      this.state.selected = null;
   }
 
   reconfigure(config: cg.InitConfig): void {

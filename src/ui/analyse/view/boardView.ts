@@ -1,5 +1,5 @@
 import * as h from 'mithril/hyperscript'
-import * as chessFormat from '../../../utils/chessFormat'
+import * as chessFormat from '../../../utils/draughtsFormat'
 import gameStatusApi from '../../../lidraughts/status'
 import { findTag, gameResult } from '../../../lidraughts/interfaces/study'
 import Board, { Bounds } from '../../shared/Board'

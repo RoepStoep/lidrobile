@@ -19,7 +19,7 @@ import { MiniUser } from '../../../lidraughts/interfaces'
 import { OnlineGameData, Player, ApiEnd } from '../../../lidraughts/interfaces/game'
 import { Score } from '../../../lidraughts/interfaces/user'
 import { MoveRequest, DropRequest, MoveOrDrop, AfterMoveMeta, isMove, isDrop, isMoveRequest, isDropRequest } from '../../../lidraughts/interfaces/move'
-import * as chessFormat from '../../../utils/chessFormat'
+import * as chessFormat from '../../../utils/draughtsFormat'
 import { Chat } from '../../shared/chat'
 
 import ground from './ground'

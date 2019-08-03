@@ -1,5 +1,6 @@
 import { Tree } from './interfaces'
-import { countGhosts, fenCompare } from '../../../draughtsground/fen'
+import { countGhosts } from '../../../draughtsground/fen'
+import { fenCompare } from '../../../utils/draughtsFormat'
 
 function mainlineChild(node: Tree.Node): Tree.Node | undefined {
   return node.children[0]

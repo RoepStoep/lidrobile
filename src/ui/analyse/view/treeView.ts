@@ -1,5 +1,5 @@
 import * as h from 'mithril/hyperscript'
-import { fixCrazySan } from '../../../utils/chessFormat'
+import { fixCrazySan } from '../../../utils/draughtsFormat'
 import { linkify } from '../../../utils/html'
 import * as gameApi from '../../../lidraughts/game'
 import { Glyph, CommentAuthor } from '../../../lidraughts/interfaces/analyse'

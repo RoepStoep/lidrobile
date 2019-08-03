@@ -1,4 +1,4 @@
-import { fixCrazySan } from '../../utils/chessFormat'
+import { fixCrazySan } from '../../utils/draughtsFormat'
 import { AnalyseData } from '../../lidraughts/interfaces/analyse'
 import { Tree } from '../shared/tree'
 import { Eval, NodeEvals } from './ceval/interfaces'

@@ -100,7 +100,7 @@ export default {
                     const black = settings.otb.blackPlayer
                     ctrl.root.replay.pgn(white(), black())
                     .then(data => {
-                      ctrl.importer.importGame(data.pgn)
+                      ctrl.importer.importGame(data.pdn)
                     })
                   }
                 )

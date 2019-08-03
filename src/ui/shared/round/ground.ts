@@ -7,7 +7,7 @@ import { OnlineGameData } from '../../../lidraughts/interfaces/game'
 import { AfterMoveMeta } from '../../../lidraughts/interfaces/move'
 import settings from '../../../settings'
 import { boardOrientation } from '../../../utils'
-import * as chessFormat from '../../../utils/chessFormat'
+import * as chessFormat from '../../../utils/draughtsFormat'
 
 function makeConfig(data: OnlineGameData, fen: string, flip: boolean = false): cg.InitConfig {
   const lastMove = data.game.lastMove ? chessFormat.uciToMove(data.game.lastMove) : null

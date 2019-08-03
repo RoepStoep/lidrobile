@@ -174,18 +174,18 @@ function offlinePgnExport(ctrl: AnalyseCtrl) {
     const black = ctrl.data.player.color === 'black' ?
     (ctrl.data.game.id === 'offline_ai' ? session.appUser('Anonymous') : 'Anonymous') :
     (ctrl.data.game.id === 'offline_ai' ? ctrl.data.opponent.username : 'Anonymous')
-    chess.pgnDump({
+    chess.pdnDump({
       variant: ctrl.data.game.variant.key,
       initialFen: ctrl.data.game.initialFen,
-      pgnMoves: endSituation.pdnMoves || [],
+      pdnMoves: endSituation.pdnMoves || [],
       white,
       black
     })
-    .then((res: chess.PgnDumpResponse) => {
+    .then((res: chess.PdnDumpResponse) => {
       ctrl.menu.s.computingPGN = false
       ctrl.menu.close()
       redraw()
-      window.plugins.socialsharing.share(res.pgn)
+      window.plugins.socialsharing.share(res.pdn)
     })
     .catch(e => {
       ctrl.menu.s.computingPGN = false

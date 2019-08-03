@@ -2,7 +2,7 @@ import sound from '../../sound'
 import router from '../../router'
 import Draughtsground from '../../draughtsground/Draughtsground'
 import * as chess from '../../draughts'
-import * as chessFormat from '../../utils/chessFormat'
+import * as chessFormat from '../../utils/draughtsFormat'
 import settings from '../../settings'
 import gameStatusApi from '../../lidraughts/status'
 import { OfflineGameData, GameStatus } from '../../lidraughts/interfaces/game'
@@ -186,8 +186,8 @@ export default class OtbRound implements OtbRoundInterface, PromotingInterface {
 
   public sharePGN = () => {
     this.replay.pgn('White', 'Black')
-    .then((data: chess.PgnDumpResponse) =>
-      window.plugins.socialsharing.share(data.pgn)
+    .then((data: chess.PdnDumpResponse) =>
+      window.plugins.socialsharing.share(data.pdn)
     )
   }
 

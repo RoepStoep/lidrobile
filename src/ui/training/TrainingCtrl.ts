@@ -9,7 +9,7 @@ import redraw from '../../utils/redraw'
 import { hasNetwork, handleXhrError } from '../../utils'
 import signals from '../../signals'
 import * as chess from '../../draughts'
-import * as chessFormat from '../../utils/chessFormat'
+import * as chessFormat from '../../utils/draughtsFormat'
 import session from '../../session'
 import sound from '../../sound'
 import settings from '../../settings'
@@ -343,7 +343,7 @@ export default class TrainingCtrl implements PromotingInterface {
       variant: this.data.game.variant.key,
       fen: this.node.fen,
       path: this.path,
-      pgnMoves: this.node.pdnMoves
+      pdnMoves: this.node.pdnMoves
     }
     if (prom) move.promotion = prom
     this.sendMoveRequest(move, true)

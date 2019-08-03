@@ -1,5 +1,5 @@
 import * as h from 'mithril/hyperscript'
-import { fixCrazySan } from '../../../../utils/chessFormat'
+import { fixCrazySan } from '../../../../utils/draughtsFormat'
 import * as helper from '../../../helper'
 import settings from '../../../../settings'
 import OnlineRound from '../OnlineRound'

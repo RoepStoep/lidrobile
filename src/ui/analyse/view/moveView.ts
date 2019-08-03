@@ -1,5 +1,5 @@
 import * as h from 'mithril/hyperscript'
-import { fixCrazySan } from '../../../utils/chessFormat'
+import { fixCrazySan } from '../../../utils/draughtsFormat'
 import { Tree } from '../../shared/tree'
 import { renderEval as normalizeEval, getBestEval } from '../util'
 

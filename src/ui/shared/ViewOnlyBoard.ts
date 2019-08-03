@@ -1,7 +1,7 @@
 import * as h from 'mithril/hyperscript'
 import { batchRequestAnimationFrame } from '../../utils/batchRAF'
 import Draughtsground from '../../draughtsground/Draughtsground'
-import { uciToMove } from '../../utils/chessFormat'
+import { uciToMove } from '../../utils/draughtsFormat'
 import settings from '../../settings'
 import { Bounds } from './Board'
 
