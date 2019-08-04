@@ -5,7 +5,8 @@ import Editor from './Editor'
 import editorView from './editorView'
 
 interface Attrs {
-  fen?: string
+  fen?: string,
+  variant?: VariantKey
 }
 
 interface State {
@@ -18,7 +19,7 @@ const EditorScreen: Mithril.Component<Attrs, State> = {
 
     sleepUtils.keepAwake()
 
-    this.editor = new Editor(attrs.fen)
+    this.editor = new Editor(attrs.fen, attrs.variant === 'fromPosition' ? 'standard' : attrs.variant)
   },
   oncreate: helper.viewFadeIn,
   onremove() {

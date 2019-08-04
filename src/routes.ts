@@ -77,6 +77,7 @@ export default {
       'clock': clock,
       'editor': editor,
       'editor/:fen': editor,
+      'editor/variant/:variant/fen/:fen': editor,
       'inbox': inbox,
       'inbox/:id': inboxThread,
       'inbox/new': inboxCompose,

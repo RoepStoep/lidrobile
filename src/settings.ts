@@ -285,8 +285,8 @@ export default {
       availableVariants: [
         ['Standard', '1'],
         ['Frisian', '10'],
-        ['Antidraughts', '6'],
         ['Frysk!', '8'],
+        ['Antidraughts', '6'],
         ['Breakthrough', '9'],
         ['From Position', '3']
       ],
@@ -306,8 +306,8 @@ export default {
       availableVariants: [
         ['Standard', '1'],
         ['Frisian', '10'],
-        ['Antidraughts', '6'],
         ['Frysk!', '8'],
+        ['Antidraughts', '6'],
         ['Breakthrough', '9']
       ],
       availableRatingRanges: {
@@ -336,8 +336,8 @@ export default {
       availableVariants: [
         ['Standard', '1'],
         ['Frisian', '10'],
-        ['Antidraughts', '6'],
         ['Frysk!', '8'],
+        ['Antidraughts', '6'],
         ['Breakthrough', '9'],
         ['From Position', '3']
       ],
@@ -360,8 +360,8 @@ export default {
     availableVariants: [
       ['Standard', '1'],
       ['Frisian', '10'],
-      ['Antidraughts', '6'],
       ['Frysk!', '8'],
+      ['Antidraughts', '6'],
       ['Breakthrough', '9']
     ],
     availableModes: [

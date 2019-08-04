@@ -42,8 +42,8 @@ export function dragNewPiece(ctrl: Draughtsground, piece: Piece, e: TouchEvent, 
   const squareBounds = util.computeSquareBounds(s.orientation, bounds, key)
 
   const rel: NumberPair = [
-    (asWhite ? 0 : 7) * squareBounds.width + bounds.left,
-    (asWhite ? 8 : -1) * squareBounds.height + bounds.top
+    (asWhite ? -1 : 10) * squareBounds.width + bounds.left,
+    (!asWhite ? 9 : 0) * squareBounds.height + bounds.top
   ]
 
   s.draggable.current = {

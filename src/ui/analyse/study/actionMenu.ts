@@ -96,7 +96,7 @@ function renderStudyMenu(ctrl: AnalyseCtrl) {
     }, i18n('continueFromHere')),
     h('button', {
       key: 'boardEditor',
-      oncreate: helper.ontap(() => router.set(`/editor/${encodeURIComponent(ctrl.node.fen)}`))
+      oncreate: helper.ontap(() => router.set(`/editor/variant/${encodeURIComponent(ctrl.data.game.variant.key)}/fen/${encodeURIComponent(ctrl.node.fen)}`))
     }, [h('span.fa.fa-pencil'), i18n('boardEditor')]),
     h('button', {
       key: 'help',

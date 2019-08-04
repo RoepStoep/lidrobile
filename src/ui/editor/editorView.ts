@@ -18,7 +18,7 @@ export default function view(ctrl: Editor) {
   const bounds = helper.getBoardBounds(helper.viewportDim(), isPortrait)
 
   const board = h(Board, {
-    variant: ctrl.data.game.variant.key,
+    variant: ctrl.data.game.variant.key(),
     draughtsground: ctrl.draughtsground,
     bounds
   })
@@ -34,8 +34,8 @@ export default function view(ctrl: Editor) {
           onremove: ctrl.editorOnRemove
         }, [
           h('div.editor-piecesDrawer', [
-            sparePieces(opposite, color, 'top'),
-            sparePieces(color, color, 'bottom')
+            sparePieces(opposite, color, 'left'),
+            sparePieces(color, color, 'right')
           ]),
         ]),
         renderActionsBar(ctrl)
@@ -49,10 +49,10 @@ export default function view(ctrl: Editor) {
   )
 }
 
-function sparePieces(color: Color, orientation: Color, position: 'top' | 'bottom') {
+function sparePieces(color: Color, orientation: Color, position: 'left' | 'right') {
   return h('div', {
     className: ['sparePieces', position, 'orientation-' + orientation, color].join(' ')
-  }, h('div.sparePiecesInner', ['king', 'queen', 'rook', 'bishop', 'knight', 'pawn'].map((role) => {
+  }, h('div.sparePiecesInner', ['king', 'man'].map((role) => {
     return h('div.sparePiece', h('piece', {
       className: color + ' ' + role,
       'data-color': color,
@@ -74,14 +74,18 @@ function renderActionsBar(ctrl: Editor) {
     h('button.action_bar_button[data-icon=U]', {
       key: 'continueFromHere',
       oncreate: helper.ontap(() => {
-        ctrl.continuePopup.open(ctrl.computeFen(), 'standard')
+        if (ctrl.data.game.variant.key() !== 'standard')
+          window.plugins.toast.show('You can\'t continue from a variant position', 'long', 'center')
+        else
+          ctrl.continuePopup.open(ctrl.computeFen(), 'standard')
       }, () => window.plugins.toast.show(i18n('continueFromHere'), 'short', 'center'))
     }),
     h('button.action_bar_button[data-icon=A]', {
       key: 'analyse',
       oncreate: helper.ontap(() => {
         const fen = encodeURIComponent(ctrl.computeFen())
-        router.set(`/analyse/fen/${fen}`)
+        const variant = encodeURIComponent(ctrl.data.game.variant.key())
+        router.set(`/analyse/variant/${variant}/fen/${fen}`)
       }, () => window.plugins.toast.show(i18n('analysis'), 'short', 'center'))
     }),
     h('button.action_bar_button.fa.fa-upload', {

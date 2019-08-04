@@ -2,30 +2,20 @@ import * as debounce from 'lodash/debounce'
 import Draughtsground from '../../draughtsground/Draughtsground'
 import * as cgDrag from '../../draughtsground/drag'
 import router from '../../router'
-import redraw from '../../utils/redraw'
 import settings from '../../settings'
 import menu from './menu'
 import pasteFenPopup from './pasteFenPopup'
-import { validateFen } from '../../utils/fen'
-import { loadLocalJsonFile } from '../../utils'
+import * as fenUtil from '../../utils/fen'
 import { batchRequestAnimationFrame } from '../../utils/batchRAF'
 import continuePopup, { Controller as ContinuePopupCtrl } from '../shared/continuePopup'
 import i18n from '../../i18n'
 import drag from './drag'
 import * as stream from 'mithril/stream'
 
-const startingFen = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1'
+const startingFen = 'W:W31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50:B1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20:H0:F1'
 
 interface EditorData {
   color: Mithril.Stream<Color>
-  castles: {
-    K: Mithril.Stream<boolean>
-    Q: Mithril.Stream<boolean>
-    k: Mithril.Stream<boolean>
-    q: Mithril.Stream<boolean>
-    [k: string]: Mithril.Stream<boolean>
-  }
-  enpassant: Mithril.Stream<string>
   halfmove: Mithril.Stream<string>
   moves: Mithril.Stream<string>
 }
@@ -34,7 +24,7 @@ interface Data {
   editor: EditorData
   game: {
     variant: {
-      key: VariantKey
+      key: Mithril.Stream<VariantKey>
     }
   }
 }
@@ -53,11 +43,9 @@ export default class Editor {
   public continuePopup: ContinuePopupCtrl
   public draughtsground: Draughtsground
 
-  public positions: Mithril.Stream<Array<BoardPosition>>
-  public endgamesPositions: Mithril.Stream<Array<BoardPosition>>
   public extraPositions: Array<BoardPosition>
 
-  public constructor(fen?: string) {
+  public constructor(fen?: string, variant?: VariantKey) {
     const initFen = fen || startingFen
 
     this.menu = menu.controller(this)
@@ -68,36 +56,18 @@ export default class Editor {
       editor: this.readFen(initFen),
       game: {
         variant: {
-          key: 'standard'
+          key: stream(variant || 'standard')
         }
       }
     }
 
-    this.positions = stream([])
-    this.endgamesPositions = stream([])
-
     this.extraPositions = [{
       fen: startingFen,
-      name: i18n('startPosition'),
-      eco: '',
+      name: i18n('startPosition')
     }, {
-      fen: '8/8/8/8/8/8/8/8 w - - 0 1',
-      name: i18n('clearBoard'),
-      eco: '',
+      fen: 'W:W:B',
+      name: i18n('clearBoard')
     }]
-
-    Promise.all([
-      loadLocalJsonFile<Array<BoardPositionCategory>>('data/positions.json'),
-      loadLocalJsonFile<Array<BoardPosition>>('data/endgames.json')
-    ])
-    .then(([openings, endgames]) => {
-      this.positions(
-        openings.reduce((acc: Array<BoardPosition>, c: BoardPositionCategory) =>
-          acc.concat(c.positions), [])
-      )
-      this.endgamesPositions(endgames)
-      redraw()
-    })
 
     this.draughtsground = new Draughtsground({
       batchRAF: batchRequestAnimationFrame,
@@ -125,7 +95,6 @@ export default class Editor {
         change: () => {
           // we don't support enpassant, halfmove and moves fields when setting
           // position manually
-          this.data.editor.enpassant('-')
           this.data.editor.halfmove('0')
           this.data.editor.moves('1')
           this.updateHref()
@@ -136,7 +105,7 @@ export default class Editor {
 
   private updateHref = debounce(() => {
     const newFen = this.computeFen()
-    if (validateFen(newFen)) {
+    if (fenUtil.validateFen(newFen)) {
       const path = `/editor/${encodeURIComponent(newFen)}`
       try {
         window.history.replaceState(window.history.state, '', '?=' + path)
@@ -167,38 +136,24 @@ export default class Editor {
     }
   }
 
-  public computeFen = () =>
-    this.draughtsground.getFen() + ' ' + this.fenMetadatas()
+  public computeFen = () => {
+    const data = this.data.editor
+    return data.color() + ':' + this.draughtsground.getFen() + ':H' + data.halfmove() + ':F' + data.moves()
+  }
 
   public loadNewFen = (newFen: string) => {
-    if (validateFen(newFen))
-      router.set(`/editor/${encodeURIComponent(newFen)}`, true)
+    if (fenUtil.validateFen(newFen))
+      router.set(`/editor/variant/${encodeURIComponent(this.data.game.variant.key())}/fen/${encodeURIComponent(newFen)}`, true)
     else
       window.plugins.toast.show('Invalid FEN', 'short', 'center')
   }
 
-  private fenMetadatas() {
-    const data = this.data.editor
-    let castlesStr = ''
-    Object.keys(data.castles).forEach(function(piece) {
-      if (data.castles[piece]()) castlesStr += piece
-    })
-    return data.color() + ' ' + (castlesStr.length ? castlesStr : '-') + ' ' + data.enpassant() + ' ' + data.halfmove() + ' ' + data.moves()
-  }
-
   private readFen(fen: string): EditorData {
-    const parts = fen.split(' ')
+    const fenData = fenUtil.readFen(fen)
     return {
-      color: stream(parts[1] as Color),
-      castles: {
-        K: stream(parts[2].includes('K')),
-        Q: stream(parts[2].includes('Q')),
-        k: stream(parts[2].includes('k')),
-        q: stream(parts[2].includes('q'))
-      },
-      enpassant: stream(parts[3]),
-      halfmove: stream(parts[4]),
-      moves: stream(parts[5])
+      color: stream(fenData.color as Color),
+      halfmove: stream(fenData.halfmove.toString()),
+      moves: stream(fenData.moves.toString())
     }
   }
 }
