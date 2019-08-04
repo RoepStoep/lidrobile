@@ -148,16 +148,13 @@ const perfIconsMap: {[index: string]: string} = {
   rapid: '#',
   classical: '+',
   correspondence: ';',
-  chess960: '\'',
-  kingOfTheHill: '(',
-  threeCheck: '.',
-  antichess: '@',
-  atomic: '>',
+  frisian: '\'',
+  antidraughts: '@',
   puzzle: '-',
-  horde: '_',
+  puzzleFrisian: '$',
+  frysk: '_',
   fromPosition: '*',
-  racingKings: '',
-  crazyhouse: '',
+  breakthrough:'',
   ultraBullet: '{'
 }
 
