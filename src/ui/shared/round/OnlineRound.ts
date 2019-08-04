@@ -483,7 +483,7 @@ export default class OnlineRound implements OnlineRoundInterface {
     }
 
     d.game.threefold = !!o.threefold
-    d.steps.push({
+    this.addStep(d.steps, {
       ply: d.game.turns,
       fen: o.fen,
       san: o.san,
@@ -689,6 +689,19 @@ export default class OnlineRound implements OnlineRoundInterface {
       cfg.expiration.movedAt = Date.now() - cfg.expiration.idleMillis
     }
     this.data = cfg
+  }
+
+  private addStep(steps: GameStep[], newStep: GameStep): GameStep {
+
+    if (steps.length == 0 || countGhosts(steps[steps.length - 1].fen) === 0)
+      steps.push(newStep);
+    else
+      this.mergeStep(steps[steps.length - 1], newStep);
+
+    if (countGhosts(steps[steps.length - 1].fen) > 0)
+      steps[steps.length - 1].ply++;
+
+    return steps[steps.length - 1];
   }
 
   private mergeSteps(steps: GameStep[]): GameStep[] {

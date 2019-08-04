@@ -174,7 +174,8 @@ export function renderBoard(d: State, dom: cg.DOM) {
     let k = piecesKeys[j] as Key
     let p = pieces[k]
     anim = anims && anims[k]
-    tempPiece = temporaryPieces && temporaryPieces[k];
+    tempPiece = temporaryPieces && temporaryPieces[k]
+    tempRole = temporaryRoles && temporaryRoles[k]
     if (!samePieces.has(k) && !tempPiece) {
       mvdset = movedPieces.get(pieceNameOf(p))
       mvd = mvdset && mvdset.pop()
@@ -190,6 +191,10 @@ export function renderBoard(d: State, dom: cg.DOM) {
           pos[0] += anim[2];
           pos[1] += anim[3];
           shift = anim[4];
+          if (d.animation.current && d.animation.current.plan.nextPlan && d.animation.current.plan.nextPlan.anims[k] && !util.isObjectEmpty(d.animation.current.plan.nextPlan.anims[k])) {
+            pos[0] += d.animation.current.plan.nextPlan.anims[k][2];
+            pos[1] += d.animation.current.plan.nextPlan.anims[k][3];
+          }
         } else shift = 0
         translate = posToTranslate(pos, asWhite, shift)
         positionPiece(d, mvd, mvd.cgColor, translate)
@@ -209,6 +214,10 @@ export function renderBoard(d: State, dom: cg.DOM) {
           pos[0] += anim[2];
           pos[1] += anim[3];
           shift = anim[4];
+          if (tempRole) {
+            pe.className = pe.className.replace(p.role, tempRole);
+            pe.classList.add('temprole');
+          }
         } else shift = 0
         translate = posToTranslate(pos, asWhite, shift)
         positionPiece(d, pe, p.color, translate)

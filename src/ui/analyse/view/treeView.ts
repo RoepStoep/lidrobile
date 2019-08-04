@@ -183,8 +183,9 @@ function renderIndex(ply: Ply, withDots?: boolean): Mithril.Children {
 
 function renderMoveOf(ctx: Ctx, node: Tree.Node, opts: Opts): Mithril.BaseNode {
   const path = opts.parentPath + node.id
+  const ply = node.displayPly ? node.displayPly : node.ply
   const content: Mithril.Children = [
-    opts.withIndex || node.ply & 1 ? renderIndex(node.ply, true) : null,
+    opts.withIndex || ply & 1 ? renderIndex(ply, true) : null,
     fixCrazySan(node.san!)
   ]
   if (node.glyphs) renderGlyphs(node.glyphs).forEach(g => content.push(g))
