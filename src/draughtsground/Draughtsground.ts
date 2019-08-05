@@ -8,14 +8,12 @@ import { renderBoard, makeCoords, makeFieldnumbers } from './render'
 import { anim, skip as skipAnim } from './anim'
 import * as drag from './drag'
 
-const pieceScores: {[id: string]: number} = {
-  pawn: 1,
-  knight: 3,
-  bishop: 3,
-  rook: 5,
-  queen: 9,
-  king: 0
-}
+const pieceScores = {
+  man: 1,
+  king: 2,
+  ghostman: 0,
+  ghostking: 0
+};
 
 export default class Draughtsground {
   public state: State
@@ -106,31 +104,28 @@ export default class Draughtsground {
   }
 
   getMaterialDiff(): cg.MaterialDiff {
-    let score = 0
-    const counts: { [role: string]: number } = {
-      king: 0,
-      queen: 0,
-      rook: 0,
-      bishop: 0,
-      knight: 0,
-      pawn: 0
-    }
+    const diff: cg.MaterialDiff = {
+      white: {
+        pieces: { king: 0, man: 0 },
+        score: 0
+      },
+      black: {
+        pieces: { king: 0, man: 0 },
+        score: 0
+      }
+    };
     const piecesKeys = Object.keys(this.state.pieces)
     for (let i = 0; i < piecesKeys.length; i++) {
       const p = this.state.pieces[piecesKeys[i]]
-      counts[p.role] += (p.color === 'white') ? 1 : -1
-      score += pieceScores[p.role] * (p.color === 'white' ? 1 : -1)
+      if (p.role != "ghostman" && p.role != "ghostking") {
+        const them = diff[util.opposite(p.color)]
+        if (them.pieces[p.role] > 0) them.pieces[p.role]--;
+        else diff[p.color].pieces[p.role]++;
+      }
     }
-    const diff: cg.MaterialDiff = {
-      white: {pieces: {}, score: score},
-      black: {pieces: {}, score: -score}
-    }
-    for (let role in counts) {
-      const c = counts[role]
-      if (c > 0) diff.white.pieces[role] = c
-      else if (c < 0) diff.black.pieces[role] = -c
-    }
-    return diff
+    diff.white.score = this.getScore(this.state.pieces)
+    diff.black.score = -diff.white.score
+    return diff;
   }
 
   set(config: cg.SetConfig, noCaptSequences: boolean = false): void {
@@ -271,5 +266,13 @@ export default class Draughtsground {
         this.redraw()
       }, 100)
     }
+  }
+
+  private getScore(pieces: cg.Pieces): number {
+    let score = 0, k;
+    for (k in pieces) {
+      score += pieceScores[pieces[k].role] * (pieces[k].color === 'white' ? 1 : -1);
+    }
+    return score;
   }
 }
