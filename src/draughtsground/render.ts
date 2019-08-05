@@ -2,6 +2,11 @@ import * as cg from './interfaces'
 import { State } from './state'
 import * as util from './util'
 
+const files: number[] = [46, 47, 48, 49, 50];
+const filesBlack: number[] = [1, 2, 3, 4, 5];
+const ranks: number[] = [5, 15, 25, 35, 45];
+const ranksBlack: number[] = [6, 16, 26, 36, 46];
+
 /**
  * Board diffing and rendering logic. It runs in 3 main steps:
  *   1. Iterate over all DOM elements under board (pieces and squares).
@@ -52,6 +57,18 @@ export function renderBoard(d: State, dom: cg.DOM) {
     d.prev.otbMode = d.otbMode
     d.prev.turnColor = d.turnColor
     otbChange = !!(otbTurnFlipChange || otbModeChange)
+  }
+
+  if (orientationChange) {
+    const coords = (dom.elements.coordRanks || dom.elements.coordFiles)
+    if (d.coordinates === 2 && coords) {
+      const wrapper = coords.parentElement
+      if (wrapper) makeCoords(wrapper, d.orientation, dom)
+    } else if (d.coordinates === 1) {
+      makeFieldnumbers(d, dom);
+    } else {
+      clearCoords(dom)
+    }
   }
 
   // walk over all board dom elements, apply animations and flag moved pieces
@@ -343,24 +360,60 @@ function computeSquareClasses(d: State): Map<Key, string> {
   return squares
 }
 
-export function renderFieldnumbers(el: HTMLElement, s: State, bounds: ClientRect) {
+export function makeCoords(el: HTMLElement, orientation: Color, dom?: cg.DOM) {
+  let coordRanks, coordFiles
+  if (orientation === 'black') {
+    coordRanks = renderCoords(ranksBlack, 'ranks black', 'coord-odd');
+    coordFiles = renderCoords(filesBlack, 'files black', 'coord-even');
+  } else {
+    coordRanks = renderCoords(ranks, 'ranks', 'coord-even');
+    coordFiles = renderCoords(files, 'files', 'coord-odd');
+  }
+  if (dom) {
+    if (dom.elements.coordRanks) el.removeChild(dom.elements.coordRanks)
+    if (dom.elements.coordFiles) el.removeChild(dom.elements.coordFiles)
+    clearCoords(dom)
+    dom.elements.coordRanks = coordRanks
+    dom.elements.coordFiles = coordFiles
+  }
+  el.appendChild(coordRanks)
+  el.appendChild(coordFiles)
+}
+
+export function makeFieldnumbers(s: State, dom?: cg.DOM) {
+  if (!dom) return;
+  clearCoords(dom);
   const asWhite = s.orientation !== 'black';
   for (var f = 1; f <= 50; f++) {
     const field = document.createElement('fieldnumber');
-    field.className = 'black'
+    field.className = 'coord-odd'
     field.textContent = f.toString();
-    const coords = posToTranslateAbs(bounds)(util.key2pos(util.allKeys[f - 1]), asWhite, 0);
+    const coords = posToTranslateAbs(dom.bounds)(util.key2pos(util.allKeys[f - 1]), asWhite, 0);
     field.style.transform = util.translate(coords);
-    el.appendChild(field);
+    dom.board.appendChild(field);
   }
 }
 
-export function renderCoords(elems: Array<number | string>, klass: string) {
+function clearCoords(dom: cg.DOM) {
+  if (dom.elements.coordRanks) delete dom.elements.coordRanks
+  if (dom.elements.coordFiles) delete dom.elements.coordFiles
+  const oldFields = dom.board.children
+  if (oldFields && oldFields.length) {
+    for (var i = oldFields.length - 1; i >= 0; i--) {
+      const field = oldFields[i];
+      if (field.tagName === 'FIELDNUMBER') {
+        dom.board.removeChild(field)
+      }
+    }
+  }
+}
+
+function renderCoords(elems: Array<number | string>, klass: string, coordClass: string) {
   const el = document.createElement('li-coords')
   el.className = klass
-  elems.forEach((content: number | string, i: number) => {
+  elems.forEach((content: number | string) => {
     const f = document.createElement('li-coord')
-    f.className = i % 2 === 0 ? 'coord-odd' : 'coord-even'
+    f.className = coordClass
     f.textContent = String(content)
     el.appendChild(f)
   })

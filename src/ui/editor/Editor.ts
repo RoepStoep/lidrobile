@@ -73,6 +73,7 @@ export default class Editor {
       batchRAF: batchRequestAnimationFrame,
       fen: initFen,
       orientation: 'white',
+      coordinates: settings.game.coords(),
       movable: {
         free: true,
         color: 'both'

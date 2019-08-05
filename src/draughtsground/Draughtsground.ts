@@ -4,7 +4,7 @@ import * as board from './board'
 import { State } from './state'
 import { initBoard, configureBoard, setNewBoardState } from './configure'
 import fen from './fen'
-import { renderBoard, renderCoords, renderFieldnumbers } from './render'
+import { renderBoard, makeCoords, makeFieldnumbers } from './render'
 import { anim, skip as skipAnim } from './anim'
 import * as drag from './drag'
 
@@ -16,10 +16,6 @@ const pieceScores: {[id: string]: number} = {
   queen: 9,
   king: 0
 }
-const files: number[] = [46, 47, 48, 49, 50];
-const filesBlack: number[] = [1, 2, 3, 4, 5];
-const ranks: number[] = [5, 15, 25, 35, 45];
-const ranksBlack: number[] = [6, 16, 26, 36, 46];
 
 export default class Draughtsground {
   public state: State
@@ -72,17 +68,10 @@ export default class Draughtsground {
       this.dom.elements.ghost = ghost
     }
 
-    if (this.state.coordinates) {
-      if (this.state.coordinates === 2) {
-        if (this.state.orientation === 'black') {
-          board.appendChild(renderCoords(ranksBlack, 'ranks black'));
-          board.appendChild(renderCoords(filesBlack, 'files black'));
-        } else {
-          board.appendChild(renderCoords(ranks, 'ranks'));
-          board.appendChild(renderCoords(files, 'files'));
-        }
-      } else if (this.dom.bounds && this.state.coordinates === 1)
-        renderFieldnumbers(board, this.state, this.dom.bounds);
+    if (this.state.coordinates === 2) {
+      makeCoords(wrapper, this.state.orientation, this.dom)
+    } else if (this.state.coordinates === 1) {
+      makeFieldnumbers(this.state, this.dom);
     }
 
     if (!isViewOnly) {

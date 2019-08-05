@@ -71,7 +71,7 @@ piece
   > li-coords.files
     flex-flow row-reverse
   > li-coords.ranks
-    flex-flow column
+    flex-flow column-reverse
 
 li-coords
   position absolute
@@ -107,7 +107,7 @@ li-coords
   &.ranks
     right 1px
     top 1px
-    flex-flow: column-reverse
+    flex-flow: column
     height: 100%
     &.symm
       transform rotate(180deg)
@@ -118,3 +118,20 @@ li-coords
 
 li-coord
   flex 1 1 auto
+
+fieldnumber
+  position: absolute;
+  margin-left: -1px;
+  text-align: right;
+  width: 10.0%;
+  height: 10.0%;
+  color #fff
+  opacity: 0.8;
+  font-family Cousine
+  font-weight bold
+  font-size 11px
+  line-height 11px
+  pointer-events none
+  @media (min-width 600px)
+    font-size 15px
+    line-height 15px

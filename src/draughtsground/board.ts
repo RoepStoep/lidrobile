@@ -5,6 +5,9 @@ import premove from './premove'
 
 export function toggleOrientation(state: State): void {
   state.orientation = util.opposite(state.orientation)
+  state.animation.current =
+  state.draggable.current =
+  state.selected = null;
 }
 
 export function reset(state: State): void {
