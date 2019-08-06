@@ -1,5 +1,5 @@
 import * as h from 'mithril/hyperscript'
-import * as chessFormat from '../../../utils/draughtsFormat'
+import * as draughtsFormat from '../../../utils/draughtsFormat'
 import gameStatusApi from '../../../lidraughts/status'
 import { findTag, gameResult } from '../../../lidraughts/interfaces/study'
 import Board, { Bounds } from '../../shared/Board'
@@ -25,30 +25,43 @@ export default function renderBoard(
   let curBestShapes: Shape[] = []
   if (!ctrl.retro && ctrl.settings.s.showBestMove) {
     nextBest = ctrl.nextNodeBest() || (ceval && ceval.best)
-    if (nextBest) {
-      curBestShapes = moveOrDropShape(nextBest, 'paleBlue')
+    const ghostNode = ctrl.node.displayPly && ctrl.node.displayPly !== ctrl.node.ply && ctrl.nodeList.length > 1;
+    if (!nextBest) {
+      const prevCeval = ghostNode ? ctrl.nodeList[ctrl.nodeList.length - 2].ceval : undefined;
+      if (ghostNode && prevCeval && prevCeval.pvs[0].moves[0].indexOf('x') !== -1 && ctrl.node.uci) {
+        const ucis = ctrl.node.uci.match(/.{1,2}/g);
+        if (!!ucis) {
+          const sans = ucis.slice(0, ucis.length - 1).map(uci => parseInt(uci).toString()).join('x');
+          nextBest = prevCeval.pvs[0].moves[0].slice(sans.length + 1);
+        }
+      } else if (ceval)
+        nextBest = ceval.pvs[0].moves[0];
     }
-    if (ceval && ceval.pvs.length > 1) {
+    if (nextBest) {
+      const capts = nextBest.split('x').length;
+      curBestShapes = makeShapesFromUci(nextBest, capts > 4 ? 'paleBlue_3' : 'paleBlue', capts > 4 ? 'paleBlue_2' : '')
+    }
+    if (!ghostNode && ceval && ceval.pvs.length > 1) {
       ceval.pvs.slice(1).forEach(pv => {
         const shift = povDiff(player, ceval.pvs[0], pv)
         if (shift >= 0 && shift < 0.2) {
           const linewidth = Math.round(12 - shift * 50) // 12 to 2
-          curBestShapes = curBestShapes.concat(moveOrDropShape(pv.moves[0], 'paleBlue' + linewidth))
+          curBestShapes = curBestShapes.concat(makeShapesFromUci(pv.moves[0], 'paleBlue' + linewidth))
         }
       })
     }
   }
   const pastBestShape: Shape[] = !ctrl.retro && rEval && rEval.best ?
-    moveOrDropShape(rEval.best, 'paleGreen') : []
+    makeShapesFromUci(rEval.best, 'paleGreen') : []
 
   const nextUci = curTab.id === 'explorer' && ctrl.node && treeOps.withMainlineChild(ctrl.node, n => n.uci)
 
   const nextMoveShape: Shape[] = nextUci ?
-    moveOrDropShape(nextUci, 'palePurple') : []
+    makeShapesFromUci(nextUci, 'palePurple') : []
 
   const badNode = ctrl.retro && ctrl.retro.showBadNode()
   const badMoveShape: Shape[] = badNode && badNode.uci ?
-    moveOrDropShape(badNode.uci, 'paleRed') : []
+    makeShapesFromUci(badNode.uci, 'paleRed') : []
 
   const shapes = [
     ...nextMoveShape, ...pastBestShape, ...curBestShapes, ...badMoveShape
@@ -99,18 +112,18 @@ export function playerBar(ctrl: AnalyseCtrl, color: Color) {
   ])
 }
 
-/*function renderCheckCount(whitePov: boolean, checkCount: { white: number, black: number }) {
-  const w = h('span.color-icon.white', '+' + checkCount.black)
-  const b = h('span.color-icon.black', '+' + checkCount.white)
-  return h('div.analyse-checkCount', whitePov ? [w, b] : [b, w])
-}*/
-
-function moveOrDropShape(uci: string, brush: string): Shape[] {
-  const move = chessFormat.uciToMove(uci)
-  const shapes: Shape[] = [{
-    brush,
-    orig: move[0],
-    dest: move[1]
-  }]
-  return shapes
+function makeShapesFromUci(uci: Uci, brush: string, brushFirst?: string): Shape[] {
+  const moves = draughtsFormat.decomposeUci(draughtsFormat.scan2uci(uci));
+  if (moves.length == 1) return [{
+    orig: moves[0],
+    brush
+  }];
+  const shapes: Shape[] = new Array<Shape>();
+  for (let i = 0; i < moves.length - 1; i++)
+    shapes.push({
+      orig: moves[i],
+      dest: moves[i + 1],
+      brush: (brushFirst && i === 0) ? brushFirst : brush
+    });
+  return shapes;
 }

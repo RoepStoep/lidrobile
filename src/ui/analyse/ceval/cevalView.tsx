@@ -3,6 +3,7 @@ import * as range from 'lodash/range'
 import i18n from '../../../i18n'
 import * as helper from '../../helper'
 import { isClientEval } from '../../shared/tree/interfaces'
+import { scan2uci } from '../../../utils/draughtsFormat'
 
 import AnalyseCtrl from '../AnalyseCtrl'
 import { renderEval } from '../util'
@@ -70,12 +71,12 @@ function renderCevalPvs(ctrl: AnalyseCtrl) {
       oncreate: helper.ontapXY(e => onLineTap(ctrl, e), undefined, helper.getLI)
     }, range(multiPv).map((i) => {
       if (!pvs[i]) return h('li.pv')
-      const san = pv2san(ctrl.ceval.variant, node.fen, false, pvs[i].moves, pvs[i].mate)
+      const san = pv2san(node.fen, false, pvs[i].moves, pvs[i].win)
       return h('li.ceval-pv', {
-        'data-uci': pvs[i].moves[0],
+        'data-uci': scan2uci(pvs[i].moves[0]),
         className: (i % 2 === 0) ? 'even' : 'odd'
       }, [
-        h('strong.ceval-pv_eval', pvs[i].mate !== undefined ? ('#' + pvs[i].mate) : renderEval(pvs[i].cp!)),
+        h('strong.ceval-pv_eval', pvs[i].win !== undefined ? ('#' + pvs[i].win) : renderEval(pvs[i].cp!)),
         h('div.ceval-pv-line', san)
       ])
     }))
@@ -109,8 +110,8 @@ export const EvalBox: Mithril.Component<{ ctrl: AnalyseCtrl }, {}> = {
     if (fav && (!isClientEval(fav) || fav.depth >= ctrl.ceval.minDepth) && fav.cp !== undefined) {
       pearl = renderEval(fav.cp)
     }
-    else if (fav && fav.mate !== undefined) {
-      pearl = '#' + fav.mate
+    else if (fav && fav.win !== undefined) {
+      pearl = '#' + fav.win
     }
     else if (ctrl.gameOver()) {
       pearl = '-'

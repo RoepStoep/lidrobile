@@ -22,6 +22,8 @@ export const brushes: { [key: string]: Brush } = {
   paleBlue4: { key: 'pb4', color: '#003088', opacity: 0.3, lineWidth: 4 },
   paleBlue3: { key: 'pb3', color: '#003088', opacity: 0.3, lineWidth: 3 },
   paleBlue2: { key: 'pb2', color: '#003088', opacity: 0.3, lineWidth: 2 },
+  paleBlue_2: { key: 'pb_2', color: '#003088', opacity: 0.55, lineWidth: 15 },
+  paleBlue_3: { key: 'pb_3', color: '#003088', opacity: 0.2, lineWidth: 15 },
   paleGreen: { key: 'pg', color: '#15781B', opacity: 0.35, lineWidth: 15 },
   palePurple: { key: 'pp', color: '#4b0082', opacity: 0.35, lineWidth: 10 },
   paleRed: { key: 'pr', color: 'rgb(136, 32, 32)', opacity: 0.4, lineWidth: 8 },

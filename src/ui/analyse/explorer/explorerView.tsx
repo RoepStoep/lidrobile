@@ -70,7 +70,7 @@ function showTablebase(ctrl: AnalyseCtrl, title: string, moves: Array<Move>, fen
           <td>{move.san}</td>
           <td>
             {showDtz(stm, move)}
-            {showDtm(stm, move)}
+            {showDtw(stm, move)}
           </td>
         </tr>
       })}
@@ -88,10 +88,10 @@ function winner(stm: string, move: Move) {
     return null
 }
 
-function showDtm(stm: string, move: Move) {
+function showDtw(stm: string, move: Move) {
   if (move.dtm) return h('result.' + winner(stm, move), {
-    title: 'Mate in ' + Math.abs(move.dtm) + ' half-moves (Depth To Mate)'
-  }, 'DTM ' + Math.abs(move.dtm))
+    title: 'Win in ' + Math.abs(move.dtm) + ' half-moves (Depth To Win)'
+  }, 'DTW ' + Math.abs(move.dtm))
   else return null
 }
 

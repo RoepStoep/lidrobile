@@ -1,8 +1,8 @@
 import i18n from '../../i18n'
 import Draughtsground from '../../draughtsground/Draughtsground'
 import router from '../../router'
-import * as chess from '../../draughts'
-import * as chessFormat from '../../utils/draughtsFormat'
+import * as draughts from '../../draughts'
+import * as draughtsFormat from '../../utils/draughtsFormat'
 import sound from '../../sound'
 import vibrate from '../../vibrate'
 import settings from '../../settings'
@@ -87,7 +87,7 @@ export default class AiRound implements AiRoundInterface, PromotingInterface {
     })
   }
 
-  public init(data: OfflineGameData, situations: Array<chess.GameSituation>, ply: number) {
+  public init(data: OfflineGameData, situations: Array<draughts.GameSituation>, ply: number) {
     this.newGameMenu.close()
     this.actions.close()
     this.data = data
@@ -114,12 +114,9 @@ export default class AiRound implements AiRoundInterface, PromotingInterface {
       ground.reload(this.draughtsground, this.data, this.replay.situation())
     }
 
-    this.engine.prepare(this.data.game.variant.key)
-    .then(() => {
-      if (this.isEngineToMove()) {
-        this.engineMove()
-      }
-    })
+    if (this.isEngineToMove()) {
+      this.engineMove()
+    }
 
     this.save()
     redraw()
@@ -134,8 +131,8 @@ export default class AiRound implements AiRoundInterface, PromotingInterface {
       payload.fen = setupFen
     }
 
-    chess.init(payload)
-    .then((data: chess.InitResponse) => {
+    draughts.init(payload)
+    .then((data: draughts.InitResponse) => {
       this.init(makeData({
         id: 'offline_ai',
         variant: data.variant,
@@ -167,7 +164,7 @@ export default class AiRound implements AiRoundInterface, PromotingInterface {
 
   public sharePGN = () => {
     this.replay.pgn(this.white(), this.black())
-    .then((data: chess.PdnDumpResponse) =>
+    .then((data: draughts.PdnDumpResponse) =>
       window.plugins.socialsharing.share(data.pdn)
     )
   }
@@ -195,7 +192,7 @@ export default class AiRound implements AiRoundInterface, PromotingInterface {
   public getOpponent() {
     const level = settings.ai.opponent()
     const opp = settings.ai.availableOpponents.find(e => e[1] === level)
-    const name = opp && opp.length && opp[0] || 'Stockfish'
+    const name = opp && opp.length && opp[0] || 'Scan'
     return {
       name: i18n('aiNameLevelAiLevel', name, level),
       level: parseInt(level) || 1
@@ -216,8 +213,8 @@ export default class AiRound implements AiRoundInterface, PromotingInterface {
   }
 
   public onEngineDrop = (bestdrop: string) => {
-    const pos = chessFormat.uciToDropPos(bestdrop)
-    const role = 'man' as Role; //chessFormat.uciToDropRole(bestdrop)
+    const pos = draughtsFormat.uciToDropPos(bestdrop)
+    const role = 'man' as Role; // draughtsFormat.uciToDropRole(bestdrop)
     const piece = { role, color: this.data.opponent.color }
     this.vm.engineSearching = false
     this.draughtsground.apiNewPiece(piece, pos)
@@ -269,20 +266,20 @@ export default class AiRound implements AiRoundInterface, PromotingInterface {
     sound.move()
   }
 
-  public apply(sit: chess.GameSituation) {
+  public apply(sit: draughts.GameSituation) {
     if (sit) {
       const lastUci = sit.uciMoves.length ? sit.uciMoves[sit.uciMoves.length - 1] : null
       this.draughtsground.set({
         fen: sit.fen,
         turnColor: sit.player,
-        lastMove: lastUci ? chessFormat.uciToMoveOrDrop(lastUci) : null,
+        lastMove: lastUci ? draughtsFormat.uciToMoveOrDrop(lastUci) : null,
         dests: sit.dests,
         movableColor: sit.player === this.data.player.color ? sit.player : null
       })
     }
   }
 
-  public onReplayAdded = (sit: chess.GameSituation) => {
+  public onReplayAdded = (sit: draughts.GameSituation) => {
     this.data.game.fen = sit.fen
     this.apply(sit)
     setResult(this, sit.status)

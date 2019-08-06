@@ -18,7 +18,7 @@ export const moves: Tab = {
 
 export const ceval: Tab = {
   id: 'ceval',
-  title: 'Stockfish',
+  title: 'Scan',
   className: 'fa fa-cogs'
 }
 

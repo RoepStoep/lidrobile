@@ -122,8 +122,8 @@ function makeSerieData(d: AnalyseData): Point[] {
 
     let cp: number
 
-    if (node.eval && node.eval.mate) {
-      cp = node.eval.mate > 0 ? Infinity : -Infinity
+    if (node.eval && node.eval.win) {
+      cp = node.eval.win > 0 ? Infinity : -Infinity
     }
     else if (node.san && node.san.indexOf('#') > 0) {
       cp = color === 1 ? Infinity : -Infinity

@@ -6,7 +6,7 @@ export interface CloudEval {
   fen: string
   knodes: number
   path: string
-  pvs: ReadonlyArray<{ cp?: number, moves: string, mate?: number }>
+  pvs: ReadonlyArray<{ cp?: number, moves: string, win?: number }>
   variant?: VariantKey
 }
 
@@ -25,13 +25,13 @@ function toCeval(e: CloudEval): Tree.ClientEval {
         moves: pv.moves.split(' ')
       }
       if (pv.cp !== undefined) to.cp = pv.cp
-      else to.mate = pv.mate
+      else to.win = pv.win
       return to as Tree.PvData
     }),
     cloud: true
   }
   if (res.pvs![0].cp !== undefined) res.cp = res.pvs![0].cp
-  else res.mate = res.pvs![0].mate
+  else res.win = res.pvs![0].win
   res.cloud = true
   return res as Tree.ClientEval
 }

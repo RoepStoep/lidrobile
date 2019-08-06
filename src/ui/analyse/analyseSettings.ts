@@ -6,7 +6,7 @@ import * as gameApi from '../../lidraughts/game'
 import { isOnlineAnalyseData } from '../../lidraughts/interfaces/analyse'
 import settings from '../../settings'
 import { oppositeColor } from '../../utils'
-import { getNbCores } from '../../utils/stockfish'
+import { getNbCores } from '../../utils/scan'
 import formWidgets from '../shared/form'
 import AnalyseCtrl from './AnalyseCtrl'
 

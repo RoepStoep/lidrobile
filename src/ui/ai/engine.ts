@@ -1,5 +1,5 @@
 import { AiRoundInterface } from '../shared/round'
-import { send, getNbCores, setOption, setVariant } from '../../utils/stockfish'
+import { send, getNbCores, setOption, parseVariant } from '../../utils/scan'
 
 interface LevelToDepth {
   [index: number]: number
@@ -22,7 +22,6 @@ export interface EngineInterface {
   init(): Promise<void>
   search(initialFen: string, moves: string): void
   setLevel(level: number): Promise<void>
-  prepare(variant: VariantKey): Promise<void>
   exit(): Promise<void>
 }
 
@@ -31,14 +30,14 @@ export default function(ctrl: AiRoundInterface): EngineInterface {
 
   return {
     init() {
-      return Stockfish.init()
-      .then(onInit)
-      .catch(console.error.bind(console))
+      return Scan.init(parseVariant(ctrl.data.game.variant.key))
+        .then(onInit)
+        .catch(console.error.bind(console))
     },
 
     search(initialFen: string, moves: string) {
-      Stockfish.output((msg: string) => {
-        console.debug('[stockfish >>] ' + msg)
+      Scan.output((msg: string) => {
+        console.debug('[scan >>] ' + msg)
         const match = msg.match(/^bestmove (\w{4})|^bestmove ([PNBRQ]@\w{2})/)
         if (match) {
           if (match[1]) ctrl.onEngineMove(match[1])
@@ -48,8 +47,8 @@ export default function(ctrl: AiRoundInterface): EngineInterface {
 
       // console.info('engine search pos: ', `position fen ${initialFen} moves ${moves}`)
       setOption('Threads', getNbCores())
-      .then(() => send(`position fen ${initialFen} moves ${moves}`))
-      .then(() => send(`go movetime ${moveTime(level)} depth ${depth(level)}`))
+        .then(() => send(`position fen ${initialFen} moves ${moves}`))
+        .then(() => send(`go movetime ${moveTime(level)} depth ${depth(level)}`))
     },
 
     setLevel(l: number) {
@@ -57,19 +56,14 @@ export default function(ctrl: AiRoundInterface): EngineInterface {
       return setOption('Skill Level', String(skill(level)))
     },
 
-    prepare(variant: VariantKey) {
-      return setVariant(variant)
-    },
-
     exit() {
-      return Stockfish.exit()
+      return Scan.exit()
     }
   }
 }
 
 function onInit() {
-  return send('uci')
-  .then(() => setOption('Ponder', 'false'))
+  return send('hub')
 }
 
 function moveTime(level: number) {

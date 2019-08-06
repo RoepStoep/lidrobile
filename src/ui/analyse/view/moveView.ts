@@ -37,7 +37,7 @@ export function renderMove(ctx: Ctx, node: Tree.Node): Mithril.BaseNode[] {
     .concat((node.glyphs && ctx.showGlyphs) ? renderGlyphs(node.glyphs) : [])
     .concat(ctx.showEval ? (
       ev.cp !== undefined ? [renderEval(normalizeEval(ev.cp))] : (
-        ev.mate !== undefined ? [renderEval('#' + ev.mate)] : []
+        ev.win !== undefined ? [renderEval('#' + ev.win)] : []
       )
     ) : [])
 }

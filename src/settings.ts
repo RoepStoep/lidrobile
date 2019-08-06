@@ -124,14 +124,14 @@ export default {
 
   ai: {
     availableOpponents: [
-      ['Stockfish', '1'],
-      ['Stockfish', '2'],
-      ['Stockfish', '3'],
-      ['Stockfish', '4'],
-      ['Stockfish', '5'],
-      ['Stockfish', '6'],
-      ['Stockfish', '7'],
-      ['Stockfish', '8']
+      ['Scan', '1'],
+      ['Scan', '2'],
+      ['Scan', '3'],
+      ['Scan', '4'],
+      ['Scan', '5'],
+      ['Scan', '6'],
+      ['Scan', '7'],
+      ['Scan', '8']
     ],
     color: store.prop<Color | 'random'>('settings.ai.color', 'white'),
     opponent: store.prop('settings.ai.opponent', '1'),

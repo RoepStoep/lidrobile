@@ -30,6 +30,15 @@ export function decomposeUci(uci: Uci): Key[] {
   return uciArray;
 }
 
+export function scan2uci(san: string): string {
+  if (san.indexOf('x') !== -1)
+    return san.split('x').map(m => (m.length == 1 ? "0" + m : m)).join('');
+  else if (san.indexOf('-') !== -1)
+    return san.split('-').map(m => (m.length == 1 ? "0" + m : m)).join('');
+  else
+    return san;
+}
+
 export function fenCompare(fen1: string, fen2: string) {
   const fenParts1: string[] = fen1.split(':');
   const fenParts2: string[] = fen2.split(':');

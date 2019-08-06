@@ -1,7 +1,7 @@
 import settings from '../../../settings'
 import { Tree } from '../../shared/tree'
-import { getNbCores } from '../../../utils/stockfish'
-import StockfishEngine from './StockfishEngine'
+import { getNbCores } from '../../../utils/scan'
+import ScanEngine from './ScanEngine'
 import { Opts, Work, ICevalCtrl } from './interfaces'
 
 export default function CevalCtrl(
@@ -22,7 +22,7 @@ export default function CevalCtrl(
     infinite: initOpts.infinite
   }
 
-  const engine = StockfishEngine(variant)
+  const engine = ScanEngine(variant)
 
   let started = false
   let isEnabled = settings.analyse.enableCeval()
@@ -46,20 +46,35 @@ export default function CevalCtrl(
     const work = {
       initialFen: nodes[0].fen,
       currentFen: step.fen,
-      moves: nodes.slice(1).map((s) => fixCastle(s.uci!, s.san!)),
+      moves: new Array<string>(),
       maxDepth: forceRetroOpts ? 18 : effectiveMaxDepth(),
       cores: forceRetroOpts ? getNbCores() : opts.cores,
       path,
       ply: step.ply,
-      multiPv: forceRetroOpts ? 1 : opts.multiPv,
+      multiPv: 1, //forceRetroOpts ? 1 : opts.multiPv,
       threatMode: false,
       emit(res?: Tree.ClientEval) {
         if (enabled()) onEmit(work, res)
       }
     }
 
+    // send moves after last capture
+    for (let i = 1; i < nodes.length; i++) {
+      let s = nodes[i];
+      if (s.san!.indexOf('x') !== -1) {
+        work.moves = [];
+        work.initialFen = s.fen;
+      } else work.moves.push(shortUci(s));
+    }
+
     engine.start(work)
     started = true
+  }
+
+  function shortUci(n: Tree.Node) {
+    if (!n.uci) return ''
+    if (n.uci.length > 4) return n.uci.slice(0, 2) + 'x' + n.uci.slice(2);
+    else return n.uci.slice(0, 2) + '-' + n.uci.slice(2);
   }
 
   function effectiveMaxDepth() {
@@ -76,21 +91,6 @@ export default function CevalCtrl(
         initialized = false
       })
     }
-  }
-
-  function fixCastle(uci: string, san: string) {
-    if (san.indexOf('O-O') !== 0) return uci
-    switch (uci) {
-      case 'e1h1':
-        return 'e1g1'
-      case 'e1a1':
-        return 'e1c1'
-      case 'e8h8':
-        return 'e8g8'
-      case 'e8a8':
-        return 'e8c8'
-    }
-    return uci
   }
 
   return {

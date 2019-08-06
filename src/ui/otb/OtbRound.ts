@@ -1,8 +1,8 @@
 import sound from '../../sound'
 import router from '../../router'
 import Draughtsground from '../../draughtsground/Draughtsground'
-import * as chess from '../../draughts'
-import * as chessFormat from '../../utils/draughtsFormat'
+import * as draughts from '../../draughts'
+import * as draughtsFormat from '../../utils/draughtsFormat'
 import settings from '../../settings'
 import gameStatusApi from '../../lidraughts/status'
 import { OfflineGameData, GameStatus } from '../../lidraughts/interfaces/game'
@@ -82,7 +82,7 @@ export default class OtbRound implements OtbRoundInterface, PromotingInterface {
     }
   }
 
-  public init(data: OfflineGameData, situations: Array<chess.GameSituation>, ply: number) {
+  public init(data: OfflineGameData, situations: Array<draughts.GameSituation>, ply: number) {
     this.actions.close()
     this.data = data
 
@@ -130,8 +130,8 @@ export default class OtbRound implements OtbRoundInterface, PromotingInterface {
 
     const clock = clockType ? clockSet[clockType](this.onFlag) : null
 
-    chess.init(payload)
-    .then((data: chess.InitResponse) => {
+    draughts.init(payload)
+    .then((data: draughts.InitResponse) => {
       this.init(makeData({
         id: 'offline_otb',
         variant: data.variant,
@@ -185,7 +185,7 @@ export default class OtbRound implements OtbRoundInterface, PromotingInterface {
 
   public sharePGN = () => {
     this.replay.pgn('White', 'Black')
-    .then((data: chess.PdnDumpResponse) =>
+    .then((data: draughts.PdnDumpResponse) =>
       window.plugins.socialsharing.share(data.pdn)
     )
   }
@@ -221,7 +221,7 @@ export default class OtbRound implements OtbRoundInterface, PromotingInterface {
     this.save()
   }
 
-  public apply(sit: chess.GameSituation) {
+  public apply(sit: draughts.GameSituation) {
     if (sit) {
       if (this.clock && this.clock.activeSide() !== sit.player) {
         this.clock.toggleActiveSide()
@@ -231,14 +231,14 @@ export default class OtbRound implements OtbRoundInterface, PromotingInterface {
       this.draughtsground.set({
         fen: sit.fen,
         turnColor: sit.player,
-        lastMove: lastUci ? chessFormat.uciToMoveOrDrop(lastUci) : null,
+        lastMove: lastUci ? draughtsFormat.uciToMoveOrDrop(lastUci) : null,
         dests: sit.dests,
         movableColor: sit.player
       })
     }
   }
 
-  public onReplayAdded = (sit: chess.GameSituation) => {
+  public onReplayAdded = (sit: draughts.GameSituation) => {
     const lastMovePlayer = sit.player === 'white' ? 'black' : 'white'
     if (this.clock) {
       this.clock.clockHit(lastMovePlayer)

@@ -33,6 +33,7 @@ import analyseMenu, { IMainMenuCtrl } from './menu'
 import analyseSettings, { ISettingsCtrl } from './analyseSettings'
 import ground from './ground'
 import socketHandler from './analyseSocketHandler'
+import { getCompChild } from './nodeFinder';
 import { make as makeEvalCache, EvalCache } from './evalCache'
 import { Source } from './interfaces'
 import * as tabs from './tabs'
@@ -124,7 +125,7 @@ export default class AnalyseCtrl {
       this.isCevalAllowed(),
       this.onCevalMsg,
       {
-        multiPv: this.settings.s.cevalMultiPvs,
+        multiPv: 1, //this.settings.s.cevalMultiPvs,
         cores: this.settings.s.cevalCores,
         infinite: this.settings.s.cevalInfinite
       }
@@ -287,9 +288,15 @@ export default class AnalyseCtrl {
   }
 
   startCeval = () => {
-    if (this.ceval.enabled() && this.canUseCeval()) {
-      this.ceval.start(this.path, this.nodeList, !!this.retro)
-      this.evalCache.fetch(this.path, this.ceval.getMultiPv())
+    if (this.ceval.enabled()) {
+      if (this.canUseCeval()) {
+        // only analyze startingposition of multicaptures
+        const ghostEnd = (this.nodeList.length > 0 && this.node.displayPly && this.node.displayPly !== this.node.ply);
+        const path = ghostEnd ? this.path.slice(2) : this.path;
+        const nodeList = ghostEnd ? this.nodeList.slice(1) : this.nodeList;
+        this.ceval.start(path, nodeList, !!this.retro)
+        this.evalCache.fetch(path, this.ceval.getMultiPv())
+      } else this.ceval.stop();
     }
   }
 
@@ -442,8 +449,17 @@ export default class AnalyseCtrl {
     return !this.gameOver()
   }
 
+  private pickUci(compChild?: Tree.Node, nextBest?: string) {
+    if (!nextBest)
+      return undefined;
+    else if (!!compChild && compChild.uci && compChild.uci.length > nextBest.length && compChild.uci.slice(0, 2) === nextBest.slice(0, 2) && compChild.uci.slice(compChild.uci.length - 2) === nextBest.slice(nextBest.length - 2))
+      return compChild.uci;
+    else
+      return nextBest;
+  }
+
   nextNodeBest() {
-    return treeOps.withMainlineChild(this.node, (n: Tree.Node) => n.eval ? n.eval.best : undefined)
+    return treeOps.withMainlineChild(this.node, (n: Tree.Node) => n.eval ? this.pickUci(getCompChild(this.node), n.eval.best) : undefined);
   }
 
   mainlinePathToPly(ply: Ply): Tree.Path {
@@ -455,7 +471,13 @@ export default class AnalyseCtrl {
   }
 
   hasFullComputerAnalysis = (): boolean => {
-    return Object.keys(this.mainline[0].eval || {}).length > 0
+    for (let i = 0; i < this.mainline.length - 2; i++) {
+      const skip = i > 0 && this.mainline[i].ply === this.mainline[i - 1].ply;
+      const e = this.mainline[i].eval;
+      if (!skip && (!e || !Object.keys(e).length))
+        return false;
+    }
+    return true;
   }
 
   isOfflineOrNotPlayable = (): boolean => {
@@ -624,7 +646,7 @@ export default class AnalyseCtrl {
         }
       })
     }
-    // no ceval means stockfish has finished, just redraw
+    // no ceval means scan has finished, just redraw
     else {
       if (this.currentTab(this.availableTabs()).id === 'ceval') redraw()
     }

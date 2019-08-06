@@ -34,6 +34,6 @@ export function playerName(player: any, withRating = false, tr = false, trLenght
 }
 
 export function aiName(player: { ai: number }) {
-  return i18n('aiNameLevelAiLevel', 'Stockfish', player.ai)
+  return i18n('aiNameLevelAiLevel', 'Scan', player.ai)
 }
 

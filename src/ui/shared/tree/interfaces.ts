@@ -13,7 +13,7 @@ export namespace Tree {
     pvs: PvData[]
     cloud?: boolean
     cp?: number
-    mate?: number
+    win?: number
     retried?: boolean
     // maybe not keep here
     best?: Uci
@@ -21,13 +21,13 @@ export namespace Tree {
 
   export interface ServerEval {
     cp?: number
-    mate?: number
+    win?: number
     best?: Uci
   }
 
   export interface PvData {
     readonly moves: ReadonlyArray<string>
-    mate?: number
+    win?: number
     cp?: number
   }
 

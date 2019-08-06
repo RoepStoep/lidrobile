@@ -7,7 +7,7 @@ export interface NodeEvals {
 
 export interface Eval {
   cp?: number
-  mate?: number
+  win?: number
 }
 
 export interface Opts {

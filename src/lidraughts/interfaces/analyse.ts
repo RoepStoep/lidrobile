@@ -57,7 +57,7 @@ export interface EvalJugdment {
 export interface RemoteEval {
   readonly cp: number
   readonly best?: string
-  readonly mate?: number
+  readonly win?: number
   readonly variation?: string
   readonly judgment?: EvalJugdment
 }

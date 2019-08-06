@@ -8,8 +8,8 @@ import { ErrorResponse } from '../../http'
 import redraw from '../../utils/redraw'
 import { hasNetwork, handleXhrError } from '../../utils'
 import signals from '../../signals'
-import * as chess from '../../draughts'
-import * as chessFormat from '../../utils/draughtsFormat'
+import * as draughts from '../../draughts'
+import * as draughtsFormat from '../../utils/draughtsFormat'
 import session from '../../session'
 import sound from '../../sound'
 import settings from '../../settings'
@@ -287,14 +287,14 @@ export default class TrainingCtrl implements PromotingInterface {
   private updateBoard() {
     const node = this.node
     const color: Color = node.ply % 2 === 0 ? 'white' : 'black'
-    const dests = chessFormat.readDests(node.dests)
+    const dests = draughtsFormat.readDests(node.dests)
     const config = {
       fen: node.fen,
       turnColor: color,
       orientation: this.data.puzzle.color,
       movableColor: this.gameOver() ? null : this.data.puzzle.color,
       dests: dests || null,
-      lastMove: node.uci ? chessFormat.uciToMove(node.uci) : null
+      lastMove: node.uci ? draughtsFormat.uciToMove(node.uci) : null
     }
 
     if (!this.draughtsground) {
@@ -308,7 +308,7 @@ export default class TrainingCtrl implements PromotingInterface {
 
   private getNodeSituation = debounce(() => {
     if (this.node && !this.node.dests) {
-      chess.situation({
+      draughts.situation({
         variant: this.data.game.variant.key,
         fen: this.node.fen,
         path: this.path
@@ -335,7 +335,7 @@ export default class TrainingCtrl implements PromotingInterface {
   }
 
   private sendMove = (orig: Key, dest: Key, prom?: Role) => {
-    const move: chess.MoveRequest = {
+    const move: draughts.MoveRequest = {
       orig,
       dest,
       variant: this.data.game.variant.key,
@@ -347,8 +347,8 @@ export default class TrainingCtrl implements PromotingInterface {
     this.sendMoveRequest(move, true)
   }
 
-  private sendMoveRequest = (move: chess.MoveRequest, userMove = false) => {
-    chess.move(move)
+  private sendMoveRequest = (move: draughts.MoveRequest, userMove = false) => {
+    draughts.move(move)
     .then(({ situation, path}) => {
       const node = {
         id: situation.id,
@@ -403,7 +403,7 @@ export default class TrainingCtrl implements PromotingInterface {
     }, 500)
   }
 
-  private applyProgress = (progress: Feedback | chess.MoveRequest) => {
+  private applyProgress = (progress: Feedback | draughts.MoveRequest) => {
     if (progress === 'fail') {
       this.vm.lastFeedback = 'fail'
       this.revertUserMove(this.path)
@@ -496,6 +496,6 @@ export default class TrainingCtrl implements PromotingInterface {
   }
 }
 
-function isMoveRequest(v: Feedback | chess.MoveRequest): v is chess.MoveRequest {
-  return (v as chess.MoveRequest).variant !== undefined
+function isMoveRequest(v: Feedback | draughts.MoveRequest): v is draughts.MoveRequest {
+  return (v as draughts.MoveRequest).variant !== undefined
 }

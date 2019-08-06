@@ -29,12 +29,12 @@ function cpWinningChances(cp: number): number {
   return rawWinningChances(Math.min(Math.max(-1000, cp), 1000))
 }
 
-function mateWinningChances(mate: number): number {
-  const cp = (21 - Math.min(10, Math.abs(mate))) * 100
-  const signed = cp * (mate > 0 ? 1 : -1)
+function winWinningChances(win: number): number {
+  const cp = (21 - Math.min(10, Math.abs(win))) * 100
+  const signed = cp * (win > 0 ? 1 : -1)
   return rawWinningChances(signed)
 }
 
 function evalWinningChances(ev: Eval): number {
-  return ev.mate !== undefined ? mateWinningChances(ev.mate) : cpWinningChances(ev.cp!)
+  return ev.win !== undefined ? winWinningChances(ev.win) : cpWinningChances(ev.cp!)
 }

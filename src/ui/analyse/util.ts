@@ -25,16 +25,16 @@ export function renderEval(e: number) {
   return (e > 0 ? '+' : '') + e
 }
 
-const serverNodes = 4e6
+const serverNodes = 5e6
 export function getBestEval(evs: NodeEvals): Eval | undefined {
   const serverEv = evs.server, localEv = evs.client
 
   if (!serverEv) return localEv
   if (!localEv) return serverEv
 
-  // Prefer localEv if it exeeds fishnet node limit or finds a better mate.
+  // Prefer localEv if it exeeds draughtsnet node limit or finds a better win
   if (localEv.nodes > serverNodes ||
-    (typeof localEv.mate !== 'undefined' && (typeof serverEv.mate === 'undefined' || Math.abs(localEv.mate) < Math.abs(serverEv.mate))))
+    (typeof localEv.win !== 'undefined' && (typeof serverEv.win === 'undefined' || Math.abs(localEv.win) < Math.abs(serverEv.win))))
   return localEv
 
   return serverEv
