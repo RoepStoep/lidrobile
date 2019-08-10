@@ -568,7 +568,7 @@ export default class OnlineRound implements OnlineRoundInterface {
   public gameStatus(): string {
     const winner = gameApi.getPlayer(this.data, this.data.game.winner)
     return gameStatusApi.toLabel(this.data.game.status.name, this.data.game.winner, this.data.game.variant.key) +
-      (winner ? '. ' + i18n(winner.color === 'white' ? 'whiteIsVictorious' : 'blackIsVictorious') + '.' : '')
+      (winner ? (this.data.game.status.name !== 'mate' ? '. ' : '') + i18n(winner.color === 'white' ? 'whiteIsVictorious' : 'blackIsVictorious') + '.' : '')
   }
 
   public goBerserk() {

@@ -84,7 +84,7 @@ function onPlayerTap(e: Event) {
 function renderPlayer(user: User) {
   const perf = Object.keys(user.perfs).reduce((prev, curr) => {
     if (!prev) return curr
-    if (curr === 'opening' || curr === 'puzzle') return prev
+    if (curr === 'opening' || curr === 'puzzle' || curr === 'puzzleFrisian') return prev
     if (user.perfs[prev].rating < user.perfs[curr].rating)
       return curr
     else

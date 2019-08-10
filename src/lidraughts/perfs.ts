@@ -12,7 +12,7 @@ const perfMap: { [k: string]: Perf } = {
   correspondence: { name: 'Correspondence', shortName: 'Corresp.' },
   frisian: { name: 'Frisian', shortName: 'Frisian' },
   frysk: { name: 'Frysk!', shortName: 'Frysk!' },
-  breaktrough: { name: 'Breaktrough', shortName: 'Breaktrough' },
+  breakthrough: { name: 'Breakthrough', shortName: 'Breakthrough' },
   antidraughts: { name: 'Antidraughts', shortName: 'Antidraughts' }
 }
 

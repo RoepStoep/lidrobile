@@ -59,7 +59,7 @@ function renderStatus(ctrl: AnalyseCtrl) {
     <div key="gameStatus" className="status">
       {gameStatusApi.toLabel(ctrl.data.game.status.name, ctrl.data.game.winner, ctrl.data.game.variant.key)}
 
-      {winner ? '. ' + i18n(winner.color === 'white' ? 'whiteIsVictorious' : 'blackIsVictorious') + '.' : null}
+      {winner ? (ctrl.data.game.status.name !== 'mate' ? '. ' : '') + i18n(winner.color === 'white' ? 'whiteIsVictorious' : 'blackIsVictorious') + '.' : null}
     </div>
   )
 }
