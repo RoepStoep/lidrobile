@@ -1,13 +1,13 @@
 import { AiRoundInterface } from '../shared/round'
 import { send, getNbCores, setOption, parseVariant } from '../../utils/scan'
 
-interface LevelToDepth {
+interface LevelToNumber {
   [index: number]: number
 }
 
 const maxMoveTime = 8000
 const maxSkill = 20
-const levelToDepth: LevelToDepth = {
+const levelToDepth: LevelToNumber = {
   1: 1,
   2: 1,
   3: 2,
@@ -16,6 +16,17 @@ const levelToDepth: LevelToDepth = {
   6: 8,
   7: 13,
   8: 21
+}
+
+export const levelToRating: LevelToNumber = {
+  1: 1100,
+  2: 1300,
+  3: 1650,
+  4: 1900,
+  5: 2100,
+  6: 2300,
+  7: 2500,
+  8: 2700
 }
 
 export interface EngineInterface {

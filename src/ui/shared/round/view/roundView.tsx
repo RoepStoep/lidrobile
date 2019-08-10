@@ -23,6 +23,7 @@ import popupWidget from '../../../shared/popup'
 import Clock from '../clock/clockView'
 import ClockCtrl from '../clock/ClockCtrl'
 import gameButton from './button'
+import { levelToRating } from '../../../ai/engine'
 import { chatView } from '../../chat'
 import { notesView } from '../notes'
 import { view as renderCorrespondenceClock } from '../correspondenceClock/corresClockView'
@@ -288,7 +289,10 @@ function renderAntagonistInfo(ctrl: OnlineRound, player: Player, material: Mater
             {player.rating}
             {player.provisional ? '?' : ''}
             {helper.renderRatingDiff(player)}
-          </h3> : null
+          </h3> : (player.ai && isPortrait ?
+          <h3 className="rating">
+            {levelToRating[player.ai]}
+          </h3> : null)
         }
         {checksNb !== undefined ?
           <div className="checkCount">+{checksNb}</div> : null

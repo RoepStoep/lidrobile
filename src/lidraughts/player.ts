@@ -1,7 +1,7 @@
 import i18n from '../i18n'
 import { truncate } from '../utils'
 import { LightPlayer } from './interfaces'
-
+import { levelToRating } from '../ui/ai/engine'
 
 export function lightPlayerName(player?: LightPlayer, withRating?: boolean) {
   if (player) {
@@ -27,7 +27,8 @@ export function playerName(player: any, withRating = false, tr = false, trLenght
   }
 
   if (player.ai) {
-    return aiName(player)
+    const name = aiName(player)
+    return withRating ? name + ' (' + levelToRating[player.ai] + ')' : name;
   }
 
   return 'Anonymous'
