@@ -6,7 +6,7 @@ const EVAL_REGEX = new RegExp(''
   + /^info depth=(\d+) mean-depth=\S+ /.source
   + /score=(\S+) nodes=(\d+) /.source
   + /time=(\S+) (?:nps=\S+ )?/.source
-  + /pv=\"?(.+)\"?/.source);
+  + /pv=\"?([0-9\-xX\s]+)\"?/.source);
 
 export default function ScanEngine(variant: VariantKey): IEngine {
 
@@ -282,8 +282,7 @@ export default function ScanEngine(variant: VariantKey): IEngine {
       work.emit(curEval)
     }
   }
-
-
+  
   function exit() {
     return Scan.exit()
   }
