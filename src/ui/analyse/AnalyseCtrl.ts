@@ -416,9 +416,7 @@ export default class AnalyseCtrl {
     this.tree.merge(data.tree)
     this.data.analysis = data.analysis
     const anaMainline = treeOps.mainlineNodeList(data.tree)
-    const analysisComplete = anaMainline.every(n =>
-      n.eval !== undefined || !!(n.san && n.san.includes('#'))
-    )
+    const analysisComplete = this.isFullAnalysis(anaMainline)
     if (analysisComplete) {
       this.data.treeParts = anaMainline
       this.analysisProgress = false
@@ -471,9 +469,13 @@ export default class AnalyseCtrl {
   }
 
   hasFullComputerAnalysis = (): boolean => {
-    for (let i = 0; i < this.mainline.length - 2; i++) {
-      const skip = i > 0 && this.mainline[i].ply === this.mainline[i - 1].ply;
-      const e = this.mainline[i].eval;
+    return this.isFullAnalysis(this.mainline);
+  }
+
+  private isFullAnalysis(nodes: Tree.Node[]) {
+    for (let i = 0; i < nodes.length - 2; i++) {
+      const skip = i > 0 && nodes[i].ply === nodes[i - 1].ply;
+      const e = nodes[i].eval;
       if (!skip && (!e || !Object.keys(e).length))
         return false;
     }
