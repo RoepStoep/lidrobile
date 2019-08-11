@@ -292,12 +292,16 @@ export function build(root: Tree.Node): TreeWrapper {
     })
   }
 
+  function parentNode(path: Tree.Path): Tree.Node {
+    return nodeAtPath(treePath.init(path));
+  }
+
   function getParentClock(node: Tree.Node, path: Tree.Path): Tree.Clock | undefined {
-    if (!('parentClock' in node)) {
-      const parent = path && nodeAtPath(treePath.init(path))
-      if (!parent) node.parentClock = node.clock
-      else if (!('clock' in parent)) node.parentClock = undefined
-      else node.parentClock = parent.clock
+    if (!('parentClock' in node) || !node.parentClock) {
+      const par = path && parentNode(path)
+      if (!par) node.parentClock = node.clock
+      else if (!('clock' in par)) node.parentClock = undefined
+      else node.parentClock = par.clock
     }
     return node.parentClock
   }
