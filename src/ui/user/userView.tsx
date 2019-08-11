@@ -190,6 +190,12 @@ function userPerfs(user: ProfileUser) {
     perf: user.perfs.puzzle
   })
 
+  if (user.perfs.puzzlefrisian) res.push({
+    key: 'puzzlefrisian',
+    name: 'Frisian Training',
+    perf: user.perfs.puzzlefrisian
+  })
+
   return res
 }
 
