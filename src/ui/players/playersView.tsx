@@ -82,13 +82,16 @@ function onPlayerTap(e: Event) {
 }
 
 function renderPlayer(user: User) {
+  let totalGames = 0;
+  Object.keys(user.perfs).forEach(pk => {
+    if (pk !== 'opening' && pk !== 'puzzle' && pk !== 'puzzlefrisian')
+      totalGames += user.perfs[pk].games
+  })
+  const minGames = Math.max(1, Math.floor(totalGames / 10));
   const perfKey = Object.keys(user.perfs).reduce((prev, curr) => {
     if (curr === 'opening' || curr === 'puzzle' || curr === 'puzzlefrisian') return prev
-    if (!prev || !user.perfs[prev].games) 
-      return curr
-    else if (!user.perfs[curr].games) 
-      return prev
-    if (user.perfs[prev].rating < user.perfs[curr].rating)
+    if (user.perfs[curr].games < minGames) return prev;
+    if (!prev || user.perfs[prev].rating < user.perfs[curr].rating)
       return curr
     else
       return prev
