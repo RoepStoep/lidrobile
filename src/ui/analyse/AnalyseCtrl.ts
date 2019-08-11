@@ -131,7 +131,7 @@ export default class AnalyseCtrl {
       }
     )
 
-    const explorerAllowed = !this.study || this.study.data.chapter.features.explorer
+    const explorerAllowed = false; //!this.study || this.study.data.chapter.features.explorer
     this.explorer = ExplorerCtrl(this, explorerAllowed)
     this.debouncedExplorerSetStep = debounce(this.explorer.setStep, this.data.pref.animationDuration + 50)
 

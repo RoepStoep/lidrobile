@@ -1,8 +1,8 @@
 import { fetchJSON } from '../../../http'
 import { ExplorerData } from './interfaces'
 
-const explorerEndpoint = 'https://explorer.lidraughts.ovh'
-const tablebaseEndpoint = 'https://tablebase.lidraughts.ovh'
+const explorerEndpoint = 'https://explorer.lidraughts.org'
+const tablebaseEndpoint = 'https://tablebase.lidraughts.org'
 
 export interface OpeningConf {
   db: string

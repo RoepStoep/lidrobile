@@ -91,7 +91,7 @@ export default function RetroCtrl(root: AnalyseCtrl): IRetroCtrl {
     }
     // fetch opening explorer moves
     if (game.variant.key === 'standard' && game.division && (!game.division.middle || fault.node.ply < game.division.middle)) {
-      root.explorer.fetchMasterOpening(prev.node.fen).then((res) => {
+      /*root.explorer.fetchMasterOpening(prev.node.fen).then((res) => {
         const cur = vm.current
         const ucis: Uci[] = []
         res!.moves.forEach((m) => {
@@ -106,7 +106,7 @@ export default function RetroCtrl(root: AnalyseCtrl): IRetroCtrl {
           cur.openingUcis = ucis
           vm.current = cur
         }
-      })
+      })*/
     }
     root.userJump(prev.path)
     redraw()
