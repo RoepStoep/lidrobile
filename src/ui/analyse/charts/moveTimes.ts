@@ -131,33 +131,56 @@ export default function drawMoveTimesChart(
   return setCurrentPly
 }
 
-function makeSerieData(data: AnalyseData, moveCentis: number[]): { max: number, series: Series } {
+function makeSerieData(data: AnalyseData, origMoveCentis: number[]): { max: number, series: Series } {
   const series: Series = {
     white: [],
     black: []
   }
 
+  const corres = data.game.speed === 'correspondence';
   const tree = data.treeParts
   const logC = Math.pow(Math.log(3), 2)
-  let ply = 0, max = 0
+  let ply = 0, lastPly = -1, max = 0
 
-  moveCentis.forEach((time, i) => {
-    const node = tree[i + 1]
+  const moveCentis = origMoveCentis.slice(0)
+  let skipped = 0, mergedSan = ''
+  for (var i = 0; i < moveCentis.length; i++) {
+    const node = tree[i + 1 + skipped]
     ply = node ? node.ply! : ply + 1
+    if (ply !== lastPly || i + 1 === moveCentis.length) {
 
-    const isWhite = !!(ply & 1)
+      if (ply === lastPly) ply++;
+      lastPly = ply;
 
-    const y = Math.pow(Math.log(.005 * Math.min(time, 12e4) + 3), 2) - logC
-    max = Math.max(y, max)
+      let san = node && node.san ? node.san : '-';
+      if (mergedSan.length !== 0 && node) {
+        san = mergedSan + san.slice(san.indexOf('x') + 1);
+        mergedSan = '';
+      }
 
-    const point = {
-      ply,
-      y: isWhite ? y : -y
+      const isWhite = !!(ply & 1)
+
+      const y = Math.pow(Math.log(.005 * Math.min(moveCentis[i], 12e4) + 3), 2) - logC
+      max = Math.max(y, max)
+
+      const point = {
+        ply,
+        y: isWhite ? y : -y
+      }
+
+      if (isWhite) series.white.push(point)
+      else series.black.push(point)
+    } else {
+      if (mergedSan.length == 0 && node && node.san)
+        mergedSan = node.san.slice(0, node.san.indexOf('x') + 1);
+      if (!corres) {
+        moveCentis[i + 1] += moveCentis[i];
+        moveCentis.splice(i, 1);
+      }
+      i--;
+      skipped++;
     }
-
-    if (isWhite) series.white.push(point)
-    else series.black.push(point)
-  })
+  }
 
   return { max, series }
 }

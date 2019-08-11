@@ -41,7 +41,7 @@ function renderAnalysisGraph(ctrl: AnalyseCtrl, vd: helper.ViewportDim, isPortra
       height: 100,
       oncreate({ dom }: Mithril.DOMNode) {
         setTimeout(() => {
-          this.updateCurPly = drawAcplChart(dom as SVGElement, ctrl.data, ctrl.node.ply)
+          this.updateCurPly = drawAcplChart(dom as SVGElement, ctrl, ctrl.node.ply)
         }, 100)
       },
       onupdate() {

@@ -2,18 +2,18 @@ import { select } from 'd3-selection'
 import { scaleLinear } from 'd3-scale'
 import { area as d3Area } from 'd3-shape'
 
-import { Tree } from '../../shared/tree/interfaces'
-import { AnalyseData } from '../../../lidraughts/interfaces/analyse'
+import { ops as treeOps, Tree } from '../../shared/tree'
+import AnalyseCtrl from '../AnalyseCtrl';
 
 interface Point {
   acpl: number
 }
 
-export default function drawAcplChart(element: SVGElement, aData: AnalyseData, curPly: number) {
-  const division = aData.game.division
+export default function drawAcplChart(element: SVGElement, aCtrl: AnalyseCtrl, curPly: number) {
+  const division = aCtrl.data.game.division
 
   const svg = select(element)
-  const graphData = makeSerieData(aData)
+  const graphData = makeSerieData(aCtrl)
   const margin = {top: 10, right: 10, bottom: 10, left: 10}
   const width = +svg.attr('width') - margin.left - margin.right
   const height = +svg.attr('height') - margin.top - margin.bottom
@@ -35,7 +35,7 @@ export default function drawAcplChart(element: SVGElement, aData: AnalyseData, c
     .text(name)
   }
 
-  const firstPly = aData.treeParts[0].ply || 0
+  const firstPly = aCtrl.data.treeParts[0].ply || 0
   function setCurrentPly(ply: number | null) {
     g.selectAll('.dot').remove()
     if (ply !== null) {
@@ -115,8 +115,9 @@ export default function drawAcplChart(element: SVGElement, aData: AnalyseData, c
   return setCurrentPly
 }
 
-function makeSerieData(d: AnalyseData): Point[] {
-  return d.treeParts.slice(1).reduce((acc: Point[], node: Partial<Tree.Node>) => {
+function makeSerieData(ctrl: AnalyseCtrl): Point[] {
+  const treeParts = treeOps.mainlineNodeList(ctrl.tree.root)
+  return treeParts.slice(1).reduce((acc: Point[], node: Partial<Tree.Node>) => {
     const ply = node.ply!
     const color = ply & 1
 
@@ -127,7 +128,6 @@ function makeSerieData(d: AnalyseData): Point[] {
     }
     else if (node.san && node.san.indexOf('#') > 0) {
       cp = color === 1 ? Infinity : -Infinity
-      if (d.game.variant.key === 'antidraughts') cp = -cp
     }
     else if (node.eval && node.eval.cp !== undefined) {
       cp = node.eval.cp

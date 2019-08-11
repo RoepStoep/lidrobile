@@ -418,7 +418,6 @@ export default class AnalyseCtrl {
     const anaMainline = treeOps.mainlineNodeList(data.tree)
     const analysisComplete = this.isFullAnalysis(anaMainline)
     if (analysisComplete) {
-      this.data.treeParts = anaMainline
       this.analysisProgress = false
       this.retroGlowing = true
       setTimeout(() => {
