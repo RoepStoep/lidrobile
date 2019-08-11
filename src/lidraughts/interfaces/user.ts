@@ -38,6 +38,7 @@ export interface Perf {
   readonly rd: number
   readonly prog: number
   readonly games: number
+  readonly prov?: boolean
 }
 
 export interface LightUser {

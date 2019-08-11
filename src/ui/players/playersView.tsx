@@ -82,20 +82,26 @@ function onPlayerTap(e: Event) {
 }
 
 function renderPlayer(user: User) {
-  const perf = Object.keys(user.perfs).reduce((prev, curr) => {
-    if (!prev) return curr
+  const perfKey = Object.keys(user.perfs).reduce((prev, curr) => {
     if (curr === 'opening' || curr === 'puzzle' || curr === 'puzzlefrisian') return prev
+    if (!prev || !user.perfs[prev].games) 
+      return curr
+    else if (!user.perfs[curr].games) 
+      return prev
     if (user.perfs[prev].rating < user.perfs[curr].rating)
       return curr
     else
       return prev
-  }) as PerfKey
+  }) as PerfKey | undefined
+  const perf = perfKey ? user.perfs[perfKey] : undefined
   return (
     <li className="list_item playerSuggestion nav" data-id={user.id}>
       {userStatus(user)}
-      <span className="rating" data-icon={utils.gameIcon(perf)}>
-        {user.perfs[perf].rating}
-      </span>
+      { perf && perf.games ? 
+        <span className="rating" data-icon={utils.gameIcon(perfKey)}>
+          {perf.rating}
+          {perf.prov ? '?' : ''}
+        </span> : null }
     </li>
   )
 }
