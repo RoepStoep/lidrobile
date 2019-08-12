@@ -95,7 +95,7 @@ function renderPlayer(user: User) {
       return curr
     else
       return prev
-  }) as PerfKey | undefined
+  }, '') as PerfKey | undefined
   const perf = perfKey ? user.perfs[perfKey] : undefined
   return (
     <li className="list_item playerSuggestion nav" data-id={user.id}>
