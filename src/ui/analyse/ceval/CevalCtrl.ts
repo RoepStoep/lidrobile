@@ -14,7 +14,7 @@ export default function CevalCtrl(
   let initialized = false
 
   const minDepth = 6
-  const maxDepth = 22
+  const maxDepth = variant === 'antidraughts' ? 11 : 22
 
   const opts = {
     multiPv: initOpts.multiPv,

@@ -35,6 +35,7 @@ export interface IRetroCtrl {
   toggleWindow(): void
   node(): Tree.Node
   pieceTheme: string
+  variant: VariantKey
 }
 
 export default function RetroCtrl(root: AnalyseCtrl): IRetroCtrl {
@@ -43,6 +44,8 @@ export default function RetroCtrl(root: AnalyseCtrl): IRetroCtrl {
   let candidateNodes: Tree.Node[] = []
   const explorerCancelPlies: number[] = []
   let solvedPlies: number[] = []
+  const maxDepth = game.variant.key === 'antidraughts' ? 10 : 18;
+  const minDepth = game.variant.key === 'antidraughts' ? 7 : 14;
 
   const vm: VM = {
     current: null,
@@ -90,8 +93,8 @@ export default function RetroCtrl(root: AnalyseCtrl): IRetroCtrl {
       openingUcis: []
     }
     // fetch opening explorer moves
-    if (game.variant.key === 'standard' && game.division && (!game.division.middle || fault.node.ply < game.division.middle)) {
-      /*root.explorer.fetchMasterOpening(prev.node.fen).then((res) => {
+    /*if (game.variant.key === 'standard' && game.division && (!game.division.middle || fault.node.ply < game.division.middle)) {
+      root.explorer.fetchMasterOpening(prev.node.fen).then((res) => {
         const cur = vm.current
         const ucis: Uci[] = []
         res!.moves.forEach((m) => {
@@ -106,8 +109,8 @@ export default function RetroCtrl(root: AnalyseCtrl): IRetroCtrl {
           cur.openingUcis = ucis
           vm.current = cur
         }
-      })*/
-    }
+      })
+    }*/
     root.userJump(prev.path)
     redraw()
   }
@@ -138,8 +141,8 @@ export default function RetroCtrl(root: AnalyseCtrl): IRetroCtrl {
 
   function isCevalReady(node: Tree.Node): boolean {
     return node.ceval ? (
-      node.ceval.depth >= 18 ||
-      (node.ceval.depth >= 14 && node.ceval.millis !== undefined && node.ceval.millis > 7000)
+      node.ceval.depth >= maxDepth ||
+      (node.ceval.depth >= minDepth && node.ceval.millis !== undefined && node.ceval.millis > 7000)
     ) : false
   }
 
@@ -235,6 +238,7 @@ export default function RetroCtrl(root: AnalyseCtrl): IRetroCtrl {
     toggleWindow() {
       vm.minimized = !vm.minimized
     },
-    node: () => root.node
+    node: () => root.node,
+    variant: root.data.game.variant.key
   }
 }

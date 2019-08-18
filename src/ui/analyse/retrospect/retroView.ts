@@ -2,7 +2,6 @@ import * as h from 'mithril/hyperscript'
 import i18n from '../../../i18n'
 import { oppositeColor } from '../../../utils'
 import spinner from '../../../spinner'
-import { Tree } from '../../shared/tree'
 import * as helper from '../../helper'
 import { renderIndexAndMove } from '../view/moveView'
 import { Feedback, IRetroCtrl } from './RetroCtrl'
@@ -40,10 +39,10 @@ function jumpToNext(ctrl: IRetroCtrl) {
   ])
 }
 
-const minDepth = 8
-const maxDepth = 18
-
-function renderEvalProgress(node: Tree.Node): Mithril.BaseNode {
+function renderEvalProgress(ctrl: IRetroCtrl): Mithril.BaseNode {
+  const node = ctrl.node()
+  const minDepth = ctrl.variant === 'antidraughts' ? 3 : 8;
+  const maxDepth = ctrl.variant === 'antidraughts' ? 10 : 18;
   return h('div.retro-progress', h('div', {
     style: {
       width: `${node.ceval ? (100 * Math.max(0, node.ceval.depth - minDepth) / (maxDepth - minDepth)) + '%' : 0}`
@@ -139,7 +138,7 @@ const feedback = {
         h('div.retro-player.center', [
           h('div.retro-instruction', [
             h('strong', 'Evaluating your move'),
-            renderEvalProgress(ctrl.node())
+            renderEvalProgress(ctrl)
           ])
         ])
       )
@@ -181,7 +180,8 @@ const feedback = {
 function renderFeedback(root: AnalyseCtrl, fb: Feedback) {
   const ctrl: IRetroCtrl = root.retro!
   const current = ctrl.vm.current
-  if (ctrl.isSolving() && current && root.path !== current.prev.path) {
+  const rootNode = root.node;
+  if (ctrl.isSolving() && current && (root.path !== current.prev.path && !(rootNode.displayPly && rootNode.displayPly !== rootNode.ply && root.path.length > 1 && root.path.slice(0, root.path.length - 2) === current.prev.path))) {
     return feedback.offTrack(ctrl)
   }
   if (fb === 'find') {
