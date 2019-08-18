@@ -11,10 +11,11 @@ import { Player } from '../../../../lidraughts/interfaces/game'
 import { User } from '../../../../lidraughts/interfaces/user'
 import settings from '../../../../settings'
 import * as utils from '../../../../utils'
+import { emptyFen } from '../../../../utils/fen'
 import i18n from '../../../../i18n'
 import layout from '../../../layout'
 import * as helper from '../../../helper'
-import { backButton, menuButton, loader, headerBtns, bookmarkButton } from '../../../shared/common'
+import { backButton, menuButton, loader, headerBtns, bookmarkButton, viewOnlyBoardContent } from '../../../shared/common'
 import PlayerPopup from '../../../shared/PlayerPopup'
 import GameTitle from '../../../shared/GameTitle'
 import CountdownTimer from '../../../shared/CountdownTimer'
@@ -38,6 +39,13 @@ export default function view(ctrl: OnlineRound) {
     renderHeader(ctrl),
     renderContent(ctrl, isPortrait),
     overlay(ctrl)
+  )
+}
+
+export function emptyTV(channel?: string, onTVChannelChange?: () => void) {
+  return layout.board(
+    renderEmptyHeader(channel, onTVChannelChange),
+    viewOnlyBoardContent(emptyFen, 'white')
   )
 }
 
@@ -97,7 +105,7 @@ function renderTitle(ctrl: OnlineRound) {
         key: 'tv'
       }, [
         h('h1.header-gameTitle', [h('span.withIcon[data-icon=1]'), 'Lidraughts TV']),
-        h('h2.header-subTitle', tvChannelSelector(ctrl))
+        h('h2.header-subTitle', tvChannelSelector(ctrl.onTVChannelChange))
       ])
     }
     else if (ctrl.data.userTV) {
@@ -134,6 +142,23 @@ function renderTitle(ctrl: OnlineRound) {
   }
 }
 
+function renderEmptyTitle(channel?: string, onTVChannelChange?: () => void) {
+  if (channel) {
+    return h('div.main_header_title.withSub', {
+      key: 'tv'
+    }, [
+      h('h1.header-gameTitle', [h('span.withIcon[data-icon=1]'), 'Lidraughts TV']),
+      h('h2.header-subTitle', tvChannelSelector(onTVChannelChange))
+    ])
+  } else {
+    return (
+      <div key="reconnecting-title" className="main_header_title reconnecting">
+        {loader}
+      </div>
+    )
+  }
+}
+
 function renderHeader(ctrl: OnlineRound) {
 
   let children
@@ -152,6 +177,17 @@ function renderHeader(ctrl: OnlineRound) {
   }
   children.push(headerBtns())
 
+  return h('nav', {
+    className: socket.isConnected() ? '' : 'reconnecting'
+  }, children)
+}
+
+function renderEmptyHeader(channel?: string, onTVChannelChange?: () => void) {
+  const children = [
+    menuButton(),
+    renderEmptyTitle(channel, onTVChannelChange),
+    headerBtns()
+  ]
   return h('nav', {
     className: socket.isConnected() ? '' : 'reconnecting'
   }, children)
@@ -336,7 +372,7 @@ function renderPlayTable(ctrl: OnlineRound, player: Player, material: Material, 
   )
 }
 
-function tvChannelSelector(ctrl: OnlineRound) {
+function tvChannelSelector(onTVChannelChange?: () => void) {
   const channels = perfApi.perfTypes.filter(e => e[0] !== 'correspondence').map(e => [e[1], e[0]])
   channels.unshift(['Top rated', 'best'])
   channels.push(['Computer', 'computer'])
@@ -353,7 +389,7 @@ function tvChannelSelector(ctrl: OnlineRound) {
         onchange(e: Event) {
           const val = (e.target as HTMLSelectElement).value
           settings.tv.channel(val)
-          ctrl.onTVChannelChange && ctrl.onTVChannelChange()
+          onTVChannelChange && onTVChannelChange()
           setTimeout(redraw, 10)
         }
       }, channels.map(v =>

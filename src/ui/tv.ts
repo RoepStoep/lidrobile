@@ -4,11 +4,13 @@ import socket from '../socket'
 import * as helper from './helper'
 import * as sleepUtils from '../utils/sleep'
 import { handleXhrError } from '../utils'
+import redraw from '../utils/redraw'
 import * as xhr from '../xhr'
 import { LoadingBoard } from './shared/common'
 import settings from '../settings'
 import OnlineRound from './shared/round/OnlineRound'
 import roundView from './shared/round/view/roundView'
+import { emptyTV } from './shared/round/view/roundView'
 
 interface TVAttrs {
   id: string
@@ -18,7 +20,8 @@ interface TVAttrs {
 }
 
 interface State {
-  round: OnlineRound
+  round: OnlineRound,
+  emptyTV?: boolean
 }
 
 const TV: Mithril.Component<TVAttrs, State> = {
@@ -37,7 +40,15 @@ const TV: Mithril.Component<TVAttrs, State> = {
       d.tv = settings.tv.channel()
       this.round = new OnlineRound(false, vnode.attrs.id, d, vnode.attrs.flip, onFeatured, onChannelChange)
     })
-    .catch(handleXhrError)
+    .catch(e => {
+      this.emptyTV = e.status === 404 && e.body.error === 'No game found'
+      if (!this.emptyTV) {
+        handleXhrError(e)
+      } else {
+        window.plugins.toast.show('No game found', 'short', 'center')
+        redraw()
+      }
+    })
   },
 
   oncreate: helper.viewFadeIn,
@@ -53,6 +64,8 @@ const TV: Mithril.Component<TVAttrs, State> = {
   view() {
     if (this.round) {
       return roundView(this.round)
+    } else if (this.emptyTV) {
+      return emptyTV(settings.tv.channel(), () => router.set('/tv', true))
     } else {
       return h(LoadingBoard)
     }
