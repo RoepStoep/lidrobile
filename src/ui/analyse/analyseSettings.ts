@@ -116,7 +116,7 @@ export default {
 
 function renderAnalyseSettings(ctrl: AnalyseCtrl) {
 
-  const cores = getNbCores()
+  const cores = Math.min(getNbCores(), 4)
 
   return h('div.analyseSettings', [
     ctrl.ceval.allowed ? h('div.action', {
@@ -167,14 +167,14 @@ function renderAnalyseSettings(ctrl: AnalyseCtrl) {
         h('small.caution', 'It will stop after 10 minutes when in background') :
         null
     ]) : null,
-    ctrl.ceval.allowed ? h('div.action', {
+    /*ctrl.ceval.allowed ? h('div.action', {
       key: 'cevalMultiPvs'
     }, [
       formWidgets.renderSlider(
         'Analysis lines', 'ceval.multipv', 1, 5, 1, settings.analyse.cevalMultiPvs,
         ctrl.settings.cevalSetMultiPv
       )
-    ]) : null,
+    ]) : null,*/
     ctrl.ceval.allowed && cores > 1 ? h('div.action', {
       key: 'cevalCores'
     }, [

@@ -17,7 +17,7 @@ export default function CevalCtrl(
   const maxDepth = variant === 'antidraughts' ? 11 : 22
 
   const opts = {
-    multiPv: initOpts.multiPv,
+    multiPv: 1, //initOpts.multiPv,
     cores: initOpts.cores,
     infinite: initOpts.infinite
   }
@@ -124,11 +124,11 @@ export default function CevalCtrl(
     setCores(c: number) {
       opts.cores = c
     },
-    setMultiPv(pv: number) {
-      opts.multiPv = pv
+    setMultiPv(_: number) {
+      opts.multiPv = 1 //pv
     },
     getMultiPv(): number {
-      return opts.multiPv
+      return 1 //opts.multiPv
     },
     toggleInfinite() {
       opts.infinite = !opts.infinite
