@@ -142,7 +142,8 @@ export default class OtbRound implements OtbRoundInterface, PromotingInterface {
         pref: {
           centerPiece: true
         },
-        clock: clock ? clock.getState() : null
+        clock: clock ? clock.getState() : null,
+        captureLength: data.setup.captureLength
       }), [data.setup], 0)
     })
     .then(() => {

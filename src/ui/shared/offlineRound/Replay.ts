@@ -1,22 +1,22 @@
 import i18n from '../../../i18n'
-import * as chess from '../../../draughts'
+import * as draughts from '../../../draughts'
 import { GameStatus } from '../../../lidraughts/interfaces/game'
 
 export default class Replay {
-  private variant!: VariantKey
+  public variant!: VariantKey
   private initialFen!: string
-  private onReplayAdded: (sit: chess.GameSituation) => void
+  private onReplayAdded: (sit: draughts.GameSituation) => void
   private onThreefoldRepetition: (newStatus: GameStatus) => void
 
   public ply!: number
-  public situations!: Array<chess.GameSituation>
+  public situations!: Array<draughts.GameSituation>
 
   constructor(
     variant: VariantKey,
     initialFen: string,
-    initSituations: Array<chess.GameSituation>,
+    initSituations: Array<draughts.GameSituation>,
     initPly: number,
-    onReplayAdded: (sit: chess.GameSituation) => void,
+    onReplayAdded: (sit: draughts.GameSituation) => void,
     onThreefoldRepetition: (newStatus: GameStatus) => void
   ) {
 
@@ -25,20 +25,29 @@ export default class Replay {
     this.onThreefoldRepetition = onThreefoldRepetition
   }
 
-  public init(variant: VariantKey, initialFen: string, situations: Array<chess.GameSituation>, ply: number) {
+  public init(variant: VariantKey, initialFen: string, situations: Array<draughts.GameSituation>, ply: number) {
     this.variant = variant
     this.initialFen = initialFen
     this.situations = situations
     this.ply = ply || 0
   }
 
-  public situation = (): chess.GameSituation => {
-    return this.situations[this.ply]
+  public situation = (): draughts.GameSituation => {
+    return this.situations[this.situations.length - 1]
+  }
+
+  public lastCaptureFen = (): string | undefined => {
+    for (let i = this.situations.length - 1; i >= 0; i--) {
+      const pdnMoves = this.situations[i].pdnMoves
+      if (pdnMoves.length && pdnMoves[pdnMoves.length - 1].indexOf('x') !== -1)
+        return this.situations[i].fen
+    }
+    return undefined
   }
 
   public addMove = (orig: Key, dest: Key, promotion?: Role) => {
     const sit = this.situation()
-    chess.move({
+    draughts.move({
       variant: this.variant,
       fen: sit.fen,
       pdnMoves: sit.pdnMoves,
@@ -53,7 +62,7 @@ export default class Replay {
 
   public addDrop = (role: Role, key: Key) => {
     const sit = this.situation()
-    chess.drop({
+    draughts.drop({
       variant: this.variant,
       fen: sit.fen,
       pdnMoves: sit.pdnMoves,
@@ -67,7 +76,7 @@ export default class Replay {
 
   public claimDraw = () => {
     const sit = this.situation()
-    chess.threefoldTest({
+    draughts.threefoldTest({
       variant: this.variant,
       initialFen: this.initialFen,
       pdnMoves: sit.pdnMoves
@@ -84,7 +93,7 @@ export default class Replay {
 
   public pgn = (white: string, black: string) => {
     const sit = this.situation()
-    return chess.pdnDump({
+    return draughts.pdnDump({
       variant: this.variant,
       initialFen: this.initialFen,
       pdnMoves: sit.pdnMoves,
@@ -93,10 +102,14 @@ export default class Replay {
     })
   }
 
-  private addMoveOrDrop = (moveOrDrop: chess.MoveResponse) => {
-    this.ply++
-    if (this.ply < this.situations.length) {
-      this.situations = this.situations.slice(0, this.ply)
+  private addMoveOrDrop = (moveOrDrop: draughts.MoveResponse) => {
+    this.ply = moveOrDrop.situation.ply
+    if (this.situations.length && this.ply < this.situations[this.situations.length - 1].ply) {
+      let drop = 2;
+      while (this.ply < this.situations[this.situations.length - drop].ply) {
+        drop++;
+      }
+      this.situations = this.situations.slice(0, this.situations.length - drop)
     }
     this.situations.push(moveOrDrop.situation)
     this.onReplayAdded(this.situation())

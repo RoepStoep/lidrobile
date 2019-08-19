@@ -40,6 +40,7 @@ export default class AiRound implements AiRoundInterface, PromotingInterface {
   public vm: AiVM
 
   public engine: EngineInterface
+  private engineNextMove: number | undefined
 
   public constructor(
     saved?: StoredOfflineGame | null,
@@ -50,7 +51,7 @@ export default class AiRound implements AiRoundInterface, PromotingInterface {
     this.engine = engineCtrl(this)
     this.actions = actions.controller(this)
     this.newGameMenu = newGameMenu.controller(this)
-
+    
     this.vm = {
       engineSearching: false,
       setupFen,
@@ -69,9 +70,9 @@ export default class AiRound implements AiRoundInterface, PromotingInterface {
       }
     }
 
-    this.engine.init()
+    const currentVariant = (!setupFen && saved && saved.data.game.variant.key) || <VariantKey>settings.ai.variant()
+    this.engine.init(currentVariant)
     .then(() => {
-      const currentVariant = <VariantKey>settings.ai.variant()
       if (!setupFen) {
         if (saved) {
           try {
@@ -124,6 +125,11 @@ export default class AiRound implements AiRoundInterface, PromotingInterface {
 
   // clockType preceded by underscore until we implement AI timed games
   public startNewGame(variant: VariantKey, setupFen?: string, _clockType?: ClockType, setupColor?: Color) {
+    if (this.engineNextMove) {
+      clearTimeout(this.engineNextMove)
+      this.engineNextMove = undefined;
+    }
+
     const payload: InitPayload = {
       variant
     }
@@ -139,8 +145,15 @@ export default class AiRound implements AiRoundInterface, PromotingInterface {
         initialFen: data.setup.fen,
         fen: data.setup.fen,
         color: setupColor || getColorFromSettings(),
-        player: data.setup.player
+        player: data.setup.player,
+        captureLength: data.setup.captureLength || 0
       }), [data.setup], 0)
+    })
+    .then(() => {
+      if (this.engine.variant() !== variant) {
+        return this.engine.exit()
+          .then(() => this.engine.init(variant))
+      } else return Promise.resolve()
     })
     .then(() => {
       if (setupFen) {
@@ -204,12 +217,22 @@ export default class AiRound implements AiRoundInterface, PromotingInterface {
   }
 
   public onEngineMove = (bestmove: string) => {
-    const from = <Key>bestmove.slice(0, 2)
-    const to = <Key>bestmove.slice(2, 4)
+    let sep = bestmove.indexOf('-')
+    if (sep === -1) sep = bestmove.indexOf('x')
+    const nextCapt = bestmove.indexOf('x', sep + 1)
+    const fromfield = bestmove.slice(0, sep)
+    const tofield = bestmove.slice(sep + 1, nextCapt === -1 ? bestmove.length : nextCapt)
+    const from = (fromfield.length === 1 ? '0' + fromfield : fromfield) as Key
+    const to = (tofield.length === 1 ? '0' + tofield : tofield) as Key
     this.vm.engineSearching = false
     this.draughtsground.apiMove(from, to)
     this.replay.addMove(from, to)
     redraw()
+    if (nextCapt !== -1) {
+      this.engineNextMove = setTimeout(() => this.onEngineMove(bestmove.slice(sep + 1)), 600)
+    } else {
+      this.engineNextMove = undefined;
+    }
   }
 
   public onEngineDrop = (bestdrop: string) => {
@@ -224,14 +247,19 @@ export default class AiRound implements AiRoundInterface, PromotingInterface {
 
   private engineMove = () => {
     this.vm.engineSearching = true
-    const sit = this.replay.situation()
+    const sit = this.replay.situation(), captureFen = this.replay.lastCaptureFen()
     setTimeout(() => {
       const l = this.getOpponent().level
       this.data.opponent.name = aiName({
         ai: l
       })
-      this.engine.setLevel(l)
-      .then(() => this.engine.search(this.data.game.initialFen, sit.uciMoves.join(' ')))
+      // send fen and moves after last capture
+      let uciMoves = []
+      for (let i = 0; i < sit.pdnMoves.length; i++) {
+        if (sit.pdnMoves[i].indexOf('x') !== -1) uciMoves = []
+        else uciMoves.push(sit.uciMoves[i]);
+      }
+      this.engine.search(l, captureFen || this.data.game.initialFen, sit.fen, uciMoves)
     }, 500)
   }
 
@@ -274,6 +302,7 @@ export default class AiRound implements AiRoundInterface, PromotingInterface {
         turnColor: sit.player,
         lastMove: lastUci ? draughtsFormat.uciToMoveOrDrop(lastUci) : null,
         dests: sit.dests,
+        captureLength: sit.captureLength || 0,
         movableColor: sit.player === this.data.player.color ? sit.player : null
       })
     }
@@ -285,7 +314,7 @@ export default class AiRound implements AiRoundInterface, PromotingInterface {
     setResult(this, sit.status)
     if (gameStatusApi.finished(this.data)) {
       this.onGameEnd()
-    } else if (this.isEngineToMove()) {
+    } else if (!this.engineNextMove && this.isEngineToMove()) {
       this.engineMove()
     }
     this.save()
@@ -300,6 +329,10 @@ export default class AiRound implements AiRoundInterface, PromotingInterface {
 
   public onGameEnd = () => {
     const self = this
+    if (this.engineNextMove) {
+      clearTimeout(this.engineNextMove)
+      this.engineNextMove = undefined;
+    }
     this.draughtsground.cancelMove()
     this.draughtsground.stop()
     setTimeout(function() {

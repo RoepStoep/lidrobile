@@ -18,7 +18,7 @@ function makeConfig(data: OfflineGameData, sit: GameSituation): cg.InitConfig {
     orientation: boardOrientation(data),
     turnColor: sit.player,
     lastMove: lastUci ? uciToMoveOrDrop(lastUci) : null,
-    captureLength: undefined,
+    captureLength: data.captureLength || sit.captureLength,
     otb: data.game.id === 'offline_otb',
     coordinates: settings.game.coords(),
     otbMode: settings.otb.flipPieces() ? 'flip' : 'facing',

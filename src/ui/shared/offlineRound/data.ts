@@ -22,7 +22,8 @@ export interface OfflineDataConfig {
   pref?: {
     centerPiece: boolean
   }
-  clock?: ClockState
+  clock?: ClockState,
+  captureLength?: number
 }
 
 export default function data(cfg: OfflineDataConfig): OfflineGameData {
@@ -64,6 +65,7 @@ export default function data(cfg: OfflineDataConfig): OfflineGameData {
       centerPiece: cfg.pref && cfg.pref.centerPiece || false
     },
     steps: [],
+    captureLength: cfg.captureLength,
     offlineClock: cfg.clock
   }
 }
