@@ -6,6 +6,9 @@ import OnlineRound from '../OnlineRound'
 
 export function renderReplay(ctrl: OnlineRound) {
   return h('div.replay', {
+    className: helper.classSet({
+      zen: ctrl.isZen(),
+    }),
     oncreate: (vnode: Mithril.DOMNode) => {
       setTimeout(() => autoScroll(vnode.dom as HTMLElement), 100)
       helper.ontapY((e: Event) => onReplayTap(ctrl, e), undefined, getMoveEl)(vnode)
@@ -16,6 +19,9 @@ export function renderReplay(ctrl: OnlineRound) {
 
 export function renderInlineReplay(ctrl: OnlineRound) {
   return h('div.replay_inline', {
+    className: helper.classSet({
+      zen: ctrl.isZen(),
+    }),
     oncreate: (vnode: Mithril.DOMNode) => {
       setTimeout(() => autoScrollInline(vnode.dom as HTMLElement), 100)
       helper.ontapX((e: Event) => onReplayTap(ctrl, e), undefined, getMoveEl)(vnode)

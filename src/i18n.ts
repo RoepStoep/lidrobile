@@ -189,6 +189,5 @@ const untranslated: StringMap = {
   soundOnNotification: 'Play sound on notification',
   vibrateOnGameEvents: 'Vibrate on game events',
   soundAndNotifications: 'Sound and notifications',
-  offline: 'Offline',
-  zenModeExplanation: 'Players name and rating are hidden during game',
+  offline: 'Offline'
 }

@@ -58,7 +58,6 @@ function renderBody() {
       ),
       h('li.list_item', [
         formWidgets.renderCheckbox(i18n('zenMode'), 'zenMode', settings.game.zenMode),
-        h('small', i18n('zenModeExplanation'))
       ])
    ])
   ]
