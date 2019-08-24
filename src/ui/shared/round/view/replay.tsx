@@ -1,10 +1,7 @@
 import * as h from 'mithril/hyperscript'
 import { fixCrazySan } from '../../../../utils/draughtsFormat'
 import * as helper from '../../../helper'
-import settings from '../../../../settings'
 import OnlineRound from '../OnlineRound'
-
-let pieceNotation: boolean
 
 function autoScroll(movelist?: HTMLElement) {
   if (!movelist) return
@@ -29,7 +26,6 @@ function onReplayTap(ctrl: OnlineRound, e: Event) {
 
 export function renderTable(ctrl: OnlineRound) {
   const steps = ctrl.data.steps
-  pieceNotation = pieceNotation === undefined ? settings.game.pieceNotation() : pieceNotation
 
   return (
     <div className="replay">
@@ -39,7 +35,7 @@ export function renderTable(ctrl: OnlineRound) {
         }}
         onupdate={(vnode: Mithril.DOMNode) => autoScroll(vnode.dom as HTMLElement)}
       >
-        <div className={'moves' + (pieceNotation ? ' displayPieces' : '')}
+        <div className="moves"
           oncreate={helper.ontap((e: Event) => onReplayTap(ctrl, e), undefined, undefined, getMoveEl)}
         >
             {

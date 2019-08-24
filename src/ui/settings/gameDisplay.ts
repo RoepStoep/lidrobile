@@ -27,8 +27,6 @@ function renderBody() {
         settings.game.highlights)),
       h('li.list_item', formWidgets.renderCheckbox(i18n('pieceDestinations'), 'pieceDestinations',
         settings.game.pieceDestinations)),
-      h('li.list_item', formWidgets.renderCheckbox('Use piece symbols in move list', 'pieceNotation',
-        settings.game.pieceNotation)),
       h('li.list_item',
         formWidgets.renderMultipleChoiceButton(
           'Clock position', [

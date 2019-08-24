@@ -3,10 +3,7 @@ import * as helper from '../../helper'
 import { OnlineGameData } from '../../../lidraughts/interfaces/game'
 import { ExplorerData, Game, Move, Player } from './interfaces'
 import AnalyseCtrl from '../AnalyseCtrl'
-import settings from '../../../settings'
 import * as xhr from '../../../xhr'
-
-let pieceNotation: boolean
 
 export interface Attrs {
   ctrl: AnalyseCtrl
@@ -147,9 +144,8 @@ function showGameTable(ctrl: AnalyseCtrl, type: string, games: Array<Game>) {
 
 function showMoveTable(ctrl: AnalyseCtrl, moves: Array<Move>) {
   if (!moves.length) return null
-  pieceNotation = pieceNotation === undefined ? settings.game.pieceNotation() : pieceNotation
   return (
-    <table className={'moves' + (pieceNotation ? ' displayPieces' : '')}
+    <table className="moves"
       oncreate={helper.ontapXY(e => onTableTap(ctrl, e!), undefined, getTR)}
     >
       <thead>

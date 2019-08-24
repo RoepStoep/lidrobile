@@ -7,12 +7,9 @@ import { fixCrazySan } from '../../../utils/draughtsFormat'
 import { renderMaterial } from '../../shared/round/view/roundView'
 import * as helper from '../../helper'
 import { OfflineRoundInterface, Position, Material } from '../round'
-import settings from '../../../settings'
 import Replay from './Replay'
 import { IChessClock, IStageClock } from '../clock/interfaces'
 import { formatClockTime } from '../round/clock/clockView'
-
-let pieceNotation: boolean
 
 /*function getChecksCount(ctrl: OfflineRoundInterface, color: Color) {
   const sit = ctrl.replay.situation()
@@ -165,9 +162,8 @@ export function renderForwardButton(ctrl: OfflineRoundInterface) {
 
 function renderTable(ctrl: Replay, curPly: number) {
   const steps = ctrl.situations
-  pieceNotation = pieceNotation === undefined ? settings.game.pieceNotation() : pieceNotation
   return (
-    <div className={'moves' + (pieceNotation ? ' displayPieces' : '')}>
+    <div className="moves">
       {
         steps.filter(s => s.san !== undefined).map(s => h('move.replayMove', {
           className: s.ply === curPly ? 'current' : '',

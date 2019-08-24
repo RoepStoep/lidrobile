@@ -5,7 +5,7 @@ import { hasNetwork } from '../../utils'
 import settings from '../../settings'
 import session from '../../session'
 import { StoredProp } from '../../storage'
-import { Takeback, SubmitMove, AutoQueen, AutoThreefold, SubmitMoveChoices, TakebackChoices, AutoQueenChoices, AutoThreefoldChoices } from '../../lidraughts/prefs'
+import { Takeback, SubmitMove, AutoThreefold, SubmitMoveChoices, TakebackChoices, AutoThreefoldChoices } from '../../lidraughts/prefs'
 import * as helper from '../helper'
 import { dropShadowHeader, backButton } from '../shared/common'
 import formWidgets from '../shared/form'
@@ -13,7 +13,6 @@ import formWidgets from '../shared/form'
 interface Ctrl {
   readonly premove: StoredProp<boolean>
   readonly takeback: StoredProp<number>
-  readonly autoQueen: StoredProp<number>
   readonly autoThreefold: StoredProp<number>
   readonly submitMove: StoredProp<number>
 }
@@ -29,7 +28,6 @@ export default {
     this.ctrl = {
       premove: session.lidraughtsBackedProp<boolean>('prefs.premove', session.savePreferences, true),
       takeback: session.lidraughtsBackedProp<number>('prefs.takeback', session.savePreferences, Takeback.ALWAYS),
-      autoQueen: session.lidraughtsBackedProp<number>('prefs.autoQueen', session.savePreferences, AutoQueen.PREMOVE),
       autoThreefold: session.lidraughtsBackedProp<number>('prefs.autoThreefold', session.savePreferences, AutoThreefold.TIME),
       submitMove: session.lidraughtsBackedProp<number>('prefs.submitMove', session.savePreferences, SubmitMove.CORRESPONDENCE_ONLY)
     }
@@ -71,9 +69,6 @@ function renderLidraughtsPrefs(ctrl: Ctrl) {
       ], ctrl.premove)),
     h('li.list_item', formWidgets.renderMultipleChoiceButton(
       i18n('takebacksWithOpponentApproval'), TakebackChoices.map(formWidgets.lidraughtsPropToOption), ctrl.takeback
-    )),
-    h('li.list_item', formWidgets.renderMultipleChoiceButton(
-      i18n('promoteToQueenAutomatically'), AutoQueenChoices.map(formWidgets.lidraughtsPropToOption), ctrl.autoQueen
     )),
     h('li.list_item', formWidgets.renderMultipleChoiceButton(
       i18n('claimDrawOnThreefoldRepetitionAutomatically').replace(/\%s/g, ''), AutoThreefoldChoices.map(formWidgets.lidraughtsPropToOption), ctrl.autoThreefold

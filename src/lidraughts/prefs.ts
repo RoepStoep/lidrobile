@@ -4,17 +4,6 @@ export interface LidraughtsPropOption extends Array<number | string> {
     2: string
 }
 
-export const AutoQueen = {
-  NEVER: 1,
-  PREMOVE: 2,
-  ALWAYS: 3
-}
-export const AutoQueenChoices = [
-  [ AutoQueen.NEVER, 'never' ],
-  [ AutoQueen.ALWAYS, 'always' ],
-  [ AutoQueen.PREMOVE, 'whenPremoving' ]
-] as Array<LidraughtsPropOption>
-
 export const SubmitMove = {
   NEVER: 0,
   CORRESPONDENCE_ONLY: 4,

@@ -125,7 +125,7 @@ function myTurnGames() {
 }
 
 function showSavedPrefToast(data: string): string {
-  window.plugins.toast.show('✓ Your preferences have been saved on lidraughts server.', 'short', 'center')
+  window.plugins.toast.show('✓ Your preferences have been saved on the lidraughts server.', 'short', 'center')
   return data
 }
 
@@ -157,7 +157,6 @@ function savePreferences(): Promise<string> {
   const behavior = mapKeys(<Prefs>mapValues(pick(prefs, [
     'premove',
     'takeback',
-    'autoQueen',
     'autoThreefold',
     'submitMove',
     'confirmResign'

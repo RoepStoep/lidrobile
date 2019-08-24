@@ -1,6 +1,5 @@
 import * as h from 'mithril/hyperscript'
 import redraw from '../../../utils/redraw'
-import settings from '../../../settings'
 import * as helper from '../../helper'
 
 import AnalyseCtrl from '../AnalyseCtrl'
@@ -11,18 +10,13 @@ interface Attrs {
   rightTabActive: boolean
 }
 
-let pieceNotation: boolean
 export default {
   onbeforeupdate({ attrs }) {
     return !attrs.ctrl.replaying
   },
   view({ attrs }) {
     const { ctrl, rightTabActive } = attrs
-    pieceNotation = pieceNotation || settings.game.pieceNotation()
-    const className = [
-      pieceNotation ? 'displayPieces' : '',
-      rightTabActive ? 'rta' : '',
-    ].join(' ')
+    const className = rightTabActive ? 'rta' : ''
     return h('div#replay.analyse-replay.native_scroller', {
       className,
       oncreate: helper.ontapXY(e => onReplayTap(ctrl, e), (e: TouchEvent) => {

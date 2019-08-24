@@ -95,7 +95,6 @@ export default {
     pieceDestinations: store.prop<boolean>('settings.pieceDestinations', true),
     coords: store.prop<number>('settings.coords', 2),
     magnified: store.prop<boolean>('settings.pieceMagnified', true),
-    pieceNotation: store.prop<boolean>('settings.pieceNotation', true),
     zenMode: store.prop<boolean>('settings.zenMode', false),
     kingMoves: store.prop<boolean>('settings.kingMoves', true),
     clockPosition: store.prop<'right' | 'left'>('settings.game.inversedClockPos', 'right'),
