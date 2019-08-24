@@ -95,6 +95,7 @@ export default {
       'settings/lang': settingsLang,
       'training': training,
       'training/:id': training,
+      'training/:id/variant/:variant': training,
       'tournament': tournamentsList,
       'tournament/:id': tournamentDetail,
       'study': studyList,

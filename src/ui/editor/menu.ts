@@ -87,7 +87,7 @@ export function renderPositionSettings(ctrl: Editor) {
     h('div.select_input', [
       h('label', {
         'for': 'select_editor_variant'
-      }, 'Variant'),
+      }, i18n('variant')),
       h('select', {
         id: 'select_editor_variant',
         value: ctrl.data.game.variant.key(),

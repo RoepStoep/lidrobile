@@ -23,9 +23,11 @@ import * as xhr from './xhr'
 import { VM, Data, PimpedGame, Feedback } from './interfaces'
 import { getUnsolved, syncPuzzleResult, syncAndLoadNewPuzzle, syncAndClearCache, nbRemainingPuzzles, puzzleLoadFailure } from './offlineService'
 import { Database } from './database'
+import trainingSettings, { ISettingsCtrl } from './trainingSettings'
 
 export default class TrainingCtrl implements PromotingInterface {
   data!: Data
+  settings: ISettingsCtrl
   menu: IMenuCtrl
   draughtsground!: Draughtsground
   database: Database
@@ -54,6 +56,8 @@ export default class TrainingCtrl implements PromotingInterface {
 
     this.init(cfg)
 
+    this.settings = trainingSettings.controller(this)
+
     signals.afterLogin.add(this.retry)
   }
 
@@ -63,11 +67,12 @@ export default class TrainingCtrl implements PromotingInterface {
     if (!this.vm.canViewSolution) return
     this.sendResult(false)
     this.vm.mode = 'view'
-    this.mergeSolution(this.data.puzzle.branch, this.data.puzzle.color)
+    const merged = this.mergeSolution(this.data.puzzle.branch, this.data.puzzle.color)
 
     // try and play the solution next move
     const next = this.node.children[0]
-    if (next && next.puzzle === 'good') this.userJump(this.path + next.id, true)
+    if (merged) this.userJump(this.path.substr(0, this.path.length - 1) + merged.id.substr(1), true);
+    else if (next && next.puzzle === 'good') this.userJump(this.path + next.id, true)
     else {
       const firstGoodPath = treeOps.takePathWhile(this.mainline, node => {
         return node.puzzle !== 'good'
@@ -126,13 +131,14 @@ export default class TrainingCtrl implements PromotingInterface {
         return
       }
       this.vm.loading = true
+      this.settings.close()
       redraw()
       const onSuccess = (cfg: PuzzleData) => {
         this.vm.loading = false
         this.init(cfg)
         redraw()
       }
-      syncAndClearCache(this.database, user)
+      syncAndClearCache(this.database, user, this.vm.variant)
       .then(onSuccess)
       .catch(error => {
         this.vm.loading = false
@@ -165,7 +171,7 @@ export default class TrainingCtrl implements PromotingInterface {
     }
     const user = session.get()
     if (user) {
-      syncAndLoadNewPuzzle(this.database, user)
+      syncAndLoadNewPuzzle(this.database, user, this.vm.variant)
       .then(onSuccess)
       .catch(error => {
         this.vm.loading = false
@@ -173,7 +179,7 @@ export default class TrainingCtrl implements PromotingInterface {
         puzzleLoadFailure(error)
       })
     } else {
-      xhr.newPuzzle()
+      xhr.newPuzzle('standard')
       .then(onSuccess)
       .catch(this.onXhrError)
     }
@@ -195,7 +201,7 @@ export default class TrainingCtrl implements PromotingInterface {
 
   public vote = throttle((v: boolean) => {
     this.vm.voted = v
-    xhr.vote(this.data.puzzle.id, v).then((res) => {
+    xhr.vote(this.data.puzzle.id, v, this.data.puzzle.variant.key).then((res) => {
       this.vm.vote = res[1]
       redraw()
     })
@@ -206,15 +212,15 @@ export default class TrainingCtrl implements PromotingInterface {
   }
 
   public share = () => {
-    window.plugins.socialsharing.share(null, null, null, `https://lidraughts.org/training/${this.data.puzzle.id}`)
+    window.plugins.socialsharing.share(null, null, null, `https://lidraughts.org/training/${this.data.puzzle.variant.key}/${this.data.puzzle.id}`)
   }
 
   public goToAnalysis = () => {
     const puzzle = this.data.puzzle
-    if (hasNetwork()) {
+    if (hasNetwork() && puzzle.gameId !== 'custom') {
       router.set(`/analyse/online/${puzzle.gameId}/${puzzle.color}?ply=${puzzle.initialPly}&curFen=${puzzle.fen}&color=${puzzle.color}`)
     } else {
-      router.set(`/analyse/variant/standard/fen/${encodeURIComponent(this.initialNode.fen)}?color=${puzzle.color}&goBack=1`)
+      router.set(`/analyse/variant/${this.data.puzzle.variant.key}/fen/${encodeURIComponent(this.initialNode.fen)}?color=${puzzle.color}&goBack=1`)
     }
   }
 
@@ -223,10 +229,11 @@ export default class TrainingCtrl implements PromotingInterface {
   private init(cfg: PuzzleData) {
     this.initialData = cfg
 
-    router.assignState({ puzzleId: cfg.puzzle.id }, `/training/${cfg.puzzle.id}`)
+    router.assignState({ puzzleId: cfg.puzzle.id }, `/training/${cfg.puzzle.id}/variant/${cfg.puzzle.variant.key}`)
 
     this.vm = {
       mode: 'play',
+      variant: cfg.puzzle.variant.key,
       initializing: true,
       lastFeedback: 'init',
       moveValidationPending: false,
@@ -239,7 +246,7 @@ export default class TrainingCtrl implements PromotingInterface {
 
     const user = session.get()
     if (user) {
-      nbRemainingPuzzles(this.database, user)
+      nbRemainingPuzzles(this.database, user, cfg.puzzle.variant.key)
       .then(nb => {
         this.nbUnsolved = nb
         redraw()
@@ -247,24 +254,37 @@ export default class TrainingCtrl implements PromotingInterface {
     }
 
     const data = cloneDeep(cfg)
-    const variant = {
-      key: 'standard' as VariantKey
-    }
-    const pimpedGame: PimpedGame = { ...data.game, variant }
+    const pimpedGame: PimpedGame | undefined = data.game ? { ...data.game, variant: data.puzzle.variant } : undefined
     const pimpedData: Data = { ...data, game: pimpedGame }
 
     this.data = pimpedData
 
-    this.tree = makeTree(treeOps.reconstruct([
-      // make root node with puzzle initial state
-      {
-        fen: this.data.puzzle.fen,
-        ply: this.data.puzzle.initialPly - 1,
-        id: '',
-        children: []
-      },
-      this.data.game.treeParts
-    ]))
+    this.tree = makeTree((this.data.game && this.data.game.treeParts) ? 
+      treeOps.reconstruct([
+        // make root node with puzzle initial state
+        {
+          fen: this.data.puzzle.fen,
+          ply: this.data.puzzle.initialPly - 1,
+          id: '',
+          children: []
+        },
+        this.data.game.treeParts
+      ]) : ({
+        id: "",
+        ply: data.history!.ply - 1,
+        fen: data.puzzle.fen,
+        children: [
+          {
+            id: data.history!.id,
+            ply: data.history!.ply,
+            fen: data.history!.fen,
+            san: data.history!.san,
+            uci: data.history!.uci,
+            children: []
+          } as Tree.Node
+        ]
+      } as Tree.Node)
+    )
     this.initialPath = treePath.fromNodeList(treeOps.mainlineNodeList(this.tree.root))
     this.initialNode = this.tree.nodeAtPath(this.initialPath)
     this.setPath(treePath.init(this.initialPath))
@@ -294,6 +314,7 @@ export default class TrainingCtrl implements PromotingInterface {
       orientation: this.data.puzzle.color,
       movableColor: this.gameOver() ? null : this.data.puzzle.color,
       dests: dests || null,
+      captureLength: node.captLen,
       lastMove: node.uci ? draughtsFormat.uciToMove(node.uci) : null
     }
 
@@ -309,13 +330,14 @@ export default class TrainingCtrl implements PromotingInterface {
   private getNodeSituation = debounce(() => {
     if (this.node && !this.node.dests) {
       draughts.situation({
-        variant: this.data.game.variant.key,
+        variant: this.data.puzzle.variant.key,
         fen: this.node.fen,
         path: this.path
       })
       .then(({ situation, path }) => {
         this.tree.updateAt(path, (node: Tree.Node) => {
           node.dests = situation.dests
+          node.captLen = situation.captureLength
           node.end = situation.end
           node.player = situation.player
         })
@@ -334,16 +356,15 @@ export default class TrainingCtrl implements PromotingInterface {
     return !!this.node.end
   }
 
-  private sendMove = (orig: Key, dest: Key, prom?: Role) => {
+  private sendMove = (orig: Key, dest: Key) => {
     const move: draughts.MoveRequest = {
       orig,
       dest,
-      variant: this.data.game.variant.key,
+      variant: this.data.puzzle.variant.key,
       fen: this.node.fen,
       path: this.path,
       pdnMoves: this.node.pdnMoves
     }
-    if (prom) move.promotion = prom
     this.sendMoveRequest(move, true)
   }
 
@@ -357,6 +378,7 @@ export default class TrainingCtrl implements PromotingInterface {
         uci: situation.uci,
         children: [],
         dests: situation.dests,
+        captLen: situation.captureLength,
         kingMoves: situation.kingMoves,
         end: situation.end,
         player: situation.player,
@@ -369,7 +391,7 @@ export default class TrainingCtrl implements PromotingInterface {
       }
       const newPath = this.tree.addNode(node, path)
       if (!newPath) {
-        console.error('Cannot addNode', node, path)
+        // path can be undefined when solution is clicked in the middle of opponent capt sequence
         return
       }
       if (userMove) this.vm.moveValidationPending = true
@@ -434,21 +456,30 @@ export default class TrainingCtrl implements PromotingInterface {
 
   private mergeSolution(solution: Tree.Node, color: Color) {
 
-    treeOps.updateAll(solution, (node) => {
-      if ((color === 'white') === (node.ply % 2 === 1)) node.puzzle = 'good'
-    })
+    const updateNode = (node: Tree.Node) => {
+      if ((color === 'white') === ((node.displayPly ? node.displayPly : node.ply) % 2 === 1)) node.puzzle = 'good'
+    }
 
-    const solutionNode = treeOps.childById(this.initialNode, solution.id)
+    const mergedSolution = treeOps.mergeExpandedNodes(solution);
+    treeOps.updateAll(mergedSolution, updateNode)
 
-    if (solutionNode) treeOps.merge(solutionNode, solution)
-    else this.initialNode.children.push(solution)
+    const solutionNode = treeOps.childById(this.initialNode, mergedSolution.id)
+
+    var merged: Tree.Node | undefined = undefined;
+    if (solutionNode) {
+      merged = treeOps.merge(solutionNode, mergedSolution, solution)
+      if (merged) treeOps.updateAll(merged, updateNode);
+    } else this.initialNode.children.push(mergedSolution)
+
+    return merged;
   }
 
   private sendResult = (win: boolean) => {
     if (this.vm.resultSent) return
     this.vm.resultSent = true
     const user = session.get()
-    const outcome = { id: this.data.puzzle.id, win }
+    const variant = this.data.puzzle.variant.key
+    const outcome = { id: this.data.puzzle.id, win, variant }
 
     const roundReq = () => {
       xhr.round(outcome)
@@ -466,7 +497,7 @@ export default class TrainingCtrl implements PromotingInterface {
     }
 
     if (user) {
-      getUnsolved(this.database, user)
+      getUnsolved(this.database, user, variant)
       .then(puzzles => {
         // if puzzle is in the unsolved queue let's sync it using batch endpoint
         // a puzzle may have been loaded from database, or from xhr if it has

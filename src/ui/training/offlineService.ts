@@ -11,10 +11,11 @@ import { Database, UserOfflineData } from './database'
  */
 export function syncAndLoadNewPuzzle(
   database: Database,
-  user: Session
+  user: Session,
+  variant: VariantKey
 ): Promise<PuzzleData> {
   return new Promise((resolve, reject) => {
-    syncPuzzles(database, user)
+    syncPuzzles(database, user, variant)
     .then(data => {
       if (data && data.unsolved.length > 0) {
         resolve(data.unsolved[0])
@@ -30,9 +31,9 @@ export function syncAndLoadNewPuzzle(
 /*
  * Load a new puzzle from offline database.
  */
-export function loadNewPuzzle(database: Database, user: Session): Promise<PuzzleData> {
+export function loadNewPuzzle(database: Database, user: Session, variant: VariantKey): Promise<PuzzleData> {
   return new Promise((resolve, reject) => {
-    database.fetch(user.id)
+    database.fetch(user.id, variant)
     .then(data => {
       if (data && data.unsolved.length > 0) {
         resolve(data.unsolved[0])
@@ -48,16 +49,16 @@ export function loadNewPuzzle(database: Database, user: Session): Promise<Puzzle
 /*
  * Get remaining puzzles in unsolved queue
  */
-export function getUnsolved(database: Database, user: Session): Promise<ReadonlyArray<PuzzleData>> {
-  return database.fetch(user.id)
+export function getUnsolved(database: Database, user: Session, variant: VariantKey): Promise<ReadonlyArray<PuzzleData>> {
+  return database.fetch(user.id, variant)
   .then(data => data && data.unsolved || [])
 }
 
 /*
  * Get the number of remaining puzzles in unsolved queue
  */
-export function nbRemainingPuzzles(database: Database, user: Session): Promise<number> {
-  return database.fetch(user.id)
+export function nbRemainingPuzzles(database: Database, user: Session, variant: VariantKey): Promise<number> {
+  return database.fetch(user.id, variant)
   .then(data => data && data.unsolved.length || 0)
 }
 
@@ -69,20 +70,21 @@ export function syncPuzzleResult(
   user: Session,
   outcome: PuzzleOutcome
 ): Promise<UserOfflineData | null> {
-  return database.fetch(user.id)
+  return database.fetch(user.id, outcome.variant)
   .then(data => {
     // if we reach here there must be data
     if (data) {
-      return database.save(user.id, {
+      return database.save(user.id, outcome.variant, {
         ...data,
         solved: data.solved.concat([{
           id: outcome.id,
-          win: outcome.win
+          win: outcome.win,
+          variant: outcome.variant
         }]),
         unsolved: data.unsolved.filter(p => p.puzzle.id !== outcome.id)
       })
       .then(() => {
-        return syncPuzzles(database, user)
+        return syncPuzzles(database, user, outcome.variant)
       })
     }
 
@@ -93,11 +95,11 @@ export function syncPuzzleResult(
 /*
  * Sync current data then clear puzzle cache to force get new puzzles
  */
-export function syncAndClearCache(database: Database, user: Session): Promise<PuzzleData> {
-  return syncPuzzles(database, user)
+export function syncAndClearCache(database: Database, user: Session, variant: VariantKey): Promise<PuzzleData> {
+  return syncPuzzles(database, user, variant)
   .then(() =>
-    database.clean(user.id).then(() =>
-      syncAndLoadNewPuzzle(database, user)
+    database.clean(user.id, variant).then(() =>
+      syncAndLoadNewPuzzle(database, user, variant)
     )
   )
 }
@@ -124,8 +126,8 @@ export function puzzleLoadFailure(reason: any) {
  * Returns a Promise with synchronized data or null if no data was already here
  * and synchronization could not be performed (when offline for instance).
  */
-function syncPuzzles(database: Database, user: Session): Promise<UserOfflineData | null> {
-  return database.fetch(user.id)
+function syncPuzzles(database: Database, user: Session, variant: VariantKey): Promise<UserOfflineData | null> {
+  return database.fetch(user.id, variant)
   .then(stored => {
     const unsolved = stored ? stored.unsolved : []
     const solved = stored ? stored.solved : []
@@ -136,20 +138,20 @@ function syncPuzzles(database: Database, user: Session): Promise<UserOfflineData
     )
 
     const solvePromise =
-      solved.length > 0 ? xhr.solvePuzzlesBatch(solved) : Promise.resolve()
+      solved.length > 0 ? xhr.solvePuzzlesBatch(variant, solved) : Promise.resolve()
 
     const allIds = unsolved.map(p => p.puzzle.id)
     const lastId = allIds.length > 0 ? Math.max(...allIds) : undefined
 
     return solvePromise
     .then(() => !stored || puzzleDeficit > 0 ?
-      xhr.newPuzzlesBatch(puzzleDeficit, lastId) : Promise.resolve({
+      xhr.newPuzzlesBatch(variant, puzzleDeficit, lastId) : Promise.resolve({
         puzzles: [],
         user: stored.user,
       })
     )
     .then(newData => {
-      return database.save(user.id, {
+      return database.save(user.id, variant, {
         user: newData.user,
         unsolved: unsolved.concat(newData.puzzles),
         solved: []

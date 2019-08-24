@@ -105,6 +105,29 @@ export function copyNode(node: Tree.Node, copyChildren: boolean = false): Tree.N
   } as Tree.Node;
 }
 
+export function mergeExpandedNodes(parent: Tree.Node): Tree.Node {
+  var mergedParent = copyNode(parent);
+  if (parent.children.length !== 0) {
+
+    //First child is mainline
+    var newNode = parent.children[0];
+    if (countGhosts(newNode.fen) > 0)
+      newNode.displayPly = newNode.ply + 1;
+
+    if (countGhosts(parent.fen) > 0) {
+      mergeNodes(mergedParent, newNode);
+      mergedParent.children = newNode.children;
+      mergedParent = mergeExpandedNodes(mergedParent);
+    }
+    else mergedParent.children.push(mergeExpandedNodes(newNode));
+
+    for (var i = 1; i < parent.children.length; i++)
+      mergedParent.children.push(mergeExpandedNodes(parent.children[i]));
+
+  }
+  return mergedParent;
+}
+
 export function mergeNodes(curNode: Tree.Node, newNode: Tree.Node, mergeChildren = false) {
 
   const curGhosts = countGhosts(curNode.fen);

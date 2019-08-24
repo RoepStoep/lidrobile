@@ -83,7 +83,7 @@ export default {
     function loadOfflinePuzzle() {
       const user = session.get()
       if (user) {
-        loadNewPuzzle(offlinePuzzleDB, user)
+        loadNewPuzzle(offlinePuzzleDB, user, (user.prefs.puzzleVariant as VariantKey) || 'standard')
         .then(data => {
           offlinePuzzle(data)
           redraw()

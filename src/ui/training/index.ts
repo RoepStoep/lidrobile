@@ -16,11 +16,13 @@ import { connectingHeader } from '../shared/common'
 import { syncAndLoadNewPuzzle, puzzleLoadFailure } from './offlineService'
 import { PuzzleData } from '../../lidraughts/interfaces/training'
 import database from './database'
+import settings from '../../settings';
 
 interface Attrs {
   id?: string
   initFen?: string
   initColor?: Color
+  variant?: VariantKey
 }
 
 export interface State {
@@ -32,6 +34,11 @@ const cachedState: State = {}
 
 export default {
   oninit({ attrs }) {
+    const variantProp = <VariantKey>settings.training.variant() || 'standard'
+    const variant = attrs.variant || variantProp
+    if (variant !== variantProp) {
+      settings.training.variant(variant)
+    }
     const numId = safeStringToNum(attrs.id)
     if (numId !== undefined) {
       if (cachedState.ctrl && window.history.state.puzzleId === numId) {
@@ -39,7 +46,7 @@ export default {
         redraw()
       }
       else {
-        xhr.loadPuzzle(numId)
+        xhr.loadPuzzle(numId, variant)
         .then(cfg => {
           this.ctrl = new TrainingCtrl(cfg, database)
           cachedState.ctrl = this.ctrl
@@ -49,8 +56,8 @@ export default {
     } else {
       const user = session.get()
       if (user) {
-        syncAndLoadNewPuzzle(database, user)
-        .catch(xhr.newPuzzle)
+        syncAndLoadNewPuzzle(database, user, variant)
+        .catch(() => xhr.newPuzzle(variant))
         .then((cfg: PuzzleData) => {
           this.ctrl = new TrainingCtrl(cfg, database)
           cachedState.ctrl = this.ctrl
@@ -58,7 +65,7 @@ export default {
         .catch(puzzleLoadFailure)
       }
       else {
-        xhr.newPuzzle()
+        xhr.newPuzzle(variant)
         .then((cfg: PuzzleData) => {
           this.ctrl = new TrainingCtrl(cfg, database)
           cachedState.ctrl = this.ctrl

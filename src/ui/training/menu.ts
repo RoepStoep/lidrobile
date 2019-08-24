@@ -40,7 +40,7 @@ export default {
 
       const user = session.get()
       if (user) {
-        root.database.fetch(user.id)
+        root.database.fetch(user.id, root.vm.variant)
         .then(data => {
           if (data) {
             puzzleUser = {
@@ -82,10 +82,10 @@ function renderTrainingMenu(ctrl: IMenuCtrl) {
   const puzzleUser = ctrl.user()
 
   if (ctrl.root.data && ctrl.root.data.user && hasNetwork()) {
-    return renderUserInfosOnline(ctrl.root.data.user)
+    return renderUserInfosOnline(ctrl.root.data.user, ctrl.root.vm.variant)
   }
   else if (puzzleUser !== null && hasNetwork()) {
-    return renderUserInfosOnline(puzzleUser.data)
+    return renderUserInfosOnline(puzzleUser.data, ctrl.root.vm.variant)
   }
   else if (puzzleUser !== null) {
     return renderUserInfosOffline(puzzleUser, ctrl)
@@ -117,7 +117,7 @@ function renderUserInfosOffline(user: OfflineUser, ctrl: IMenuCtrl) {
   ])
 }
 
-function renderUserInfosOnline(user: PuzzleUserData) {
+function renderUserInfosOnline(user: PuzzleUserData, variant: VariantKey) {
   const { vw } = helper.viewportDim()
   let width: number
   // see overlay-popup.styl for popup width
@@ -138,21 +138,26 @@ function renderUserInfosOnline(user: PuzzleUserData) {
         drawChart(user)
       }
     }) : null,
-    renderRecent(user),
+    renderRecent(user, variant),
   ]
 }
 
 function onRecentTap(e: TouchEvent) {
   const button = helper.getButton(e)
   const id = button && (button.dataset as DOMStringMap).id
-  if (id) router.set(`/training/${id}`, true)
+  const variant = button && (button.dataset as DOMStringMap).variant
+  if (id) {
+    if (variant) router.set(`/training/${id}/variant/${variant}`, true)
+    else router.set(`/training/${id}`, true)
+  }
 }
 
-function renderRecent(user: PuzzleUserData) {
+function renderRecent(user: PuzzleUserData, variant: VariantKey) {
   return h('div.puzzle-recents', {
     oncreate: helper.ontapY(onRecentTap, undefined, helper.getButton)
   }, user.recent.map(([id, diff]) => h('button', {
       'data-id': id,
+      'data-variant': variant,
       className: diff > 0 ? 'up' : 'down'
     }, (diff > 0 ? '+' : '') + diff))
   )

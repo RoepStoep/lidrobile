@@ -2,7 +2,8 @@ import { Tree } from '../../ui/shared/tree'
 
 export interface PuzzleData {
   readonly puzzle: Puzzle
-  game: Game
+  readonly history?: Tree.Node
+  game?: Game
   user?: UserData
 }
 
@@ -45,6 +46,7 @@ export interface Puzzle {
   readonly rating: number
   readonly attempts: number
   readonly fen: string
+  readonly variant: Variant
   readonly color: Color
   readonly initialMove: KeyPair
   readonly initialPly: number
@@ -58,6 +60,7 @@ export interface Puzzle {
 export interface PuzzleOutcome {
   id: number
   win: boolean
+  variant: VariantKey
 }
 
 //                       [id, diff, rating]

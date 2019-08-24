@@ -392,7 +392,8 @@ export default {
 
   training: {
     puzzleBufferLen: 50,
-    ratingDiffThreshold: 100
+    ratingDiffThreshold: 100,
+    variant: store.prop('settings.training.variant', 'standard'),
   },
 
   study: {

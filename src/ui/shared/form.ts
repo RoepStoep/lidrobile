@@ -117,6 +117,7 @@ export default {
     label: string,
     options: ReadonlyArray<{ label: string, value: T }>,
     prop: StoredProp<T>,
+    callback?: (v: T) => void,
     wrap: boolean = false
   ) {
     const selected = prop()
@@ -129,6 +130,7 @@ export default {
           className: o.value === selected ? 'selected' : '',
           oncreate: helper.ontap(() => {
             prop(o.value)
+            if (callback) callback(o.value)
           })
         }, o.label)
       }))

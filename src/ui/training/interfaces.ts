@@ -1,7 +1,7 @@
 import { Game, PuzzleData } from '../../lidraughts/interfaces/training'
 
 export interface Data extends PuzzleData {
-  game: PimpedGame
+  game?: PimpedGame
   round?: any
 }
 
@@ -19,6 +19,7 @@ export interface VM {
   initializing: boolean
   moveValidationPending: boolean
   mode: Mode
+  variant: VariantKey
   lastFeedback: Feedback
   canViewSolution: boolean
   resultSent: boolean

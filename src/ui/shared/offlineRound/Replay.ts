@@ -45,14 +45,13 @@ export default class Replay {
     return undefined
   }
 
-  public addMove = (orig: Key, dest: Key, promotion?: Role) => {
+  public addMove = (orig: Key, dest: Key) => {
     const sit = this.situation()
     draughts.move({
       variant: this.variant,
       fen: sit.fen,
       pdnMoves: sit.pdnMoves,
       uciMoves: sit.uciMoves,
-      promotion,
       orig,
       dest
     })

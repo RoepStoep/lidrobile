@@ -67,7 +67,6 @@ export interface MoveRequest {
   readonly dest: Key
   readonly pdnMoves?: ReadonlyArray<string>
   readonly uciMoves?: ReadonlyArray<string>
-  promotion?: Role
   readonly path?: string
 }
 

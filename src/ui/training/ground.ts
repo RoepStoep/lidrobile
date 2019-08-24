@@ -33,7 +33,8 @@ export default function makeConfig(
       duration: 300
     },
     premovable: {
-      enabled: false
+      enabled: false,
+      variant: ctrl.data.puzzle.variant.key
     },
     draggable: {
       enabled: pieceMoveConf === 'drag' || pieceMoveConf === 'both',

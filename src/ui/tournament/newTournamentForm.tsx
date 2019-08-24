@@ -63,7 +63,7 @@ function renderForm(ctrl: TournamentsListCtrl) {
         Leave empty to name the tournament after a random Grandmaster.
         </div>
         <div className="select_input">
-          {formWidgets.renderSelect('Variant', 'variant', settings.tournament.availableVariants, settings.tournament.variant, false)}
+          {formWidgets.renderSelect(i18n('variant'), 'variant', settings.tournament.availableVariants, settings.tournament.variant, false)}
         </div>
         {ctrl.startPositions !== undefined ?
           <div className={'select_input' + (settings.tournament.variant() !== '1' ? ' notVisible' : '')}>

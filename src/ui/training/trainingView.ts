@@ -8,8 +8,8 @@ import { header, connectingHeader } from '../shared/common'
 import * as helper from '../helper'
 
 import menu from './menu'
+import trainingSettings from './trainingSettings'
 import TrainingCtrl from './TrainingCtrl'
-
 
 export function renderHeader(ctrl: TrainingCtrl) {
   const maxPuzzles = settings.training.puzzleBufferLen
@@ -30,7 +30,7 @@ export function renderHeader(ctrl: TrainingCtrl) {
 
 export function renderContent(ctrl: TrainingCtrl, key: string, bounds: Bounds) {
   const board = h(Board, {
-    variant: ctrl.data.game.variant.key,
+    variant: ctrl.data.puzzle.variant.key,
     bounds,
     draughtsground: ctrl.draughtsground
   })
@@ -48,7 +48,8 @@ export function renderContent(ctrl: TrainingCtrl, key: string, bounds: Bounds) {
 
 export function overlay(ctrl: TrainingCtrl) {
   return [
-    menu.view(ctrl.menu)
+    menu.view(ctrl.menu),
+    trainingSettings.view(ctrl.settings)
   ]
 }
 
@@ -57,6 +58,10 @@ function renderActionsBar(ctrl: TrainingCtrl) {
     h('button.action_bar_button.training_action.fa.fa-area-chart', {
       key: 'puzzleMenu',
       oncreate: helper.ontap(ctrl.menu.open)
+    }),
+    h('button.action_bar_button.training_action.fa.fa-gear', {
+      key: 'puzzleSettings',
+      oncreate: helper.ontap(ctrl.settings.open)
     }),
     h('button.action_bar_button.training_action.fa.fa-share-alt', {
       key: 'sharePuzzle',
@@ -67,10 +72,6 @@ function renderActionsBar(ctrl: TrainingCtrl) {
       oncreate: helper.ontap(ctrl.goToAnalysis, () => window.plugins.toast.show(i18n('analysis'), 'short', 'bottom')),
       disabled: ctrl.vm.mode !== 'view'
     }),
-    hasNetwork() && session.isConnected() ? h('button.action_bar_button.training_action.fa.fa-refresh', {
-      key: 'puzzleRefresh',
-      oncreate: helper.ontap(ctrl.resync, () => window.plugins.toast.show('Sync and refresh saved puzzles', 'short', 'bottom'))
-    }) : null,
     h('button.action_bar_button.training_action.fa.fa-backward', {
       oncreate: helper.ontap(ctrl.rewind, undefined, ctrl.rewind),
       key: 'historyPrev',

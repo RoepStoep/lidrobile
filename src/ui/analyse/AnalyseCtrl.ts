@@ -527,7 +527,7 @@ export default class AnalyseCtrl {
 
   private canEvalGet = (node: Tree.Node): boolean => node.ply < 15
 
-  private sendMove = (orig: Key, dest: Key, prom?: Role) => {
+  private sendMove = (orig: Key, dest: Key) => {
     const move: draughts.MoveRequest = {
       orig,
       dest,
@@ -535,7 +535,6 @@ export default class AnalyseCtrl {
       fen: this.node.fen,
       path: this.path
     }
-    if (prom) move.promotion = prom
     draughts.move(move)
     .then(this.addNode)
     .catch(err => console.error('send move error', move, err))

@@ -4,7 +4,7 @@ import { PuzzleOutcome, PuzzleData, UserData } from '../../lidraughts/interfaces
 const db = {
   fetch,
   save,
-  clean,
+  clean
 }
 
 export default db
@@ -19,14 +19,14 @@ export interface UserOfflineData {
 
 type UserId = string
 
-function fetch(userId: UserId): Promise<UserOfflineData | null> {
-  return asyncStorage.getItem<UserOfflineData>(`offlinePuzzles.${userId}`)
+function fetch(userId: UserId, variant: VariantKey): Promise<UserOfflineData | null> {
+  return asyncStorage.getItem<UserOfflineData>(`offlinePuzzles.${userId}.${variant}`)
 }
 
-function save(userId: UserId, userData: UserOfflineData): Promise<UserOfflineData> {
-  return asyncStorage.setItem(`offlinePuzzles.${userId}`, userData)
+function save(userId: UserId, variant: VariantKey, userData: UserOfflineData): Promise<UserOfflineData> {
+  return asyncStorage.setItem(`offlinePuzzles.${userId}.${variant}`, userData)
 }
 
-function clean(userId: UserId) {
-  return asyncStorage.removeItem(`offlinePuzzles.${userId}`)
+function clean(userId: UserId, variant: VariantKey) {
+  return asyncStorage.removeItem(`offlinePuzzles.${userId}.${variant}`)
 }
