@@ -1,5 +1,6 @@
 import * as helper from '../../helper'
 import layout from '../../layout'
+import i18n from '../../../i18n'
 import { dropShadowHeader } from '../../shared/common'
 
 import FollowersCtrl from './followersCtrl'
@@ -22,7 +23,7 @@ export default {
   },
   view() {
     return layout.free(
-      dropShadowHeader('Followers'),
+      dropShadowHeader(i18n('followers')),
       renderBody(this.ctrl)
     )
   }

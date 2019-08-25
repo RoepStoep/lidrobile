@@ -82,7 +82,7 @@ export default {
   view() {
 
     function content() {
-      const nbPlayersStr = i18n('nbConnectedPlayers', nbPlayers || '?')
+      const nbPlayersStr = i18n('nbPlayers', nbPlayers || '?')
       const nbGamesStr = i18n('nbGamesInPlay', nbGames || '?')
 
       if (currentSetup === null) {

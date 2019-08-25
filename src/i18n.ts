@@ -1,14 +1,17 @@
 import settings from './settings'
 import { loadLocalJsonFile } from './utils'
 
-const defaultCode = 'en'
+const defaultCode = 'en-GB'
 
 let lang = defaultCode
 let messages = {} as StringMap
 
 export default function i18n(key: string, ...args: Array<string | number>): string {
   let str: string = messages[key] || untranslated[key] || key
-  args.forEach(a => { str = str.replace('%s', String(a)) })
+  args.forEach((a, i) => { 
+    if (args.length > 1) str = str.replace(`%${i + 1}$s`, String(a)) 
+    else str = str.replace('%s', String(a)) 
+  })
   return str
 }
 
@@ -51,7 +54,7 @@ export function ensureLangIsAvailable(lang: string): Promise<string> {
     .then(langs => {
       const l = langs.find(l => l[0] === lang)
       if (l !== undefined) resolve(l[0])
-      else reject(new Error(`Lang ${l} is not available in the application.`))
+      else reject(new Error(`Lang ${lang} is not available in the application.`))
     })
   })
 
@@ -86,13 +89,31 @@ function isLocaleLoaded(code: string): boolean {
 }
 
 function loadMomentLocale(code: string): string {
-  if (code !== 'en' && !isLocaleLoaded(code)) {
+  
+  var momentCode;
+  switch (code) {
+    case 'en-GB':
+    case 'en-US':
+      momentCode = 'en-gb';
+      break;
+    case 'pt-BR':
+      momentCode = 'pt-br';
+      break;
+    case 'zh-CN':
+      momentCode = 'zh-cn';
+      break;
+    default:
+      momentCode = code.indexOf('-') !== -1 ? code.split('-')[0] : code;
+      break;
+  }
+
+  if (momentCode !== 'en-gb' && !isLocaleLoaded(momentCode)) {
     const script = document.createElement('script')
-    script.src = 'locale/' + code + '.js'
+    script.src = 'locale/' + momentCode + '.js'
     document.head.appendChild(script)
   }
-  window.moment.locale(code)
-  return code
+  window.moment.locale(momentCode)
+  return momentCode
 }
 
 const untranslated: StringMap = {
@@ -115,8 +136,6 @@ const untranslated: StringMap = {
   boardThemeBlue2: 'Blue 2',
   boardThemeCanvas: 'Canvas',
   boardThemeMetal: 'Metal',
-  bgThemeDark: 'Dark',
-  bgThemeLight: 'Light',
   bgThemeWood: 'Wood',
   bgThemeShapes: 'Shapes',
   bgThemeAnthracite: 'Anthracite',
@@ -126,10 +145,10 @@ const untranslated: StringMap = {
   bgThemeGreenCheckerboard: 'Checkerboard',
   bgThemeCrackedEarth: 'Earth',
   bgThemeVioletSpace: 'Space',
+  clockPosition: 'Clock position',
   playerisInvitingYou: '%s is inviting you',
   toATypeGame: 'To a %s game',
   unsupportedVariant: 'Variant %s is not supported in this version',
-  language: 'Language',
   notesSynchronizationHasFailed: 'Notes synchronization with lidraughts has failed, please try later.',
   challengeDeclined: 'Challenge declined',
   persistentChallengeCreated: 'Correspondence challenge created. It will remain active for two weeks. You will get notified when your friend accepts it. You can cancel it from the "Correspondence" page.',
@@ -138,7 +157,6 @@ const untranslated: StringMap = {
   returnToHome: 'Return to home',
   enableLocalComputerEvaluation: 'Enable local computer evaluation',
   localEvalCaution: 'Caution: intensive usage will drain battery.',
-  showBestMove: 'Show computer best move',
   followers: 'Followers',
   userAcceptsYourChallenge: '%s accepts your challenge!',
   incorrectThreefoldClaim: 'Incorrect threefold repetition claim.',
@@ -150,5 +168,6 @@ const untranslated: StringMap = {
   usernameStartNoNumber: 'The username must not start with a number',
   usernameUnacceptable: 'This username is not acceptable',
   usernameInvalid: 'The username contains invalid characters',
-  offline: 'Offline'
+  offline: 'Offline',
+  zenModeExplanation: 'Players name and rating are hidden during game',
 }

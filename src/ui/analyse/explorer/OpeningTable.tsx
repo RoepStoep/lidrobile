@@ -1,5 +1,6 @@
 import router from '../../../router'
 import * as helper from '../../helper'
+import i18n from '../../../i18n'
 import { OnlineGameData } from '../../../lidraughts/interfaces/game'
 import { ExplorerData, Game, Move, Player } from './interfaces'
 import AnalyseCtrl from '../AnalyseCtrl'
@@ -44,7 +45,7 @@ export function showEmpty(ctrl: AnalyseCtrl) {
       <div className="message">
         <h3>
           <i className="withIcon" data-icon="" />
-          No game found
+          {i18n('noGameFound')}
         </h3>
         <p>{
           ctrl.explorer.config.fullHouse() ?

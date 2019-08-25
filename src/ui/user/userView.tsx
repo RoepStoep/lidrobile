@@ -153,16 +153,16 @@ function renderStats(user: ProfileUser) {
   let tvTime: string | null = null
 
   if (isFullUser(user)) {
-    totalPlayTime = user.playTime ? 'Time spent playing: ' + window.moment.duration(user.playTime.total, 'seconds').humanize() : null
-    tvTime = user.playTime && user.playTime.tv > 0 ? 'Time on TV: ' + window.moment.duration(user.playTime.tv, 'seconds').humanize() : null
+    totalPlayTime = user.playTime ? i18n('tpTimeSpentPlaying', window.moment.duration(user.playTime.total, 'seconds').humanize()) : null
+    tvTime = user.playTime && user.playTime.tv > 0 ? i18n('tpTimeSpentOnTV', window.moment.duration(user.playTime.tv, 'seconds').humanize()) : null
   } else if (isSessionUser(user)) {
-    totalPlayTime = user.playTime ? 'Time spent playing: ' + window.moment.duration(user.playTime, 'seconds').humanize() : null
+    totalPlayTime = user.playTime ? i18n('tpTimeSpentPlaying', window.moment.duration(user.playTime, 'seconds').humanize()) : null
   }
 
   return (
     <section className="profileSection">
       {isFullUser(user) && user.completionRate ?
-      <p>Game completion rate: <strong>{user.completionRate}%</strong></p> : null
+      <p>{i18n('gameCompletionRate', '')}<strong>{user.completionRate}%</strong></p> : null
       }
       {totalPlayTime ?
       <p>{totalPlayTime}</p> : null
@@ -249,7 +249,7 @@ function renderActions(ctrl: IUserCtrl, user: ProfileUser) {
           oncreate={helper.ontapY(ctrl.goToGames)}
           key="view_all_games"
         >
-          {i18n('viewAllNbGames', user.count.all)}
+          {i18n('nbGames', user.count.all)}
         </div> : null
       }
       { !ctrl.isMe() ? <div className="list_item nav" data-icon="1"

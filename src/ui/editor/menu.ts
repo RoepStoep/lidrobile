@@ -59,7 +59,7 @@ export function renderPositionSettings(ctrl: Editor) {
           ctrl.loadNewFen((e.target as HTMLInputElement).value)
         }
       }, [
-        optgroup('Set the board', [
+        optgroup(i18n('setTheBoard'), [
           position2option(fen, {
             name: '-- Position --',
             fen: '',
@@ -72,7 +72,7 @@ export function renderPositionSettings(ctrl: Editor) {
     h('div.select_input', [
       h('label', {
         'for': 'select_editor_color'
-      }, 'Color'),
+      }, i18n('side')),
       h('select', {
         id: 'select_editor_color',
         value: ctrl.data.editor.color(),

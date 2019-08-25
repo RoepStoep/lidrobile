@@ -29,7 +29,7 @@ function renderBody() {
         settings.game.pieceDestinations)),
       h('li.list_item',
         formWidgets.renderMultipleChoiceButton(
-          'Clock position', [
+          i18n('clockPosition'), [
             { label: 'Left', value: 'left' },
             { label: 'Right', value: 'right' },
           ],
@@ -37,8 +37,8 @@ function renderBody() {
         )
       ),
       h('li.list_item', [
-        formWidgets.renderCheckbox('Zen Mode', 'zenMode', settings.game.zenMode),
-        h('small', 'Players name and rating are hidden during game')
+        formWidgets.renderCheckbox(i18n('zenMode'), 'zenMode', settings.game.zenMode),
+        h('small', i18n('zenModeExplanation'))
       ])
    ])
   ]

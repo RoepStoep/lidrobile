@@ -107,14 +107,14 @@ function renderContent() {
   return h('div', [
     h('div.newGame-preset_switch', [
       h('div.nice-radio', formWidgets.renderRadio(
-        'Quick game',
+        i18n('quickPairing'),
         'preset',
         'quick',
         tabPreset === 'quick',
         handleTabTap
       )),
       h('div.nice-radio', formWidgets.renderRadio(
-        'Custom',
+        i18n('custom'),
         'preset',
         'custom',
         tabPreset === 'custom',
@@ -146,7 +146,7 @@ export function renderQuickSetup(onCustom: () => void) {
       .concat(h('div.newGame-pool', {
           key: 'pool-custom',
           oncreate: helper.ontap(onCustom)
-        }, h('div.newGame-custom', 'Custom'))
+        }, h('div.newGame-custom', i18n('custom')))
       ) : spinner.getVdom()
   )
 }

@@ -37,7 +37,7 @@ export function renderSearchForm(ctrl: ISearchCtrl) {
         }}
       >
         <div className="game_search_row">
-          <label>Players</label>
+          <label>{i18n('players')}</label>
           <div className="game_search_input_wrapper">
             <div className="game_search_input">
               <input
@@ -68,19 +68,19 @@ export function renderSearchForm(ctrl: ISearchCtrl) {
         {renderSelectRow(ctrl, i18n('white'), !!players.length, { name: 'players.white', options: players})}
         {renderSelectRow(ctrl, i18n('black'), !!players.length, { name: 'players.black', options: players})}
         {renderSelectRow(ctrl, i18n('winner'), !!players.length, { name: 'players.winner', options: players})}
-        {renderSelectRow(ctrl, i18n('ratingRange'), true, { name: 'ratingMin', options: ratingOptions, placeholder: 'From'}, {name: 'ratingMax', options: ratingOptions, placeholder: 'To'})}
-        {renderSelectRow(ctrl, i18n('opponent'), true, { name: 'hasAi', options: opponentOptions })}
-        {renderSelectRow(ctrl, i18n('aiNameLevelAiLevel', 'A.I.', '').trim(), isComputerOpp, {name: 'aiLevelMin', options: aiLevelOptions, placeholder: 'From'}, { name: 'aiLevelMax', options: aiLevelOptions, placeholder: 'To'})}
-        {renderSelectRow(ctrl, 'Source', true, { name: 'source', options: sourceOptions})}
+        {renderSelectRow(ctrl, i18n('ratingRange'), true, { name: 'ratingMin', options: ratingOptions, placeholder: i18n('from')}, {name: 'ratingMax', options: ratingOptions, placeholder: i18n('to')})}
+        {renderSelectRow(ctrl, i18n('opponent'), true, { name: 'hasAi', options: opponentOptions() })}
+        {renderSelectRow(ctrl, i18n('aiNameLevelAiLevel', 'A.I.', '').trim(), isComputerOpp, {name: 'aiLevelMin', options: aiLevelOptions, placeholder: i18n('from')}, { name: 'aiLevelMax', options: aiLevelOptions, placeholder: i18n('to')})}
+        {renderSelectRow(ctrl, i18n('source'), true, { name: 'source', options: sourceOptions})}
         {renderSelectRow(ctrl, i18n('variant'), true, { name: 'perf', options: perfOptions})}
-        {renderSelectRow(ctrl, 'Turns', true, { name: 'turnsMin', options: turnOptions, placeholder: 'From'}, {name: 'turnsMax', options: turnOptions, placeholder: 'To'})}
-        {renderSelectRow(ctrl, i18n('duration'), true, { name: 'durationMin', options: durationOptions, placeholder: 'From'}, {name: 'durationMax', options: durationOptions, placeholder: 'To'})}
-        {renderSelectRow(ctrl, i18n('time'), true, { name: 'clock.initMin', options: timeOptions, placeholder: 'From'}, {name: 'clock.initMax', options: timeOptions, placeholder: 'To'})}
-        {renderSelectRow(ctrl, i18n('increment'), true, { name: 'clock.incMin', options: incrementOptions, placeholder: 'From'}, {name: 'clock.incMax', options: incrementOptions, placeholder: 'To'})}
-        {renderSelectRow(ctrl, 'Result', true, { name: 'status', options: resultOptions})}
+        {renderSelectRow(ctrl, 'Turns', true, { name: 'turnsMin', options: turnOptions, placeholder: i18n('from')}, {name: 'turnsMax', options: turnOptions, placeholder: i18n('to')})}
+        {renderSelectRow(ctrl, i18n('duration'), true, { name: 'durationMin', options: durationOptions, placeholder: i18n('from')}, {name: 'durationMax', options: durationOptions, placeholder: i18n('to')})}
+        {renderSelectRow(ctrl, i18n('time'), true, { name: 'clock.initMin', options: timeOptions, placeholder: i18n('from')}, {name: 'clock.initMax', options: timeOptions, placeholder: i18n('to')})}
+        {renderSelectRow(ctrl, i18n('increment'), true, { name: 'clock.incMin', options: incrementOptions, placeholder: i18n('from')}, {name: 'clock.incMax', options: incrementOptions, placeholder: i18n('to')})}
+        {renderSelectRow(ctrl, i18n('result'), true, { name: 'status', options: resultOptions})}
         {renderSelectRow(ctrl, i18n('winner'), true, {name: 'winnerColor', options: winnerOptions})}
-        {renderSelectRow(ctrl, 'Date', true, { name: 'dateMin', options: dateOptions, placeholder: 'From', noEmpty: true }, {name: 'dateMax', options: dateOptions, placeholder: 'To'})}
-        {renderSelectRow(ctrl, 'Sort', true, { name: 'sort.field', options: sortFieldOptions, noEmpty: true }, {name: 'sort.order', options: sortOrderOptions, noEmpty: true })}
+        {renderSelectRow(ctrl, i18n('date'), true, { name: 'dateMin', options: dateOptions, placeholder: i18n('from'), noEmpty: true }, {name: 'dateMax', options: dateOptions, placeholder: i18n('to')})}
+        {renderSelectRow(ctrl, i18n('sort'), true, { name: 'sort.field', options: sortFieldOptions(), noEmpty: true }, {name: 'sort.order', options: sortOrderOptions(), noEmpty: true })}
         <div className="game_search_row">
           <label>Analysis</label>
           <div className="game_search_input_wrapper">
@@ -129,7 +129,7 @@ function renderResult(ctrl: ISearchCtrl) {
   const children = ctrl.searchState.searching ?  spinner.getVdom('monochrome') :
     ctrl.searchState.paginator === undefined ? null :
       ctrl.searchState.games.length === 0 ?
-        h('div.search-empty', 'No game found') :
+        h('div.search-empty', i18n('noGameFound')) :
           h.fragment({ oncreate: ctrl.onGamesLoaded }, [
             ctrl.searchState.games.map((g: UserGameWithDate, index: number) =>
               h(GameItem, { key: g.id, g, index, boardTheme: ctrl.boardTheme })
@@ -215,13 +215,13 @@ const searchOpts = {
   results: [['30', 'Mate'], ['31', 'Resign'], ['32', 'Stalemate'], ['34', 'Draw'], ['35', 'Clock Flag'], ['60', 'Variant End']],
   winners: [['1', 'white'], ['2', 'black'], ['3', 'none']],
   dates: [['0d', 'Now'], ['1h', '1 hour ago'], ['2h', '2 hours ago'], ['6h', '6 hours ago'], ['1d', '1 day ago'], ['2d', '2 days ago'], ['3d', '3 days ago'], ['4d', '4 days ago'], ['5d', '5 days ago'], ['6d', '6 days ago'], ['1w', '1 week ago'], ['2w', '2 weeks ago'], ['3w', '3 weeks ago'], ['4w', '4 weeks ago'], ['5w', '5 weeks ago'], ['6w', '6 weeks ago'], ['1m', '1 month ago'], ['2m', '2 months ago'], ['3m', '3 months ago'], ['4m', '4 months ago'], ['5m', '5 months ago'], ['6m', '6 months ago'], ['1y', '1 year ago'], ['2y', '2 years ago'], ['3y', '3 years ago'], ['4y', '4 years ago'], ['5y', '5 years ago']],
-  sortFields: [['d', 'Date'], ['t', 'Moves'], ['a', 'Rating']],
-  sortOrders: [['desc', 'Descending'], ['asc', 'Ascending']]
+  sortFields: [['d', 'date'], ['t', 'numberOfTurns'], ['a', 'averageElo']],
+  sortOrders: [['desc', 'descending'], ['asc', 'ascending']]
 }
 
 const ratingOptions = searchOpts.ratings.map((a: string) => ({value: a, label: a}))
-const opponents = [['0', i18n('human') + ' ' + i18n('opponent')], ['1', i18n('computer') + ' ' + i18n('opponent')]]
-const opponentOptions = opponents.map((a: Array<string>) => ({value: a[0], label: a[1]}))
+const opponents = [['0', 'human'], ['1', 'computer']]
+const opponentOptions = () => opponents.map((a: Array<string>) => ({value: a[0], label: i18n(a[1])}))
 const aiLevelOptions = searchOpts.aiLevels.map((a: string) => ({value: a, label: i18n('level') + ' ' + a}))
 const sourceOptions = searchOpts.sources.map((a: Array<string>) => ({value: a[0], label: a[1]}))
 const perfOptions = searchOpts.perfs.map((a: Array<string>) => ({value: a[0], label: a[1]}))
@@ -232,5 +232,5 @@ const incrementOptions = searchOpts.increments.map((a: Array<string>) => ({value
 const resultOptions = searchOpts.results.map((a: Array<string>) => ({value: a[0], label: a[1]}))
 const winnerOptions = searchOpts.winners.map((a: Array<string>) => ({value: a[0], label: i18n(a[1])}))
 const dateOptions = searchOpts.dates.map((a: Array<string>) => ({value: a[0], label: a[1]}))
-const sortFieldOptions = searchOpts.sortFields.map((a: Array<string>) => ({value: a[0], label: a[1]}))
-const sortOrderOptions = searchOpts.sortOrders.map((a: Array<string>) => ({value: a[0], label: a[1]}))
+const sortFieldOptions = () => searchOpts.sortFields.map((a: Array<string>) => ({value: a[0], label: i18n(a[1])}))
+const sortOrderOptions = () => searchOpts.sortOrders.map((a: Array<string>) => ({value: a[0], label: i18n(a[1])}))

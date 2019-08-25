@@ -16,10 +16,10 @@ import CorrespondenceCtrl from './CorrespondenceCtrl'
 
 const tabButtons = [
   {
-    label: 'Public games'
+    label: i18n('lobby')
   },
   {
-    label: 'Challenges'
+    label: i18n('challenges')
   }
 ]
 

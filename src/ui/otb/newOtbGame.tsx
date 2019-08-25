@@ -92,7 +92,7 @@ export default {
                   </div> : null
                 }
                 <div className="select_input">
-                  {formWidgets.renderSelect('Clock', 'clock', settings.otb.clock.availableClocks, settings.otb.clock.clockType, false, onChange)}
+                  {formWidgets.renderSelect('clock', 'clock', settings.otb.clock.availableClocks, settings.otb.clock.clockType, false, onChange)}
                 </div>
                 {clockSettingsView(settings.otb.clock, onChange)}
               </div>

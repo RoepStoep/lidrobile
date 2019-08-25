@@ -15,7 +15,7 @@ import { renderTournamentList } from '../tournament/tournamentsListView'
 import { Ctrl } from '.'
 
 export function body(ctrl: Ctrl) {
-  const nbPlayers = i18n('nbConnectedPlayers', ctrl.nbConnectedPlayers() || '?')
+  const nbPlayers = i18n('nbPlayers', ctrl.nbConnectedPlayers() || '?')
   const nbGames = i18n('nbGamesInPlay', ctrl.nbGamesInPlay() || '?')
 
   const playbanEndsAt = session.currentBan()
@@ -67,7 +67,7 @@ export function body(ctrl: Ctrl) {
 
 function renderLobby() {
   return h('div.homeCreate', [
-    h('h2.homeTitle', 'Quick Game'),
+    h('h2.homeTitle', i18n('quickPairing')),
     renderQuickSetup(() => newGameForm.openRealTime('custom')),
   ])
 }

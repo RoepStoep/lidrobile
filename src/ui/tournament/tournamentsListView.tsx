@@ -10,14 +10,6 @@ import TabView from '../shared/TabView'
 import newTournamentForm from './newTournamentForm'
 import TournamentsListCtrl from './TournamentsListCtrl'
 
-const TABS = [{
-    label: 'In Progress'
-}, {
-    label: 'Upcoming'
-}, {
-    label: 'Completed'
-}]
-
 function onTournamentTap(e: Event) {
   const el = helper.getLI(e)
   const ds = el.dataset as DOMStringMap
@@ -29,6 +21,14 @@ function onTournamentTap(e: Event) {
 
 export function renderTournamentsList(ctrl: TournamentsListCtrl) {
   if (!ctrl.tournaments) return null
+
+  const TABS = [{
+      label: 'In Progress'
+  }, {
+      label: 'Upcoming'
+  }, {
+      label: i18n('finished')
+  }]
 
   const tabsContent = [
     () => ctrl.tournaments ? renderTournamentList(ctrl.tournaments['started']) : null,

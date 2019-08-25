@@ -104,9 +104,8 @@ function onOnline() {
 
       session.rememberLogin()
       .then((user) => {
-        const serverLang = user.language && user.language.split('-')[0]
-        if (serverLang) {
-          ensureLangIsAvailable(serverLang)
+        if (user.language) {
+          ensureLangIsAvailable(user.language)
           .then(lang => {
             settings.general.lang(lang)
             loadLanguage(lang)

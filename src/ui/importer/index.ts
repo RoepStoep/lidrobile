@@ -36,7 +36,7 @@ const ImporterScreen: Mithril.Component<{}, State> = {
 
 function renderBody(ctrl: IImporterCtrl) {
   return h('div.gameImporter.native_scroller', [
-    h('p', 'When pasting a game PGN, you get a browsable replay and a computer analysis.'),
+    h('p', i18n('importGameExplanation')),
     h('form', {
       onsubmit: (e: Event) => {
         e.preventDefault()
@@ -45,7 +45,7 @@ function renderBody(ctrl: IImporterCtrl) {
         if (pgn) ctrl.importGame(pgn)
       }
     }, [
-      h('label', i18n('pasteThePgnStringHere') + ' :'),
+      h('label', i18n('pasteThePdnStringHere') + ' :'),
       h('textarea.pgnImport'),
       formWidgets.renderCheckbox(i18n('requestAComputerAnalysis'), 'analyse', settings.importer.analyse),
       h('button.fatButton', ctrl.importing() ?

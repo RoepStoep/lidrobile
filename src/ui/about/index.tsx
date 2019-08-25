@@ -2,6 +2,7 @@ import * as h from 'mithril/hyperscript'
 import * as helper from '../helper'
 import socket from '../../socket'
 import layout from '../layout'
+import i18n from '../../i18n'
 import { dropShadowHeader, backButton } from '../shared/common'
 
 export default {
@@ -12,18 +13,18 @@ export default {
   },
 
   view() {
-    const header = dropShadowHeader(null, backButton('About'))
+    const header = dropShadowHeader(null, backButton(i18n('about')))
     return layout.free(
       header,
       <div class="aboutBody native_scroller">
-        <p>lidraughts.org is a free, open-source draughts server powered by volunteers and donations.</p>
+        <p>lidraughts.org is a free, open-source draughts server powered by volunteers.</p>
 
         <p>Todo...</p>
 
         <h2>Links</h2>
 
           <ul>
-            <li>{externalLink('Github', 'https://github.com/veloce/lichobile')}</li>
+            <li>{externalLink('Github', 'https://github.com/RoepStoep/lidrobile')}</li>
             <li>{externalLink('Contact', 'https://lidraughts.org/contact')}</li>
             <li>{externalLink('Terms of Service', 'https://lidraughts.org/terms-of-service')}</li>
             <li>{externalLink('Privacy Policy', 'https://lidraughts.org/privacy')}</li>

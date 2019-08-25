@@ -44,8 +44,8 @@ export default {
     sound: store.prop('settings.sound', true),
     theme: {
       availableBackgroundThemes: [
-        { key: 'dark', name: 'bgThemeDark', ext: '' },
-        { key: 'light', name: 'bgThemeLight', ext: '' },
+        { key: 'dark', name: 'dark', ext: '' },
+        { key: 'light', name: 'light', ext: '' },
         { key: 'bgshapes', name: 'bgThemeShapes', ext: 'jpg' },
         { key: 'anthracite', name: 'bgThemeAnthracite', ext: 'jpg' },
         { key: 'blue-maze', name: 'bgThemeBlueMaze', ext: 'jpg' },
@@ -364,8 +364,8 @@ export default {
       ['Breakthrough', '9']
     ],
     availableModes: [
-      ['Casual', '0'],
-      ['Rated', '1']
+      ['casual', '0'],
+      ['rated', '1']
     ],
     availableTimes: [['0', '0'], ['½', '0.5'], ['¾', '0.75'], ['1', '1'], ['1.5', '1.5'], ['2', '2'], ['3', '3'], ['4', '4'], ['5', '5'], ['6', '6'], ['7', '7']],
     availableIncrements: ['0', '1', '2'],

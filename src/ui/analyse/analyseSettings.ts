@@ -144,7 +144,7 @@ function renderAnalyseSettings(ctrl: AnalyseCtrl) {
       key: 'showBestMove'
     }, [
       formWidgets.renderCheckbox(
-        [i18n('showBestMove'), h('small', ' (pale blue arrow)')], 'showBestMove', settings.analyse.showBestMove,
+        [i18n('bestMoveArrow'), h('small', ' (pale blue arrow)')], 'showBestMove', settings.analyse.showBestMove,
         ctrl.settings.toggleBestMove
       )
     ]),
@@ -160,7 +160,7 @@ function renderAnalyseSettings(ctrl: AnalyseCtrl) {
       key: 'infiniteAnalysis'
     }, [
       formWidgets.renderCheckbox(
-        'Infinite analysis', 'ceval.infinite', settings.analyse.cevalInfinite,
+        i18n('infiniteAnalysis'), 'ceval.infinite', settings.analyse.cevalInfinite,
         ctrl.settings.cevalToggleInfinite
       ),
       cordova.platformId === 'android' ?

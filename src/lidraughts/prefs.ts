@@ -13,7 +13,7 @@ export const SubmitMove = {
 export const SubmitMoveChoices = [
   [ SubmitMove.NEVER, 'never' ],
   [ SubmitMove.CORRESPONDENCE_ONLY, 'inCorrespondenceGames' ],
-  [ SubmitMove.CORRESPONDENCE_UNLIMITED, 'Correspondence and unlimited' ],
+  [ SubmitMove.CORRESPONDENCE_UNLIMITED, 'correspondenceAndUnlimited' ],
   [ SubmitMove.ALWAYS, 'always' ]
 ] as Array<LidraughtsPropOption>
 

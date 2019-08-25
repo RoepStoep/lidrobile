@@ -42,11 +42,11 @@ function renderBody() {
       h('li.list_item.nav', {
         key: 'boardTheme',
         oncreate: helper.ontapY(() => router.set('/settings/themes/board'))
-      }, i18n('board')),
+      }, i18n('boardTheme')),
       h('li.list_item.nav', {
         key: 'piecesTheme',
         oncreate: helper.ontapY(() => router.set('/settings/themes/piece'))
-      }, i18n('pieces')),
+      }, i18n('pieceSet')),
       h('li.list_item.nav', {
         key: 'soundNotifications',
         oncreate: helper.ontapY(() => router.set('/settings/soundNotifications'))

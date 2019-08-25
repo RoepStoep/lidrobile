@@ -2,6 +2,7 @@ import * as h from 'mithril/hyperscript'
 import router from '../router'
 import socket from '../socket'
 import * as helper from './helper'
+import i18n from '../i18n'
 import * as sleepUtils from '../utils/sleep'
 import { handleXhrError } from '../utils'
 import redraw from '../utils/redraw'
@@ -45,7 +46,7 @@ const TV: Mithril.Component<TVAttrs, State> = {
       if (!this.emptyTV) {
         handleXhrError(e)
       } else {
-        window.plugins.toast.show('No game found', 'short', 'center')
+        window.plugins.toast.show(i18n('noGameFound'), 'short', 'center')
         redraw()
       }
     })

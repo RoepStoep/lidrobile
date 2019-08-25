@@ -154,7 +154,7 @@
   window.navigator.globalization = {
     getPreferredLanguage: function(success) {
       success({
-        value: 'en'
+        value: 'en-GB'
       });
     }
   };

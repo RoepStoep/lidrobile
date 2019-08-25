@@ -739,6 +739,6 @@ const isoLangs: {[index: string]: Lang} = {
 }
 
 export function getLanguageNativeName(code: string): string {
-  const lang = isoLangs[code]
+  const lang = code.indexOf('-') !== -1 ? isoLangs[code.split('-')[0]] : isoLangs[code]
   return lang ? lang.nativeName : code
 }
