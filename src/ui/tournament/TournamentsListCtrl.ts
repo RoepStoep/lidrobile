@@ -1,6 +1,6 @@
 import redraw from '../../utils/redraw'
 import settings from '../../settings'
-import { handleXhrError, loadLocalJsonFile } from '../../utils'
+import { handleXhrError } from '../../utils'
 import * as xhr from './tournamentXhr'
 import { TournamentListItem, TournamentLists } from '../../lidraughts/interfaces/tournament'
 
@@ -24,11 +24,11 @@ export default class TournamentsListCtrl {
     })
     .catch(handleXhrError)
 
-    loadLocalJsonFile<BoardPositionCategory[]>('data/positions.json')
+    /*loadLocalJsonFile<BoardPositionCategory[]>('data/positions.json')
     .then(data => {
       this.startPositions = data
       redraw()
-    })
+    })*/
   }
 
   onTabChange = (tabIndex: number) => {
