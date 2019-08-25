@@ -35,12 +35,9 @@ const cachedState: State = {}
 export default {
   oninit({ attrs }) {
     const variantProp = <VariantKey>settings.training.variant() || 'standard'
-    const variant = attrs.variant || variantProp
-    if (variant !== variantProp) {
-      settings.training.variant(variant)
-    }
     const numId = safeStringToNum(attrs.id)
-    if (numId !== undefined) {
+    const variant = attrs.variant ? attrs.variant : (numId !== undefined ? 'standard' : variantProp)
+    if (numId !== undefined) { 
       if (cachedState.ctrl && window.history.state.puzzleId === numId) {
         this.ctrl = cachedState.ctrl
         redraw()
@@ -54,6 +51,9 @@ export default {
         .catch(handleXhrError)
       }
     } else {
+      if (variant !== variantProp) {
+        settings.training.variant(variant)
+      }
       const user = session.get()
       if (user) {
         syncAndLoadNewPuzzle(database, user, variant)
