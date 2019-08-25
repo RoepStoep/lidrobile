@@ -96,7 +96,7 @@ function renderActionsBar(ctrl: Editor) {
     h('button.action_bar_button.fa.fa-share-alt', {
       key: 'sharePosition',
       oncreate: helper.ontap(
-        () => window.plugins.socialsharing.share(ctrl.computeFen()),
+        () => window.plugins.socialsharing.share(ctrl.computeFen(true)),
         () => window.plugins.toast.show('Share FEN', 'short', 'bottom')
       )
     })

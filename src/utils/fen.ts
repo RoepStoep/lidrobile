@@ -6,8 +6,8 @@ export function readFen(fen: string) {
   const parts = fen.split(':')
   return {
     color: parts[0].toLowerCase(),
-    halfmove: Number(parts[3].slice(1)),
-    moves: Number(parts[4].slice(1))
+    halfmove: Number(parts.length > 3 ? parts[3].slice(1) : 0),
+    moves: Number(parts.length > 4 ? parts[4].slice(1) : 1)
   }
 }
 
@@ -60,10 +60,12 @@ function validateFields(fields: string[]): boolean {
     if (first === 'K' || first === 'G' || first === 'P') {
       field = field.slice(1);
     }
-    /* remaining must be field number 1 - 50*/
-    const fieldNumber = Number(field)
-    if (isNaN(fieldNumber) || fieldNumber < 1 || fieldNumber > 50) {
-      return false
+    /* remaining must be field number 1 - 50 or empty (no pieces) */
+    if (field.length) {
+      const fieldNumber = Number(field)
+      if (isNaN(fieldNumber) || fieldNumber < 1 || fieldNumber > 50) {
+        return false
+      }
     }
   }
 
@@ -79,16 +81,16 @@ function validateTokens(tokens: string[]): boolean {
   }
 
   /* first must be side to move */
-  if (tokens[0] !== 'W' || tokens[0] !== 'B') {
+  if (tokens[0] !== 'W' && tokens[0] !== 'B') {
     return false;
   }
 
-  /* move number field is a integer value > 0? */
+  /* move number field is a integer value > 0 */
   if (tokens.length > 4 && (isNaN(Number(tokens[4].slice(1))) || (parseInt(tokens[4], 10) <= 0))) {
     return false
   }
 
-  /* half move counter is an integer >= 0? */
+  /* half move counter is an integer >= 0 */
   if (tokens.length > 3 && (isNaN(Number(tokens[3].slice(1))) || (parseInt(tokens[3], 10) < 0))) {
     return false
   }

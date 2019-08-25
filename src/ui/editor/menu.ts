@@ -93,6 +93,7 @@ export function renderPositionSettings(ctrl: Editor) {
         value: ctrl.data.game.variant.key(),
         onchange(e: Event) {
           ctrl.data.game.variant.key((e.target as HTMLInputElement).value as VariantKey)
+          ctrl.updateHref()
         },
       }, [
         h('option[value=standard]', 'Standard'),

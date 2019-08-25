@@ -104,10 +104,10 @@ export default class Editor {
     })
   }
 
-  private updateHref = debounce(() => {
+  public updateHref = debounce(() => {
     const newFen = this.computeFen()
     if (fenUtil.validateFen(newFen)) {
-      const path = `/editor/${encodeURIComponent(newFen)}`
+      const path = `/editor/variant/${encodeURIComponent(this.data.game.variant.key())}/fen/${encodeURIComponent(newFen)}`
       try {
         window.history.replaceState(window.history.state, '', '?=' + path)
       } catch (e) { console.error(e) }
@@ -137,9 +137,11 @@ export default class Editor {
     }
   }
 
-  public computeFen = () => {
+  public computeFen = (small: boolean = false) => {
     const data = this.data.editor
-    return data.color() + ':' + this.draughtsground.getFen() + ':H' + data.halfmove() + ':F' + data.moves()
+    const fen = data.color().toUpperCase() + ':' + this.draughtsground.getFen()
+    if (small) return fen
+    else return fen + ':H' + data.halfmove() + ':F' + data.moves()
   }
 
   public loadNewFen = (newFen: string) => {
