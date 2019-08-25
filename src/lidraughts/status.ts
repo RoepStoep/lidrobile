@@ -11,7 +11,6 @@ const ids = {
   aborted: 25,
   mate: 30,
   resign: 31,
-  stalemate: 32,
   timeout: 33,
   draw: 34,
   outoftime: 35,
@@ -43,8 +42,6 @@ function toLabel(status: string, winner: Color | undefined, variant: VariantKey)
       return ''
     case 'resign':
       return i18n(winner === 'white' ? 'blackResigned' : 'whiteResigned')
-    case 'stalemate':
-      return i18n('stalemate')
     case 'timeout':
       switch (winner) {
         case 'white':

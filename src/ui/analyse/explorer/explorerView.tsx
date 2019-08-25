@@ -97,7 +97,6 @@ function showDtw(stm: string, move: Move) {
 
 function showDtz(stm: string, move: Move) {
   if (move.checkmate) return h('result.' + winner(stm, move), 'Checkmate')
-  else if (move.stalemate) return h('result.draws', 'Stalemate')
   else if (move.variant_win) return h('result.' + winner(stm, move), 'Variant loss')
   else if (move.variant_loss) return h('result.' + winner(stm, move), 'Variant win')
   else if (move.insufficient_material) return h('result.draws', 'Insufficient material')
@@ -146,7 +145,6 @@ function show(ctrl: AnalyseCtrl) {
       )
     }
     else if (data.checkmate) return showGameEnd('Checkmate')
-    else if (data.stalemate) return showGameEnd('Stalemate')
     else if (data.variant_win || data.variant_loss) return showGameEnd('Variant end')
     else return showEmpty(ctrl)
   }
