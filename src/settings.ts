@@ -70,12 +70,13 @@ export default {
         ['boardThemeMetal', 'metal']
       ],
       availablePieceThemes: [
-        ['wide_crown'],
-        ['wide' ],
-        ['narrow_edge' ],
-        ['narrow' ],
-        ['fabirovsky' ],
-        ['basic' ]
+        ['wide_crown', 'Standard'],
+        ['wide', 'Standard no crown' ],
+        ['narrow_edge', 'Narrow #1' ],
+        ['narrow', 'Narrow #2' ],
+        ['fabirovsky', 'Fabirovsky' ],
+        ['flat', 'Flat' ],
+        ['basic', 'Basic' ]
       ],
       board: store.prop('settings.theme.board', 'brown'),
       piece: store.prop('settings.theme.piece', 'wide_crown')
