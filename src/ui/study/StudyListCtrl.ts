@@ -30,7 +30,7 @@ export default class StudyListCtrl {
 
   public constructor(
     public readonly cat: PagerCategory = 'all',
-    public readonly order: PagerOrder = 'hot',
+    public readonly order: PagerOrder = 'popular',
     public readonly q?: string
   ) {
 
