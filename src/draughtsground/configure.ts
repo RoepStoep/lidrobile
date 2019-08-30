@@ -25,9 +25,9 @@ export function configureBoard(state: State, config: cg.InitConfig): void {
     state.pieces = fen.read(config.fen)
 
     // show kingmoves for frisian variants
-    if (state.highlight && state.highlight.kingMoves !== null) {
+    if (state.highlight && state.highlight.kingMoves) {
       const kingMoves = fen.readKingMoves(config.fen);
-      if (kingMoves != null) doSetKingMoves(state, kingMoves);
+      if (kingMoves) doSetKingMoves(state, kingMoves);
     }
   }
 
@@ -50,9 +50,9 @@ export function setNewBoardState(d: State, config: cg.SetConfig): void {
   if (config.fen) {
     d.pieces = fen.read(config.fen)
     // kingmoves for frisian variants
-    if (d.highlight && d.highlight.kingMoves !== null) {
+    if (d.highlight && d.highlight.kingMoves) {
       const kingMoves = fen.readKingMoves(config.fen);
-      if (kingMoves != null) doSetKingMoves(d, kingMoves);
+      if (kingMoves) doSetKingMoves(d, kingMoves);
     }
   }
 

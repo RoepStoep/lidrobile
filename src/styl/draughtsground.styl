@@ -57,6 +57,25 @@ piece
     z-index: 3
   &.temppiece
     z-index: 1
+  &.king1, &.king2, &.king3
+    text-align: center
+    font-size: 3vmin
+    &.white
+      color: black
+    &.black
+      color: white
+  &.king1:not(.ghost):before
+    content: '\25CF'
+    display: inline-block
+    margin-top: 65%
+  &.king2:not(.ghost):before
+    content: '\25CF \25CF'
+    display: inline-block
+    margin-top: 65%
+  &.king3:not(.ghost):before
+    content: '\25CF \25CF \25CF'
+    display: inline-block
+    margin-top: 65%
 
 .cg-square-target
   position absolute

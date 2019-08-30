@@ -27,6 +27,8 @@ function renderBody() {
         settings.game.highlights)),
       h('li.list_item', formWidgets.renderCheckbox(i18n('pieceDestinations'), 'pieceDestinations',
         settings.game.pieceDestinations)),
+      h('li.list_item', formWidgets.renderCheckbox(i18n('showKingMoves'), 'kingMoves',
+        settings.game.kingMoves)),
       h('li.list_item',
         formWidgets.renderMultipleChoiceButton(
           i18n('clockPosition'), [

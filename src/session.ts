@@ -148,6 +148,7 @@ function savePreferences(): Promise<string> {
   const display = mapKeys(<Prefs>mapValues(pick(prefs, [
     'animation',
     'captured',
+    'kingMoves',
     'highlight',
     'destination',
     'coords',
