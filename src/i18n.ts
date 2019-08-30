@@ -30,18 +30,24 @@ export function loadPreferredLanguage(): Promise<string> {
     return loadLanguage(fromSettings)
   }
 
+  let lang = defaultCode;
   return new Promise(resolve => {
     window.navigator.globalization.getPreferredLanguage(
-      l => resolve(l.value.split('-')[0]),
+      l => resolve(l.value),
       () => resolve(defaultCode)
     )
   })
   .then((code: string) => {
+    lang = code
+    return getAvailableLanguages()
+  })
+  .then((langs) => {
+    const l = langsBestMatch(langs, lang)
+    const code = l ? l : defaultCode
     settings.general.lang(code)
     return code
   })
-  .then(loadFile)
-  .then(loadMomentLocale)
+  .then(loadLanguage)
 }
 
 export function getAvailableLanguages(): Promise<ReadonlyArray<[string, string]>> {
@@ -52,12 +58,21 @@ export function ensureLangIsAvailable(lang: string): Promise<string> {
   return new Promise((resolve, reject) => {
     getAvailableLanguages()
     .then(langs => {
-      const l = langs.find(l => l[0] === lang)
-      if (l !== undefined) resolve(l[0])
+      const l = langsBestMatch(langs, lang)
+      if (l !== undefined) resolve(l)
       else reject(new Error(`Lang ${lang} is not available in the application.`))
     })
   })
+}
 
+function langsBestMatch(langs: ReadonlyArray<[string, string]>, lang: string) {
+  if (langs.find(l => l[0] === lang)) {
+    return lang
+  }
+  const langArr = lang.split('-')
+  const l = langs.find(l => l[0].split('-')[0] === langArr[0])
+  if (l !== undefined) return l[0]
+  else return undefined
 }
 
 export function loadLanguage(lang: string): Promise<string> {
@@ -113,7 +128,7 @@ function loadMomentLocale(code: string): string {
     document.head.appendChild(script)
   }
   window.moment.locale(momentCode)
-  return momentCode
+  return code
 }
 
 const untranslated: StringMap = {
