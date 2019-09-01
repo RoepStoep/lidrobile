@@ -76,7 +76,7 @@ function renderFeaturedTournaments(tournaments: TournamentListItem[]) {
   if (tournaments.length)
     return (
       <div className="homeTournament">
-        <h2 className="homeTitle">Featured Tournaments</h2>
+        <h2 className="homeTitle">{i18n('openTournaments')}</h2>
         {renderTournamentList(tournaments)}
       </div>
     )
@@ -134,7 +134,7 @@ function renderPlayban(endsAt: Date) {
       <p>The timeout expires <strong>{window.moment(endsAt).fromNow()}</strong>.</p>
       <h2>Why?</h2>
       <p>
-        We aim to provide a pleasant chess experience for everyone.
+        We aim to provide a pleasant draughts experience for everyone.
         To that effect, we must ensure that all players follow good practices.
         When a potential problem is detected, we display this message.
       </p>

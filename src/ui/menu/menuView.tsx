@@ -135,7 +135,7 @@ function renderLinks(user?: Session) {
       oncreate={helper.ontapXY(onLinkTap, undefined, helper.getLI)}
     >
       <li className="side_link" data-route="/">
-        <span className="fa fa-home" />Home
+        <span className="fa fa-home" />{i18n('homepage')}
       </li>
       {hasNetwork() ?
       <li className="sep_link">{i18n('playOnline')}</li> : null
@@ -175,7 +175,7 @@ function renderLinks(user?: Session) {
         <span className="fa fa-trophy"/>{i18n('tournament')}
       </li> : null
       }
-      <li className="sep_link">{i18n('learn')}</li>
+      <li className="sep_link">{i18n('learnMenu')}</li>
       {hasNetwork() ?
         <li className="side_link" data-route="/training">
           <span data-icon="-"/>{i18n('training')}

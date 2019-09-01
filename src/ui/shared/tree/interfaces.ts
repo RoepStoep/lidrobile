@@ -57,7 +57,7 @@ export namespace Tree {
     threefold?: boolean
     readonly fail?: boolean
     puzzle?: string
-    // added locally during analysis by chess worker
+    // added locally during analysis by worker
     readonly pdnMoves?: ReadonlyArray<string>
     player?: Color
     end?: boolean

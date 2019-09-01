@@ -8,7 +8,7 @@ import { renderMaterial } from '../../shared/round/view/roundView'
 import * as helper from '../../helper'
 import { OfflineRoundInterface, Position, Material } from '../round'
 import Replay from './Replay'
-import { IChessClock, IStageClock } from '../clock/interfaces'
+import { IDraughtsClock, IStageClock } from '../clock/interfaces'
 import { formatClockTime } from '../round/clock/clockView'
 
 /*function getChecksCount(ctrl: OfflineRoundInterface, color: Color) {
@@ -20,7 +20,7 @@ import { formatClockTime } from '../round/clock/clockView'
     return 0
 }*/
 
-export function renderAntagonist(ctrl: OfflineRoundInterface, content: Mithril.Children, material: Material, position: Position, isPortrait: boolean, otbFlip?: boolean, _?: string, clock?: IChessClock) {
+export function renderAntagonist(ctrl: OfflineRoundInterface, content: Mithril.Children, material: Material, position: Position, isPortrait: boolean, otbFlip?: boolean, _?: string, clock?: IDraughtsClock) {
   const isCrazy = false
   const key = isPortrait ? position + '-portrait' : position + '-landscape'
   const antagonist = position === 'player' ? ctrl.data.player : ctrl.data.opponent
@@ -67,8 +67,8 @@ export function renderGameActionsBar(ctrl: OfflineRoundInterface) {
       />
       <button className="fa fa-share-alt action_bar_button"
         oncreate={helper.ontap(
-          ctrl.sharePGN,
-          () => window.plugins.toast.show(i18n('sharePGN'), 'short', 'bottom')
+          ctrl.sharePDN,
+          () => window.plugins.toast.show(i18n('sharePDN'), 'short', 'bottom')
         )}
       />
       {renderBackwardButton(ctrl)}
@@ -84,7 +84,7 @@ export function renderGameActionsBarTablet(ctrl: OfflineRoundInterface) {
         oncreate={helper.ontap(ctrl.newGameMenu.open, () => window.plugins.toast.show(i18n('createAGame'), 'short', 'bottom'))}
       />
       <button className="fa fa-share-alt action_bar_button"
-        oncreate={helper.ontap(ctrl.actions.sharePGN, () => window.plugins.toast.show(i18n('sharePGN'), 'short', 'bottom'))}
+        oncreate={helper.ontap(ctrl.actions.sharePDN, () => window.plugins.toast.show(i18n('sharePDN'), 'short', 'bottom'))}
       />
       {renderBackwardButton(ctrl)}
       {renderForwardButton(ctrl)}
@@ -195,7 +195,7 @@ function autoScroll(movelist: HTMLElement) {
   if (plyEl) movelist.scrollTop = plyEl.offsetTop - movelist.offsetHeight / 2 + plyEl.offsetHeight / 2
 }
 
-function renderClock(clock: IChessClock, color: Color) {
+function renderClock(clock: IDraughtsClock, color: Color) {
   const runningColor = clock.activeSide()
   const time = clock.getTime(color)
   const isRunning = runningColor === color

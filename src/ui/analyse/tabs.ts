@@ -34,9 +34,9 @@ export const charts: Tab = {
   className: 'fa fa-area-chart'
 }
 
-export const pgnTags: Tab = {
-  id: 'pgnTags',
-  title: 'PGN tags',
+export const pdnTags: Tab = {
+  id: 'pdnTags',
+  title: 'PDN tags',
   className: 'fa fa-tags'
 }
 

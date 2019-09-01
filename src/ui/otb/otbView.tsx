@@ -81,15 +81,15 @@ function renderGameActionsBar(ctrl: OtbRound) {
       />
       <button className="fa fa-share-alt action_bar_button"
         oncreate={helper.ontap(
-          ctrl.sharePGN,
-          () => window.plugins.toast.show(i18n('sharePGN'), 'short', 'bottom')
+          ctrl.sharePDN,
+          () => window.plugins.toast.show(i18n('sharePDN'), 'short', 'bottom')
         )}
       />
       {ctrl.clock ?
         <button className={'fa action_bar_button ' + (ctrl.clock.isRunning() ? 'fa-pause' : 'fa-play') + (ctrl.isClockEnabled() ? '' : ' disabled')}
           oncreate={helper.ontap(
             ctrl.toggleClockPlay,
-            () => window.plugins.toast.show(i18n('chessClock'), 'short', 'bottom')
+            () => window.plugins.toast.show(i18n('draughtsClock'), 'short', 'bottom')
           )}
         />
         : null

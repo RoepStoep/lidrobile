@@ -17,7 +17,7 @@ export default function startTour(ctrl: StudyCtrl) {
       text: 'This is a shared analysis board.<br><br>' +
         'Use it to analyse games,<br>' +
         'discuss positions with friends,<br>' +
-        'and of course for chess lessons!',
+        'and of course for draughts lessons!',
     })
 
     tour.addStep('members', {

@@ -29,9 +29,9 @@ export interface IStageClock extends IBasicClock {
   getMoves(color: Color): number | null
 }
 
-export type IChessClock = IBasicClock | IStageClock
+export type IDraughtsClock = IBasicClock | IStageClock
 
-export interface IChessBasicClockState {
+export interface IDraughtsBasicClockState {
   clockType: ClockType
   whiteTime: number
   blackTime: number
@@ -40,18 +40,18 @@ export interface IChessBasicClockState {
   isRunning: boolean
 }
 
-export interface IChessHandicapIncClockState extends IChessBasicClockState {
+export interface IDraughtsHandicapIncClockState extends IDraughtsBasicClockState {
   whiteIncrement: number
   blackIncrement: number
 }
 
-export interface IChessDelayClockState extends IChessBasicClockState {
+export interface IDraughtsDelayClockState extends IDraughtsBasicClockState {
   whiteDelay: number
   blackDelay: number
   increment: number
 }
 
-export interface IChessStageClockState extends IChessBasicClockState {
+export interface IDraughtsStageClockState extends IDraughtsBasicClockState {
   whiteMoves: number | null
   blackMoves: number | null
   whiteStage: number
@@ -60,7 +60,7 @@ export interface IChessStageClockState extends IChessBasicClockState {
   increment: number
 }
 
-export type ClockState = IChessBasicClockState | IChessHandicapIncClockState | IChessDelayClockState | IChessStageClockState | null
+export type ClockState = IDraughtsBasicClockState | IDraughtsHandicapIncClockState | IDraughtsDelayClockState | IDraughtsStageClockState | null
 
 export type ClockSettings = ClockClockSettings | OtbClockSettings
 

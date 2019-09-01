@@ -21,7 +21,7 @@ import actions from './actions'
 import newGameMenu, { NewOtbGameCtrl } from './newOtbGame'
 import importGamePopup, { Controller as ImportGameController } from './importGamePopup'
 
-import { IChessClock, ClockTypeWithNone } from '../shared/clock/interfaces'
+import { IDraughtsClock, ClockTypeWithNone } from '../shared/clock/interfaces'
 import clockSet from './clockSet'
 
 interface InitPayload {
@@ -38,7 +38,7 @@ export default class OtbRound implements OtbRoundInterface, PromotingInterface {
   public draughtsground!: Draughtsground
   public replay!: Replay
   public vm: OtbVM
-  public clock?: IChessClock
+  public clock?: IDraughtsClock
 
   public constructor(
     saved?: StoredOfflineGame | null,
@@ -184,8 +184,8 @@ export default class OtbRound implements OtbRoundInterface, PromotingInterface {
     }
   }
 
-  public sharePGN = () => {
-    this.replay.pgn('White', 'Black')
+  public sharePDN = () => {
+    this.replay.pdn('White', 'Black')
     .then((data: draughts.PdnDumpResponse) =>
       window.plugins.socialsharing.share(data.pdn)
     )

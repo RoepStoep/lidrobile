@@ -215,7 +215,7 @@ export default class AnalyseCtrl {
   availableTabs = (): ReadonlyArray<tabs.Tab> => {
     let val: ReadonlyArray<tabs.Tab> = [tabs.moves]
 
-    if (this.study && this.study.data.chapter.tags.length > 0) val = [tabs.pgnTags, ...val]
+    if (this.study && this.study.data.chapter.tags.length > 0) val = [tabs.pdnTags, ...val]
     if (!this.synthetic) val = [tabs.gameInfos, ...val]
     // TODO enable only when study.canContribute() is false with write support
     if (this.study) val = [...val, tabs.comments]

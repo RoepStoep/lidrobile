@@ -286,7 +286,7 @@ function calculateContentHeight(ta: HTMLElement, scanAmount: number): number {
 }
 
 function isSpam(txt: string) {
-  return /chess-bot/.test(txt)
+  return /draughts-bot/.test(txt)
 }
 
 function compactableDeletedLines(l1: ChatMsg, l2: ChatMsg) {

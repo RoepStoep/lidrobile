@@ -4,23 +4,23 @@ import clockSettings from './clockSettings'
 import clockSet from './clockSet'
 import * as stream from 'mithril/stream'
 
-import { ClockType, IChessClock } from '../shared/clock/interfaces'
+import { ClockType, IDraughtsClock } from '../shared/clock/interfaces'
 
-export interface IChessClockCtrl {
+export interface IDraughtsClockCtrl {
   hideStatusBar: () => void
   startStop: () => void
   clockSettingsCtrl: any
-  clockObj: Mithril.Stream<IChessClock>
+  clockObj: Mithril.Stream<IDraughtsClock>
   reload: () => void
   goHome: () => void
   clockTap: (side: 'white' | 'black') => void
   clockType: Mithril.Stream<ClockType>
 }
 
-export default function ChessClockCtrl(): IChessClockCtrl {
+export default function DraughtsClockCtrl(): IDraughtsClockCtrl {
 
   const clockType: Mithril.Stream<ClockType> = stream(settings.clock.clockType())
-  const clockObj: Mithril.Stream<IChessClock> = stream(clockSet[clockType()]())
+  const clockObj: Mithril.Stream<IDraughtsClock> = stream(clockSet[clockType()]())
 
   function reload() {
     if (clockObj() && clockObj().isRunning() && !clockObj().flagged()) return

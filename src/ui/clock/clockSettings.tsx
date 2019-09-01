@@ -4,7 +4,8 @@ import formWidgets from '../shared/form'
 import popupWidget from '../shared/popup'
 import * as helper from '../helper'
 import router from '../../router'
-import { IChessClock } from '../shared/clock/interfaces'
+import i18n from '../../i18n'
+import { IDraughtsClock } from '../shared/clock/interfaces'
 import { clockSettingsView } from '../shared/clock/utils'
 
 interface IClockSettingsCtrl {
@@ -16,7 +17,7 @@ interface IClockSettingsCtrl {
 
 export default {
 
-  controller(reload: () => void, clockObj: Mithril.Stream<IChessClock>): IClockSettingsCtrl {
+  controller(reload: () => void, clockObj: Mithril.Stream<IDraughtsClock>): IClockSettingsCtrl {
     let isOpen = false
 
     function open() {
@@ -52,7 +53,7 @@ export default {
             <div>
               <div className="action">
                 <div className="select_input">
-                  {formWidgets.renderSelect('Clock', 'clock', settings.clock.availableClocks, settings.clock.clockType, false, onChange)}
+                  {formWidgets.renderSelect(i18n('clock'), 'clock', settings.clock.availableClocks, settings.clock.clockType, false, onChange)}
                 </div>
                 {clockSettingsView(settings.clock, onChange)}
               </div>

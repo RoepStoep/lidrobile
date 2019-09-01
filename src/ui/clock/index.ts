@@ -2,19 +2,19 @@ import * as sleepUtils from '../../utils/sleep'
 import * as helper from '../helper'
 import layout from '../layout'
 
-import ChessClockCtrl, { IChessClockCtrl } from './ChessClockCtrl'
+import DraughtsClockCtrl, { IDraughtsClockCtrl } from './DraughtsClockCtrl'
 import { clockBody, renderClockSettingsOverlay } from './clockView'
 
 interface State {
-  ctrl: IChessClockCtrl
+  ctrl: IDraughtsClockCtrl
 }
 
-const ChessClockScreen: Mithril.Component<{}, State> = {
+const DraughtsClockScreen: Mithril.Component<{}, State> = {
   oncreate: helper.viewFadeIn,
 
   oninit() {
     sleepUtils.keepAwake()
-    this.ctrl = ChessClockCtrl()
+    this.ctrl = DraughtsClockCtrl()
   },
 
   onremove() {
@@ -39,4 +39,4 @@ const ChessClockScreen: Mithril.Component<{}, State> = {
   }
 }
 
-export default ChessClockScreen
+export default DraughtsClockScreen

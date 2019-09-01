@@ -270,7 +270,7 @@ function userInfos(user: User, player: Player, playerName: string, position: Pos
   if (user) {
     let onlineStatus = user.online ? 'connected to lidraughts' : 'offline'
     let onGameStatus = player.onGame ? 'currently on this game' : 'currently not on this game'
-    let engine = position === 'opponent' && user.engine ? i18n('thisPlayerUsesChessComputerAssistance') + '; ' : ''
+    let engine = position === 'opponent' && user.engine ? i18n('thisPlayerUsesDraughtsComputerAssistance') + '; ' : ''
     let booster = position === 'opponent' && user.booster ? i18n('thisPlayerArtificiallyIncreasesTheirRating') + '; ' : ''
     title = `${playerName}: ${engine}${booster}${onlineStatus}; ${onGameStatus}`
   } else
@@ -449,12 +449,12 @@ function renderGameEndedActions(ctrl: OnlineRound) {
   const shareActions = h('button', {
     key: 'showShareActions',
     oncreate: helper.ontap(ctrl.showShareActions),
-  }, [h('span.fa.fa-share'), 'Share'])
+  }, [h('span.fa.fa-share'), i18n('share')])
 
   if (ctrl.vm.showingShareActions) {
     buttons = [
       gameButton.shareLink(ctrl),
-      gameButton.sharePGN(ctrl),
+      gameButton.sharePDN(ctrl),
     ]
   }
   else if (tournamentId) {

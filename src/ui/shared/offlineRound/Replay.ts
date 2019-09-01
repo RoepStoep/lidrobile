@@ -90,7 +90,7 @@ export default class Replay {
     .catch(console.error.bind(console))
   }
 
-  public pgn = (white: string, black: string) => {
+  public pdn = (white: string, black: string) => {
     const sit = this.situation()
     return draughts.pdnDump({
       variant: this.variant,

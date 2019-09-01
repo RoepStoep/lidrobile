@@ -132,8 +132,8 @@ function loadMomentLocale(code: string): string {
 }
 
 const untranslated: StringMap = {
-  apiUnsupported: 'Your version of lidraughts app is too old! Please upgrade for free to the latest version.',
-  apiDeprecated: 'Upgrade for free to the latest lidraughts app! Support for this version will be dropped on %s.',
+  apiUnsupported: 'Your version of the Lidraughts app is too old! Please upgrade for free to the latest version.',
+  apiDeprecated: 'Upgrade for free to the latest Lidraughts app! Support for this version will be dropped on %s.',
   resourceNotFoundError: 'Resource not found.',
   lidraughtsIsUnavailableError: 'lidraughts.org is temporarily down for maintenance.',
   lidraughtsIsUnreachable: 'lidraughts.org is unreachable.',
@@ -164,12 +164,14 @@ const untranslated: StringMap = {
   playerisInvitingYou: '%s is inviting you',
   toATypeGame: 'To a %s game',
   unsupportedVariant: 'Variant %s is not supported in this version',
-  notesSynchronizationHasFailed: 'Notes synchronization with lidraughts has failed, please try later.',
+  notesSynchronizationHasFailed: 'Notes synchronization with Lidraughts has failed, please try later.',
   challengeDeclined: 'Challenge declined',
   persistentChallengeCreated: 'Correspondence challenge created. It will remain active for two weeks. You will get notified when your friend accepts it. You can cancel it from the "Correspondence" page.',
   youAreChallenging: 'You are challenging %s',
   submitMove: 'Submit move',
   returnToHome: 'Return to home',
+  homepage: 'Home',
+  share: 'Share',
   enableLocalComputerEvaluation: 'Enable local computer evaluation',
   localEvalCaution: 'Caution: intensive usage will drain battery.',
   followers: 'Followers',

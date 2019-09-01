@@ -383,7 +383,7 @@ export default class TrainingCtrl implements PromotingInterface {
         end: situation.end,
         player: situation.player,
         san: situation.san,
-        pgnMoves: situation.pdnMoves
+        pdnMoves: situation.pdnMoves
       }
       if (path === undefined) {
         console.error('Cannot addNode, missing path', node)

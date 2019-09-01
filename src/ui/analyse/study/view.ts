@@ -15,7 +15,7 @@ export function renderReadonlyComments(ctrl: AnalyseCtrl) {
   ))
 }
 
-export function renderPgnTags(ctrl: AnalyseCtrl) {
+export function renderPdnTags(ctrl: AnalyseCtrl) {
   const study = ctrl.study
   if (!study) return h('div', 'oops! nothing to see here')
 

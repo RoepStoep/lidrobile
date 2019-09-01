@@ -10,7 +10,7 @@ export function reload(ctrl: OnlineRoundInterface): Promise<OnlineGameData> {
   return fetchJSON(ctrl.data.url.round)
 }
 
-export function getPGN(gameId: string, raw = false) {
+export function getPDN(gameId: string, raw = false) {
   const params = raw ? '?evals=0&clocks=0' : '?literate=1'
   return fetchText(`/game/export/${gameId}${params}`, undefined, true)
 }

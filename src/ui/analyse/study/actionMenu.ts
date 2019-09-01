@@ -7,7 +7,7 @@ import i18n from '../../../i18n'
 import popupWidget from '../../shared/popup'
 import spinner from '../../../spinner'
 import * as helper from '../../helper'
-import { studyPGN, studyChapterPGN } from '../../study/studyXhr'
+import { studyPDN, studyChapterPDN } from '../../study/studyXhr'
 import startTour from './tour'
 
 import AnalyseCtrl from '../AnalyseCtrl'
@@ -19,8 +19,8 @@ export interface IActionMenuCtrl {
   root: AnalyseCtrl
   s: {
     showShareMenu: boolean
-    loadingStudyPGN: boolean
-    loadingChapterPGN: boolean
+    loadingStudyPDN: boolean
+    loadingChapterPDN: boolean
   }
 }
 
@@ -31,8 +31,8 @@ export default {
 
     const s = {
       showShareMenu: false,
-      loadingStudyPGN: false,
-      loadingChapterPGN: false,
+      loadingStudyPDN: false,
+      loadingChapterPDN: false,
     }
 
     function open() {
@@ -76,7 +76,7 @@ function renderStudyMenu(ctrl: AnalyseCtrl) {
       oncreate: helper.ontap(() => {
         ctrl.study!.actionMenu.s.showShareMenu = true
       })
-    }, [h('span.fa.fa-share'), 'Share']),
+    }, [h('span.fa.fa-share'), i18n('share')]),
     h('button', {
       key: 'like',
       oncreate: helper.ontap(ctrl.study!.toggleLike)
@@ -113,16 +113,16 @@ function renderStudyMenu(ctrl: AnalyseCtrl) {
 
 function renderShareMenu(ctrl: AnalyseCtrl) {
 
-  function onPgnSuccess(pgn: string) {
-    ctrl.study!.actionMenu.s.loadingChapterPGN = false
-    ctrl.study!.actionMenu.s.loadingStudyPGN = false
+  function onPdnSuccess(pdn: string) {
+    ctrl.study!.actionMenu.s.loadingChapterPDN = false
+    ctrl.study!.actionMenu.s.loadingStudyPDN = false
     redraw()
-    window.plugins.socialsharing.share(pgn)
+    window.plugins.socialsharing.share(pdn)
   }
 
-  function onPgnError(e: ErrorResponse) {
-    ctrl.study!.actionMenu.s.loadingChapterPGN = false
-    ctrl.study!.actionMenu.s.loadingStudyPGN = false
+  function onPdnError(e: ErrorResponse) {
+    ctrl.study!.actionMenu.s.loadingChapterPDN = false
+    ctrl.study!.actionMenu.s.loadingStudyPDN = false
     redraw()
     handleXhrError(e)
   }
@@ -142,19 +142,19 @@ function renderShareMenu(ctrl: AnalyseCtrl) {
     }, [i18n('Current chapter URL')]),
     h('button', {
       oncreate: helper.ontap(() => {
-        ctrl.study!.actionMenu.s.loadingStudyPGN = true
-        studyPGN(ctrl.study!.data.id)
-        .then(onPgnSuccess)
-        .catch(onPgnError)
+        ctrl.study!.actionMenu.s.loadingStudyPDN = true
+        studyPDN(ctrl.study!.data.id)
+        .then(onPdnSuccess)
+        .catch(onPdnError)
       })
-    }, ctrl.study!.actionMenu.s.loadingStudyPGN ? spinner.getVdom('monochrome') : [i18n('Study PGN')]),
+    }, ctrl.study!.actionMenu.s.loadingStudyPDN ? spinner.getVdom('monochrome') : [i18n('Study PDN')]),
     h('button', {
       oncreate: helper.ontap(() => {
-        ctrl.study!.actionMenu.s.loadingChapterPGN = true
-        studyChapterPGN(ctrl.study!.data.id, ctrl.study!.data.chapter.id)
-        .then(onPgnSuccess)
-        .catch(onPgnError)
+        ctrl.study!.actionMenu.s.loadingChapterPDN = true
+        studyChapterPDN(ctrl.study!.data.id, ctrl.study!.data.chapter.id)
+        .then(onPdnSuccess)
+        .catch(onPdnError)
       })
-    }, ctrl.study!.actionMenu.s.loadingChapterPGN ? spinner.getVdom('monochrome') : [i18n('Chapter PGN')]),
+    }, ctrl.study!.actionMenu.s.loadingChapterPDN ? spinner.getVdom('monochrome') : [i18n('Chapter PDN')]),
   ])
 }

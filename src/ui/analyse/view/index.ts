@@ -18,7 +18,7 @@ import { chatView } from '../../shared/chat'
 
 import menu from '../menu'
 import studyActionMenu from '../study/actionMenu'
-import { renderReadonlyComments, renderPgnTags } from '../study/view'
+import { renderReadonlyComments, renderPdnTags as renderPdnTags } from '../study/view'
 import analyseSettings from '../analyseSettings'
 import { Tab } from '../tabs'
 import AnalyseCtrl from '../AnalyseCtrl'
@@ -191,7 +191,7 @@ const TabsContentRendererMap: { [id: string]: (ctrl: AnalyseCtrl) => Mithril.Bas
   explorer: renderExplorer,
   analysis: renderAnalysis,
   ceval: renderCeval,
-  pgnTags: renderPgnTags,
+  pdnTags: renderPdnTags,
   comments: renderReadonlyComments,
 }
 

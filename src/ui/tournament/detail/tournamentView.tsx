@@ -52,7 +52,7 @@ export function renderFooter(ctrl: TournamentCtrl) {
       </button>
       <button key="share" className="action_bar_button" oncreate={helper.ontap(() => window.plugins.socialsharing.share(tUrl))}>
         <span className="fa fa-share-alt" />
-        Share
+        {i18n('share')}
       </button>
       { ctrl.hasJoined ? withdrawButton(ctrl, t) : joinButton(ctrl, t) }
     </div>

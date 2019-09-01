@@ -9,7 +9,7 @@ const standardVariant: Variant = {
   key: 'standard',
   name: 'Standard',
   short: 'STD',
-  title: 'Standard rules of chess (FIDE)'
+  title: 'Standard rules of draughts (FMJD)'
 }
 
 export interface OfflineDataConfig {

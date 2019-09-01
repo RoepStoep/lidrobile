@@ -43,10 +43,10 @@ export function load(id: string, chapterId?: string): Promise<StudyXhrData> {
   return fetchJSON<StudyXhrData>(`/study/${id}` + (chapterId ? `/${chapterId}` : ''))
 }
 
-export function studyPGN(id: string) {
-  return fetchText(`/study/${id}.pgn`, undefined, true)
+export function studyPDN(id: string) {
+  return fetchText(`/study/${id}.pdn`, undefined, true)
 }
 
-export function studyChapterPGN(id: string, chapterId: string) {
-  return fetchText(`/study/${id}/${chapterId}.pgn`, undefined, true)
+export function studyChapterPDN(id: string, chapterId: string) {
+  return fetchText(`/study/${id}/${chapterId}.pdn`, undefined, true)
 }

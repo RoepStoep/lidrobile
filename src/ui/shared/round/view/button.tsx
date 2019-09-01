@@ -11,7 +11,7 @@ import socket from '../../../../socket'
 import lobby from '../../../lobby'
 import * as helper from '../../../helper'
 import * as tournamentXhr from '../../../tournament/tournamentXhr'
-import { getPGN } from '../roundXhr'
+import { getPDN } from '../roundXhr'
 import OnlineRound from '../OnlineRound'
 
 export default {
@@ -38,15 +38,15 @@ export default {
       })
     }, [i18n('shareGameURL')])
   },
-  sharePGN(ctrl: OnlineRound) {
+  sharePDN(ctrl: OnlineRound) {
     function handler() {
-      getPGN(ctrl.data.game.id)
-      .then((PGN: string) => window.plugins.socialsharing.share(PGN))
+      getPDN(ctrl.data.game.id)
+      .then((pdn: string) => window.plugins.socialsharing.share(pdn))
       .catch(handleXhrError)
     }
     return (
-      <button key="sharePGN" oncreate={helper.ontap(handler)}>
-        {i18n('sharePGN')}
+      <button key="sharePDN" oncreate={helper.ontap(handler)}>
+        {i18n('sharePDN')}
       </button>
     )
   },

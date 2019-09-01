@@ -1,11 +1,11 @@
 import redraw from '../../../../utils/redraw'
 import sound from '../../../../sound'
 
-import { ClockType, IBasicClock, IChessDelayClockState } from '../interfaces'
+import { ClockType, IBasicClock, IDraughtsDelayClockState } from '../interfaces'
 import { CLOCK_TICK_STEP } from '../utils'
 
 export default function DelayClock(time: number, increment: number, onFlag: (color: Color) => void, soundOn: boolean): IBasicClock {
-  let state: IChessDelayClockState = {
+  let state: IDraughtsDelayClockState = {
     clockType: 'delay',
     whiteTime: (time !== 0) ? time : increment,
     blackTime: (time !== 0) ? time : increment,
@@ -109,11 +109,11 @@ export default function DelayClock(time: number, increment: number, onFlag: (col
     return state.isRunning
   }
 
-  function getState(): IChessDelayClockState {
+  function getState(): IDraughtsDelayClockState {
     return state
   }
 
-  function setState(newState: IChessDelayClockState): void {
+  function setState(newState: IDraughtsDelayClockState): void {
     state = newState
   }
 

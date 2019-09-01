@@ -9,7 +9,7 @@ import { OnlineGameData } from '../../lidraughts/interfaces/game'
 import * as stream from 'mithril/stream'
 
 export interface IImporterCtrl {
-  importGame(pgn: string): void
+  importGame(pdn: string): void
   importing: Mithril.Stream<boolean>
 }
 
@@ -17,8 +17,8 @@ export default function ImporterCtrl(): IImporterCtrl {
 
   const importing = stream(false)
 
-  function submitOnline(pgn: string, analyse: boolean): Promise<OnlineGameData> {
-    const data: {[i: string]: string } = { pgn }
+  function submitOnline(pdn: string, analyse: boolean): Promise<OnlineGameData> {
+    const data: {[i: string]: string } = { pdn }
     if (analyse) data.analyse = '1'
 
     return fetchJSON('/import', {
@@ -36,10 +36,10 @@ export default function ImporterCtrl(): IImporterCtrl {
   window.addEventListener('native.keyboardshow', helper.onKeyboardShow)
 
   return {
-    importGame(pgn: string) {
+    importGame(pdn: string) {
       importing(true)
       redraw()
-      submitOnline(pgn, settings.importer.analyse())
+      submitOnline(pdn, settings.importer.analyse())
       .then(data => {
         router.set(`/analyse/online${data.url.round}`)
       })

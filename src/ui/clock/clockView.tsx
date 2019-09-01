@@ -2,15 +2,15 @@ import * as helper from '../helper'
 import clockSettings from './clockSettings'
 import { formatTime, isStageClock } from '../shared/clock/utils'
 
-import { IChessClockCtrl } from './ChessClockCtrl'
+import { IDraughtsClockCtrl } from './DraughtsClockCtrl'
 
-export function renderClockSettingsOverlay(ctrl: IChessClockCtrl) {
+export function renderClockSettingsOverlay(ctrl: IDraughtsClockCtrl) {
   return [
     clockSettings.view(ctrl.clockSettingsCtrl)
   ]
 }
 
-export function clockBody(ctrl: IChessClockCtrl) {
+export function clockBody(ctrl: IDraughtsClockCtrl) {
   const clock = ctrl.clockObj()
   if (!clock) return null
   const whiteActive = clock.activeSide() === 'white'
@@ -87,7 +87,7 @@ function renderMoves(moves: number | null) {
   return null
 }
 
-function onClockTouch(ctrl: IChessClockCtrl, side: Color) {
+function onClockTouch(ctrl: IDraughtsClockCtrl, side: Color) {
   if (((ctrl.clockObj().activeSide() !== 'white') && (side === 'black')) || ((ctrl.clockObj().activeSide() !== 'black') && (side === 'white'))) {
     ctrl.clockTap(side)
   }

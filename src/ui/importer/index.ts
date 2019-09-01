@@ -41,12 +41,12 @@ function renderBody(ctrl: IImporterCtrl) {
       onsubmit: (e: Event) => {
         e.preventDefault()
         const target = e.target as HTMLFormElement
-        const pgn: string = (target[0] as HTMLInputElement).value
-        if (pgn) ctrl.importGame(pgn)
+        const pdn: string = (target[0] as HTMLInputElement).value
+        if (pdn) ctrl.importGame(pdn)
       }
     }, [
       h('label', i18n('pasteThePdnStringHere') + ' :'),
-      h('textarea.pgnImport'),
+      h('textarea.pdnImport'),
       formWidgets.renderCheckbox(i18n('requestAComputerAnalysis'), 'analyse', settings.importer.analyse),
       h('button.fatButton', ctrl.importing() ?
         h('div.fa.fa-hourglass-half') : i18n('importGame'))

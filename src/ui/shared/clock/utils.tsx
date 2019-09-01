@@ -1,5 +1,5 @@
 import { formatTimeInSecs } from '../../../utils'
-import { ClockType, IChessClock, IStageClock, ClockSettings, StageSetting } from './interfaces'
+import { ClockType, IDraughtsClock, IStageClock, ClockSettings, StageSetting } from './interfaces'
 import { StoredProp } from '../../../storage'
 import redraw from '../../../utils/redraw'
 import * as helper from '../../helper'
@@ -18,7 +18,7 @@ export function formatTime(clockType: ClockType, time: number) {
   }
 }
 
-export function isStageClock(c: IChessClock): c is IStageClock {
+export function isStageClock(c: IDraughtsClock): c is IStageClock {
   return (c as IStageClock).whiteMoves !== undefined
 }
 

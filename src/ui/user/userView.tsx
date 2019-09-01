@@ -59,7 +59,7 @@ function renderWarnings(user: ProfileUser) {
   return (
     <section className="warnings">
       {user.engine ?
-      <div className="warning" data-icon="j">{i18n('thisPlayerUsesChessComputerAssistance')}</div> : null
+      <div className="warning" data-icon="j">{i18n('thisPlayerUsesDraughtsComputerAssistance')}</div> : null
       }
       {user.booster ?
       <div className="warning" data-icon="j">{i18n('thisPlayerArtificiallyIncreasesTheirRating')}</div> : null
