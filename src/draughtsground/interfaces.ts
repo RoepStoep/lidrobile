@@ -79,6 +79,7 @@ export interface SetConfig {
   turnColor?: Color
   movableColor?: Color | 'both' | null
   dests?: DestsMap | null
+  kingMoves?: KingMoves | null
 }
 
 // {white: {pieces: {pawn: 3 queen: 1}, score: 6}, black: {pieces: {bishop: 2}, score: -6}

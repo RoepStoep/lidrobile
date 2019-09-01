@@ -49,11 +49,12 @@ export function setNewBoardState(d: State, config: cg.SetConfig): void {
 
   if (config.fen) {
     d.pieces = fen.read(config.fen)
-    // kingmoves for frisian variants
-    if (d.highlight && d.highlight.kingMoves) {
-      const kingMoves = fen.readKingMoves(config.fen);
-      if (kingMoves) doSetKingMoves(d, kingMoves);
-    }
+  }
+
+  // kingmoves for frisian variants
+  if (d.highlight && d.highlight.kingMoves) {
+    const kingMoves = config.kingMoves ? config.kingMoves : (config.fen? fen.readKingMoves(config.fen) : null);
+    if (kingMoves !== null) setKingMoves(d, kingMoves);
   }
 
   if (config.orientation !== undefined) d.orientation = config.orientation

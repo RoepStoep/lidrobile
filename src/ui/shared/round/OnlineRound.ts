@@ -1,7 +1,7 @@
 import * as throttle from 'lodash/throttle'
 import Draughtsground from '../../../draughtsground/Draughtsground'
 import * as cg from '../../../draughtsground/interfaces'
-import { countGhosts } from '../../../draughtsground/fen'
+import fen, { countGhosts } from '../../../draughtsground/fen'
 import redraw from '../../../utils/redraw'
 import { saveOfflineGameData, removeOfflineGameData } from '../../../utils/offlineGames'
 import { hasNetwork, boardOrientation, handleXhrError } from '../../../utils'
@@ -405,6 +405,7 @@ export default class OnlineRound implements OnlineRoundInterface {
     const white: Player = d.player.color === 'white' ?  d.player : d.opponent
     const black: Player = d.player.color === 'black' ? d.player : d.opponent
     const activeColor = d.player.color === d.game.player
+    const frisianVariant = d.game.variant.key === 'frisian' || d.game.variant.key === 'frysk'
 
     if (o.status) {
       d.game.status = o.status
@@ -429,7 +430,7 @@ export default class OnlineRound implements OnlineRoundInterface {
 
     d.possibleMoves = activeColor ? o.dests : undefined
     d.possibleDrops = activeColor ? o.drops : undefined
-    d.captureLength = o.captLen;
+    d.captureLength = o.captLen
 
     if (!this.replaying()) {
       const ghosts = countGhosts(o.fen);
@@ -446,7 +447,8 @@ export default class OnlineRound implements OnlineRoundInterface {
         turnColor: d.game.player,
         dests: playing ?
           gameApi.parsePossibleMoves(d.possibleMoves) : <DestsMap>{},
-          captureLength: d.captureLength
+          captureLength: d.captureLength,
+        kingMoves: (o.fen && frisianVariant) ? fen.readKingMoves(o.fen) : undefined
       }
       if (isMove(o)) {
         const move = draughtsFormat.uciToMove(o.uci)
