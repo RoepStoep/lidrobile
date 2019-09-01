@@ -8,7 +8,7 @@ export function lightPlayerName(player?: LightPlayer, withRating?: boolean) {
     return (player.title ? player.title + ' ' + player.name : player.name) + (
       withRating ? ' (' + player.rating + ')' : '')
   } else {
-    return 'Anonymous'
+    return i18n('anonymous')
   }
 }
 
@@ -31,7 +31,7 @@ export function playerName(player: any, withRating = false, tr = false, trLenght
     return withRating ? name + ' (' + levelToRating[player.ai] + ')' : name;
   }
 
-  return 'Anonymous'
+  return i18n('anonymous')
 }
 
 export function aiName(player: { ai: number }) {

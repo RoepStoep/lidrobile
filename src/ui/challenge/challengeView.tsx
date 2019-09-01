@@ -57,7 +57,7 @@ export function joinPopup(ctrl: ChallengeState, challenge: Challenge) {
 
   const challenger = challenge.challenger ?
     i18n('playerisInvitingYou', challengeUserFormat(challenge.challenger)) :
-    i18n('playerisInvitingYou', 'Anonymous')
+    i18n('playerisInvitingYou', i18n('anonymous'))
 
   return popupWidget(
     'join_url_challenge',

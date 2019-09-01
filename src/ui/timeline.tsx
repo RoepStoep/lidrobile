@@ -73,14 +73,14 @@ export function renderTimelineEntry(e: TimelineEntry) {
 
 function renderStudy(entry: TimelineEntry) {
   const data = entry.data
-  const eType = entry.type === 'study-create' ? 'hosts' : 'likes'
+  const eType = entry.type === 'study-create' ? 'xHostsY' : 'xLikesY'
+  const entryText = i18n(eType, entry.data.userId, entry.data.studyName)
   return h('li.list_item.timelineEntry', {
     key: 'study-like' + entry.date,
     'data-path': `/study/${data.studyId}`
   }, [
     h('span[data-icon=4].withIcon'),
-    h('strong', data.userId),
-    h('span', ` ${eType} ${data.studyName} `),
+    h.trust(entryText.replace(/^(\w+)\s/, '<strong>$1&nbsp;</strong>')),
     h('small', h('em', entry.fromNow)),
   ])
 }
@@ -119,7 +119,7 @@ function renderFollow(entry: TimelineEntry) {
 
 function renderGameEnd(entry: TimelineEntry) {
   const icon = gameIcon(entry.data.perf)
-  const result = typeof entry.data.win === 'undefined' ? i18n('draw') : (entry.data.win ? 'Victory' : 'Defeat')
+  const result = typeof entry.data.win === 'undefined' ? i18n('draw') : (entry.data.win ? i18n('victory') : i18n('defeat'))
   const fromNow = window.moment(entry.date).fromNow()
   const key = 'game-end' + entry.date
 
