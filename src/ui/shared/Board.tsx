@@ -17,7 +17,6 @@ export interface Attrs {
   customPieceTheme?: string
   shapes?: ReadonlyArray<Shape>
   clearableShapes?: ReadonlyArray<Shape>
-  alert?: Mithril.Children
   canClearShapes?: boolean
 }
 
@@ -69,7 +68,7 @@ export default {
   },
 
   view(vnode) {
-    const { variant, draughtsground: draughtsgroundground, bounds, wrapperClasses, customPieceTheme, shapes, clearableShapes, alert } = vnode.attrs
+    const { variant, draughtsground: draughtsgroundground, bounds, wrapperClasses, customPieceTheme, shapes, clearableShapes } = vnode.attrs
     const docVariant = getVariant(variant) || getVariant('standard')
     const boardClass = [
       'display_board',
@@ -104,7 +103,6 @@ export default {
           oncreate={this.boardOnCreate}
           onremove={this.boardOnRemove}
         />
-        { alert ? <div className="board_alert">{alert}</div> : null }
         {
           allShapes.length > 0 ?
             BoardBrush(
