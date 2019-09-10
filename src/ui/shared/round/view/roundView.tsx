@@ -20,7 +20,7 @@ import PlayerPopup from '../../../shared/PlayerPopup'
 import GameTitle from '../../../shared/GameTitle'
 import CountdownTimer from '../../../shared/CountdownTimer'
 import ViewOnlyBoard from '../../../shared/ViewOnlyBoard'
-import Board from '../../../shared/Board'
+import Board, { Bounds } from '../../../shared/Board'
 import popupWidget from '../../../shared/popup'
 import Clock from '../clock/clockView'
 import gameButton from './button'
@@ -30,7 +30,7 @@ import { notesView } from '../notes'
 import { view as renderCorrespondenceClock } from '../correspondenceClock/corresClockView'
 import { renderInlineReplay, renderReplay } from './replay'
 import OnlineRound from '../OnlineRound'
-import { hasSpaceForReplay, hasSpaceForInlineReplay } from '../util'
+import { isReducedTableHeight, hasSpaceForReplay, hasSpaceForInlineReplay } from '../util'
 import { Position, Material } from '../'
 import getVariant from '../../../../lidraughts/variant'
 
@@ -239,11 +239,13 @@ function renderEmptyHeader(channel?: string, onTVChannelChange?: () => void) {
 }
 
 function renderContent(ctrl: OnlineRound, isPortrait: boolean) {
-  const material = ctrl.draughtsground.getMaterialDiff()
-  const player = renderPlayTable(ctrl, ctrl.data.player, material[ctrl.data.player.color], 'player', isPortrait)
-  const opponent = renderPlayTable(ctrl, ctrl.data.opponent, material[ctrl.data.opponent.color], 'opponent', isPortrait)
   const vd = helper.viewportDim()
   const bounds = helper.getBoardBounds(vd, isPortrait)
+
+  const material = ctrl.draughtsground.getMaterialDiff()
+
+  const player = renderPlayTable(ctrl, ctrl.data.player, material[ctrl.data.player.color], 'player', isPortrait, vd, bounds)
+  const opponent = renderPlayTable(ctrl, ctrl.data.opponent, material[ctrl.data.opponent.color], 'opponent', isPortrait, vd, bounds)
 
   const board = h(Board, {
     variant: ctrl.data.game.variant.key,
@@ -391,13 +393,26 @@ function renderAntagonistInfo(ctrl: OnlineRound, player: Player, material: Mater
   )
 }
 
-function renderPlayTable(ctrl: OnlineRound, player: Player, material: Material, position: Position, isPortrait: boolean) {
+function renderPlayTable(
+  ctrl: OnlineRound,
+  player: Player,
+  material: Material,
+  position: Position,
+  isPortrait: boolean,
+  vd: helper.ViewportDim,
+  bounds: Bounds,
+) {
   const runningColor = ctrl.isClockRunning() ? ctrl.data.game.player : undefined
   const isCrazy = false
   const playable = gameApi.playable(ctrl.data)
   const myTurn = gameApi.isPlayerTurn(ctrl.data)
-  const classN = 'playTable' + (isCrazy ? ' crazy' : '') +
-    (ctrl.vm.clockPosition === 'left' ? ' clockOnLeft' : '')
+
+  const classN = helper.classSet({
+    playTable: true,
+    crazy: isCrazy,
+    clockOnLeft: ctrl.vm.clockPosition === 'left',
+    reducedHeight: isReducedTableHeight(vd, bounds),
+  })
 
   return (
     <section className={classN}>
