@@ -328,9 +328,9 @@ function userInfos(user: User, player: Player, playerName: string) {
   window.plugins.toast.show(title, 'short', 'center')
 }
 
-function renderAntagonistInfo(ctrl: OnlineRound, player: Player, material: Material, position: Position, isPortrait: boolean, isCrazy: boolean) {
+function renderAntagonistInfo(ctrl: OnlineRound, player: Player, material: Material, position: Position, isCrazy: boolean) {
   const user = player.user
-  const playerName = playerApi.playerName(player, !isPortrait)
+  const playerName = playerApi.playerName(player)
   const togglePopup = user ? () => ctrl.openUserPopup(position, user.id) : utils.noop
   const vConf = user ?
     helper.ontap(togglePopup, () => userInfos(user, player, playerName)) :
@@ -361,12 +361,12 @@ function renderAntagonistInfo(ctrl: OnlineRound, player: Player, material: Mater
         { position === 'opponent' && user && (user.engine || user.booster) ?
           <span className="warning" data-icon="j"></span> : null
         }
-        {user && isPortrait ?
+        {user ?
           <h3 className="rating">
             {player.rating}
             {player.provisional ? '?' : ''}
             {helper.renderRatingDiff(player)}
-          </h3> : (player.ai && isPortrait ?
+          </h3> : (player.ai ?
           <h3 className="rating">
             {levelToRating[player.ai]}
           </h3> : null)
@@ -411,12 +411,12 @@ function renderPlayTable(
     playTable: true,
     crazy: isCrazy,
     clockOnLeft: ctrl.vm.clockPosition === 'left',
-    reducedHeight: isReducedTableHeight(vd, bounds),
+    reducedHeight: isPortrait && isReducedTableHeight(vd, bounds),
   })
 
   return (
     <section className={classN}>
-      {renderAntagonistInfo(ctrl, player, material, position, isPortrait, isCrazy)}
+      {renderAntagonistInfo(ctrl, player, material, position, isCrazy)}
       { !isCrazy && ctrl.clock ?
         h(Clock, {
           ctrl: ctrl.clock,
