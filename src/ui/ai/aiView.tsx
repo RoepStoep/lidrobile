@@ -7,7 +7,7 @@ import {
   renderReplay,
   renderInlineReplay
 } from '../shared/offlineRound/view'
-import { hasSpaceForReplay, hasSpaceForInlineReplay } from '../shared/round/util'
+import { hasSpaceForInlineReplay } from '../shared/round/util'
 import * as helper from '../helper'
 import actions from './actions'
 import newGameMenu from './newAiGame'
@@ -40,8 +40,7 @@ export function renderContent(ctrl: AiRound) {
 
   if (isPortrait) {
     return h.fragment({ key: orientationKey }, [
-      hasSpaceForReplay(vd, bounds) ? renderReplay(ctrl) :
-        hasSpaceForInlineReplay(vd, bounds) ? renderInlineReplay(ctrl) : null,
+      hasSpaceForInlineReplay(vd, bounds) ? renderInlineReplay(ctrl) : null,
       h('div.round-boardWrapper', [
         renderAntagonist(ctrl, aiName, material[ctrl.data.opponent.color], 'opponent', isPortrait, vd, bounds),
         board,

@@ -30,7 +30,7 @@ import { notesView } from '../notes'
 import { view as renderCorrespondenceClock } from '../correspondenceClock/corresClockView'
 import { renderInlineReplay, renderReplay } from './replay'
 import OnlineRound from '../OnlineRound'
-import { isReducedTableHeight, hasSpaceForReplay, hasSpaceForInlineReplay } from '../util'
+import { isReducedTableHeight, hasSpaceForInlineReplay } from '../util'
 import { Position, Material } from '../'
 import getVariant from '../../../../lidraughts/variant'
 
@@ -81,11 +81,10 @@ export function viewOnlyBoardContent(fen: string, orientation: Color, variant: V
       {h(ViewOnlyBoard, {bounds, fen, lastMove, orientation, variant, customPieceTheme})}
     </section>
   )
-  const zenClass = settings.game.zenMode() ? ' zen' : ''
+  const showMoveList = settings.game.moveList() && !settings.game.zenMode()
   if (isPortrait) {
     return h.fragment({ key: orientKey }, [
-      hasSpaceForReplay(vd, bounds) ?
-        h('div.replay' + zenClass) : h('div.replay_inline' + zenClass),
+      showMoveList ? h('div.replay_inline') : null,
       h('section.playTable'),
       board,
       h('section.playTable'),
@@ -258,13 +257,10 @@ function renderContent(ctrl: OnlineRound, isPortrait: boolean) {
 
   if (isPortrait) {
     return h.fragment({ key: orientationKey }, [
-      hasSpaceForReplay(vd, bounds) ? renderReplay(ctrl) :
-        hasSpaceForInlineReplay(vd, bounds) ? renderInlineReplay(ctrl) : null,
-      h('div.round-boardWrapper', [
-        flip ? player : opponent,
-        board,
-        flip ? opponent : player,
-      ]),
+      hasSpaceForInlineReplay(vd, bounds) ? renderInlineReplay(ctrl) : null,
+      flip ? player : opponent,
+      board,
+      flip ? opponent : player,
       renderGameActionsBar(ctrl)
     ])
   } else {

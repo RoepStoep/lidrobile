@@ -160,6 +160,11 @@ export function renderReplay(ctrl: OfflineRoundInterface) {
 
 
 export function renderInlineReplay(ctrl: OfflineRoundInterface) {
+
+  if (!ctrl.moveList) {
+    return null
+  }
+
   return h('div.replay_inline', {
     oncreate: (vnode: Mithril.DOMNode) => {
       setTimeout(() => autoScrollInline(vnode.dom as HTMLElement), 100)
