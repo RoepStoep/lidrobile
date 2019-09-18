@@ -20,7 +20,7 @@ import PlayerPopup from '../../../shared/PlayerPopup'
 import GameTitle from '../../../shared/GameTitle'
 import CountdownTimer from '../../../shared/CountdownTimer'
 import ViewOnlyBoard from '../../../shared/ViewOnlyBoard'
-import Board, { Bounds } from '../../../shared/Board'
+import Board from '../../../shared/Board'
 import popupWidget from '../../../shared/popup'
 import Clock from '../clock/clockView'
 import gameButton from './button'
@@ -30,7 +30,7 @@ import { notesView } from '../notes'
 import { view as renderCorrespondenceClock } from '../correspondenceClock/corresClockView'
 import { renderInlineReplay, renderReplay } from './replay'
 import OnlineRound from '../OnlineRound'
-import { isReducedTableHeight, hasSpaceForInlineReplay } from '../util'
+import { hasSpaceForInlineReplay } from '../util'
 import { Position, Material } from '../'
 import getVariant from '../../../../lidraughts/variant'
 
@@ -81,7 +81,10 @@ export function viewOnlyBoardContent(fen: string, orientation: Color, variant: V
       {h(ViewOnlyBoard, {bounds, fen, lastMove, orientation, variant, customPieceTheme})}
     </section>
   )
-  const showMoveList = settings.game.moveList() && !settings.game.zenMode()
+  const showMoveList = hasSpaceForInlineReplay(vd, bounds) &&
+    settings.game.moveList() &&
+    !settings.game.zenMode()
+
   if (isPortrait) {
     return h.fragment({ key: orientKey }, [
       showMoveList ? h('div.replay_inline') : null,
@@ -243,8 +246,8 @@ function renderContent(ctrl: OnlineRound, isPortrait: boolean) {
 
   const material = ctrl.draughtsground.getMaterialDiff()
 
-  const player = renderPlayTable(ctrl, ctrl.data.player, material[ctrl.data.player.color], 'player', isPortrait, vd, bounds)
-  const opponent = renderPlayTable(ctrl, ctrl.data.opponent, material[ctrl.data.opponent.color], 'opponent', isPortrait, vd, bounds)
+  const player = renderPlayTable(ctrl, ctrl.data.player, material[ctrl.data.player.color], 'player')
+  const opponent = renderPlayTable(ctrl, ctrl.data.opponent, material[ctrl.data.opponent.color], 'opponent')
 
   const board = h(Board, {
     variant: ctrl.data.game.variant.key,
@@ -394,9 +397,6 @@ function renderPlayTable(
   player: Player,
   material: Material,
   position: Position,
-  isPortrait: boolean,
-  vd: helper.ViewportDim,
-  bounds: Bounds,
 ) {
   const runningColor = ctrl.isClockRunning() ? ctrl.data.game.player : undefined
   const isCrazy = false
@@ -407,7 +407,6 @@ function renderPlayTable(
     playTable: true,
     crazy: isCrazy,
     clockOnLeft: ctrl.vm.clockPosition === 'left',
-    reducedHeight: isPortrait && isReducedTableHeight(vd, bounds),
   })
 
   return (

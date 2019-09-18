@@ -6,12 +6,11 @@ import gameStatusApi from '../../../lidraughts/status'
 import { san2alg } from '../../../utils/draughtsFormat'
 import { renderMaterial } from '../../shared/round/view/roundView'
 import * as helper from '../../helper'
-import { Bounds } from '../../shared/Board'
 import { OfflineRoundInterface, Position, Material } from '../round'
 import Replay from './Replay'
 import { IDraughtsClock, IStageClock } from '../clock/interfaces'
 import { formatClockTime } from '../round/clock/clockView'
-import { autoScroll, autoScrollInline, onReplayTap, getMoveEl, isReducedTableHeight } from '../round/util'
+import { autoScroll, autoScrollInline, onReplayTap, getMoveEl } from '../round/util'
 
 /*function getChecksCount(ctrl: OfflineRoundInterface, color: Color) {
   const sit = ctrl.replay.situation()
@@ -28,8 +27,6 @@ export function renderAntagonist(
   material: Material,
   position: Position,
   isPortrait: boolean,
-  vd: helper.ViewportDim,
-  bounds: Bounds,
   otbFlip?: boolean,
   clock?: IDraughtsClock,
 ) {
@@ -42,7 +39,6 @@ export function renderAntagonist(
     'playTable',
     'offline',
     position,
-    isPortrait && isReducedTableHeight(vd, bounds) ? 'reducedHeight' : '',
     isCrazy ? 'crazy' : '',
     otbFlip !== undefined ? otbFlip ? 'mode_flip' : 'mode_facing' : '',
     ctrl.draughtsground.state.turnColor === ctrl.data.player.color ? 'player_turn' : 'opponent_turn',
