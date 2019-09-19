@@ -25,7 +25,7 @@ newConfigText = newConfigText.replace(
 )
 
 newConfigText = newConfigText.replace(
-  /("AppendUserAgent"\svalue="v)([^"]+)(")/,
+  /("AppendUserAgent"\svalue="Lidrobile\/)([^"]+)(")/,
   '$1' + newVersion + '$3'
 )
 
