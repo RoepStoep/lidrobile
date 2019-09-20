@@ -9,10 +9,10 @@ let numberFormat: Intl.NumberFormat = new Intl.NumberFormat()
 
 export default function i18n(key: string, ...args: Array<string | number>): string {
   let str: string = messages[key] || untranslated[key] || key
-  args.forEach((a, i) => { 
-    if (args.length > 1) str = str.replace(`%${i + 1}$s`, String(a)) 
-    else str = str.replace('%s', String(a)) 
+  args.forEach((arg, idx) => {
+    str = str.replace(new RegExp(`%${idx + 1}\\$s`, 'g'), String(arg))
   })
+  args.forEach(a => { str = str.replace('%s', String(a)) })
   return str
 }
 

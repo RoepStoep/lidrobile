@@ -9,7 +9,7 @@ const i18nBaseDir = '../www/i18n';
 
 function downloadTranslationsTo(zipFile: WriteStream) {
   console.log(colors.blue('Downloading translations...'));
-  return get('https://crowdin.com/backend/download/project/lichess.zip')
+  return get('https://crowdin.com/backend/download/project/lidraughts.zip')
     .pipe(zipFile)
     .on('finish', () => {
       console.log(colors.green('  Download complete.'));
@@ -37,7 +37,7 @@ function loadTranslations(locale: string, destLocales: string[]) {
     destLocales.find((destLocale: string) => destLocale.split('-')[0] == locale);
 
   if (!matchingLocale) {
-    console.error(colors.red(`  Could not find lila translation for ${colors.bold(locale)}.`));
+    console.error(colors.red(`  Could not find lidraughts translation for ${colors.bold(locale)}.`));
     return Promise.resolve();
   } else if (matchingLocale != locale) {
     console.log(colors.yellow(`  Using ${colors.bold(matchingLocale)} for ${colors.bold(locale)}.`))
@@ -87,12 +87,12 @@ async function main(args: string[]) {
 
     await unzipTranslations(`${baseDir}/out.zip`);
 
-    // List available lila translations.
+    // List available lidraughts translations.
     const locales = readdirSync(i18nBaseDir)
       .map((fileName: string) => fileName.split('.')[0])
       .filter(locale => args.length == 2 ? true : args.includes(locale));
 
-    // Match lichobile translations to lila translations.
+    // Match lidrobile translations to lidraughts translations.
     const destLocales = readdirSync(`${baseDir}/master/translation/dest/site`).map((fileName) => fileName.split('.')[0]);
 
     // Load XML
