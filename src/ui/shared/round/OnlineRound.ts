@@ -8,7 +8,7 @@ import { hasNetwork, boardOrientation, handleXhrError } from '../../../utils'
 import * as sleepUtils from '../../../utils/sleep'
 import session from '../../../session'
 import settings from '../../../settings'
-import socket from '../../../socket'
+import socket, { SocketIFace } from '../../../socket'
 import i18n from '../../../i18n'
 import router from '../../../router'
 import sound from '../../../sound'
@@ -68,6 +68,7 @@ export default class OnlineRound implements OnlineRoundInterface {
   public tv!: string
   public score?: Score
   public readonly goingBack: boolean
+  public socketIface: SocketIFace
 
   private zenModeEnabled: boolean
   private lastMoveMillis?: number
@@ -127,7 +128,16 @@ export default class OnlineRound implements OnlineRoundInterface {
       offlineWatcher: !hasNetwork()
     }
 
+    this.socketIface = socket.createGame(
+      this.data.url.socket,
+      this.data.player.version,
+      socketHandler(this, this.onFeatured, this.onUserTVRedirect),
+      this.data.url.round,
+      this.data.userTV
+    )
+
     this.chat = (session.isKidMode() || this.data.tv || (!this.data.player.spectator && (this.data.game.tournamentId || this.data.opponent.ai))) ? null : new Chat(
+      this.socketIface,
       this.data.game.id,
       this.data.chat || [],
       this.data.player.spectator ? undefined : this.data.player,
@@ -162,14 +172,6 @@ export default class OnlineRound implements OnlineRoundInterface {
 
     this.makeCorrespondenceClock()
     if (this.correspondenceClock) this.clockIntervId = setInterval(this.correspondenceClockTick, 6000)
-
-    socket.createGame(
-      this.data.url.socket,
-      this.data.player.version,
-      socketHandler(this, this.onFeatured, this.onUserTVRedirect),
-      this.data.url.round,
-      this.data.userTV
-    )
 
     document.addEventListener('resume', this.onResume)
 
@@ -256,7 +258,7 @@ export default class OnlineRound implements OnlineRoundInterface {
   public offerDraw = () => {
     if (this.canOfferDraw()) {
       this.lastDrawOfferAtPly = this.vm.ply
-      socket.send('draw-yes', null)
+      this.socketIface.send('draw-yes', null)
     }
   }
 
@@ -594,7 +596,7 @@ export default class OnlineRound implements OnlineRoundInterface {
   }
 
   public goBerserk() {
-    throttle((): void => socket.send('berserk', null, { ackable: true }), 500)()
+    throttle((): void => this.socketIface.send('berserk', null, { ackable: true }), 500)()
     sound.berserk()
   }
 
@@ -629,7 +631,7 @@ export default class OnlineRound implements OnlineRoundInterface {
   }
 
   private outoftime = throttle(() => {
-    socket.send('flag', this.data.game.player)
+    this.socketIface.send('flag', this.data.game.player)
   }, 500)
 
   private correspondenceClockTick = () => {
@@ -649,13 +651,12 @@ export default class OnlineRound implements OnlineRoundInterface {
     }
 
     if (isMoveRequest(moveOrDropReq)) {
-      socket.send('move', moveOrDropReq, opts)
+      this.socketIface.send('move', moveOrDropReq, opts)
     }
     else if (isDropRequest(moveOrDropReq)) {
-      socket.send('drop', moveOrDropReq, opts)
+      this.socketIface.send('drop', moveOrDropReq, opts)
     }
   }
-
 
   private userMove = (orig: Key, dest: Key, meta: AfterMoveMeta) => {
     const hasPremove = !!meta.premove

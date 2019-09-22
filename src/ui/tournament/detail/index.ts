@@ -1,13 +1,17 @@
 import * as h from 'mithril/hyperscript'
 import socket from '../../../socket'
+import redraw from '../../../utils/redraw'
 import i18n from '../../../i18n'
+import * as utils from '../../../utils'
+import { ErrorResponse } from '../../../http'
 import { dropShadowHeader as headerWidget, backButton, connectingDropShadowHeader } from '../../shared/common'
 import * as helper from '../../helper'
 import layout from '../../layout'
-import { tournamentBody, renderPlayerInfoOverlay, renderFAQOverlay, renderFooter, timeInfo } from './tournamentView'
 import { isSupportedVariantKey } from '../../../lidraughts/game'
 import router from '../../../router'
 
+import * as xhr from '../tournamentXhr'
+import { tournamentBody, renderPlayerInfoOverlay, renderFAQOverlay, renderFooter, timeInfo } from './tournamentView'
 import passwordForm from './passwordForm'
 import TournamentCtrl from './TournamentCtrl'
 
@@ -16,23 +20,37 @@ interface Attrs {
 }
 
 interface State {
-  ctrl: TournamentCtrl
+  ctrl?: TournamentCtrl
+  notFound?: boolean
 }
 
 export default {
   oninit({ attrs }) {
-    this.ctrl = new TournamentCtrl(attrs.id)
+    xhr.tournament(attrs.id)
+    .then(data => {
+      this.ctrl = new TournamentCtrl(data)
+    })
+    .catch((err: ErrorResponse) => {
+      if (err.status === 404) {
+        this.notFound = true
+        redraw()
+      } else {
+        utils.handleXhrError(err)
+      }
+    })
   },
 
   oncreate: helper.viewSlideIn,
 
   onremove() {
     socket.destroy()
-    this.ctrl.unload()
+    if (this.ctrl) {
+      this.ctrl.unload()
+    }
   },
 
   view() {
-    if (this.ctrl.notFound) {
+    if (this.notFound) {
       return layout.free(
         headerWidget(null, backButton(i18n('tournamentNotFound'))),
         h('div.tournamentNotFound', { key: 'tournament-not-found' }, [
@@ -40,6 +58,10 @@ export default {
           h('p', i18n('tournamentMayHaveBeenCanceled'))
         ])
       )
+    }
+
+    if (!this.ctrl) {
+      return layout.free(connectingDropShadowHeader(), null)
     }
 
     const tournament = this.ctrl.tournament
@@ -51,23 +73,19 @@ export default {
       return
     }
 
-    if (tournament) {
-      header = headerWidget(null,
-        backButton(h('div.main_header_title.withSub', [
-          h('h1', [
-            h('span.fa.fa-trophy'),
-            this.ctrl.tournament.fullName
-          ]),
-          h('h2.header-subTitle.tournament-subtTitle',
-          !tournament.isFinished && !tournament.isStarted ?
-            timeInfo('created', tournament.secondsToStart, 'Starting in') :
-            timeInfo('started', tournament.secondsToFinish, '')
-          )
-        ]))
-      )
-    } else {
-      header = connectingDropShadowHeader()
-    }
+    header = headerWidget(null,
+      backButton(h('div.main_header_title.withSub', [
+        h('h1', [
+          h('span.fa.fa-trophy'),
+          this.ctrl.tournament.fullName
+        ]),
+        h('h2.header-subTitle.tournament-subtTitle',
+        !tournament.isFinished && !tournament.isStarted ?
+          timeInfo('created', tournament.secondsToStart, 'Starting in') :
+          timeInfo('started', tournament.secondsToFinish, '')
+        )
+      ]))
+    )
 
     const body = tournamentBody(this.ctrl)
     const footer = renderFooter(this.ctrl)
