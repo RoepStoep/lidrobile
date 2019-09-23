@@ -3,6 +3,11 @@ import { State } from './state'
 
 export function noop() {}
 
+// https://gist.github.com/gre/1650294
+export function easeInOutCubic(t: number) {
+  return t < 0.5 ? 4 * t * t * t : (t - 1) * (2 * t - 2) * (2 * t - 2) + 1
+}
+
 export const pos2key = (pos: cg.Pos, s: cg.BoardSize) => allKeys[pos[0] + (s[0] / 2) * (pos[1] - 1) - 1];
 export const field2key = (n: number) => n < 10 ? ('0' + n.toString()) as Key : n.toString() as Key;
 

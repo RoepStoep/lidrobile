@@ -1,7 +1,6 @@
 import Draughtsground from '../../draughtsground/Draughtsground'
 import * as cg from '../../draughtsground/interfaces'
 import settings from '../../settings'
-import { batchRequestAnimationFrame } from '../../utils/batchRAF'
 import { AnalyseData } from '../../lidraughts/interfaces/analyse'
 
 
@@ -16,7 +15,6 @@ function makeConfig(
   return {
     fen: config.fen,
     boardSize: config.boardSize,
-    batchRAF: batchRequestAnimationFrame,
     lastMove: config.lastMove,
     turnColor: config.turnColor,
     captureLength: config.captureLength,

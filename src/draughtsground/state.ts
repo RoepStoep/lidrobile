@@ -22,7 +22,6 @@ export interface State {
     lastMove: boolean // add last-move class to squares
     kingMoves: boolean | null; // show amount of king moves for frisian variants
   }
-  batchRAF: (renderFunction: (ts?: number) => void) => void
   animation: {
     enabled: boolean
     duration: number
@@ -102,7 +101,6 @@ export function makeDefaults(): State {
     viewOnly: false,
     fixed: false,
     exploding: null,
-    batchRAF: requestAnimationFrame.bind(window),
     highlight: {
       lastMove: true,
       kingMoves: true

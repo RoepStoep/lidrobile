@@ -1,3 +1,4 @@
+import { batchRequestAnimationFrame } from '../utils/batchRAF'
 import * as cg from './interfaces'
 import * as util from './util'
 import * as board from './board'
@@ -91,12 +92,52 @@ export default class Draughtsground {
     if (this.dom) this.dom.bounds = bounds
   }
 
+  applyAnim = (now: number): void => {
+    const state = this.state
+    let cur = state.animation.current
+    // animation was cancelled
+    if (cur === null) {
+      this.redrawSync()
+      return
+    }
+    if (cur.start === null) cur.start = now
+    let rest = 1 - (now - cur.start) * cur.frequency;
+    if (rest <= 0) {
+      if (cur.plan.nextPlan && !util.isObjectEmpty(cur.plan.nextPlan.anims)) {
+        state.animation.current = {
+          start: now,
+          frequency: 2.2 / state.animation.duration,
+          plan: cur.plan.nextPlan,
+          lastMove: state.lastMove
+        };
+        cur = state.animation.current;
+        rest = 1
+      } else {
+        state.animation.current = null;
+      }
+    }
+
+    if (state.animation.current !== null) {
+      if (rest > 0.999) rest = 0.999;
+      const ease = util.easeInOutCubic(rest);
+      for (let i in cur.plan.anims) {
+        const cfg = cur.plan.anims[i];
+        cfg[2] = cfg[0] * ease;
+        cfg[3] = cfg[1] * ease;
+      }
+      this.redrawSync()
+      batchRequestAnimationFrame(this.applyAnim)
+    } else {
+      this.redrawSync()
+    }
+  }
+
   redrawSync = (): void => {
     if (this.dom) renderBoard(this.state, this.dom)
   }
 
   redraw = (): void => {
-    this.state.batchRAF(this.redrawSync)
+    batchRequestAnimationFrame(this.redrawSync)
   }
 
   getFen = (algebraic?: boolean): string => {

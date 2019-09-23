@@ -2,7 +2,6 @@ import Draughtsground from '../../../draughtsground/Draughtsground'
 import * as cg from '../../../draughtsground/interfaces'
 import { countGhosts } from '../../../draughtsground/fen'
 import redraw from '../../../utils/redraw'
-import { batchRequestAnimationFrame } from '../../../utils/batchRAF'
 import * as gameApi from '../../../lidraughts/game'
 import { OnlineGameData, GameStep } from '../../../lidraughts/interfaces/game'
 import { AfterMoveMeta } from '../../../lidraughts/interfaces/move'
@@ -24,7 +23,6 @@ function makeConfig(data: OnlineGameData, fen: string, flip: boolean = false, st
   return {
     fen: fen,
     boardSize: data.game.variant.board.size,
-    batchRAF: batchRequestAnimationFrame,
     orientation: boardOrientation(data, flip),
     turnColor: turnColor,
     captureLength: data.captureLength,

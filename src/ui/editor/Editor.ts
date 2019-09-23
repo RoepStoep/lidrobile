@@ -9,7 +9,6 @@ import settings from '../../settings'
 import menu from './menu'
 import pasteFenPopup from './pasteFenPopup'
 import * as fenUtil from '../../utils/fen'
-import { batchRequestAnimationFrame } from '../../utils/batchRAF'
 import continuePopup, { Controller as ContinuePopupCtrl } from '../shared/continuePopup'
 import i18n from '../../i18n'
 import drag from './drag'
@@ -77,7 +76,6 @@ export default class Editor {
 
   public makeConfig = (initFen: string): cg.InitConfig => {
     return {
-      batchRAF: batchRequestAnimationFrame,
       fen: initFen,
       boardSize: this.getVariant().board.size,
       orientation: 'white',

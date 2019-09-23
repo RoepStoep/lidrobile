@@ -1,3 +1,4 @@
+import { batchRequestAnimationFrame } from '../utils/batchRAF'
 import * as cg from './interfaces'
 import * as util from './util'
 import { State } from './state'
@@ -71,11 +72,6 @@ export function animationDuration(state: State) {
     total += duration;
   }
   return total;
-}
-
-// https://gist.github.com/gre/1650294
-function easeInOutCubic(t: number) {
-  return t < 0.5 ? 4 * t * t * t : (t - 1) * (2 * t - 2) * (2 * t - 2) + 1
 }
 
 function makePiece(key: Key, boardSize: cg.BoardSize, piece: Piece): AnimPiece {
@@ -278,46 +274,6 @@ function getVector(preP: cg.Pos, newP: cg.Pos): AnimVector {
     return [preP[0] - newP[0], preP[1] - newP[1], 0, 0, 0];
 }
 
-function step(ctrl: Draughtsground, now: number) {
-  const state = ctrl.state
-  let cur = state.animation.current
-  // animation was cancelled
-  if (cur === null) {
-    ctrl.redrawSync()
-    return
-  }
-  if (cur.start === null) cur.start = now
-  let rest = 1 - (now - cur.start) * cur.frequency;
-  if (rest <= 0) {
-    if (cur.plan.nextPlan && !util.isObjectEmpty(cur.plan.nextPlan.anims)) {
-      state.animation.current = {
-        start: now,
-        frequency: 2.2 / state.animation.duration,
-        plan: cur.plan.nextPlan,
-        lastMove: state.lastMove
-      };
-      cur = state.animation.current;
-      rest = 1
-    } else {
-      state.animation.current = null;
-    }
-  }
-
-  if (state.animation.current !== null) {
-    if (rest > 0.999) rest = 0.999;
-    const ease = easeInOutCubic(rest);
-    for (let i in cur.plan.anims) {
-      const cfg = cur.plan.anims[i];
-      cfg[2] = cfg[0] * ease;
-      cfg[3] = cfg[1] * ease;
-    }
-    ctrl.redrawSync()
-    state.batchRAF((n: number) => step(ctrl, n))
-  } else {
-    ctrl.redrawSync()
-  }
-}
-
 function animate<A>(mutation: Mutation<A>, ctrl: Draughtsground, fadeOnly: boolean = false, noCaptSequences: boolean = false): A {
   const state = ctrl.state
   const prevPieces: cg.Pieces = {...state.pieces}
@@ -332,7 +288,9 @@ function animate<A>(mutation: Mutation<A>, ctrl: Draughtsground, fadeOnly: boole
       plan: plan,
       lastMove: state.lastMove
     }
-    if (!alreadyRunning) state.batchRAF((now: number) => step(ctrl, now))
+    if (!alreadyRunning) {
+      batchRequestAnimationFrame(ctrl.applyAnim)
+    }
   } else {
     if (state.animation.current !== null && !sameArray(state.animation.current.lastMove, state.lastMove))
       state.animation.current = null;

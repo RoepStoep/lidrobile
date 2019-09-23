@@ -1,6 +1,5 @@
 import * as cg from '../../draughtsground/interfaces'
 import settings from '../../settings'
-import { batchRequestAnimationFrame } from '../../utils/batchRAF'
 
 import TrainingCtrl from './TrainingCtrl'
 import getVariant from '../../lidraughts/variant'
@@ -13,7 +12,6 @@ export default function makeConfig(
   const board = ctrl.data.puzzle.variant.board || getVariant(ctrl.data.puzzle.variant.key).board
 
   return {
-    batchRAF: batchRequestAnimationFrame,
     fen: ctrl.data.puzzle.fen,
     boardSize: board.size,
     orientation: ctrl.data.puzzle.color,

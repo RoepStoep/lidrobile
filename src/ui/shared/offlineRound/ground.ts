@@ -7,7 +7,6 @@ import { AfterMoveMeta } from '../../../lidraughts/interfaces/move'
 import getVariant from '../../../lidraughts/variant'
 import { boardOrientation } from '../../../utils'
 import { uciToMoveOrDrop } from '../../../utils/draughtsFormat'
-import { batchRequestAnimationFrame } from '../../../utils/batchRAF'
 import { GameSituation } from '../../../draughts'
 
 function makeConfig(data: OfflineGameData, sit: GameSituation): cg.InitConfig {
@@ -15,7 +14,6 @@ function makeConfig(data: OfflineGameData, sit: GameSituation): cg.InitConfig {
   const pieceMoveConf = settings.game.pieceMove()
   const board = (getVariant(data.game.variant.key) || getVariant('standard')).board
   return {
-    batchRAF: batchRequestAnimationFrame,
     fen: sit.fen,
     boardSize: board.size,
     orientation: boardOrientation(data),

@@ -1,3 +1,4 @@
+import { batchRequestAnimationFrame } from '../utils/batchRAF'
 import * as cg from './interfaces'
 import { State } from './state'
 import Draughtsground from './Draughtsground'
@@ -197,7 +198,7 @@ export function end(ctrl: Draughtsground, e: TouchEvent) {
   state.draggable.current = null
 
   // must perform it in same raf callback or browser may skip it
-  ctrl.state.batchRAF(() => removeDragElements(ctrl.dom!))
+  batchRequestAnimationFrame(() => removeDragElements(ctrl.dom!))
   ctrl.redraw()
 }
 
