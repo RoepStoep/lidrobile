@@ -272,6 +272,7 @@ export default class OnlineRound implements OnlineRoundInterface {
   public jump = (ply: number) => {
     if (ply < this.firstPly() || ply > this.lastPly()) return false
     const plyDiff = Math.abs(ply - this.vm.ply)
+    const wasReplaying = this.replaying()
     const isFwd = ply > this.vm.ply
     this.vm.ply = ply
     const s = this.plyStep(ply)
@@ -287,7 +288,7 @@ export default class OnlineRound implements OnlineRoundInterface {
       config.captureLength = this.data.captureLength;
     }
     this.draughtsground.set(config, plyDiff > 1)
-    if (this.replaying()) this.draughtsground.stop()
+    if (!wasReplaying && this.replaying()) this.draughtsground.stop()
     if (s.san && isFwd) {
       if (s.san.indexOf('x') !== -1) sound.throttledCapture()
       else sound.throttledMove()
