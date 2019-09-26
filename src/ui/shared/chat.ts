@@ -9,8 +9,6 @@ import router from '../../router'
 import { SocketIFace } from '../../socket'
 import { closeIcon } from '../shared/icons'
 
-let chatHeight: number
-
 export class Chat {
   public showing: boolean
   public nbUnread: number
@@ -35,9 +33,6 @@ export class Chat {
     this.nbUnread = 0
 
     this.checkUnreadFromStorage()
-
-    window.addEventListener('native.keyboardhide', onKeyboardHide)
-    window.addEventListener('native.keyboardshow', onKeyboardShow)
   }
 
   public open = () => {
@@ -47,7 +42,7 @@ export class Chat {
   }
 
   public close = (fromBB?: string) => {
-    window.cordova.plugins.Keyboard.close()
+    // window.cordova.plugins.Keyboard.close()
     if (fromBB !== 'backbutton' && this.showing) router.backbutton.stack.pop()
     this.showing = false
     this.nbUnread = 0
@@ -81,11 +76,6 @@ export class Chat {
       prev = line
     })
     return ls
-  }
-
-  public unload = () => {
-    document.removeEventListener('native.keyboardhide', onKeyboardHide)
-    document.removeEventListener('native.keyboardshow', onKeyboardShow)
   }
 
   // --
@@ -232,24 +222,6 @@ function renderSpectatorMsg(msg: ChatMsg) {
 
 function scrollChatToBottom(el: HTMLElement) {
   el.scrollTop = el.scrollHeight
-}
-
-function onKeyboardShow(e: Ionic.KeyboardEvent) {
-  if (window.cordova.platformId === 'ios') {
-    const chat = document.getElementById('chat_content')
-    if (!chat) return
-    chatHeight = chat.offsetHeight
-    chat.style.height = (chatHeight - e.keyboardHeight) + 'px'
-  }
-}
-
-function onKeyboardHide() {
-  if (window.cordova.platformId === 'ios') {
-    const chat = document.getElementById('chat_content')
-    if (chat) chat.style.height = chatHeight + 'px'
-  }
-  const input = document.getElementById('chat_input')
-  if (input) input.blur()
 }
 
 function calculateContentHeight(ta: HTMLElement, scanAmount: number): number {
