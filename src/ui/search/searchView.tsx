@@ -1,3 +1,4 @@
+import { Plugins } from '@capacitor/core'
 import * as throttle from 'lodash/throttle'
 import * as h from 'mithril/hyperscript'
 import router from '../../router'
@@ -121,7 +122,7 @@ function onTap (ctrl: ISearchCtrl, e: Event) {
       const g = ctrl.searchState.games.find(game => game.id === id)
       if (g) {
         if (!isSupportedVariantKey(g.variant.key)) {
-          window.plugins.toast.show(i18n('unsupportedVariant', g.variant.name), 'short', 'center')
+          Plugins.Toast.show({ text: i18n('unsupportedVariant', g.variant.name), duration: 'short' })
         } else {
           router.set(`/analyse/online/${id}`)
         }

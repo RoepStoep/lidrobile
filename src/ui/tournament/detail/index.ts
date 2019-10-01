@@ -1,3 +1,4 @@
+import { Plugins } from '@capacitor/core'
 import * as h from 'mithril/hyperscript'
 import socket from '../../../socket'
 import redraw from '../../../utils/redraw'
@@ -68,7 +69,7 @@ export default {
     let header: Mithril.Children
 
     if (tournament && !isSupportedVariantKey(tournament.variant)) {
-      window.plugins.toast.show(i18n('unsupportedVariant', tournament.variant), 'short', 'center')
+      Plugins.Toast.show({ text: i18n('unsupportedVariant', tournament.variant), duration: 'short' })
       router.set('/')
       return
     }

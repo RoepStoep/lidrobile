@@ -1,3 +1,4 @@
+import { Plugins } from '@capacitor/core'
 import sound from '../../sound'
 import router from '../../router'
 import Draughtsground from '../../draughtsground/Draughtsground'
@@ -190,7 +191,7 @@ export default class OtbRound implements OtbRoundInterface, PromotingInterface {
   public sharePDN = () => {
     this.replay.pdn('White', 'Black')
     .then((data: draughts.PdnDumpResponse) =>
-      window.plugins.socialsharing.share(data.pdn)
+      Plugins.Share.share({ text: data.pdn })
     )
   }
 

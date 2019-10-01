@@ -40,7 +40,7 @@ export default {
     const members = sortMembers(study.members)
     return h('aside#studyMenu', {
       oncreate: ({ dom }: Mithril.DOMNode) => {
-        if (window.cordova.platformId === 'ios') {
+        if (window.deviceInfo.platform === 'ios') {
           CloseSwipeHandler(dom as HTMLElement, studyCtrl.sideMenu)
         } else {
           CloseSlideHandler(dom as HTMLElement, studyCtrl.sideMenu)

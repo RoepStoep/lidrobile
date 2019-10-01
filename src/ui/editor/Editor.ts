@@ -1,3 +1,4 @@
+import { Plugins } from '@capacitor/core'
 import * as debounce from 'lodash/debounce'
 import Draughtsground from '../../draughtsground/Draughtsground'
 import * as cg from '../../draughtsground/interfaces'
@@ -172,7 +173,7 @@ export default class Editor {
     if (fenUtil.validateFen(newFen, v))
       router.set(`/editor/variant/${encodeURIComponent(v)}/fen/${encodeURIComponent(newFen)}`, true)
     else
-      window.plugins.toast.show(i18n('invalidFen'), 'short', 'center')
+      Plugins.Toast.show({ text: i18n('invalidFen'), duration: 'short' })
   }
 
   private readFen(fen: string): EditorData {

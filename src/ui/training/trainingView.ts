@@ -1,3 +1,4 @@
+import { Plugins } from '@capacitor/core'
 import * as h from 'mithril/hyperscript'
 import i18n from '../../i18n'
 import { gameIcon, hasNetwork } from '../../utils'
@@ -68,11 +69,11 @@ function renderActionsBar(ctrl: TrainingCtrl) {
     }),
     h('button.action_bar_button.training_action.fa.fa-share-alt', {
       key: 'sharePuzzle',
-      oncreate: helper.ontap(ctrl.share, () => window.plugins.toast.show('Share this puzzle', 'short', 'bottom'))
+      oncreate: helper.ontap(ctrl.share, () => Plugins.Toast.show({ text: 'Share this puzzle', duration: 'short' }))
     }),
     h('button.action_bar_button.training_action[data-icon=A]', {
       key: 'analysePuzzle',
-      oncreate: helper.ontap(ctrl.goToAnalysis, () => window.plugins.toast.show(i18n('analysis'), 'short', 'bottom')),
+      oncreate: helper.ontap(ctrl.goToAnalysis, () => Plugins.Toast.show({ text: i18n('analysis'), duration: 'short' })),
       disabled: ctrl.vm.mode !== 'view'
     }),
     h('button.action_bar_button.training_action.fa.fa-backward', {
@@ -185,7 +186,7 @@ function renderResult(ctrl: TrainingCtrl) {
       h('div.training-half', [
         h('div.training-icon.win', '✓'),
         h('strong', [i18n('victory')]),
-        hasNetwork() && session.isConnected() ?
+        session.isConnected() ?
           h('div.training-vote', renderVoteControls(ctrl)) : null
       ]),
       h('div.training-half', renderViewControls(ctrl))
@@ -195,7 +196,7 @@ function renderResult(ctrl: TrainingCtrl) {
     return [
       h('div.training-half', [
         h('strong', 'Puzzle complete!'),
-        hasNetwork() && session.isConnected() ?
+        session.isConnected() ?
           h('div.training-vote', renderVoteControls(ctrl)) : null
       ]),
       h('div.training-half', renderViewControls(ctrl))

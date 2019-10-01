@@ -207,7 +207,7 @@ function renderPerf(key: PerfKey, name: string, perf: Perf, user: ProfileUser) {
     className: 'profilePerf' + (avail ? ' nav' : ''),
     'data-icon': gameIcon(key),
     oncreate: avail ? helper.ontapY(() => {
-      if (hasNetwork()) router.set(`/@/${user.id}/${key}/perf`)
+      router.set(`/@/${user.id}/${key}/perf`)
     }) : null
   }
 

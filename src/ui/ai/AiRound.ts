@@ -1,3 +1,4 @@
+import { Plugins } from '@capacitor/core'
 import i18n from '../../i18n'
 import Draughtsground from '../../draughtsground/Draughtsground'
 import router from '../../router'
@@ -183,7 +184,7 @@ export default class AiRound implements AiRoundInterface, PromotingInterface {
   public sharePDN = () => {
     this.replay.pdn(this.white(), this.black())
     .then((data: draughts.PdnDumpResponse) =>
-      window.plugins.socialsharing.share(data.pdn)
+      Plugins.Share.share({ text: data.pdn })
     )
   }
 

@@ -1,3 +1,4 @@
+import { Plugins } from '@capacitor/core'
 import * as h from 'mithril/hyperscript'
 import * as throttle from 'lodash/throttle'
 import { handleXhrError, hasNetwork } from '../../../../utils'
@@ -34,15 +35,15 @@ export default {
     return h('button', {
       key: 'shareGameLink',
       oncreate: helper.ontap(() => {
-        window.plugins.socialsharing.share(null, null, null, gameApi.publicUrl(ctrl.data))
+        Plugins.Share.share({ url: gameApi.publicUrl(ctrl.data) })
       })
     }, [i18n('shareGameURL')])
   },
   sharePDN(ctrl: OnlineRound) {
     function handler() {
       getPDN(ctrl.data.game.id, ctrl.isAlgebraic())
-      .then((pdn: string) => window.plugins.socialsharing.share(pdn))
-      .catch(handleXhrError)
+        .then((pdn: string) => Plugins.Share.share({ text: pdn }))
+        .catch(handleXhrError)
     }
     return (
       <button key="sharePDN" oncreate={helper.ontap(handler)}>
@@ -315,7 +316,7 @@ export default {
       <button className="action_bar_button fa fa-pencil" key="notes"
         oncreate={helper.ontap(
           () => ctrl.notes && ctrl.notes.open(),
-          () => window.plugins.toast.show(i18n('notes'), 'short', 'bottom')
+          () => Plugins.Toast.show({ text: i18n('notes'), duration: 'short' })
         )} />
     )
   },

@@ -1,3 +1,4 @@
+import { Plugins } from '@capacitor/core'
 import * as h from 'mithril/hyperscript'
 import * as helper from '../helper'
 import socket from '../../socket'
@@ -44,7 +45,7 @@ export default {
 function externalLink(text: string, url: string): Mithril.Child {
   return h('a', {
     className: 'external_link',
-    onclick: () => window.open(url, '_blank'),
+    onclick: () => Plugins.Browser.open({ url }),
   }, text)
 }
 

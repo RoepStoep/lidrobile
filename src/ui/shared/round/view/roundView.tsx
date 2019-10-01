@@ -1,3 +1,4 @@
+import { Plugins } from '@capacitor/core'
 import * as h from 'mithril/hyperscript'
 import * as range from 'lodash/range'
 import redraw from '../../../../utils/redraw'
@@ -322,9 +323,10 @@ function userInfos(user: User, player: Player, playerName: string) {
     let onlineStatus = user.online ? 'connected to lidraughts' : 'offline'
     let onGameStatus = player.onGame ? 'currently on this game' : 'currently not on this game'
     title = `${playerName}: ${onlineStatus}; ${onGameStatus}`
-  } else
+  } else {
     title = playerName
-  window.plugins.toast.show(title, 'short', 'center')
+  }
+  Plugins.Toast.show({ text: title, duration: 'short' })
 }
 
 function renderAntagonistInfo(ctrl: OnlineRound, player: Player, material: Material, position: Position, isCrazy: boolean) {
@@ -333,7 +335,7 @@ function renderAntagonistInfo(ctrl: OnlineRound, player: Player, material: Mater
   const togglePopup = user ? () => ctrl.openUserPopup(position, user.id) : utils.noop
   const vConf = user ?
     helper.ontap(togglePopup, () => userInfos(user, player, playerName)) :
-    helper.ontap(utils.noop, () => window.plugins.toast.show(playerName, 'short', 'center'))
+    helper.ontap(utils.noop, () => Plugins.Toast.show({ text: playerName, duration: 'short' }))
 
   const checksNb = getChecksCount(ctrl, player.color)
 

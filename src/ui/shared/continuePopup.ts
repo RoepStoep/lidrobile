@@ -1,3 +1,4 @@
+import { Plugins } from '@capacitor/core'
 import i18n from '../../i18n'
 import router from '../../router'
 import { validateFen, positionLooksLegit } from '../../utils/fen'
@@ -85,7 +86,7 @@ export default {
                 if (validateFen(f, v) && positionLooksLegit(f, getVariant(v).board.size)) {
                   router.set(`/ai/variant/${v}/fen/${encodeURIComponent(f)}/color/${c}`)
                 } else {
-                  window.plugins.toast.show(i18n('invalidFen'), 'short', 'center')
+                  Plugins.Toast.show({ text: i18n('invalidFen'), duration: 'short' })
                 }
               }
             })
@@ -99,7 +100,7 @@ export default {
                 if (validateFen(f, v) && positionLooksLegit(f, getVariant(v).board.size)) {
                   router.set(`/otb/variant/${v}/fen/${encodeURIComponent(f)}`)
                 } else {
-                  window.plugins.toast.show(i18n('invalidFen'), 'short', 'center')
+                  Plugins.Toast.show({ text: i18n('invalidFen'), duration: 'short' })
                 }
               }
             })

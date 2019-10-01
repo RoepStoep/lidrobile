@@ -1,3 +1,4 @@
+import { Plugins } from '@capacitor/core'
 import * as debounce from 'lodash/debounce'
 import { handleXhrError } from '../../../utils'
 import { batchRequestAnimationFrame } from '../../../utils/batchRAF'
@@ -172,7 +173,7 @@ export default function UserGamesCtrl(userId: string, filter?: string): IUserGam
     const g = scrollState.games.find(game => game.id === id)
     if (g) {
       if (!gameApi.isSupportedVariantKey(g.variant.key)) {
-        window.plugins.toast.show(i18n('unsupportedVariant', g.variant.name), 'short', 'center')
+        Plugins.Toast.show({ text: i18n('unsupportedVariant', g.variant.name), duration: 'short' })
         return
       }
       const whiteUser = g.players.white.user

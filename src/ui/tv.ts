@@ -1,3 +1,4 @@
+import { Plugins } from '@capacitor/core'
 import * as h from 'mithril/hyperscript'
 import router from '../router'
 import socket from '../socket'
@@ -44,7 +45,7 @@ const TV: Mithril.Component<TVAttrs, State> = {
       if (!this.emptyTV) {
         handleXhrError(e)
       } else {
-        window.plugins.toast.show(i18n('noGameFound'), 'short', 'center')
+        Plugins.Toast.show({ text: i18n('noGameFound'), duration: 'short' })
         redraw()
       }
     })
