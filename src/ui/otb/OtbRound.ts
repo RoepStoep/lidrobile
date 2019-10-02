@@ -1,4 +1,4 @@
-import { Plugins } from '@capacitor/core'
+import { Plugins, AppState, PluginListenerHandle } from '@capacitor/core'
 import sound from '../../sound'
 import router from '../../router'
 import Draughtsground from '../../draughtsground/Draughtsground'
@@ -42,6 +42,8 @@ export default class OtbRound implements OtbRoundInterface, PromotingInterface {
   public vm: OtbVM
   public clock?: IDraughtsClock
   public moveList: boolean
+
+  private appStateListener: PluginListenerHandle
 
   public constructor(
     saved?: StoredOfflineGame | null,
@@ -87,6 +89,15 @@ export default class OtbRound implements OtbRoundInterface, PromotingInterface {
         this.startNewGame(currentVariant, undefined, settings.otb.clock.clockType())
       }
     }
+
+    this.appStateListener = Plugins.App.addListener('appStateChange', (state: AppState) => {
+      if (!state.isActive) this.saveClock()
+    })
+  }
+
+  public unload() {
+    this.appStateListener.remove()
+    this.saveClock()
   }
 
   public init(data: OfflineGameData, situations: Array<draughts.GameSituation>, ply: number) {
