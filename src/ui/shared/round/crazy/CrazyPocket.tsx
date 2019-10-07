@@ -1,3 +1,4 @@
+import * as h from 'mithril/hyperscript'
 import settings from '../../../../settings'
 import * as draughtsgroundDrag from '../../../../draughtsground/drag'
 import { Pockets } from '../../../../lidraughts/interfaces/game'

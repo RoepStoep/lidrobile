@@ -1,3 +1,4 @@
+import * as h from 'mithril/hyperscript'
 import * as cgUtil from '../../../draughtsground/util'
 import * as cg from '../../../draughtsground/interfaces'
 import { Bounds } from '../Board'
