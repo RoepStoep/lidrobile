@@ -1,5 +1,6 @@
+import * as Mithril from 'mithril'
 import { Plugins, AppState, PluginListenerHandle } from '@capacitor/core'
-import * as throttle from 'lodash/throttle'
+import throttle from 'lodash-es/throttle'
 import Draughtsground from '../../../draughtsground/Draughtsground'
 import * as cg from '../../../draughtsground/interfaces'
 import fen, { countGhosts } from '../../../draughtsground/fen'

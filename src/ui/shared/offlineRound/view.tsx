@@ -1,5 +1,6 @@
+import * as Mithril from 'mithril'
 import { Plugins } from '@capacitor/core'
-import * as h from 'mithril/hyperscript'
+import h from 'mithril/hyperscript'
 /*import * as utils from '../../../utils'*/
 import i18n from '../../../i18n'
 import * as gameApi from '../../../lidraughts/game'
@@ -147,11 +148,11 @@ export function renderNewGameButton(ctrl: OfflineRoundInterface) {
 
 export function renderReplay(ctrl: OfflineRoundInterface) {
   return h('div.replay', {
-    oncreate: (vnode: Mithril.DOMNode) => {
+    oncreate: (vnode: Mithril.VnodeDOM<any, any>) => {
       setTimeout(() => autoScroll(vnode.dom as HTMLElement), 100)
       helper.ontapY((e: Event) => onReplayTap(ctrl, e), undefined, getMoveEl)(vnode)
     },
-    onupdate: (vnode: Mithril.DOMNode) => autoScroll(vnode.dom as HTMLElement),
+    onupdate: (vnode: Mithril.VnodeDOM<any, any>) => autoScroll(vnode.dom as HTMLElement),
   }, renderMoves(ctrl.replay))
 }
 
@@ -163,11 +164,11 @@ export function renderInlineReplay(ctrl: OfflineRoundInterface) {
   }
 
   return h('div.replay_inline', {
-    oncreate: (vnode: Mithril.DOMNode) => {
+    oncreate: (vnode: Mithril.VnodeDOM<any, any>) => {
       setTimeout(() => autoScrollInline(vnode.dom as HTMLElement), 100)
       helper.ontapX((e: Event) => onReplayTap(ctrl, e), undefined, getMoveEl)(vnode)
     },
-    onupdate: (vnode: Mithril.DOMNode) => autoScrollInline(vnode.dom as HTMLElement),
+    onupdate: (vnode: Mithril.VnodeDOM<any, any>) => autoScrollInline(vnode.dom as HTMLElement),
   }, renderMoves(ctrl.replay))
 }
 

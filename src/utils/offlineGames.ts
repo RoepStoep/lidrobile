@@ -1,6 +1,6 @@
+import cloneDeep from 'lodash-es/cloneDeep'
+import difference from 'lodash-es/difference'
 import storage from '../storage'
-import * as cloneDeep from 'lodash/cloneDeep'
-import * as difference from 'lodash/difference'
 import { AnalyseData } from '../lidraughts/interfaces/analyse'
 import { NowPlayingGame } from '../lidraughts/interfaces'
 import { OnlineGameData, OfflineGameData } from '../lidraughts/interfaces/game'

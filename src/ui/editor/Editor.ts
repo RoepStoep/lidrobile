@@ -1,5 +1,7 @@
+import * as Mithril from 'mithril'
+import Stream from 'mithril/stream'
 import { Plugins } from '@capacitor/core'
-import * as debounce from 'lodash/debounce'
+import debounce from 'lodash-es/debounce'
 import Draughtsground from '../../draughtsground/Draughtsground'
 import * as cg from '../../draughtsground/interfaces'
 import * as cgDrag from '../../draughtsground/drag'
@@ -13,21 +15,20 @@ import * as fenUtil from '../../utils/fen'
 import continuePopup, { Controller as ContinuePopupCtrl } from '../shared/continuePopup'
 import i18n from '../../i18n'
 import drag from './drag'
-import * as stream from 'mithril/stream'
 
 const startingFen = 'W:W31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50:B1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20:H0:F1'
 
 interface EditorData {
-  color: Mithril.Stream<Color>
-  halfmove: Mithril.Stream<string>
-  moves: Mithril.Stream<string>
+  color: Stream<Color>
+  halfmove: Stream<string>
+  moves: Stream<string>
 }
 
 interface Data {
   editor: EditorData
   game: {
     variant: {
-      key: Mithril.Stream<VariantKey>
+      key: Stream<VariantKey>
     }
   }
 }
@@ -139,7 +140,7 @@ export default class Editor {
   public onmove = (e: TouchEvent) => cgDrag.move(this.draughtsground, e)
   public onend = (e: TouchEvent) => cgDrag.end(this.draughtsground, e)
 
-  public editorOnCreate = (vn: Mithril.DOMNode) => {
+  public editorOnCreate = (vn: Mithril.VnodeDOM<any, any>) => {
     if (!vn.dom) return
     const editorNode = document.getElementById('boardEditor')
     if (editorNode) {
@@ -179,9 +180,9 @@ export default class Editor {
   private readFen(fen: string): EditorData {
     const fenData = fenUtil.readFen(fen)
     return {
-      color: stream(fenData.color as Color),
-      halfmove: stream(fenData.halfmove.toString()),
-      moves: stream(fenData.moves.toString())
+      color: Stream(fenData.color as Color),
+      halfmove: Stream(fenData.halfmove.toString()),
+      moves: Stream(fenData.moves.toString())
     }
   }
 }

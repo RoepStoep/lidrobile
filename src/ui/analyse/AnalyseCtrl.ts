@@ -1,5 +1,5 @@
 import { Plugins } from '@capacitor/core'
-import * as debounce from 'lodash/debounce'
+import debounce from 'lodash-es/debounce'
 import router from '../../router'
 import Draughtsground from '../../draughtsground/Draughtsground'
 import * as cg from '../../draughtsground/interfaces'

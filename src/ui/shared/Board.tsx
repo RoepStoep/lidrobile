@@ -1,4 +1,5 @@
-import * as h from 'mithril/hyperscript'
+import * as Mithril from 'mithril'
+import h from 'mithril/hyperscript'
 import settings from '../../settings'
 import redraw from '../../utils/redraw'
 import Draughtsground from '../../draughtsground/Draughtsground'
@@ -22,8 +23,8 @@ export interface Attrs {
 }
 
 interface State {
-  wrapperOnCreate(vnode: Mithril.DOMNode): void
-  boardOnCreate(vnode: Mithril.DOMNode): void
+  wrapperOnCreate(vnode: Mithril.VnodeDOM<any, any>): void
+  boardOnCreate(vnode: Mithril.VnodeDOM<any, any>): void
   boardOnRemove(): void
   boardTheme: string
   pieceTheme: string
@@ -46,7 +47,7 @@ export default {
       }
     }
 
-    this.boardOnCreate = ({ dom }: Mithril.DOMNode) => {
+    this.boardOnCreate = ({ dom }: Mithril.VnodeDOM<any, any>) => {
       draughtsground.attach(dom as HTMLElement)
     }
 

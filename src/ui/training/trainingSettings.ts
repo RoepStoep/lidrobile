@@ -1,4 +1,4 @@
-import * as h from 'mithril/hyperscript'
+import h from 'mithril/hyperscript'
 import * as helper from '../helper'
 import { hasNetwork } from '../../utils'
 import session from '../../session'

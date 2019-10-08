@@ -1,4 +1,5 @@
-import * as h from 'mithril/hyperscript'
+import * as Mithril from 'mithril'
+import h from 'mithril/hyperscript'
 import redraw from '../../utils/redraw'
 import popupWidget from '../shared/popup'
 import * as helper from '../helper'
@@ -6,7 +7,7 @@ import { nodeFullName } from './util'
 import i18n from '../../i18n'
 import AnalyseCtrl from './AnalyseCtrl'
 
-export function view(ctrl: AnalyseCtrl): Mithril.BaseNode | null {
+export function view(ctrl: AnalyseCtrl): Mithril.Vnode<any, any> | null {
 
   if (!ctrl.contextMenu) return null
 
@@ -32,7 +33,7 @@ export function view(ctrl: AnalyseCtrl): Mithril.BaseNode | null {
   )
 }
 
-function action(icon: string, text: string, handler: () => void): Mithril.BaseNode {
+function action(icon: string, text: string, handler: () => void): Mithril.Vnode<any, any> {
   return h('button.withIcon', {
     'data-icon': icon,
     oncreate: helper.ontapXY(handler)

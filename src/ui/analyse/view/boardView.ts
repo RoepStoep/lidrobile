@@ -1,4 +1,4 @@
-import * as h from 'mithril/hyperscript'
+import h from 'mithril/hyperscript'
 import * as draughtsFormat from '../../../utils/draughtsFormat'
 import gameStatusApi from '../../../lidraughts/status'
 import { findTag, gameResult } from '../../../lidraughts/interfaces/study'

@@ -1,4 +1,4 @@
-import * as h from 'mithril/hyperscript'
+import h from 'mithril/hyperscript'
 import * as cg from '../../../draughtsground/interfaces'
 import { defs, renderShape, ArrowDests } from './svg'
 import { brushes } from './brushes'

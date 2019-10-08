@@ -1,4 +1,5 @@
-import * as h from 'mithril/hyperscript'
+import * as Mithril from 'mithril'
+import h from 'mithril/hyperscript'
 import { batchRequestAnimationFrame } from '../../utils/batchRAF'
 import * as utils from '../../utils'
 import * as playerApi from '../../lidraughts/player'
@@ -106,7 +107,7 @@ function renderBoard(fen: string, orientation: Color, variant: VariantKey, board
 
   return (
     <div className={boardClass} key={fen}
-      oncreate={({ dom }: Mithril.DOMNode) => {
+      oncreate={({ dom }: Mithril.VnodeDOM<any, any>) => {
         const img = document.createElement('img')
         img.className = 'cg-board'
         img.src = 'data:image/svg+xml;utf8,' + makeBoard(fen, orientation, board.size)
@@ -131,7 +132,7 @@ function emptyBoard(orientation: Color, boardTheme: string) {
 
   return (
     <div className={boardClass} key={emptyFen}
-      oncreate={({ dom }: Mithril.DOMNode) => {
+      oncreate={({ dom }: Mithril.VnodeDOM<any, any>) => {
         const img = document.createElement('img')
         img.className = 'cg-board'
         img.src = 'data:image/svg+xml;utf8,' + makeBoard(emptyFen, orientation, board.size)

@@ -1,4 +1,4 @@
-import * as h from 'mithril/hyperscript'
+import h from 'mithril/hyperscript'
 import { formatTimeInSecs } from '../../../utils'
 import { ClockType, IDraughtsClock, IStageClock, ClockSettings, StageSetting } from './interfaces'
 import { StoredProp } from '../../../storage'

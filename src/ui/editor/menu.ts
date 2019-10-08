@@ -1,7 +1,8 @@
+import * as Mithril from 'mithril'
 import i18n from '../../i18n'
 import popupWidget from '../shared/popup'
 import router from '../../router'
-import * as h from 'mithril/hyperscript'
+import h from 'mithril/hyperscript'
 import Editor, { MenuInterface } from './Editor'
 import { getInitialFen } from '../../lidraughts/variant'
 import redraw from '../../utils/redraw'
@@ -122,7 +123,7 @@ export function renderPositionSettings(ctrl: Editor) {
   ])
 }
 
-function position2option(fen: string, pos: BoardPosition, showEco = false): Mithril.BaseNode {
+function position2option(fen: string, pos: BoardPosition, showEco = false): Mithril.Vnode<any, any> {
   return h('option', {
     value: pos.fen,
     selected: fen === pos.fen

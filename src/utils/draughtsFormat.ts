@@ -1,4 +1,4 @@
-import * as isObject from 'lodash/isObject'
+import isObject from 'lodash-es/isObject'
 import { san2alg as san2algMap } from '../draughtsground/util'
 
 export function uciToMove(uci: string): Key[] {

@@ -1,4 +1,5 @@
-import * as h from 'mithril/hyperscript'
+import * as Mithril from 'mithril'
+import h from 'mithril/hyperscript'
 import router from '../../../../router'
 import { lightPlayerName } from '../../../../lidraughts/player'
 import { StudyMemberMap, StudyMember } from '../../../../lidraughts/interfaces/study'
@@ -39,7 +40,7 @@ export default {
     const study = studyCtrl.data
     const members = sortMembers(study.members)
     return h('aside#studyMenu', {
-      oncreate: ({ dom }: Mithril.DOMNode) => {
+      oncreate: ({ dom }: Mithril.VnodeDOM<any, any>) => {
         if (window.deviceInfo.platform === 'ios') {
           CloseSwipeHandler(dom as HTMLElement, studyCtrl.sideMenu)
         } else {
