@@ -103,7 +103,7 @@ export default {
     else {
       return layout.board(
         connectingHeader(),
-        h.fragment({ key: key + '-no-data' }, [
+        [
           h('section.board_wrapper', [
             h(ViewOnlyBoard, {
               fen: attrs.initFen || emptyFen,
@@ -113,7 +113,7 @@ export default {
             })
           ]),
           h('div.training-tableWrapper')
-        ])
+        ]
       )
     }
   }

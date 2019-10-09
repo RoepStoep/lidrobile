@@ -26,7 +26,7 @@ export default function view(ctrl: Editor) {
 
   return layout.board(
     header(i18n('boardEditor')),
-    h.fragment({ key: isPortrait ? 'portrait' : 'landscape' }, [
+    [
       board,
       h('div.editor-wrapper', [
         h('div#boardEditor.editor-table', {
@@ -41,7 +41,7 @@ export default function view(ctrl: Editor) {
         ]),
         renderActionsBar(ctrl)
       ])
-    ]),
+    ],
     [
       menu.view(ctrl.menu),
       continuePopup.view(ctrl.continuePopup),
@@ -65,15 +65,12 @@ function sparePieces(color: Color, orientation: Color, position: 'left' | 'right
 function renderActionsBar(ctrl: Editor) {
   return h('section.actions_bar', [
     h('button.action_bar_button.fa.fa-gear', {
-      key: 'editorMenu',
       oncreate: helper.ontap(ctrl.menu.open)
     }),
     h('button.action_bar_button[data-icon=B]', {
-      key: 'toggleOrientation',
       oncreate: helper.ontap(ctrl.draughtsground.toggleOrientation)
     }),
     h('button.action_bar_button[data-icon=U]', {
-      key: 'continueFromHere',
       oncreate: helper.ontap(() => {
         if (ctrl.data.game.variant.key() !== 'standard')
           Plugins.Toast.show({ text: 'You can\'t continue from a variant position', duration: 'long' })
@@ -82,7 +79,6 @@ function renderActionsBar(ctrl: Editor) {
       }, () => Plugins.Toast.show({ text: i18n('continueFromHere'), duration: 'short' }))
     }),
     h('button.action_bar_button[data-icon=A]', {
-      key: 'analyse',
       oncreate: helper.ontap(() => {
         const fen = encodeURIComponent(ctrl.computeFen(false))
         const variant = encodeURIComponent(ctrl.data.game.variant.key())
@@ -90,12 +86,10 @@ function renderActionsBar(ctrl: Editor) {
       }, () => Plugins.Toast.show({ text: i18n('analysis'), duration: 'short' }))
     }),
     h('button.action_bar_button.fa.fa-upload', {
-      key: 'pastePosition',
       oncreate: helper.ontap(ctrl.pasteFenPopup.open,
         () => Plugins.Toast.show({ text: i18n('loadAPositionFromFen'), duration: 'short' }))
     }),
     h('button.action_bar_button.fa.fa-share-alt', {
-      key: 'sharePosition',
       oncreate: helper.ontap(
         () => Plugins.Share.share({ text: ctrl.computeFen(ctrl.isAlgebraic(), true) }),
         () => Plugins.Toast.show({ text: 'Share FEN', duration: 'short' })

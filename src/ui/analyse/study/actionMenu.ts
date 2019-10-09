@@ -73,13 +73,11 @@ function renderStudyMenu(ctrl: AnalyseCtrl) {
 
   return h('div.analyseMenu', [
     h('button', {
-      key: 'share',
       oncreate: helper.ontap(() => {
         ctrl.study!.actionMenu.s.showShareMenu = true
       })
     }, [h('span.fa.fa-share-alt'), i18n('shareAndExport')]),
     h('button', {
-      key: 'like',
       oncreate: helper.ontap(ctrl.study!.toggleLike)
     }, [
       h.trust('&nbsp;'),
@@ -89,18 +87,15 @@ function renderStudyMenu(ctrl: AnalyseCtrl) {
       `${i18n('like')} (${ctrl.study!.data.likes})`
     ]),
      h('button[data-icon=U]', {
-      key: 'continueFromHere',
       oncreate: helper.ontap(() => {
         ctrl.menu.close()
         ctrl.continuePopup.open(ctrl.node.fen, ctrl.data.game.variant.key, ctrl.data.player.color)
       })
     }, i18n('continueFromHere')),
     h('button', {
-      key: 'boardEditor',
       oncreate: helper.ontap(() => router.set(`/editor/variant/${encodeURIComponent(ctrl.data.game.variant.key)}/fen/${encodeURIComponent(ctrl.node.fen)}`))
     }, [h('span.fa.fa-pencil'), i18n('boardEditor')]),
     h('button', {
-      key: 'help',
       oncreate: helper.ontap(() => {
         ctrl.study!.actionMenu.close()
         startTour(ctrl.study!)

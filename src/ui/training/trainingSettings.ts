@@ -67,9 +67,7 @@ export interface ISettingsCtrl {
   function renderTrainingSettings(ctrl: TrainingCtrl) {
    
     return h('div.trainingSettings', [
-      h('div.action', {
-        key: 'puzzleVariant'
-      }, [
+      h('div.action', [
         formWidgets.renderMultipleChoiceButton(
           'Puzzle variant',
           [
@@ -83,7 +81,6 @@ export interface ISettingsCtrl {
         )
       ]),
       h('button.fa.fa-refresh', {
-        key: 'puzzleRefresh',
         disabled: !(hasNetwork() && session.isConnected()),
         oncreate: helper.ontap(ctrl.resync)
       }, 'Sync and refresh saved puzzles')

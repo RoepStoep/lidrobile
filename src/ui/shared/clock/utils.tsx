@@ -48,7 +48,7 @@ export function clockSettingsView (clockSettings: ClockSettings, onChange: () =>
     },
     simple() {
       return (
-        <div key="simpleSettings" className="clockSettingParameters">
+        <div className="clockSettingParameters">
           <div className="select_input">
             {formWidgets.renderSelect(i18n('time'), 'time', clockSettings.availableTimes, clockSettings.simple.time, false, onChange)}
           </div>
@@ -57,7 +57,7 @@ export function clockSettingsView (clockSettings: ClockSettings, onChange: () =>
     },
     increment() {
       return (
-        <div key="incrementSettings" className="clockSettingParameters">
+        <div className="clockSettingParameters">
           <div className="select_input">
             {formWidgets.renderSelect(i18n('time'), 'time', clockSettings.availableTimes, clockSettings.increment.time, false, onChange)}
           </div>
@@ -69,7 +69,7 @@ export function clockSettingsView (clockSettings: ClockSettings, onChange: () =>
     },
     handicapInc() {
       return (
-        <div key="handicapIncSettings" className="clockSettingParameters">
+        <div className="clockSettingParameters">
           <div className="handicapRow">
             <div className="handicapRowTitle">Top</div>
             <div className="select_input inline handicapRowMember">
@@ -93,7 +93,7 @@ export function clockSettingsView (clockSettings: ClockSettings, onChange: () =>
     },
     delay() {
       return (
-        <div key="delaySettings" className="clockSettingParameters">
+        <div className="clockSettingParameters">
           <div className="select_input">
             {formWidgets.renderSelect(i18n('time'), 'time', clockSettings.availableTimes, clockSettings.delay.time, false, onChange)}
           </div>
@@ -105,7 +105,7 @@ export function clockSettingsView (clockSettings: ClockSettings, onChange: () =>
     },
     bronstein() {
       return (
-        <div key="bronsteinSettings" className="clockSettingParameters">
+        <div className="clockSettingParameters">
           <div className="select_input">
             {formWidgets.renderSelect(i18n('time'), 'time', clockSettings.availableTimes, clockSettings.bronstein.time, false, onChange)}
           </div>
@@ -117,7 +117,7 @@ export function clockSettingsView (clockSettings: ClockSettings, onChange: () =>
     },
     hourglass() {
       return (
-        <div key="hourglassSettings" className="clockSettingParameters">
+        <div className="clockSettingParameters">
           <div className="select_input">
             {formWidgets.renderSelect(i18n('time'), 'time', clockSettings.availableTimes, clockSettings.hourglass.time, false, onChange)}
           </div>
@@ -126,7 +126,7 @@ export function clockSettingsView (clockSettings: ClockSettings, onChange: () =>
     },
     stage() {
       return (
-        <div key="hourglassSettings" className="clockSettingParameters">
+        <div className="clockSettingParameters">
           { clockSettings.stage.stages().map((_, index) => renderStage(clockSettings, onChange, index)) }
           <div className="select_input">
             {formWidgets.renderSelect(i18n('increment'), 'increment', clockSettings.availableIncrements.map(utils.tupleOf), clockSettings.stage.increment, false, onChange)}

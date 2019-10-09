@@ -72,28 +72,23 @@ function renderAnalyseMenu(ctrl: AnalyseCtrl) {
 
   return h('div.analyseMenu', [
     h('button', {
-      key: 'share',
       oncreate: helper.ontap(() => {
         ctrl.menu.s.showShareMenu = true
       })
     }, [h('span.fa.fa-share-alt'), i18n('shareAndExport')]),
     h('button[data-icon=B]', {
-      key: 'flipBoard',
       oncreate: helper.ontap(ctrl.settings.flip)
     }, i18n('flipBoard')),
     ctrl.isOfflineOrNotPlayable() ? h('button[data-icon=U]', {
-      key: 'continueFromHere',
       oncreate: helper.ontap(() => {
         ctrl.menu.close()
         ctrl.continuePopup.open(ctrl.node.fen, ctrl.data.game.variant.key, ctrl.data.player.color)
       })
     }, i18n('continueFromHere')) : null,
     ctrl.isOfflineOrNotPlayable() ? h('button', {
-      key: 'boardEditor',
       oncreate: helper.ontap(() => router.set(`/editor/variant/${encodeURIComponent(ctrl.data.game.variant.key)}/fen/${encodeURIComponent(ctrl.node.fen)}`))
     }, [h('span.fa.fa-pencil'), i18n('boardEditor')]) : null,
     ctrl.data.analysis ? h('button', {
-      key: 'retro',
       oncreate: helper.ontap(() => {
         ctrl.menu.close()
         ctrl.toggleRetro()
@@ -101,7 +96,6 @@ function renderAnalyseMenu(ctrl: AnalyseCtrl) {
       disabled: !!ctrl.retro
     }, [h('span.fa.fa-play'), i18n('learnFromYourMistakes')]) : null,
     ctrl.notes ? h('button', {
-      key: 'notes',
       oncreate: helper.ontap(() => {
         if (ctrl.notes) {
           ctrl.menu.close()
@@ -121,25 +115,21 @@ function renderShareMenu(ctrl: AnalyseCtrl) {
       })
     }, [i18n('shareGameURL')]) : null,
     ctrl.source === 'offline' ? h('button', {
-      key: 'sharePDN',
       oncreate: helper.ontap(() => {
         offlinePdnExport(ctrl)
       }),
     }, ctrl.menu.s.computingPDN ? spinner.getVdom('monochrome') : [i18n('sharePDN')]) : null,
     ctrl.source === 'online' && !gameApi.playable(ctrl.data) ? h('button', {
-      key: 'shareAnnotatedPDN',
       oncreate: helper.ontap(() => {
         onlinePDNExport(ctrl, false)
       }),
     }, ctrl.menu.s.computingPDN ? spinner.getVdom('monochrome') : 'Share annotated PDN') : null,
     ctrl.source === 'online' && !gameApi.playable(ctrl.data) ? h('button', {
-      key: 'shareRawPDN',
       oncreate: helper.ontap(() => {
         onlinePDNExport(ctrl, true)
       }),
     }, ctrl.menu.s.computingPDN ? spinner.getVdom('monochrome') : 'Share raw PDN') : null,
     ctrl.isOfflineOrNotPlayable() ? h('button', {
-      key: 'shareFEN',
       oncreate: helper.ontap(() => {
         ctrl.menu.close()
         Plugins.Share.share({ text: toggleCoordinates(ctrl.node.fen, ctrl.isAlgebraic()) })

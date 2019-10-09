@@ -75,7 +75,6 @@ export function renderMaterial(material: Material) {
 export function viewOnlyBoardContent(fen: string, orientation: Color, variant: VariantKey, lastMove?: string, wrapperClass?: string, customPieceTheme?: string) {
   const isPortrait = helper.isPortrait()
   const vd = helper.viewportDim()
-  const orientKey = 'viewonlyboard' + (isPortrait ? 'portrait' : 'landscape')
   const bounds = helper.getBoardBounds(vd, isPortrait)
   const className = 'board_wrapper' + (wrapperClass ? ' ' + wrapperClass : '')
   const board = (
@@ -88,7 +87,7 @@ export function viewOnlyBoardContent(fen: string, orientation: Color, variant: V
     !settings.game.zenMode()
 
   if (isPortrait) {
-    return h.fragment({ key: orientKey }, [
+    return h.fragment({}, [
       showMoveList ? h('div.replay_inline') : null,
       h('section.playTable'),
       board,
@@ -96,7 +95,7 @@ export function viewOnlyBoardContent(fen: string, orientation: Color, variant: V
       h('section.actions_bar'),
     ])
   } else {
-    return h.fragment({ key: orientKey}, [
+    return h.fragment({}, [
       board,
       h('section.table'),
     ])
@@ -150,17 +149,13 @@ function renderTitle(ctrl: OnlineRound) {
   if (ctrl.vm.offlineWatcher || socket.isConnected()) {
     const isCorres = !data.player.spectator && data.game.speed === 'correspondence'
     if (ctrl.data.tv) {
-      return h('div.main_header_title.withSub', {
-        key: 'tv'
-      }, [
+      return h('div.main_header_title.withSub', [
         h('h1.header-gameTitle', [h('span.withIcon[data-icon=1]'), 'Lidraughts TV']),
         h('h2.header-subTitle', tvChannelSelector(ctrl.onTVChannelChange))
       ])
     }
     else if (ctrl.data.userTV) {
-      return h('div.main_header_title.withSub', {
-        key: 'user-tv'
-      }, [
+      return h('div.main_header_title.withSub', [
         h('h1.header-gameTitle', [
           h(`span.withIcon[data-icon=${utils.gameIcon(ctrl.data.game.perf)}]`),
           gameApi.title(ctrl.data)
@@ -176,7 +171,6 @@ function renderTitle(ctrl: OnlineRound) {
     }
     else {
       return h(GameTitle, {
-        key: 'playing-title',
         data: ctrl.data,
         kidMode: session.isKidMode(),
         subTitle: tournament ? 'tournament' : isCorres ? 'corres' : 'date'
@@ -184,7 +178,7 @@ function renderTitle(ctrl: OnlineRound) {
     }
   } else {
     return (
-      <div key="reconnecting-title" className="main_header_title reconnecting">
+      <div className="main_header_title reconnecting">
         {loader}
       </div>
     )
@@ -193,15 +187,13 @@ function renderTitle(ctrl: OnlineRound) {
 
 function renderEmptyTitle(channel?: string, onTVChannelChange?: () => void) {
   if (channel) {
-    return h('div.main_header_title.withSub', {
-      key: 'tv'
-    }, [
+    return h('div.main_header_title.withSub', [
       h('h1.header-gameTitle', [h('span.withIcon[data-icon=1]'), 'Lidraughts TV']),
       h('h2.header-subTitle', tvChannelSelector(onTVChannelChange))
     ])
   } else {
     return (
-      <div key="reconnecting-title" className="main_header_title reconnecting">
+      <div className="main_header_title reconnecting">
         {loader}
       </div>
     )
@@ -257,19 +249,18 @@ function renderContent(ctrl: OnlineRound, isPortrait: boolean) {
     bounds
   })
 
-  const orientationKey = isPortrait ? 'o-portrait' : 'o-landscape'
   const flip = !ctrl.data.tv && ctrl.vm.flip
 
   if (isPortrait) {
-    return h.fragment({ key: orientationKey }, [
+    return [
       hasSpaceForInlineReplay(vd, bounds) ? renderInlineReplay(ctrl) : null,
       flip ? player : opponent,
       board,
       flip ? opponent : player,
       renderGameActionsBar(ctrl)
-    ])
+    ]
   } else {
-    return h.fragment({ key: orientationKey }, [
+    return [
       board,
       h('section.table',
         h('section.playersTable', [
@@ -279,7 +270,7 @@ function renderContent(ctrl: OnlineRound, isPortrait: boolean) {
         ]),
         renderGameActionsBar(ctrl),
       ),
-    ])
+    ]
   }
 }
 
@@ -509,7 +500,6 @@ function renderGameEndedActions(ctrl: OnlineRound) {
   const tournamentId = ctrl.data.game.tournamentId
 
   const shareActions = h('button', {
-    key: 'showShareActions',
     oncreate: helper.ontap(ctrl.showShareActions),
   }, [h('span.fa.fa-share-alt'), i18n('shareAndExport')])
 
@@ -614,14 +604,14 @@ function renderGameActionsBar(ctrl: OnlineRound) {
 
   const gmDataIcon = ctrl.data.opponent.offeringDraw ? '2' : null
   const gmButton = gmDataIcon ?
-    <button className={gmClass} data-icon={gmDataIcon} key="gameMenu" oncreate={helper.ontap(ctrl.showActions)} /> :
-    <button className={gmClass} key="gameMenu" oncreate={helper.ontap(ctrl.showActions)} />
+    <button className={gmClass} data-icon={gmDataIcon} oncreate={helper.ontap(ctrl.showActions)} /> :
+    <button className={gmClass} oncreate={helper.ontap(ctrl.showActions)} />
 
   return (
     <section className="actions_bar">
       {gmButton}
       {ctrl.chat ?
-        <button className="action_bar_button fa fa-comments withChip" key="chat"
+        <button className="action_bar_button fa fa-comments withChip"
           oncreate={helper.ontap(ctrl.chat.open)}
         >
          { ctrl.chat.nbUnread > 0 ?
