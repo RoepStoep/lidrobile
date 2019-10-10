@@ -1,11 +1,11 @@
 import * as Mithril from 'mithril'
 import { Plugins } from '@capacitor/core'
 import h from 'mithril/hyperscript'
-import * as helper from '../helper'
-import socket from '../../socket'
-import layout from '../layout'
-import i18n from '../../i18n'
-import { dropShadowHeader, backButton } from '../shared/common'
+import socket from '../socket'
+import * as helper from './helper'
+import layout from './layout'
+import i18n from '../i18n'
+import { dropShadowHeader, backButton } from './shared/common'
 
 export default {
   oncreate: helper.viewSlideIn,

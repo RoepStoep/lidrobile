@@ -3,14 +3,14 @@ import i18n from '../../i18n'
 import popupWidget from '../shared/popup'
 import router from '../../router'
 import h from 'mithril/hyperscript'
-import Editor, { MenuInterface } from './Editor'
+import EditorCtrl, { MenuInterface } from './EditorCtrl'
 import { getInitialFen } from '../../lidraughts/variant'
 import redraw from '../../utils/redraw'
 import { fenCompare } from '../../utils/draughtsFormat'
 
 export default {
 
-  controller: function(root: Editor) {
+  controller: function(root: EditorCtrl) {
     let isOpen = false
 
     function open() {
@@ -44,13 +44,13 @@ export default {
   }
 }
 
-function renderEditorMenu(ctrl: Editor) {
+function renderEditorMenu(ctrl: EditorCtrl) {
   return h('div.editorMenu', [
     renderPositionSettings(ctrl)
   ])
 }
 
-export function renderPositionSettings(ctrl: Editor) {
+export function renderPositionSettings(ctrl: EditorCtrl) {
   const fen = ctrl.computeFen(false)
   return h('div.editorSelectors', [
     h('div.select_input', [

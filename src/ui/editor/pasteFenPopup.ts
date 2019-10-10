@@ -2,12 +2,12 @@ import i18n from '../../i18n'
 import popupWidget from '../shared/popup'
 import router from '../../router'
 import h from 'mithril/hyperscript'
-import Editor, { MenuInterface } from './Editor'
+import EditorCtrl, { MenuInterface } from './EditorCtrl'
 import { fenFromTag } from '../../utils/draughtsFormat'
 
 export default {
 
-  controller: function(root: Editor) {
+  controller: function(root: EditorCtrl) {
     let isOpen = false
 
     function open() {
