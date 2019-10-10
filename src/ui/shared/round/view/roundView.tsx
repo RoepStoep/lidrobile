@@ -60,7 +60,7 @@ export function emptyTV(channel?: string, onTVChannelChange?: () => void) {
 
 export function renderMaterial(material: Material) {
   const tomb = Object.keys(material.pieces).map((role: Role) =>
-    material.pieces[role] ? h('div.tomb', { key: role }, range(material.pieces[role])
+    material.pieces[role] ? h('div.tomb', range(material.pieces[role])
       .map(_ => h('piece', { className: role }))
     ) : null
   )
