@@ -103,6 +103,7 @@ export interface PdnDumpRequest {
   readonly white?: string
   readonly black?: string
   readonly date?: string
+  readonly finalSquare?: boolean
 }
 
 export interface PdnDumpResponse {

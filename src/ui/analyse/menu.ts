@@ -178,6 +178,7 @@ function offlinePdnExport(ctrl: AnalyseCtrl) {
       variant: ctrl.data.game.variant.key,
       initialFen: ctrl.data.game.initialFen,
       pdnMoves: endSituation.pdnMoves || [],
+      finalSquare: true,
       white,
       black
     })

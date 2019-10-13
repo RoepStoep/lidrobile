@@ -108,6 +108,7 @@ export default class Replay {
       variant: this.variant,
       initialFen: this.initialFen,
       pdnMoves: sit.pdnMoves,
+      finalSquare: true,
       white,
       black
     })
