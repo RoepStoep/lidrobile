@@ -8,7 +8,7 @@ const worker = new Worker('vendor/scaladraughts.js')
 worker.postMessage({ topic: 'init', payload: { variant: 'standard'}})
 
 export interface GameSituation {
-  readonly id: string
+  id: string
   readonly ply: number
   readonly variant: string
   readonly fen: string
@@ -21,10 +21,10 @@ export interface GameSituation {
   readonly status?: GameStatus
   readonly winner?: Color
   readonly kingMoves?: KingMoves
-  readonly san?: San
-  readonly uci?: Uci
-  readonly pdnMoves: ReadonlyArray<string>
-  readonly uciMoves: ReadonlyArray<string>
+  san?: San
+  uci?: Uci
+  pdnMoves: ReadonlyArray<string>
+  uciMoves: ReadonlyArray<string>
   readonly promotion?: string
 }
 

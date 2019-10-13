@@ -1,5 +1,6 @@
 import i18n from '../../../i18n'
 import * as draughts from '../../../draughts'
+import { countGhosts } from '../../../draughtsground/fen'
 import { GameStatus } from '../../../lidraughts/interfaces/game'
 
 export default class Replay {
@@ -33,7 +34,18 @@ export default class Replay {
   }
 
   public situation = (): draughts.GameSituation => {
-    return this.situations[this.situations.length - 1]
+    let i = this.situations.length - 1;
+    while (i >= 0) {
+      if (this.displayPly(this.situations[i]) === this.ply) {
+        break;
+      }
+      i--;
+    }
+    return this.situations[i]
+  }
+
+  private displayPly = (sit: draughts.GameSituation): number => {
+    return countGhosts(sit.fen) ? sit.ply + 1 : sit.ply
   }
 
   public lastCaptureFen = (): string | undefined => {
@@ -102,9 +114,25 @@ export default class Replay {
   }
 
   private addMoveOrDrop = (moveOrDrop: draughts.MoveResponse) => {
-    this.ply = moveOrDrop.situation.ply
-    if (this.situations.length && this.ply < this.situations[this.situations.length - 1].ply) {
-      let drop = 2;
+    this.ply = this.displayPly(moveOrDrop.situation)
+    const prevSit = this.situations[this.situations.length - 1]
+    if (this.situations.length && this.ply <= this.displayPly(prevSit)) {
+      if (countGhosts(prevSit.fen)) {
+        const prevUci = prevSit.uci, prevSan = prevSit.san
+        if (moveOrDrop.situation.uci && prevUci && prevUci.slice(prevUci.length - 2) === moveOrDrop.situation.uci.slice(0, 2)) {
+          moveOrDrop.situation.uci = prevUci.slice(0, prevUci.length - 2) + moveOrDrop.situation.uci
+          moveOrDrop.situation.id = prevSit.id.slice(0, 1) + moveOrDrop.situation.id.slice(1)
+          moveOrDrop.situation.uciMoves = moveOrDrop.situation.uciMoves.slice(0, moveOrDrop.situation.uciMoves.length - 2).concat(moveOrDrop.situation.uci);
+        }
+        if (moveOrDrop.situation.san && prevSan) {
+          const capt1 = prevSan.indexOf('x'), capt2 = moveOrDrop.situation.san.indexOf('x')
+          if (capt1 !== -1 && capt2 !== -1 && prevSan.slice(capt1 + 1) === moveOrDrop.situation.san.slice(0, capt2)) {
+            moveOrDrop.situation.san = prevSan.slice(0, capt1) + moveOrDrop.situation.san.slice(capt2)
+            moveOrDrop.situation.pdnMoves = moveOrDrop.situation.pdnMoves.slice(0, moveOrDrop.situation.pdnMoves.length - 2).concat(moveOrDrop.situation.san);
+          }
+        }
+      }
+      let drop = 1;
       while (this.ply < this.situations[this.situations.length - drop].ply) {
         drop++;
       }

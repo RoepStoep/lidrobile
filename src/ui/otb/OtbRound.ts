@@ -234,6 +234,7 @@ export default class OtbRound implements OtbRoundInterface, PromotingInterface {
         turnColor: sit.player,
         lastMove: lastUci ? draughtsFormat.uciToMoveOrDrop(lastUci) : null,
         dests: sit.dests,
+        captureLength: sit.captureLength,
         movableColor: sit.player
       })
     }

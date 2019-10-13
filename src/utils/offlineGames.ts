@@ -38,6 +38,7 @@ export function getAnalyseData(data: StoredOfflineGame, orientation: Color): Ana
       san: o.san || o.pdnMoves.length ? o.pdnMoves[o.pdnMoves.length - 1] : undefined,
       dests: o.dests,
       drops: o.drops,
+      captLen: o.captureLength,
       pdnMoves: o.pdnMoves,
       end: o.end,
       player: o.player,
