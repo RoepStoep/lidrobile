@@ -68,7 +68,7 @@
     "cordova-plugin-inappbrowser": "3.0.0",
     "cordova-plugin-insomnia": "4.2.0",
     "cordova-plugin-nativeaudio": "git+https://github.com/veloce/cordova-plugin-nativeaudio.git#old_interface",
-    "cordova-plugin-network-information": "2.0.1",
+    "cordova-plugin-network-information": "2.0.2",
     "cordova-plugin-scan": "git+https://github.com/RoepStoep/cordova-plugin-scan.git#40e9af7",
     "cordova-plugin-splashscreen": "5.0.2",
     "cordova-plugin-statusbar": "2.4.2",
@@ -136,7 +136,6 @@
       "cordova-plugin-device": {},
       "cordova-plugin-insomnia": {},
       "cordova-plugin-x-socialsharing": {},
-      "cordova-plugin-network-information": {},
       "cordova-plugin-file": {},
       "cordova-universal-links-plugin": {},
       "cordova-plugin-dialogs": {},
@@ -153,7 +152,8 @@
       "cordova-plugin-file-transfer": {},
       "onesignal-cordova-plugin": {},
       "cordova-plugin-inappbrowser": {},
-      "com.rjfun.cordova.plugin.lowlatencyaudio": {}
+      "com.rjfun.cordova.plugin.lowlatencyaudio": {},
+      "cordova-plugin-network-information": {}
     }
   },
   "jest": {
