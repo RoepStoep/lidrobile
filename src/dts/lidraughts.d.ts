@@ -54,7 +54,6 @@ interface LidraughtsOptions {
 
 interface Window {
   lidraughts: LidraughtsOptions
-  moment: any
   Shepherd: TetherShepherd.ShepherdStatic
   AndroidFullScreen: {
     showSystemUI: () => void

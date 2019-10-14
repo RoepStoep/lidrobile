@@ -3,7 +3,7 @@ import h from 'mithril/hyperscript'
 import router from '../../router'
 import { emptyFen } from '../../utils/fen'
 import { hasNetwork } from '../../utils'
-import i18n, { formatNumber } from '../../i18n'
+import i18n, { formatNumber, fromNow } from '../../i18n'
 import session from '../../session'
 import socket from '../../socket'
 import { PongMessage, CorrespondenceSeek } from '../../lidraughts/interfaces'
@@ -261,7 +261,7 @@ function renderPlayban(endsAt: Date) {
       <h2>{i18n('sorry')}</h2>
       <p>{i18n('weHadToTimeYouOutForAWhile')}</p>
       <br />
-      <p>{h.trust(i18n('timeoutExpires', `<strong>${window.moment(endsAt).fromNow()}</strong>`))}</p>
+      <p>{h.trust(i18n('timeoutExpires', `<strong>${fromNow(endsAt)}</strong>`))}</p>
       <h2>{i18n('why')}</h2>
       <p>
         {i18n('pleasantDraughtsExperience')}<br />

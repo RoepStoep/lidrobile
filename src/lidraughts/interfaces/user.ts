@@ -69,7 +69,7 @@ export interface User extends BaseUser {
   readonly booster: boolean
 }
 
-interface PlayTime {
+export interface PlayTime {
   readonly total: number
   readonly tv: number
 }

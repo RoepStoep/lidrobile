@@ -1,6 +1,7 @@
 import { Plugins } from '@capacitor/core'
 import debounce from 'lodash-es/debounce'
 import router from '../../router'
+import { formatDateTime } from '../../i18n'
 import Draughtsground from '../../draughtsground/Draughtsground'
 import * as cg from '../../draughtsground/interfaces'
 import * as draughts from '../../draughts'
@@ -78,7 +79,7 @@ export default class AnalyseCtrl {
   cgConfig?: cg.SetConfig
   analysisProgress: boolean = false
   retroGlowing: boolean = false
-  formattedDate: string
+  formattedDate?: string
 
   private _currentTabIndex: number = 0
 
@@ -140,9 +141,9 @@ export default class AnalyseCtrl {
     this.initialPath = treeOps.takePathWhile(mainline, n => n.ply <= initPly)
     this.setPath(this.initialPath)
 
-    const gameMoment = window.moment(this.data.game.createdAt)
-
-    this.formattedDate = gameMoment.format('L LT')
+    if (this.data.game.createdAt) {
+      this.formattedDate = formatDateTime(new Date(this.data.game.createdAt))
+    }
 
     if (this.study) {
       this.socketIface = this.study.createSocket()
