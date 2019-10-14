@@ -51,14 +51,14 @@ export function loadingScreen(isPortrait: boolean, color?: Color, curFen?: strin
 export function renderContent(ctrl: AnalyseCtrl, isPortrait: boolean, bounds: Bounds) {
   const availTabs = ctrl.availableTabs()
 
-  return [
+  return h.fragment({ key: 'boardPos' + ctrl.settings.s.boardPosition }, [
     renderBoard(ctrl, bounds),
     h('div.analyse-tableWrapper', [
       renderAnalyseTable(ctrl, availTabs),
       !isPortrait ? renderActionsBar(ctrl) : null,
     ]),
     isPortrait ? renderActionsBar(ctrl) : null,
-  ]
+  ])
 }
 
 export function overlay(ctrl: AnalyseCtrl) {
