@@ -12,7 +12,7 @@ import { syncWithNowPlayingGames } from './utils/offlineGames'
 import redraw from './utils/redraw'
 import session from './session'
 import settings from './settings'
-import { loadPreferredLanguage, ensureLangIsAvailable, loadLanguage } from './i18n'
+import { loadPreferredLanguage, ensureLocaleIsAvailable, loadLanguage } from './i18n'
 import * as xhr from './xhr'
 import challengesApi from './lidraughts/challenges'
 import * as helper from './ui/helper'
@@ -109,8 +109,10 @@ function onOnline() {
 
       session.rememberLogin()
       .then((user) => {
-        if (user.language) {
-          ensureLangIsAvailable(user.language)
+        const serverLocale = user.language
+        console.log('Got locale from server: ', serverLocale)
+        if (serverLocale) {
+          ensureLocaleIsAvailable(serverLocale)
           .then(lang => {
             settings.general.lang(lang)
             loadLanguage(lang)

@@ -8,7 +8,7 @@ import settings from '../settings'
 import spinner from '../spinner'
 import router from '../router'
 import * as xhr from '../xhr'
-import i18n from '../i18n'
+import i18n, { plural } from '../i18n'
 import socket, { SocketIFace, SEEKING_SOCKET_NAME, RedirectObj } from '../socket'
 import { PongMessage, PoolMember, HumanSeekSetup, isPoolMember, isSeekSetup } from '../lidraughts/interfaces'
 import { OnlineGameData } from '../lidraughts/interfaces/game'
@@ -84,8 +84,8 @@ export default {
   view() {
 
     function content() {
-      const nbPlayersStr = i18n('nbPlayers', nbPlayers || '?')
-      const nbGamesStr = i18n('nbGamesInPlay', nbGames || '?')
+      const nbPlayersStr = plural('nbPlayers', nbPlayers, nbPlayers || '?')
+      const nbGamesStr = plural('nbGamesInPlay', nbGames, nbGames || '?')
 
       if (currentSetup === null) {
         return h('div.lobby-waitingPopup', 'Something went wrong. Please try again')

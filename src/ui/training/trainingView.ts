@@ -1,7 +1,7 @@
 import * as Mithril from 'mithril'
 import { Plugins } from '@capacitor/core'
 import h from 'mithril/hyperscript'
-import i18n from '../../i18n'
+import i18n, { plural } from '../../i18n'
 import { gameIcon, hasNetwork } from '../../utils'
 import session from '../../session'
 import settings from '../../settings'
@@ -24,7 +24,7 @@ export function renderHeader(ctrl: TrainingCtrl) {
     ]),
     h('h2.header-subTitle', ([
       i18n('rating'), ' ' + (ctrl.vm.mode === 'view' ? ctrl.data.puzzle.rating : '?'),
-      ' • ', i18n('playedXTimes', ctrl.data.puzzle.attempts)
+      ' • ', plural('playedXTimes', ctrl.data.puzzle.attempts, ctrl.data.puzzle.attempts)
     ] as Mithril.Child[]).concat(!hasNetwork() ? [
       ' • ',
       h('span.fa.fa-database'),
