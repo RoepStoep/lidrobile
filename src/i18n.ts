@@ -134,7 +134,7 @@ export function loadLanguage(lang: string): Promise<string> {
   .then(loadDateLocale)
 }
 
-function loadFile(code: string): Promise<string> {
+function loadFile(code: string, langFallback = false): Promise<string> {
   return import('./i18n/' + code + '.js')
   .then(({ default: data }) => {
     currentLocale = code
@@ -145,7 +145,18 @@ function loadFile(code: string): Promise<string> {
     return code
   })
   .catch(error => {
-    if (code === defaultCode) throw new Error(error)
+    if (code === defaultCode) {
+      throw new Error(error)
+    }
+    if (code.includes('-') && !langFallback) {
+      return getAvailableLocales().then(locales => {
+        const l = locales.find(l =>
+          getIsoCodeFromLocale(l) === getIsoCodeFromLocale(code)
+        )
+        if (l) return loadFile(l, true)
+        else return loadFile(defaultCode)
+      })
+    }
     return loadFile(defaultCode)
   })
 }
