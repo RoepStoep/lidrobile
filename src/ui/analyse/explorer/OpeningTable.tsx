@@ -1,5 +1,6 @@
 import * as Mithril from 'mithril'
 import h from 'mithril/hyperscript'
+import i18n from '../../../i18n'
 import router from '../../../router'
 import * as helper from '../../helper'
 import settings from '../../../settings'
@@ -23,8 +24,8 @@ const OpeningTable: Mithril.Component<Attrs, {}> = {
     const { ctrl, data } = attrs
 
     const moveTable = showMoveTable(ctrl, data.moves)
-    const recentTable = showGameTable(ctrl, 'recent', data.recentGames || [])
-    const topTable = showGameTable(ctrl, 'top', data.topGames || [])
+    const recentTable = showGameTable(ctrl, i18n('recentGames'), data.recentGames || [])
+    const topTable = showGameTable(ctrl, i18n('topGames'), data.topGames || [])
 
     if (moveTable || recentTable || topTable) {
       return (
@@ -113,7 +114,7 @@ function link(ctrl: AnalyseCtrl, e: Event) {
   }
 }
 
-function showGameTable(ctrl: AnalyseCtrl, type: string, games: Array<Game>) {
+function showGameTable(ctrl: AnalyseCtrl, title: string, games: Array<Game>) {
   if (!ctrl.explorer.withGames || !games.length) return null
   return (
     <table className="games"
@@ -121,7 +122,7 @@ function showGameTable(ctrl: AnalyseCtrl, type: string, games: Array<Game>) {
     >
       <thead>
         <tr>
-          <th colspan="4">{type + ' games'}</th>
+          <th colspan="4">{title}</th>
         </tr>
       </thead>
       <tbody>
@@ -160,12 +161,12 @@ function showMoveTable(ctrl: AnalyseCtrl, moves: Array<Move>) {
     >
       <thead>
         <tr>
-          <th className="explorerMove-move">Move</th>
-          <th className="explorerMove-games">Games</th>
-          <th className="explorerMove-result">White / Draw / Black</th>
+          <th className="explorerMove-move">{i18n('move')}</th>
+          <th className="explorerMove-games">{i18n('games')}</th>
+          <th className="explorerMove-result">{i18n('whiteDrawBlack')}</th>
         </tr>
       </thead>
-      <tbody>
+      <tbody className={pieceNotation ? 'displayPieces' : ''}>
         { moves.map(move => {
           return (
             <tr key={move.uci} data-uci={move.uci}>
