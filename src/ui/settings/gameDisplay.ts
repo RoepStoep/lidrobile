@@ -57,7 +57,7 @@ function renderBody() {
         )
       ),
       h('li.list_item',
-        formWidgets.renderCheckbox('Move list', 'moveList', settings.game.moveList)
+        formWidgets.renderCheckbox(i18n('movesPlayed'), 'moveList', settings.game.moveList)
       ),
       h('li.list_item', [
         formWidgets.renderCheckbox(i18n('zenMode'), 'zenMode', settings.game.zenMode),

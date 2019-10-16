@@ -7,11 +7,11 @@ import { linkify } from '../../utils/html'
 import { perfTypes, provisionalDeviation } from '../../lidraughts/perfs'
 import { Perf } from '../../lidraughts/interfaces/user'
 import * as xhr from '../../xhr'
-import i18n, { formatDate, formatDuration, fromNow } from '../../i18n'
+import i18n, { plural, formatDate, formatDuration, fromNow } from '../../i18n'
 import countries from '../../utils/countries'
 import * as helper from '../helper'
 import session from '../../session'
-import { IUserCtrl, ProfileUser, isSessionUser, isFullUser } from './UserCtrl'
+import { IUserCtrl, ProfileUser, isFullUser } from './UserCtrl'
 
 export function header(user: ProfileUser, ctrl: IUserCtrl) {
   const title = userTitle(user.online!!, user.patron!!, user.username, user.title)
@@ -104,7 +104,7 @@ function renderProfile(user: ProfileUser) {
           </p>
           <p>{memberSince}</p>
           {user.seenAt ?
-          <p>Active <small>{fromNow(new Date(user.seenAt))}</small></p> : null
+          <p>{h.trust(i18n('lastSeenActive', `<small>${fromNow(new Date(user.seenAt))}</small>`))}</p> : null
           }
         </div>
       </section>
@@ -146,8 +146,9 @@ function renderWebsiteLinks(ctrl: IUserCtrl, user: ProfileUser) {
 }
 
 function renderStats(user: ProfileUser) {
-  let totalPlayTime: string | null = null
   let tvTime: string | null = null
+
+  const totalPlayTime = user.playTime ? i18n('tpTimeSpentPlaying', formatDuration(user.playTime.total)) : null
 
   if (isFullUser(user)) {
     totalPlayTime = user.playTime ? i18n('tpTimeSpentPlaying', formatDuration(user.playTime.total)) : null
@@ -159,7 +160,7 @@ function renderStats(user: ProfileUser) {
   return (
     <section className="profileSection">
       {isFullUser(user) && user.completionRate ?
-      <p>{i18n('gameCompletionRate', '')}<strong>{user.completionRate}%</strong></p> : null
+      <p>{i18n('gameCompletionRate', user.completionRate)}</p> : null
       }
       {totalPlayTime ?
       <p>{totalPlayTime}</p> : null
@@ -243,13 +244,13 @@ function renderActions(ctrl: IUserCtrl, user: ProfileUser) {
         <div className="list_item nav"
           oncreate={helper.ontapY(ctrl.goToGames)}
         >
-          {i18n('nbGames', user.count.all)}
+          {plural('nbGames', user.count.all, user.count.all)}
         </div> : null
       }
       <div className="list_item nav"
         oncreate={helper.ontapY(ctrl.followers)}
       >
-        {i18n('nbFollowers', user.nbFollowers || '')}
+        {plural('nbFollowers', user.nbFollowers, user.nbFollowers)}
       </div>
       { !ctrl.isMe() ? <div className="list_item nav" data-icon="1"
         oncreate={helper.ontapY(ctrl.goToUserTV)}
@@ -265,9 +266,10 @@ function renderActions(ctrl: IUserCtrl, user: ProfileUser) {
       </div> : null
       }
       { session.isConnected() && !ctrl.isMe() ?
-      <div className="list_item nav" data-icon="c"
+      <div className="list_item nav"
         oncreate={helper.ontapY(ctrl.composeMessage)}
       >
+        <span className="fa fa-comment" />
         {i18n('composeMessage')}
       </div> : null
       }
