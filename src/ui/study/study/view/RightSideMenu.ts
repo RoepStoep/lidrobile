@@ -6,7 +6,6 @@ import { StudyMemberMap, StudyMember } from '../../../../lidraughts/interfaces/s
 import * as helper from '../../../helper'
 import i18n from '../../../../i18n'
 import CloseSlideHandler from '../../../shared/sideMenu/CloseSlideHandler'
-import CloseSwipeHandler from '../../../shared/sideMenu/CloseSwipeHandler'
 import { expandMore, expandLess } from '../../../shared/icons'
 
 import StudyCtrl from '../../../analyse/study/StudyCtrl'
@@ -41,11 +40,7 @@ export default {
     const members = sortMembers(study.members)
     return h('aside#studyMenu', {
       oncreate: ({ dom }: Mithril.VnodeDOM<any, any>) => {
-        if (window.deviceInfo.platform === 'ios') {
-          CloseSwipeHandler(dom as HTMLElement, studyCtrl.sideMenu)
-        } else {
-          CloseSlideHandler(dom as HTMLElement, studyCtrl.sideMenu)
-        }
+        CloseSlideHandler(dom as HTMLElement, studyCtrl.sideMenu)
       }
     }, [
       h('div.native_scroller', [
