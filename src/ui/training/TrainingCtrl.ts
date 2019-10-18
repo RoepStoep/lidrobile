@@ -24,6 +24,7 @@ import { VM, Data, PimpedGame, Feedback } from './interfaces'
 import { getUnsolved, syncPuzzleResult, syncAndLoadNewPuzzle, syncAndClearCache, nbRemainingPuzzles, puzzleLoadFailure } from './offlineService'
 import { Database } from './database'
 import trainingSettings, { ISettingsCtrl } from './trainingSettings'
+import { countGhosts } from '../../draughtsground/fen'
 
 export default class TrainingCtrl implements PromotingInterface {
   data!: Data
@@ -394,7 +395,7 @@ export default class TrainingCtrl implements PromotingInterface {
         // path can be undefined when solution is clicked in the middle of opponent capt sequence
         return
       }
-      if (userMove) this.vm.moveValidationPending = true
+      if (userMove && !countGhosts(situation.fen)) this.vm.moveValidationPending = true
       this.jump(newPath, !userMove)
       redraw()
 
