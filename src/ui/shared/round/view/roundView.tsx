@@ -252,12 +252,12 @@ function getChecksCount(ctrl: OnlineRound, color: Color) {
 }
 
 function renderSubmitMovePopup(ctrl: OnlineRound) {
-  if (ctrl.vm.moveToSubmit || ctrl.vm.dropToSubmit) {
+  if (ctrl.vm.moveToSubmit || ctrl.vm.dropToSubmit || ctrl.vm.submitFeedback) {
     return (
       <div className="overlay_popup_wrapper submitMovePopup">
-      <div className="overlay_popup">
-      {gameButton.submitMove(ctrl)}
-      </div>
+        <div className="overlay_popup">
+        {gameButton.submitMove(ctrl)}
+        </div>
       </div>
     )
   }
