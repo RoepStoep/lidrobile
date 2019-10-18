@@ -23,5 +23,6 @@ npm-debug.log
 .tags
 .tags1
 .metals
+/.vscode
 
 /ul_web_hooks

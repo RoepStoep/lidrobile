@@ -40,7 +40,7 @@ export default function CevalCtrl(
       return
     }
     const step = nodes[nodes.length - 1]
-    if (step.ceval && step.ceval.depth >= maxDepth) {
+    if (step.ceval && step.ceval.depth >= effectiveMaxDepth()) {
       return
     }
     const work = {
