@@ -10,6 +10,7 @@ import Clock from './Clock'
 import { Tab } from '../tabs'
 import { povDiff } from '../ceval/winningChances'
 import AnalyseCtrl from '../AnalyseCtrl'
+import settings from '../../../settings'
 
 export default function renderBoard(
   ctrl: AnalyseCtrl,
@@ -96,7 +97,11 @@ export function playerBar(ctrl: AnalyseCtrl, color: Color) {
     result = gameResult(study, color === 'white')
   } else if (gameStatusApi.finished(ctrl.data)) {
     const winner = ctrl.data.game.winner
-    result = winner === undefined ? '½' : winner === color ? '1' : '0'
+    if (settings.game.draughtsResult) {
+      result = winner === undefined ? '1' : winner === color ? '2' : '0'
+    } else {
+      result = winner === undefined ? '½' : winner === color ? '1' : '0'
+    }
   }
   const showRight = ctrl.node.clock
   return h('div.analyse-player_bar', {

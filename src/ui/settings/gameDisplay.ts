@@ -31,6 +31,15 @@ function renderBody() {
         settings.game.kingMoves)),
       h('li.list_item',
         formWidgets.renderMultipleChoiceButton(
+          i18n('notationGameResult'), [
+            { label: '1-0 • ½-½ • 0-1', value: false },
+            { label: '2-0 • 1-1 • 0-2', value: true },
+          ],
+          settings.game.draughtsResult
+        )
+      ),
+      h('li.list_item',
+        formWidgets.renderMultipleChoiceButton(
           i18n('clockPosition'), [
             { label: 'Left', value: 'left' },
             { label: 'Right', value: 'right' },

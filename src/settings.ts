@@ -98,6 +98,7 @@ export default {
     magnified: store.prop<boolean>('settings.pieceMagnified', true),
     zenMode: store.prop<boolean>('settings.zenMode', false),
     kingMoves: store.prop<boolean>('settings.kingMoves', true),
+    draughtsResult: store.prop<boolean>('settings.draughtsResult', true),
     clockPosition: store.prop<'right' | 'left'>('settings.game.inversedClockPos', 'right'),
     pieceMove: store.prop<'tap' | 'drag' | 'both'>('settings.game.pieceMove', 'both'),
   },

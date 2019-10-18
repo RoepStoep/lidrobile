@@ -1,5 +1,6 @@
 import router from '../../../router'
 import * as helper from '../../helper'
+import settings from '../../../settings'
 import i18n from '../../../i18n'
 import { OnlineGameData } from '../../../lidraughts/interfaces/game'
 import { ExplorerData, Game, Move, Player } from './interfaces'
@@ -85,9 +86,15 @@ function onTableTap(ctrl: AnalyseCtrl, e: Event) {
 }
 
 function showResult(w: Color) {
-  if (w === 'white') return <result className="white">1-0</result>
-  if (w === 'black') return <result className="black">0-1</result>
-  return <result className="draws">½-½</result>
+  if (settings.game.draughtsResult) {
+    if (w === 'white') return <result className="white">2-0</result>
+    if (w === 'black') return <result className="black">0-2</result>
+    return <result className="draws">1-1</result>
+  } else {
+    if (w === 'white') return <result className="white">1-0</result>
+    if (w === 'black') return <result className="black">0-1</result>
+    return <result className="draws">½-½</result>
+  }
 }
 
 function link(ctrl: AnalyseCtrl, e: Event) {
