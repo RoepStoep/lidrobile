@@ -2,7 +2,7 @@ import * as h from 'mithril/hyperscript'
 import * as utils from '../utils'
 import i18n from '../i18n'
 import router from '../router'
-import { humanSetupFromSettings } from '../lidraughts/setup'
+import { humanSetupFromSettings, humanSetupFromPool } from '../lidraughts/setup'
 import { Pool, PoolMember, HumanSeekSetup, isPoolMember, isSeekSetup } from '../lidraughts/interfaces'
 import * as xhr from '../xhr'
 import settings, { HumanSettings } from '../settings'
@@ -80,7 +80,7 @@ function goSeek(conf: PoolMember | HumanSeekSetup) {
 
   // pool
   if (isPoolMember(conf)) {
-    lobby.startSeeking(conf)
+    //lobby.startSeeking(conf)
   }
   // real time seek
   else if (isSeekSetup(conf) && conf.timeMode === 1) {
@@ -156,8 +156,8 @@ function renderPool(p: Pool) {
     key: 'pool-' + p.id,
     oncreate: helper.ontap(() => {
       // remember pool id for new opponent button
-      humanSetup.pool(p.id)
-      goSeek({ id: p.id })
+      //humanSetup.pool(p.id)
+      goSeek(humanSetupFromPool(p))
       close()
     })
   }, [
