@@ -98,7 +98,7 @@ export function playerBar(ctrl: AnalyseCtrl, color: Color) {
     result = gameResult(study, color === 'white')
   } else if (gameStatusApi.finished(ctrl.data)) {
     const winner = ctrl.data.game.winner
-    if (settings.game.draughtsResult) {
+    if (settings.game.draughtsResult()) {
       result = winner === undefined ? '1' : winner === color ? '2' : '0'
     } else {
       result = winner === undefined ? '½' : winner === color ? '1' : '0'

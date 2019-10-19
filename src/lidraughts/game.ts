@@ -128,11 +128,11 @@ export function nbMoves(data: OnlineGameData, color: Color) {
 export function result(data: GameData) {
   if (gameStatus.finished(data)) switch (data.game.winner) {
     case 'white':
-      return settings.game.draughtsResult ? '2-0' : '1-0'
+      return settings.game.draughtsResult() ? '2-0' : '1-0'
     case 'black':
-      return settings.game.draughtsResult ? '0-2' : '0-1'
+      return settings.game.draughtsResult() ? '0-2' : '0-1'
     default:
-      return settings.game.draughtsResult ? '1-1' : '½-½'
+      return settings.game.draughtsResult() ? '1-1' : '½-½'
   }
   return '*'
 }

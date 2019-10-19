@@ -86,7 +86,7 @@ function onTableTap(ctrl: AnalyseCtrl, e: Event) {
 }
 
 function showResult(w: Color) {
-  if (settings.game.draughtsResult) {
+  if (settings.game.draughtsResult()) {
     if (w === 'white') return <result className="white">2-0</result>
     if (w === 'black') return <result className="black">0-2</result>
     return <result className="draws">1-1</result>
