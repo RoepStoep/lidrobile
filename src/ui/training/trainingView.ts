@@ -1,6 +1,6 @@
 import * as h from 'mithril/hyperscript'
 import i18n from '../../i18n'
-import { hasNetwork } from '../../utils'
+import { gameIcon, hasNetwork } from '../../utils'
 import session from '../../session'
 import settings from '../../settings'
 import Board, { Bounds } from '../shared/Board'
@@ -16,7 +16,10 @@ export function renderHeader(ctrl: TrainingCtrl) {
 
   return ctrl.vm.loading ?
   connectingHeader() : header(h('div.main_header_title.withSub', [
-    h('h1', i18n('puzzleId', ctrl.data.puzzle.id)),
+    h('h1', [
+      h(`span.withIcon[data-icon=${gameIcon(ctrl.data.puzzle.variant.key)}]`),
+      i18n('puzzleId', ctrl.data.puzzle.id)
+    ]),
     h('h2.header-subTitle', ([
       i18n('rating'), ' ' + (ctrl.vm.mode === 'view' ? ctrl.data.puzzle.rating : '?'),
       ' • ', i18n('playedXTimes', ctrl.data.puzzle.attempts)
