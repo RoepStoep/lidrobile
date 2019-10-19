@@ -10,6 +10,7 @@ import { GameData, OnlineGameData, Player } from './interfaces/game'
 import { AnalyseData, OnlineAnalyseData } from './interfaces/analyse'
 
 export const analysableVariants = ['standard', 'antidraughts', 'breakthrough', 'fromPosition', 'frisian', 'frysk']
+export const puzzleVariants = ['standard', 'frisian']
 
 export function parsePossibleMoves(dests?: StringMap | string): DestsMap {
   if (!dests) return {}

@@ -36,8 +36,8 @@ export default {
   oninit({ attrs }) {
     const variantProp = <VariantKey>settings.training.variant() || 'standard'
     const numId = safeStringToNum(attrs.id)
-    const variant = attrs.variant ? attrs.variant : (numId !== undefined ? 'standard' : variantProp)
-    if (numId !== undefined) { 
+    const variant = attrs.variant ? attrs.variant : (numId ? 'standard' : variantProp)
+    if (numId) {
       if (cachedState.ctrl && window.history.state.puzzleId === numId) {
         this.ctrl = cachedState.ctrl
         redraw()

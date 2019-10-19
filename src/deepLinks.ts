@@ -5,7 +5,8 @@ import signupModal from './ui/signupModal'
 import { handleXhrError } from './utils'
 import { cleanFenUri } from './utils/fen'
 import { getChallenge } from './xhr'
-import { analysableVariants } from './lidraughts/game'
+import { analysableVariants, puzzleVariants } from './lidraughts/game'
+import { getInitialFen } from './lidraughts/variant'
 
 export default {
   init() {
@@ -24,7 +25,7 @@ export default {
       }
     })
     universalLinks.subscribe('challenge', (eventData: UniversalLinks.EventData) => router.set('/challenge/' + eventData.path.split('/').pop()))
-    universalLinks.subscribe('editor', () => router.set('/editor'))
+    universalLinks.subscribe('editor', handleEditor)
     universalLinks.subscribe('editorPosition', handleEditorPosition)
     universalLinks.subscribe('inbox', () => router.set('/inbox'))
     universalLinks.subscribe('inboxNew', () => router.set('/inbox/new'))
@@ -64,7 +65,8 @@ function handleVariantProfile (eventData: UniversalLinks.EventData) {
 }
 
 // handle link like:
-// https://www.en.lidraughts.org/analysis/2b1rrk1/p4Np1/6Pp/q2p3Q/n1pP4/b1P1B3/P1BK1P2/1R4R1_w_-_-_0_1
+// https://lidraughts.org/analysis/breakthrough
+// https://lidraughts.org/analysis/frysk/W%3AW46%2C47%2C48%2C49%2C50%3AB1%2C2%2C3%2C4%2C6%3AH0%3AF1%3A%2B0%2B0
 function handleAnalysisPosition (eventData: UniversalLinks.EventData) {
   let pathSuffix = eventData.path.replace('/analysis', '')
 
@@ -72,28 +74,57 @@ function handleAnalysisPosition (eventData: UniversalLinks.EventData) {
   const pieces = pathSuffix.split('/')
   if (analysableVariants.includes(pieces[1])) {
     variant = pieces[1]
-    pathSuffix = pathSuffix.substring(pathSuffix.indexOf('/', 1))
+    pathSuffix = pathSuffix.substring(variant.length + 1)
   }
 
   pathSuffix = cleanFenUri(pathSuffix)
-  router.set(`/analyse/variant/${variant}/fen/${encodeURIComponent(pathSuffix)}`)
+  if (pathSuffix) {
+    router.set(`/analyse/variant/${variant}/fen/${encodeURIComponent(pathSuffix)}`)
+  } else {
+    router.set(`/analyse/variant/${variant}`)
+  }
 }
 
-// handle links like https://lidraughts.org/editor/1k6/1r6/2K5/Q7/8/8/8/8_w_-_-
+// handle links like 
+// https://lidraughts.org/editor
+// https://lidraughts.org/editor?fen=W:W31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50:B1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19:H0:F1:+0+0&variant=frisian
+function handleEditor (eventData: UniversalLinks.EventData) {
+  const variantParam = (<any>eventData.params).variant, fenParam = (<any>eventData.params).fen,
+    variant = analysableVariants.includes(variantParam) ? variantParam : 'standard',
+    fen = fenParam || getInitialFen(variant as VariantKey)
+
+  router.set(`/editor/variant/${variant}/fen/${encodeURIComponent(fen)}`)
+}
+
+// handle links like 
+// https://lidraughts.org/editor/frysk
+// https://lidraughts.org/editor/breakthrough/W:W31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50:B1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19:H0:F1:+0+0
 function handleEditorPosition (eventData: UniversalLinks.EventData) {
   let pathSuffix = eventData.path.replace('/editor', '')
+
+  let variant = 'standard'
+  const pieces = pathSuffix.split('/')
+  if (analysableVariants.includes(pieces[1])) {
+    variant = pieces[1]
+    pathSuffix = pathSuffix.substring(variant.length + 1)
+  }
+
   pathSuffix = cleanFenUri(pathSuffix)
-  router.set(`/editor/${encodeURIComponent(pathSuffix)}`)
+
+  const fen = pathSuffix || getInitialFen(variant as VariantKey)
+  router.set(`/editor/variant/${variant}/fen/${encodeURIComponent(fen)}`)
 }
 
 function handleTrainingProblem (eventData: UniversalLinks.EventData) {
   const pieces = eventData.path.split('/')
-  const problem = pieces[2]
-  if (problem === 'coordinate') {
+  if (pieces[2] === 'coordinate') {
     window.open(eventData.url, '_blank', 'location=no')
   }
+  else if (puzzleVariants.includes(pieces[2])) {
+    router.set(`/training/${pieces.length > 3 ? pieces[3] : '0'}/variant/${pieces[2]}`)
+  }
   else {
-    router.set('/training/' + problem)
+    router.set('/training/' + pieces[2])
   }
 }
 
