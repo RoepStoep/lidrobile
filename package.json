@@ -2,7 +2,6 @@
     "name": "lidrobile",
     "version": "2.0.0",
     "description": "lidraughts.org mobile application",
-    "main": "app.js",
     "repository": {
         "type": "git",
         "url": "https://github.com/RoepStoep/lidrobile.git"
