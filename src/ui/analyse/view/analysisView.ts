@@ -73,7 +73,7 @@ const AcplSummary: Mithril.Component<{
 
     return h('div.analyse-evalSummary', ['white', 'black'].map((color: Color) => {
       const p = gameApi.getPlayer(d, color)
-      const pName = study ? findTag(study, color) || 'Anonymous' : playerName(p)
+      const pName = study ? findTag(study, color) || i18n('anonymous') : playerName(p)
 
       return h('table', [
         h('thead', h('tr', [

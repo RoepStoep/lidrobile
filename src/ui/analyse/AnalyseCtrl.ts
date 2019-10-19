@@ -38,6 +38,7 @@ import { make as makeEvalCache, EvalCache } from './evalCache'
 import { Source } from './interfaces'
 import * as tabs from './tabs'
 import StudyCtrl from './study/StudyCtrl'
+import i18n from '../../i18n'
 
 export default class AnalyseCtrl {
 
@@ -187,7 +188,7 @@ export default class AnalyseCtrl {
 
   playerName(color: Color): string {
     const p = gameApi.getPlayer(this.data, color)
-    return this.study ? findTag(this.study.data, color) || 'Anonymous' : gamePlayerName(p)
+    return this.study ? findTag(this.study.data, color) || i18n('anonymous') : gamePlayerName(p)
   }
 
   topColor(): Color {

@@ -11,6 +11,7 @@ import { Tab } from '../tabs'
 import { povDiff } from '../ceval/winningChances'
 import AnalyseCtrl from '../AnalyseCtrl'
 import settings from '../../../settings'
+import i18n from '../../../i18n'
 
 export default function renderBoard(
   ctrl: AnalyseCtrl,
@@ -87,7 +88,7 @@ export default function renderBoard(
 
 export function playerBar(ctrl: AnalyseCtrl, color: Color) {
   const pName = ctrl.playerName(color)
-  if (pName === 'Anonymous') return null
+  if (ctrl.synthetic && (pName === 'Anonymous' || pName === i18n('anonymous'))) return null
 
   const study = ctrl.study && ctrl.study.data
   let title, elo, result: string | undefined
