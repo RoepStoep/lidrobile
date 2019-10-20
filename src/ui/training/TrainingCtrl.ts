@@ -180,7 +180,7 @@ export default class TrainingCtrl implements PromotingInterface {
         puzzleLoadFailure(error)
       })
     } else {
-      xhr.newPuzzle('standard')
+      xhr.newPuzzle(this.vm.variant)
       .then(onSuccess)
       .catch(this.onXhrError)
     }
