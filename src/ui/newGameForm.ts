@@ -157,7 +157,7 @@ function renderPool(p: Pool) {
     oncreate: helper.ontap(() => {
       // remember pool id for new opponent button
       //humanSetup.pool(p.id)
-      goSeek(humanSetupFromPool(p))
+      goSeek(humanSetupFromPool(p, session.isConnected()))
       close()
     })
   }, [
