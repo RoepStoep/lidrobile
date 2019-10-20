@@ -200,7 +200,7 @@ function userPerfs(user: ProfileUser) {
 }
 
 function variantPerfAvailable(key: PerfKey, perf: Perf) {
-  return (key !== 'puzzle' && perf.games > 0)
+  return (key !== 'puzzle' && key !== 'puzzlefrisian' && perf.games > 0)
 }
 
 function renderPerf(key: PerfKey, name: string, perf: Perf, user: ProfileUser) {

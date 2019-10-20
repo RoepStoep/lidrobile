@@ -90,7 +90,7 @@ const AcplSummary: Mithril.Component<{
           }),
           h('tr', [
             h('th', analysis && analysis[color].acpl),
-            h('td', i18n('averageCentipawnLoss'))
+            h('td', i18n('averageCentipieceLoss'))
           ])
         ])
       ])
