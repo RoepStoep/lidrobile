@@ -68,6 +68,14 @@
         <splash src="res/ios/screens/Default@3x~iphone~comany.png" />
         <splash src="res/ios/screens/Default@2x~ipad~anyany.png" />
         <splash src="res/ios/screens/Default@2x~ipad~comany.png" />
+        <resource-file src="res/assets/book" />
+        <resource-file src="res/assets/book_bt" />
+        <resource-file src="res/assets/book_frisian" />
+        <resource-file src="res/assets/book_losing" />
+        <resource-file src="res/assets/eval" />
+        <resource-file src="res/assets/eval_bt" />
+        <resource-file src="res/assets/eval_frisian" />
+        <resource-file src="res/assets/eval_losing" />
     </platform>
     <preference name="Orientation" value="default" />
     <preference name="SuppressesLongPressGesture" value="true" />
