@@ -147,7 +147,7 @@ export default class AiRound implements AiRoundInterface, PromotingInterface {
         color: setupColor || getColorFromSettings(),
         player: data.setup.player,
         captureLength: data.setup.captureLength || 0
-      }), [data.setup], 0)
+      }), [data.setup], data.setup.ply)
     })
     .then(() => {
       if (this.engine.variant() !== variant) {
