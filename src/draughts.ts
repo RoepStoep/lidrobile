@@ -41,6 +41,7 @@ export interface InitResponse {
 export interface DestsRequest {
   readonly variant: VariantKey
   readonly fen: string
+  readonly uci?: string
   readonly path?: string
 }
 
@@ -52,6 +53,7 @@ export interface DestsResponse {
 export interface SituationRequest {
   readonly variant: VariantKey
   readonly fen: string
+  readonly uci?: string
   readonly path?: string
 }
 

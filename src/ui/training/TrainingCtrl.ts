@@ -333,6 +333,7 @@ export default class TrainingCtrl implements PromotingInterface {
       draughts.situation({
         variant: this.data.puzzle.variant.key,
         fen: this.node.fen,
+        uci: this.node.uci,
         path: this.path
       })
       .then(({ situation, path }) => {

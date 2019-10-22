@@ -690,6 +690,7 @@ export default class AnalyseCtrl {
       draughts.situation({
         variant: this.data.game.variant.key,
         fen: this.node.fen,
+        uci: this.node.uci,
         path: this.path
       })
       .then(({ situation, path }) => {
