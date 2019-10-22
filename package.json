@@ -1,6 +1,6 @@
 {
   "name": "lidrobile",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "lidraughts.org mobile application",
   "main": "app.js",
   "repository": {
@@ -106,12 +106,12 @@
     "watch-dev": "gulp watch --env=env-dev.json",
     "watch-stage": "gulp watch --env=env-stage.json",
     "watch-prod": "gulp watch --env=env-prod.json",
-    "build-stage": "BABEL_ENV=production gulp --mode='release' --env=env-stage.json",
+    "build-stage": "BABEL_ENV=production gulp --mode=release --env=env-stage.json",
     "prebuild-stage": "npm run lint && npm run test",
     "build-cordova-dev": "gulp --target=cordova --env=env-dev.json",
     "build-cordova-stage": "gulp --target=cordova --env=env-stage.json",
     "build-cordova-prod": "gulp --target=cordova --env=env-prod.json",
-    "build-cordova-release": "BABEL_ENV=production gulp --mode='release' --target='cordova' --env=env-prod.json",
+    "build-cordova-release": "BABEL_ENV=production gulp --mode=release --target=cordova --env=env-prod.json",
     "android-dev": "npm run build-cordova-dev && cordova run android --browserify",
     "android-stage": "npm run build-cordova-stage && cordova run android --browserify",
     "android-prod": "npm run build-cordova-prod && cordova run android --browserify",
