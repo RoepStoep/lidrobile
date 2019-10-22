@@ -91,6 +91,7 @@ export interface ThreefoldTestRequest {
   readonly variant: VariantKey
   readonly initialFen: string
   readonly pdnMoves: ReadonlyArray<string>
+  readonly finalSquare?: boolean
 }
 
 export interface ThreefoldTestResponse {

@@ -90,7 +90,8 @@ export default class Replay {
     draughts.threefoldTest({
       variant: this.variant,
       initialFen: this.initialFen,
-      pdnMoves: sit.pdnMoves
+      pdnMoves: sit.pdnMoves,
+      finalSquare: true
     })
     .then(resp => {
       if (resp.threefoldRepetition) {
