@@ -402,8 +402,9 @@ export default class OnlineRound implements OnlineRoundInterface {
 
     if (playing) this.lastMoveMillis = performance.now()
 
-    if (this.vm.submitFeedback && this.vm.submitFeedback[0] + 1 === o.ply) {
-      const duration = this.vm.submitFeedback[1] - performance.now()
+    if (this.vm.submitFeedback && (this.vm.submitFeedback[0] + 1 === o.ply ||
+      (this.vm.submitFeedback[0] === o.ply && countGhosts(o.fen)))) {
+      const duration = performance.now() - this.vm.submitFeedback[1]
       setTimeout(() => {
         this.vm.submitFeedback = undefined
         if (playing) {
