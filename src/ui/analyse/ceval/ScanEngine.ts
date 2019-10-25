@@ -94,11 +94,8 @@ export default function ScanEngine(variant: VariantKey): IEngine {
       return setOption('threads', work.cores)
       .then(() => send('pos pos=' + scanFen(work.initialFen) + (work.moves.length != 0 ? (' moves="' + work.moves.join(' ') + '"') : '')))
       .then(() => {
-        if (work.maxDepth >= 99) send('level infinite');
-        else {
-          send('level move-time=90');
-          send('level depth=' + work.maxDepth);
-        }
+        if (work.maxDepth >= 99) return send('level infinite');
+        else return send('level depth=' + work.maxDepth);
       })
       .then(() => send('go analyze'))
     }
@@ -110,7 +107,6 @@ export default function ScanEngine(variant: VariantKey): IEngine {
    * command is sent by scan
    */
   function processOutput(text: string, work: Work, rdyResolve: () => void) {
-    console.log('[scan >>] ' + text)
     if (text.indexOf('done') === 0) {
       console.debug('[scan >>] ' + text)
       finished = true
