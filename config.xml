@@ -141,5 +141,5 @@
     <plugin name="onesignal-cordova-plugin" spec="2.5.2" />
     <engine name="ios" spec="5.0.1" />
     <engine name="android" spec="8.0.0" />
-    <plugin name="cordova-plugin-scan" spec="https://github.com/RoepStoep/cordova-plugin-scan.git#e2c031a" />
+    <plugin name="cordova-plugin-scan" spec="https://github.com/RoepStoep/cordova-plugin-scan.git#8b672cc" />
 </widget>
