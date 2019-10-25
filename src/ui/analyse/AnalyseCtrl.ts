@@ -405,7 +405,7 @@ export default class AnalyseCtrl {
 
   uciMove = (uci: string) => {
     const move = draughtsFormat.decomposeUci(uci)
-    this.sendMove(move[0], move[1])
+    this.sendMove(move[0], move[move.length - 1], move.length > 2 ? uci : undefined)
     this.explorer.loading(true)
   }
 
@@ -528,10 +528,11 @@ export default class AnalyseCtrl {
 
   private canEvalGet = (node: Tree.Node): boolean => node.ply < 15
 
-  private sendMove = (orig: Key, dest: Key) => {
+  private sendMove = (orig: Key, dest: Key, uci?: string) => {
     const move: draughts.MoveRequest = {
       orig,
       dest,
+      uci,
       variant: this.data.game.variant.key,
       fen: this.node.fen,
       path: this.path

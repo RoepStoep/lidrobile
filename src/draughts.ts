@@ -67,6 +67,7 @@ export interface MoveRequest {
   readonly fen: string
   readonly orig: Key
   readonly dest: Key
+  readonly uci?: string
   readonly pdnMoves?: ReadonlyArray<string>
   readonly uciMoves?: ReadonlyArray<string>
   readonly path?: string
