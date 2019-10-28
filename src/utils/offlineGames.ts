@@ -1,5 +1,4 @@
 import cloneDeep from 'lodash-es/cloneDeep'
-import difference from 'lodash-es/difference'
 import storage from '../storage'
 import { AnalyseData } from '../lidraughts/interfaces/analyse'
 import { NowPlayingGame } from '../lidraughts/interfaces'
@@ -8,6 +7,7 @@ import { GameSituation } from '../draughts'
 
 const otbStorageKey = 'otb.current'
 const aiStorageKey = 'ai.current'
+const offlineCorresStorageKey = 'offline.corres.games'
 
 export interface StoredOfflineGame {
   data: OfflineGameData
@@ -61,8 +61,6 @@ export function setCurrentAIGame(game: StoredOfflineGame): void {
   storage.set(aiStorageKey, game)
 }
 
-const offlineCorresStorageKey = 'offline.corres.games'
-
 export function getOfflineGames(): Array<OnlineGameData> {
   const stored = storage.get<StoredOfflineGames>(offlineCorresStorageKey)
   let arr: OnlineGameData[] = []
@@ -113,7 +111,8 @@ export function syncWithNowPlayingGames(nowPlaying: Array<NowPlayingGame>): void
 
   const stored = storage.get<StoredOfflineGames>(offlineCorresStorageKey) || {}
   const storedIds = Object.keys(stored)
-  const toRemove = difference(storedIds, nowPlaying.map((g: NowPlayingGame) => g.fullId))
+  const playingIds = nowPlaying.map(g => g.fullId)
+  const toRemove = storedIds.filter(x => !playingIds.includes(x))
 
   if (toRemove.length > 0) {
     toRemove.forEach(id => {
