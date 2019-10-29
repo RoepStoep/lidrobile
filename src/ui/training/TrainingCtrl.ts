@@ -1,5 +1,4 @@
 import { Plugins } from '@capacitor/core'
-import cloneDeep from 'lodash-es/cloneDeep'
 import debounce from 'lodash-es/debounce'
 import throttle from 'lodash-es/throttle'
 import Draughtsground from '../../draughtsground/Draughtsground'
@@ -270,7 +269,7 @@ export default class TrainingCtrl implements PromotingInterface {
       })
     }
 
-    const data = cloneDeep(cfg)
+    const data = JSON.parse(JSON.stringify(cfg))
     const pimpedGame: PimpedGame | undefined = data.game ? { ...data.game, variant: data.puzzle.variant } : undefined
     const pimpedData: Data = { ...data, game: pimpedGame }
 

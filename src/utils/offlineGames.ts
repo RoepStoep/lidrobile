@@ -1,4 +1,3 @@
-import cloneDeep from 'lodash-es/cloneDeep'
 import storage from '../storage'
 import { AnalyseData } from '../lidraughts/interfaces/analyse'
 import { NowPlayingGame } from '../lidraughts/interfaces'
@@ -87,7 +86,7 @@ export function getOfflineGameData(id: string): OnlineGameData | null {
 
 export function saveOfflineGameData(id: string, gameData: OnlineGameData): void {
   const stored = storage.get<StoredOfflineGames>(offlineCorresStorageKey) || {}
-  const toStore = cloneDeep(gameData)
+  const toStore = JSON.parse(JSON.stringify(gameData))
   toStore.player.onGame = false
   toStore.opponent.onGame = false
   if (toStore.player.user) toStore.player.user.online = false
