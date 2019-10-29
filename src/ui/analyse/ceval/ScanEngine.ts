@@ -141,28 +141,30 @@ export default function ScanEngine(variant: VariantKey): IEngine {
     // Track max pv index to determine when pv prints are done.
     if (expectedPvs < multiPv) expectedPvs = multiPv
 
-    let pivot = work.threatMode ? 0 : 1
+    const pivot = work.threatMode ? 0 : 1
     if (work.ply % 2 === pivot) {
       if (win) win = -win;
       else ev = -ev;
     }
 
-    let pvData = {
+    const pvData = {
       moves,
       cp: win ? undefined : ev,
       win: win ? win : undefined,
       depth,
     };
 
+    const knps = nodes / elapsedMs
+
     if (multiPv === 1) {
       curEval = {
         fen: work.currentFen,
         maxDepth: work.maxDepth,
         depth,
-        knps: nodes / elapsedMs,
+        knps,
         nodes,
-        cp: win ? undefined : ev,
-        win: win ? win : undefined,
+        cp: pvData.cp,
+        win: pvData.win,
         pvs: [pvData],
         millis: elapsedMs
       }
