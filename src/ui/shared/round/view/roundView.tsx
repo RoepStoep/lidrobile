@@ -1,7 +1,6 @@
 import * as Mithril from 'mithril'
 import { Plugins } from '@capacitor/core'
 import h from 'mithril/hyperscript'
-import range from 'lodash-es/range'
 import redraw from '../../../../utils/redraw'
 import socket from '../../../../socket'
 import session from '../../../../session'
@@ -60,7 +59,7 @@ export function emptyTV(channel?: string, onTVChannelChange?: () => void) {
 
 export function renderMaterial(material: Material) {
   const tomb = Object.keys(material.pieces).map((role: Role) =>
-    material.pieces[role] ? h('div.tomb', range(material.pieces[role])
+    material.pieces[role] ? h('div.tomb', Array.from(Array(material.pieces[role]).keys())
       .map(_ => h('piece', { className: role }))
     ) : null
   )
