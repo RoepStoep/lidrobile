@@ -139,7 +139,8 @@
     <plugin name="cordova-plugin-network-information" spec="2.0.2" />
     <plugin name="cordova-plugin-splashscreen" spec="https://github.com/prageeth/cordova-plugin-splashscreen.git#05d8f9" />
     <plugin name="onesignal-cordova-plugin" spec="2.5.2" />
+    <plugin name="cordova-plugin-scan" spec="https://github.com/RoepStoep/cordova-plugin-scan.git#48ecf95" />
+    <plugin name="cordova-plugin-webview-checker" spec="1.0.1" />
     <engine name="ios" spec="5.0.1" />
     <engine name="android" spec="8.0.0" />
-    <plugin name="cordova-plugin-scan" spec="https://github.com/RoepStoep/cordova-plugin-scan.git#48ecf95" />
 </widget>
