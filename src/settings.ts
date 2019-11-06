@@ -1,4 +1,5 @@
 import store, { StoredProp } from './storage'
+import { prop as asyncProp } from './asyncStorage'
 import { ClockType, ClockTypeWithNone } from './ui/shared/clock/interfaces'
 
 
@@ -70,8 +71,8 @@ const minRatingRanges = [
 
 export default {
   general: {
-    lang: store.prop<string | null>('settings.lang', null),
-    sound: store.prop('settings.sound', true),
+    lang: asyncProp<string | null>('settings.lang', null),
+    sound: asyncProp<boolean>('settings.sound', true),
     theme: {
       availableBackgroundThemes: [
         { key: 'dark', name: 'dark', ext: '' },
