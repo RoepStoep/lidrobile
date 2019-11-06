@@ -1,5 +1,6 @@
 import h from 'mithril/hyperscript'
 import router from '../../router'
+import i18n, { plural } from '../../i18n'
 import * as helper from '../helper'
 import { closeIcon } from '../shared/icons'
 import i18n from '../../i18n'
@@ -49,31 +50,33 @@ export default {
           >
             { closeIcon }
           </button>
-          <h2>Tournament FAQ</h2>
+          <h2>{i18n('tournamentFAQ')}</h2>
         </header>
         <div className="modal_content">
           <div className="tournamentFaq">
+            <p>{i18n('willBeNotified')}</p>
+
             <h2>{i18n('isItRated')}</h2>
-            {i18n('someRated')}
+            <p>{i18n('someRated')}</p>
 
             <h2>{i18n('howAreScoresCalculated')}</h2>
-            {i18n('howAreScoresCalculatedAnswer')}
+            <p>{i18n('howAreScoresCalculatedAnswer')}</p>
 
             <h2>{i18n('berserk')}</h2>
-            {i18n('berserkAnswer')}
+            <p>{i18n('berserkAnswer')}</p>
 
             <h2>{i18n('howIsTheWinnerDecided')}</h2>
-            {i18n('howIsTheWinnerDecidedAnswer')}
+            <p>{i18n('howIsTheWinnerDecidedAnswer')}</p>
 
             <h2>{i18n('howDoesPairingWork')}</h2>
-            {i18n('howDoesPairingWorkAnswer')}
+            <p>{i18n('howDoesPairingWorkAnswer')}</p>
 
             <h2>{i18n('howDoesItEnd')}</h2>
-            {i18n('howDoesItEndAnswer')}
+            <p>{i18n('howDoesItEndAnswer')}</p>
 
             <h2>{i18n('otherRules')}</h2>
-            {i18n('thereIsACountdown')}
-            {' ' + i18n('drawingWithinNbMoves', 10)}
+            <p>{i18n('thereIsACountdown')}</p>
+            <p>{plural('drawingWithinNbMoves', 10, 10)}</p>
           </div>
         </div>
       </div>
