@@ -3,8 +3,8 @@ import { Plugins, AppState, PluginListenerHandle } from '@capacitor/core'
 import router from '../../router'
 import settings from '../../settings'
 import clockSettings from './clockSettings'
-import clockSet from './clockSet'
 
+import clockSet from '../shared/clock/clockSet'
 import { ClockType, IDraughtsClock } from '../shared/clock/interfaces'
 
 export interface IDraughtsClockCtrl {
@@ -19,15 +19,17 @@ export interface IDraughtsClockCtrl {
   appStateListener: PluginListenerHandle
 }
 
+function noop() {}
+
 export default function DraughtsClockCtrl(): IDraughtsClockCtrl {
 
-  const clockType: Stream<ClockType> = stream(settings.clock.clockType())
-  const clockObj: Stream<IDraughtsClock> = stream(clockSet[clockType()]())
+  const clockType: Stream<ClockType> = Stream(settings.clock.clockType())
+  const clockObj: Stream<IDraughtsClock> = Stream(clockSet[clockType()](noop))
 
   function reload() {
     if (clockObj() && clockObj().isRunning() && !clockObj().flagged()) return
     clockType(settings.clock.clockType())
-    clockObj(clockSet[clockType()]())
+    clockObj(clockSet[clockType()](noop))
   }
 
   const clockSettingsCtrl = clockSettings.controller(reload, clockObj)

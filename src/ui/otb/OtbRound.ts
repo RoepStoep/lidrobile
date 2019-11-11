@@ -23,8 +23,8 @@ import actions from './actions'
 import newGameMenu, { NewOtbGameCtrl } from './newOtbGame'
 import importGamePopup, { Controller as ImportGameController } from './importGamePopup'
 
-import { IDraughtsClock, ClockTypeWithNone } from '../shared/clock/interfaces'
-import clockSet from './clockSet'
+import clockSet from '../shared/clock/clockSet'
+import { IDraughtsClock, ClockType } from '../shared/clock/interfaces'
 
 interface InitPayload {
   variant: VariantKey
@@ -83,10 +83,10 @@ export default class OtbRound implements OtbRoundInterface, PromotingInterface {
         try {
           this.init(saved.data, saved.situations, saved.ply)
         } catch (e) {
-          this.startNewGame(currentVariant, undefined, settings.otb.clock.clockType())
+          this.startNewGame(currentVariant, undefined, settings.otb.clockType())
         }
       } else {
-        this.startNewGame(currentVariant, undefined, settings.otb.clock.clockType())
+        this.startNewGame(currentVariant, undefined, settings.otb.clockType())
       }
     }
 
@@ -138,12 +138,13 @@ export default class OtbRound implements OtbRoundInterface, PromotingInterface {
     redraw()
   }
 
-  public startNewGame(variant: VariantKey, setupFen?: string, clockType?: ClockTypeWithNone) {
+  public startNewGame(variant: VariantKey, setupFen?: string, clockType?: ClockType | 'none') {
     const payload: InitPayload = {
       variant,
       fen: setupFen || getInitialFen(variant)
     }
-    const clock = clockType ? clockSet[clockType](this.onFlag) : null
+    const clock = clockType && clockType !== 'none' ?
+      clockSet[clockType](this.onFlag) : null
 
     draughts.init(payload)
     .then((data: draughts.InitResponse) => {
