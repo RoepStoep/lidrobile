@@ -21,37 +21,37 @@ interface Attrs {
 }
 
 interface State {
-  round: OtbRound
+  round?: OtbRound
 }
 
-const OtbScreen: Mithril.Component<Attrs, State> = {
+export default {
   oninit({ attrs }) {
     socket.createDefault()
 
-    const saved = getCurrentOTBGame()
-    const setupFen = attrs.fen
-    const setupVariant = attrs.variant
-
-    this.round = new OtbRound(saved, setupFen, setupVariant)
+    getCurrentOTBGame().then(saved => {
+      this.round = new OtbRound(saved, attrs.fen, attrs.variant)
+      window.addEventListener('unload', this.round.saveClock)
+    })
 
     sleepUtils.keepAwake()
-    window.addEventListener('unload', this.round.saveClock)
   },
   oncreate: helper.viewFadeIn,
   onremove() {
     sleepUtils.allowSleepAgain()
-    this.round.unload()
-    window.removeEventListener('unload', this.round.saveClock)
+    if (this.round) {
+      this.round.unload()
+      window.removeEventListener('unload', this.round.saveClock)
+    }
   },
-  view() {
+  view({ attrs }) {
     let content: Mithril.Children, header: Mithril.Children
 
-    if (this.round.data && this.round.draughtsground) {
+    if (this.round && this.round.data && this.round.draughtsground) {
       header = renderHeader(h(GameTitle, { data: this.round.data }))
       content = renderContent(this.round)
     } else {
-      const fen = this.round.vm.setupFen || this.round.vm.savedFen || standardFen
-      const variant = this.round.vm.setupVariant || this.round.vm.savedVariant || 'standard'
+      const fen = attrs.fen || standardFen
+      const variant = attrs.variant || 'standard'
       const color = fen ? playerFromFen(fen) : 'white'
       header = renderHeader(i18n('playOnTheBoardOffline'))
       content = viewOnlyBoardContent(fen, color, variant, undefined, undefined)
@@ -60,11 +60,9 @@ const OtbScreen: Mithril.Component<Attrs, State> = {
     return layout.board(
       header,
       content,
-      overlay(this.round),
+      this.round && overlay(this.round),
       undefined,
-      this.round.data && this.round.data.player.color || 'white'
+      this.round && this.round.data && this.round.data.player.color || 'white'
     )
   }
-}
-
-export default OtbScreen
+} as Mithril.Component<Attrs, State>
