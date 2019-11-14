@@ -45,7 +45,7 @@ export default class AiRound implements AiRoundInterface, PromotingInterface {
   private engineNextMove: number | undefined
 
   public constructor(
-    saved?: StoredOfflineGame | null,
+    saved: StoredOfflineGame | null,
     setupFen?: string,
     setupVariant?: VariantKey,
     setupColor?: Color

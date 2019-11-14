@@ -4,8 +4,7 @@ import socket from '../../socket'
 import * as helper from '../helper'
 import { getCurrentOTBGame } from '../../utils/offlineGames'
 import * as sleepUtils from '../../utils/sleep'
-import { playerFromFen } from '../../utils/fen'
-import { standardFen } from '../../lidraughts/variant'
+import { playerFromFen, emptyFen } from '../../utils/fen'
 import i18n from '../../i18n'
 import layout from '../layout'
 import { header as renderHeader } from '../shared/common'
@@ -50,7 +49,7 @@ export default {
       header = renderHeader(h(GameTitle, { data: this.round.data }))
       content = renderContent(this.round)
     } else {
-      const fen = attrs.fen || standardFen
+      const fen = attrs.fen || emptyFen
       const variant = attrs.variant || 'standard'
       const color = fen ? playerFromFen(fen) : 'white'
       header = renderHeader(i18n('playOnTheBoardOffline'))
