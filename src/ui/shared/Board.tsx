@@ -14,7 +14,6 @@ export interface Bounds {
 export interface Attrs {
   variant: VariantKey
   draughtsground: Draughtsground
-  bounds: Bounds
   wrapperClasses?: string
   customPieceTheme?: string
   shapes?: ReadonlyArray<Shape>
@@ -29,6 +28,8 @@ interface State {
   boardTheme: string
   pieceTheme: string
   shapesCleared: boolean
+  bounds?: ClientRect
+  onResize: () => void
 }
 
 export default {
@@ -45,10 +46,15 @@ export default {
           }
         })
       }
+      this.bounds = dom.getBoundingClientRect()
+      this.onResize = () => {
+        this.bounds = dom.getBoundingClientRect()
+      }
+      window.addEventListener('resize', this.onResize)
     }
 
     this.boardOnCreate = ({ dom }: Mithril.VnodeDOM<any, any>) => {
-      draughtsground.attach(dom as HTMLElement)
+      draughtsground.attach(dom as HTMLElement, this.bounds!)
     }
 
     this.boardOnRemove = () => {
@@ -70,11 +76,11 @@ export default {
   },
 
   view(vnode) {
-    const { variant, draughtsground: draughtsgroundground, bounds, wrapperClasses, customPieceTheme, shapes, clearableShapes } = vnode.attrs
+    const { variant, draughtsground, wrapperClasses, customPieceTheme, shapes, clearableShapes } = vnode.attrs
     const docVariant = getVariant(variant) || getVariant('standard')
     const boardClass = [
       'display_board',
-      'orientation-' + draughtsgroundground.state.orientation,
+      'orientation-' + draughtsground.state.orientation,
       this.boardTheme,
       customPieceTheme || this.pieceTheme,
       variant,
@@ -88,34 +94,31 @@ export default {
       wrapperClass += wrapperClasses
     }
 
-    const wrapperStyle = bounds ? {
-      'flex-basis': bounds.height + 'px',
-      height: bounds.height + 'px',
-      width: bounds.width + 'px'
-    } : {}
-
     const allShapes = [
       ...(shapes !== undefined ? shapes : []),
       ...(clearableShapes !== undefined && !this.shapesCleared ? clearableShapes : [])
     ]
 
-    return (
-      <section oncreate={this.wrapperOnCreate} className={wrapperClass} style={wrapperStyle}>
-        <div className={boardClass}
-          oncreate={this.boardOnCreate}
-          onremove={this.boardOnRemove}
-        />
-        {
-          allShapes.length > 0 ?
-            BoardBrush(
-              bounds,
-              draughtsgroundground.state.orientation,
-              allShapes,
-              this.pieceTheme,
-              draughtsgroundground.state.boardSize
-            ) : null
-        }
-      </section>
-    )
+    return h('section', {
+      className: wrapperClass,
+      oncreate: this.wrapperOnCreate,
+      onremove: () => {
+        window.removeEventListener('resize', this.onResize)
+      }
+    }, [
+      h('div', {
+        className: boardClass,
+        oncreate: this.boardOnCreate,
+        onremove: this.boardOnRemove,
+      }),
+      allShapes.length > 0 && this.bounds ?
+        BoardBrush(
+          this.bounds,
+          draughtsground.state.orientation,
+          allShapes,
+          this.pieceTheme,
+          draughtsground.state.boardSize
+        ) : null
+    ])
   }
 } as Mithril.Component<Attrs, State>

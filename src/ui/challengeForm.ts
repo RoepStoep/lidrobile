@@ -136,7 +136,7 @@ function renderForm() {
           if (setupFen) router.set(`/editor/${encodeURIComponent(setupFen)}`)
         })
       }, [
-        h(ViewOnlyBoard, { fen: setupFen, variant: getVariantKeyById(settingsObj.variant()) || 'standard', orientation: 'white', bounds: { width: 100, height: 100 }})
+        h(ViewOnlyBoard, { fen: setupFen, variant: getVariantKeyById(settingsObj.variant()) || 'standard', orientation: 'white'})
       ])
       ] : null
     ) : null,

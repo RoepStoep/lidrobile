@@ -9,11 +9,9 @@ import continuePopup from '../../shared/continuePopup'
 import spinner from '../../../spinner'
 import ViewOnlyBoard from '../../shared/ViewOnlyBoard'
 import { notesView } from '../../shared/round/notes'
-import { Bounds } from '../../shared/Board'
 import TabNavigation from '../../shared/TabNavigation'
 import TabView from '../../shared/TabView'
 import { loadingBackbutton } from '../../shared/common'
-import * as helper from '../../helper'
 import layout from '../../layout'
 import { chatView } from '../../shared/chat'
 
@@ -37,22 +35,23 @@ import { toggleCoordinates } from '../../../draughtsground/fen'
 export function loadingScreen(isPortrait: boolean, color?: Color, curFen?: string, variant?: VariantKey) {
   const isSmall = settings.analyse.smallBoard()
   const boardPos = settings.analyse.boardPosition()
-  const bounds = helper.getBoardBounds(helper.viewportDim(), isPortrait, isSmall)
   return layout.board(
     loadingBackbutton(),
     [
-      viewOnlyBoard(color || 'white', bounds, isSmall, toggleCoordinates(curFen, false) || emptyFen, variant || 'standard', boardPos),
+      viewOnlyBoard(color || 'white', isSmall, toggleCoordinates(curFen, false) || emptyFen, variant || 'standard', boardPos),
       h('div.analyse-tableWrapper', spinner.getVdom('monochrome')),
       isPortrait && boardPos === '2' ? h('section.analyse_actions_bar') : null,
     ]
   )
 }
 
-export function renderContent(ctrl: AnalyseCtrl, isPortrait: boolean, bounds: Bounds) {
+export function renderContent(ctrl: AnalyseCtrl, isPortrait: boolean) {
   const availTabs = ctrl.availableTabs()
 
-  return h.fragment({ key: 'boardPos' + ctrl.settings.s.boardPosition }, [
-    renderBoard(ctrl, bounds),
+  return h.fragment({
+    key: 'boardPos' + ctrl.settings.s.boardPosition + 'size' + ctrl.settings.s.smallBoard,
+  }, [
+    renderBoard(ctrl),
     h('div.analyse-tableWrapper', [
       renderAnalyseTable(ctrl, availTabs),
       !isPortrait ? renderActionsBar(ctrl) : null,
@@ -101,10 +100,10 @@ export function renderVariantSelector(ctrl: AnalyseCtrl) {
   )
 }
 
-function viewOnlyBoard(color: Color, bounds: Bounds, isSmall: boolean, fen: string, variant: VariantKey, pos: '1' | '2') {
+function viewOnlyBoard(color: Color, isSmall: boolean, fen: string, variant: VariantKey, pos: '1' | '2') {
   return h('section.board_wrapper.analyse-boardWrapper', {
     className: (isSmall ? 'halfsize ' : '') + 'pos' + pos
-  }, h(ViewOnlyBoard, { orientation: color, bounds, fen, variant }))
+  }, h(ViewOnlyBoard, { orientation: color, fen, variant }))
 }
 
 function renderOpening(ctrl: AnalyseCtrl) {

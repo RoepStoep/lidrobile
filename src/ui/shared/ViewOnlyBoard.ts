@@ -4,14 +4,12 @@ import { batchRequestAnimationFrame } from '../../utils/batchRAF'
 import Draughtsground from '../../draughtsground/Draughtsground'
 import { uciToMove } from '../../utils/draughtsFormat'
 import settings from '../../settings'
-import { Bounds } from './Board'
 import getVariant from '../../lidraughts/variant'
 
 export interface Attrs {
   readonly fen: string
   readonly orientation: Color
   readonly lastMove?: string
-  readonly bounds?: Bounds
   readonly customPieceTheme?: string
   readonly variant: VariantKey
   readonly fixed?: boolean
@@ -44,12 +42,21 @@ const ViewOnlyBoard: Mithril.Component<Attrs, State> = {
   },
 
   oncreate({ attrs, dom }) {
+    const bounds = attrs.fixed ? {
+      // dummy bounds since fixed board doesn't use bounds
+      top: 0,
+      bottom: 0,
+      left: 0,
+      right: 0,
+      height: 0,
+      width: 0
+    } : dom.getBoundingClientRect()
     if (attrs.delay !== undefined) {
       setTimeout(() => {
-        this.ground.attach(dom as HTMLElement)
+        this.ground.attach(dom as HTMLElement, bounds)
       }, attrs.delay)
     } else {
-      this.ground.attach(dom as HTMLElement)
+      this.ground.attach(dom as HTMLElement, bounds)
     }
   },
 
@@ -57,9 +64,7 @@ const ViewOnlyBoard: Mithril.Component<Attrs, State> = {
     if (
       attrs.fen !== oldattrs.fen ||
       attrs.lastMove !== oldattrs.lastMove ||
-      attrs.orientation !== oldattrs.orientation || (!oldattrs.bounds || attrs.bounds && (
-      attrs.bounds.height !== oldattrs.bounds.height ||
-      attrs.bounds.width !== oldattrs.bounds.width))
+      attrs.orientation !== oldattrs.orientation
     ) {
       return true
     }
@@ -67,13 +72,10 @@ const ViewOnlyBoard: Mithril.Component<Attrs, State> = {
   },
 
   onupdate({ attrs }) {
-    const conf = {
+    this.ground.set({
       ...attrs,
       lastMove: attrs.lastMove ? uciToMove(attrs.lastMove) : undefined
-    }
-    // view only board care only about width and height
-    if (attrs.bounds) this.ground.setBounds(attrs.bounds as ClientRect)
-    this.ground.set(conf)
+    })
   },
 
   onremove() {

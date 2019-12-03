@@ -90,13 +90,12 @@ export default {
 
   view({ attrs }) {
     const isPortrait = helper.isPortrait()
-    const bounds = helper.getBoardBounds(helper.viewportDim(), isPortrait)
     const key = isPortrait ? 'o-portrait' : 'o-landscape'
 
     if (this.ctrl) {
       return layout.board(
         renderHeader(this.ctrl!),
-        renderContent(this.ctrl!, key, bounds),
+        renderContent(this.ctrl!, key),
         overlay(this.ctrl!)
       )
     }
@@ -109,7 +108,6 @@ export default {
               fen: attrs.initFen || emptyFen,
               orientation: attrs.initColor || 'white',
               variant: attrs.variant || 'standard',
-              bounds
             })
           ]),
           h('div.training-tableWrapper')

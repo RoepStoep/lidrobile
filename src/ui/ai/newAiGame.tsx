@@ -100,7 +100,6 @@ export default {
                           fen: ctrl.root.vm.setupFen,
                           variant: setupVariant,
                           orientation: setupColor,
-                          bounds: { width: 130, height: 130 }
                         })}
                       </div>
                     </div>

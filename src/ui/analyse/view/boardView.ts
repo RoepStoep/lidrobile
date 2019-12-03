@@ -2,7 +2,7 @@ import h from 'mithril/hyperscript'
 import * as draughtsFormat from '../../../utils/draughtsFormat'
 import gameStatusApi from '../../../lidraughts/status'
 import { findTag, gameResult } from '../../../lidraughts/interfaces/study'
-import Board, { Bounds } from '../../shared/Board'
+import Board from '../../shared/Board'
 import { Shape } from '../../shared/BoardBrush'
 
 import Clock from './Clock'
@@ -13,7 +13,6 @@ import i18n from '../../../i18n'
 
 export default function renderBoard(
   ctrl: AnalyseCtrl,
-  bounds: Bounds,
 ) {
   const player = ctrl.data.game.player
   const ceval = ctrl.node && ctrl.node.ceval
@@ -67,7 +66,6 @@ export default function renderBoard(
     h(Board, {
       variant: ctrl.data.game.variant.key,
       draughtsground: ctrl.draughtsground,
-      bounds,
       shapes,
       clearableShapes: ctrl.node.shapes,
       wrapperClasses: ctrl.settings.s.smallBoard ? 'halfsize' : '',

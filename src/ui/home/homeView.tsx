@@ -27,6 +27,7 @@ export function body(ctrl: HomeCtrl) {
   if (!hasNetwork()) {
     const puzzleData = ctrl.offlinePuzzle
     const boardConf = puzzleData ? {
+      fixed: true,
       fen: puzzleData.puzzle.fen,
       variant: puzzleData.puzzle.variant.key,
       orientation: puzzleData.puzzle.color,
@@ -212,6 +213,7 @@ function renderDailyPuzzle(ctrl: HomeCtrl) {
     puzzle.variant = puzzleData.puzzle.variant;
   }
   const boardConf = puzzle ? {
+    fixed: true,
     fen: puzzle.fen,
     variant: puzzle.variant.key,
     orientation: puzzle.color,
@@ -223,6 +225,7 @@ function renderDailyPuzzle(ctrl: HomeCtrl) {
       h('span', puzzle.color === 'white' ? i18n('whitePlays') : i18n('blackPlays')),
     ]
   } : {
+    fixed: true,
     orientation: 'white' as Color,
     fen: emptyFen,
     variant: 'standard' as VariantKey

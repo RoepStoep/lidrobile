@@ -20,13 +20,11 @@ export default class Draughtsground {
   public state: State
   public dom?: cg.DOM
 
-  private resizeTimeoutId: number = 0
-
   constructor(cfg: cg.InitConfig) {
     this.state = initBoard(cfg)
   }
 
-  attach(wrapper: HTMLElement) {
+  attach(wrapper: HTMLElement, bounds: ClientRect): void {
     const isViewOnly = this.state.fixed || this.state.viewOnly
     const board = document.createElement('div')
     board.className = 'cg-board'
@@ -35,18 +33,12 @@ export default class Draughtsground {
 
     wrapper.appendChild(board)
 
+    console.debug('chessground attached with bounds', bounds)
+
     this.dom = {
       board,
       elements: {},
-      bounds: this.state.fixed ? {
-        // dummy bounds since fixed board doesn't use bounds
-        top: 0,
-        bottom: 0,
-        left: 0,
-        right: 0,
-        height: 0,
-        width: 0
-      } : wrapper.getBoundingClientRect()
+      bounds
     }
 
     this.redrawSync()
@@ -88,10 +80,6 @@ export default class Draughtsground {
     window.removeEventListener('resize', this.onOrientationChange)
   }
 
-  setBounds = (bounds: ClientRect) => {
-    if (this.dom) this.dom.bounds = bounds
-  }
-
   applyAnim = (now: number): void => {
     const state = this.state
     let cur = state.animation.current
@@ -130,6 +118,10 @@ export default class Draughtsground {
     } else {
       this.redrawSync()
     }
+  }
+
+  setBounds = (bounds: ClientRect) => {
+    if (this.dom) this.dom.bounds = bounds
   }
 
   redrawSync = (): void => {
@@ -300,16 +292,14 @@ export default class Draughtsground {
     }, 120)
   }
 
-  // no need to debounce: resizable only by orientation change
   private onOrientationChange = () => {
     const dom = this.dom
     if (dom) {
       // yolo
-      clearTimeout(this.resizeTimeoutId)
-      this.resizeTimeoutId = setTimeout(() => {
+      requestAnimationFrame(() => {
         dom.bounds = dom.board.getBoundingClientRect()
         this.redraw()
-      }, 100)
+      })
     }
   }
 
