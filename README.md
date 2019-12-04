@@ -1,89 +1,55 @@
 [lidraughts.org/mobile](https://lidraughts.org/mobile)
 --------------------
 
-Lidraughts mobile is a [cordova](https://cordova.apache.org/) application, forked from [Lichess mobile](https://github.com/veloce/lichobile). It is written
-in [TypeScript](http://www.typescriptlang.org/) and JavaScript. The rendering
-library is [mithril.js](http://mithril.js.org/). It uses [babel](http://babeljs.io/),
-[browserify](http://browserify.org/) and [gulp](http://gulpjs.com/)
-as build tools. It talks to a native [Scan 3.1](https://github.com/rhalbersma/scan) engine, through a
+Lidraughts mobile is th lidraughts.org official application, forked from [Lichess mobile](https://github.com/veloce/lichobile). It is written
+in [TypeScript](http://www.typescriptlang.org/), with a bit of Kotlin and Swift.
+It is a web application that access native SDK thanks to [Ionic capacitor](https://capacitor.ionicframework.com/).
+The rendering library is [mithril.js](http://mithril.js.org/).
+It talks to a native [Scan 3.1](https://github.com/rhalbersma/scan) engine, through a
 [cordova plugin](https://github.com/RoepStoep/cordova-plugin-scan).
 Multi-variant draughts library is brought by [a JavaScript version of scaladraughts](https://github.com/RoepStoep/scaladraughtsjs).
 
-## Requirements
+## Required dependencies
 
 * [node](http://nodejs.org) latest LTS version
-* [cordova](https://cordova.apache.org/) latest version
+* [ionic capacitor dependencies](https://capacitor.ionicframework.com/docs/getting-started/dependencies)
 
 **Android:**
 
-* the [android SDK](http://developer.android.com/sdk/index.html)
-* [SDK packages](http://developer.android.com/sdk/installing/adding-packages.html) API 23
-* last version of Android SDK tools and platform tools
-* [android ndk](http://developer.android.com/tools/sdk/ndk/index.html) for
-  scan compilation
-* make sure the `sdk/tools/` directory is in your path, so you can use `android`
-  command everywhere.
+* in addition to capacitor dependencies, [android ndk](http://developer.android.com/tools/sdk/ndk/index.html) for Scan engine compilation (to install with Android Studio).
 
-**iOS:**
-
-* OS X and [Xcode](https://developer.apple.com/xcode/download/)
-
-## Build the web application
+## Initialize build
 
 Make sure you installed all deps:
 
     $ npm install
 
-Then copy `env.json.example` to `env.json` and modify settings
-to link your app to a lidraughts server.
+Capacitor needs the web app before update, so build it:
 
-To build and watch for changes:
+    $ npm run build
 
-    $ npm run watch
+Update capacitor:
 
-## Run the linter
-
-    $ npm run lint
-
-## Run the tests
-
-    $ npm run test
+    $ npx cap update
 
 ## Run in a browser
 
-    $ chromium --user-data-dir=/tmp/lidrobile-chrom --disable-web-security www/index.html
+You need to start a web server at `http://localhost:8080`. For instance:
+
+    $ npm install -g http-server
+    $ http-server .
+
+Once the server is running, browse to `http://localhost:8080/www
 
 Be sure to [Toggle Device Mode](https://developers.google.com/web/tools/chrome-devtools/device-mode/) in your browser, or else you won't be able to click on anything.
 
-## Build cordova application and run on device
+## Run in a device/emulator
 
-Be sure to check requirements above.
+The easiest way to do it is to open the native IDE. Capacitor has a command
+for that:
 
-See scripts defined in package.json for various environments.
+    $ npx cap open
 
-### Android
+## Advanced setup
 
-Plug your device with USB, or use an emulator. Then:
-
-    $ npm run android-stage
-
-### iOS
-
-Plug your device with USB, or use an emulator. Then:
-
-    $ npm run ios-stage
-
-## Build scan
-
-### Android
-
-Build the native code using:
-```
-ndk-build -C platforms/android
-```
-
-### iOS
-
-Through XCode, in the build settings menu:
-  * Set `C++ Language Dialect` option to `C++14` value.
-  * Set `C++ Standard Library` option to `libc++` value.
+See the [wiki](https://github.com/veloce/lichobile/wiki/Setting-a-lichess-dev-server-for-the-app).
