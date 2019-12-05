@@ -6,11 +6,6 @@ import Draughtsground from '../../draughtsground/Draughtsground'
 import getVariant from '../../lidraughts/variant'
 import BoardBrush, { Shape } from './BoardBrush'
 
-export interface Bounds {
-  width: number
-  height: number
-}
-
 export interface Attrs {
   variant: VariantKey
   draughtsground: Draughtsground

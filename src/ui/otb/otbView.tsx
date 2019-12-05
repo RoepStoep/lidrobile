@@ -10,7 +10,6 @@ import {
   renderBackwardButton,
   renderForwardButton,
 } from '../shared/offlineRound/view'
-import { hasSpaceForInlineReplay } from '../shared/round/util'
 import * as helper from '../helper'
 import actions from './actions'
 import newGameMenu from './newOtbGame'
@@ -41,7 +40,6 @@ export function renderContent(ctrl: OtbRound, pieceTheme?: string) {
   const replayTable = renderReplay(ctrl)
   const isPortrait = helper.isPortrait()
   const vd = helper.viewportDim()
-  const bounds = helper.getBoardBounds(vd, isPortrait)
 
   const board = h(Board, {
     variant: ctrl.data.game.variant.key,
@@ -54,7 +52,7 @@ export function renderContent(ctrl: OtbRound, pieceTheme?: string) {
 
   if (isPortrait)
     return [
-      hasSpaceForInlineReplay(vd, bounds) ? renderInlineReplay(ctrl) : null,
+      helper.hasSpaceForInlineReplay(vd, isPortrait) ? renderInlineReplay(ctrl) : null,
       renderAntagonist(ctrl, opponentName, material[ctrl.data.opponent.color], 'opponent', flip, clock),
       board,
       renderAntagonist(ctrl, playerName, material[ctrl.data.player.color], 'player', flip, clock),
