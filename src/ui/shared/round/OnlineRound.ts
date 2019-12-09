@@ -30,7 +30,6 @@ import ClockCtrl from './clock/ClockCtrl'
 import CorresClockCtrl from './correspondenceClock/corresClockCtrl'
 import socketHandler from './socketHandler'
 import * as xhr from './roundXhr'
-import crazyValid from './crazy/crazyValid'
 import { OnlineRoundInterface } from './'
 
 interface VM {
@@ -154,9 +153,7 @@ export default class OnlineRound implements OnlineRoundInterface {
       this.data,
       cfg.game.fen,
       this.userMove,
-      this.onUserNewPiece,
       this.onMove,
-      this.onNewPiece,
       this.plyStep(this.vm.ply)
     )
 
@@ -529,7 +526,6 @@ export default class OnlineRound implements OnlineRoundInterface {
       (this.draughtsground.state.premovable.current || this.draughtsground.state.predroppable.current)) {
       setTimeout(() => {
         this.draughtsground.playPremove()
-        this.playPredrop()
       }, 1)
     }
 
@@ -662,14 +658,6 @@ export default class OnlineRound implements OnlineRoundInterface {
     this.sendMove(orig, dest, undefined, hasPremove)
   }
 
-  private onUserNewPiece = (role: Role, key: Key, meta: AfterMoveMeta) => {
-    if (!this.replaying() && crazyValid.drop(this.data, role, key, this.data.possibleDrops)) {
-      this.sendNewPiece(role, key, !!meta.predrop)
-    } else {
-      this.jump(this.vm.ply)
-    }
-  }
-
   private onMove = (_: Key, __: Key, capturedPiece?: Piece) => {
     if (capturedPiece) {
       sound.capture()
@@ -680,16 +668,6 @@ export default class OnlineRound implements OnlineRoundInterface {
     if (!this.data.player.spectator) {
       vibrate.quick()
     }
-  }
-
-  private onNewPiece = () => {
-    sound.move()
-  }
-
-  private playPredrop() {
-    return this.draughtsground.playPredrop((drop: cg.Drop) => {
-      return crazyValid.drop(this.data, drop.role, drop.key, this.data.possibleDrops)
-    })
   }
 
   private onResume = () => {

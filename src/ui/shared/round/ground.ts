@@ -76,19 +76,15 @@ function make(
   data: OnlineGameData,
   fen: string,
   userMove: (orig: Key, dest: Key, meta: AfterMoveMeta) => void,
-  userNewPiece: (role: Role, key: Key, meta: AfterMoveMeta) => void,
   onMove: (orig: Key, dest: Key, capturedPiece?: Piece) => void,
-  onNewPiece: () => void, 
   step?: GameStep
 ): Draughtsground {
   const config = makeConfig(data, fen, undefined, step)
   config.movable!.events = {
-    after: userMove,
-    afterNewPiece: userNewPiece
+    after: userMove
   }
   config.events = {
-    move: onMove,
-    dropNewPiece: onNewPiece
+    move: onMove
   }
   config.viewOnly = data.player.spectator
   return new Draughtsground(config)

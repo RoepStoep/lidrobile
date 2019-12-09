@@ -28,7 +28,6 @@ import * as util from './util'
 import CevalCtrl from './ceval/CevalCtrl'
 import RetroCtrl, { IRetroCtrl } from './retrospect/RetroCtrl'
 import { ICevalCtrl } from './ceval/interfaces'
-import crazyValid from './crazy/crazyValid'
 import ExplorerCtrl from './explorer/ExplorerCtrl'
 import { IExplorerCtrl } from './explorer/interfaces'
 import analyseMenu, { IMainMenuCtrl } from './menu'
@@ -557,26 +556,6 @@ export default class AnalyseCtrl {
     this.sendMove(orig, dest)
   }
 
-  private userNewPiece = (piece: Piece, pos: Key) => {
-    if (crazyValid.drop(piece.role, pos, this.node.drops)) {
-      sound.move()
-      const drop = {
-        role: piece.role,
-        pos,
-        variant: this.data.game.variant.key,
-        fen: this.node.fen,
-        path: this.path
-      }
-      draughts.drop(drop)
-      .then(this.addNode)
-      .catch(err => {
-        // catching false drops here
-        console.error('wrong drop', err)
-        this.jump(this.path)
-      })
-    } else this.jump(this.path)
-  }
-
   private addNode = ({ situation, path }: draughts.MoveResponse) => {
     const curNode = this.node
     const node = {
@@ -698,7 +677,7 @@ export default class AnalyseCtrl {
     this.cgConfig = config
     this.data.game.player = color
     if (!this.draughtsground) {
-      this.draughtsground = ground.make(this.data, config, this.orientation, this.userMove, this.userNewPiece)
+      this.draughtsground = ground.make(this.data, config, this.orientation, this.userMove)
     } else {
       this.draughtsground.set(config, noCaptSequences)
     }

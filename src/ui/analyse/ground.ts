@@ -8,8 +8,7 @@ function makeConfig(
   data: AnalyseData,
   config: cg.SetConfig,
   orientation: Color,
-  onMove: (orig: Key, dest: Key, capturedPiece?: Piece) => void,
-  onNewPiece: (piece: Piece, pos: Key) => void
+  onMove: (orig: Key, dest: Key, capturedPiece?: Piece) => void
 ): cg.InitConfig {
   const pieceMoveConf = settings.game.pieceMove()
   return {
@@ -37,8 +36,7 @@ function makeConfig(
       enabled: pieceMoveConf === 'tap' || pieceMoveConf === 'both'
     },
     events: {
-      move: onMove,
-      dropNewPiece: onNewPiece
+      move: onMove
     },
     premovable: {
       enabled: false
@@ -60,9 +58,8 @@ export default {
     config: cg.SetConfig,
     orientation: Color,
     onMove: (orig: Key, dest: Key, capturedPiece?: Piece) => void,
-    onNewPiece: (piece: Piece, pos: Key) => void
   ) {
-    return new Draughtsground(makeConfig(data, config, orientation, onMove, onNewPiece))
+    return new Draughtsground(makeConfig(data, config, orientation, onMove))
   },
 
   promote(ground: Draughtsground, key: Key) {

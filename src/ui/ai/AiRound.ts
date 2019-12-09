@@ -18,7 +18,6 @@ import redraw from '../../utils/redraw'
 import ground from '../shared/offlineRound/ground'
 import makeData from '../shared/offlineRound/data'
 import { setResult } from '../shared/offlineRound'
-import crazyValid from '../shared/round/crazy/crazyValid'
 import { AiRoundInterface, AiVM, PromotingInterface } from '../shared/round'
 import { ClockType } from '../shared/clock/interfaces'
 import Replay from '../shared/offlineRound/Replay'
@@ -116,7 +115,7 @@ export default class AiRound implements AiRoundInterface, PromotingInterface {
     }
 
     if (!this.draughtsground) {
-      this.draughtsground = ground.make(this.data, this.replay.situation(), this.userMove, this.onUserNewPiece, this.onMove, this.onNewPiece)
+      this.draughtsground = ground.make(this.data, this.replay.situation(), this.userMove, this.onMove)
     } else {
       ground.reload(this.draughtsground, this.data, this.replay.situation())
     }
@@ -285,19 +284,6 @@ export default class AiRound implements AiRoundInterface, PromotingInterface {
       sound.move()
     }
     vibrate.quick()
-  }
-
-  private onUserNewPiece = (role: Role, key: Key) => {
-    const sit = this.replay.situation()
-    if (crazyValid.drop(this.data, role, key, sit.drops)) {
-      this.replay.addDrop(role, key)
-    } else {
-      this.apply(this.replay.situation())
-    }
-  }
-
-  private onNewPiece = () => {
-    sound.move()
   }
 
   public apply(sit: draughts.GameSituation) {

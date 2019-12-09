@@ -15,7 +15,6 @@ import redraw from '../../utils/redraw'
 import ground from '../shared/offlineRound/ground'
 import makeData from '../shared/offlineRound/data'
 import { setResult } from '../shared/offlineRound'
-import crazyValid from '../shared/round/crazy/crazyValid'
 import { OtbRoundInterface, OtbVM, PromotingInterface } from '../shared/round'
 import Replay from '../shared/offlineRound/Replay'
 
@@ -130,7 +129,7 @@ export default class OtbRound implements OtbRoundInterface, PromotingInterface {
     }
 
     if (!this.draughtsground) {
-      this.draughtsground = ground.make(this.data, this.replay.situation(), this.userMove, this.onUserNewPiece, this.onMove, this.onNewPiece)
+      this.draughtsground = ground.make(this.data, this.replay.situation(), this.userMove, this.onMove)
     } else {
       ground.reload(this.draughtsground, this.data, this.replay.situation())
     }
@@ -215,19 +214,6 @@ export default class OtbRound implements OtbRoundInterface, PromotingInterface {
     if (capturedPiece) {
       sound.capture()
     } else sound.move()
-  }
-
-  private onUserNewPiece = (role: Role, key: Key) => {
-    const sit = this.replay.situation()
-    if (crazyValid.drop(this.data, role, key, sit.drops)) {
-      this.replay.addDrop(role, key)
-    } else {
-      this.apply(this.replay.situation())
-    }
-  }
-
-  private onNewPiece = () => {
-    sound.move()
   }
 
   private onFlag = (color: Color) => {

@@ -58,18 +58,14 @@ function make(
   data: OfflineGameData,
   sit: GameSituation,
   userMove: (orig: Key, dest: Key, meta: AfterMoveMeta) => void,
-  userNewPiece: (role: Role, key: Key, meta: AfterMoveMeta) => void,
   onMove: (orig: Key, dest: Key, capturedPiece: Piece) => void,
-  onNewPiece: () => void
 ) {
   const config = makeConfig(data, sit)
   config.movable!.events = {
-    after: userMove,
-    afterNewPiece: userNewPiece
+    after: userMove
   }
   config.events = {
-    move: onMove,
-    dropNewPiece: onNewPiece
+    move: onMove
   }
   return new Draughtsground(config)
 }
