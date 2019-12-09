@@ -366,6 +366,9 @@ export default {
       return fallback
   },
   nowPlaying,
+  corresPlaying(): readonly NowPlayingGame[] {
+    return nowPlaying().filter(g => g.speed === 'correspondence')
+  },
   myTurnGames,
   lidraughtsBackedProp,
   setKidMode,
