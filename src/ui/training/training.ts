@@ -110,7 +110,7 @@ export default {
               variant: attrs.variant || 'standard',
             })
           ]),
-          h('div.training-tableWrapper')
+          h('div.table.training-tableWrapper')
         ]
       )
     }

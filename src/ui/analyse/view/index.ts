@@ -54,9 +54,9 @@ export function renderContent(ctrl: AnalyseCtrl, isPortrait: boolean) {
     renderBoard(ctrl),
     h('div.analyse-tableWrapper', [
       renderAnalyseTable(ctrl, availTabs),
-      !isPortrait ? renderActionsBar(ctrl) : null,
+      !isPortrait ? renderActionsBar(ctrl, isPortrait) : null,
     ]),
-    isPortrait ? renderActionsBar(ctrl) : null,
+    isPortrait ? renderActionsBar(ctrl, isPortrait) : null,
   ])
 }
 
