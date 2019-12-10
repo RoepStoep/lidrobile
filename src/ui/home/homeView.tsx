@@ -43,7 +43,7 @@ function offline(ctrl: HomeCtrl) {
           <button className="fatButton" oncreate={helper.ontapY(() => router.set('/otb'))}>{i18n('playOnTheBoardOffline')}</button>
         </section>
         { boardConf ?
-        <section className="miniPuzzle">
+        <section className="home__miniPuzzle">
           <h2 className="homeTitle">{i18n('training')}</h2>
           {h(MiniBoard, boardConf)}
         </section> : undefined
@@ -60,7 +60,7 @@ function online(ctrl: HomeCtrl) {
   return (
     <div className="home">
       { playbanEndsAt && isPlayban ? renderPlayban(playbanEndsAt) : renderLobby(ctrl) }
-      <div className="home_start">
+      <div className="home__start">
         { isPlayban ? undefined : 
           <button className="buttonMetal"
             oncreate={helper.ontapY(() => newGameForm.openRealTime('custom'))}
@@ -107,7 +107,7 @@ const Stats = {
     signals.homePong.remove(this.render)
   },
   view() {
-    return h('div.stats', [
+    return h('div.home__stats', [
       h('div#nb_connected_players', h.trust(i18n('nbPlayers:other', '<strong>?</strong>'))),
       h('div#nb_games_in_play', h.trust(i18n('nbGamesInPlay:other', '<strong>?</strong>'))),
     ])
@@ -120,7 +120,7 @@ function renderLobby(ctrl: HomeCtrl) {
     () => renderCorresPool(ctrl),
   ]
 
-  return h('div.homeCreate', [
+  return h('div.home__lobby', [
     h(TabNavigation, {
       buttons: [
         {
@@ -139,7 +139,7 @@ function renderLobby(ctrl: HomeCtrl) {
       selectedIndex: ctrl.selectedTab,
       contentRenderers: tabsContent,
       onTabChange: ctrl.onTabChange,
-      className: 'setupTabView',
+      className: 'home__setupTabView',
       withWrapper: true,
     }),
   ])
@@ -194,7 +194,7 @@ function renderSeek(ctrl: HomeCtrl, seek: CorrespondenceSeek) {
 function renderFeaturedTournaments(ctrl: HomeCtrl) {
   if (ctrl.featuredTournaments && ctrl.featuredTournaments.length)
     return (
-      <div className="homeTournament">
+      <div className="home__tournament">
         {renderTournamentList(ctrl.featuredTournaments)}
       </div>
     )
@@ -230,7 +230,7 @@ function renderDailyPuzzle(ctrl: HomeCtrl) {
   }
 
   return (
-    <section className="miniPuzzle">
+    <section className="home__miniPuzzle">
       {h(MiniBoard, boardConf)}
     </section>
   )
@@ -241,7 +241,7 @@ function renderTimeline(ctrl: HomeCtrl) {
   if (!timeline || timeline.length === 0) return null
 
   return (
-    <section id="timeline">
+    <section className="home__timeline">
       <ul className="items_list_block"
         oncreate={helper.ontapY(timelineOnTap, undefined, helper.getLI)}
       >
