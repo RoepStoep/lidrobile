@@ -48,7 +48,7 @@ export default {
     const ply = safeStringToNum(vnode.attrs.ply)
     const tabId = vnode.attrs.tabId
 
-    const shouldGoBack = gameId !== undefined || vnode.attrs.goBack === '1'
+    const shouldGoBack = gameId !== undefined || fenArg !== undefined || vnode.attrs.goBack === '1'
 
     sleepUtils.keepAwake()
 
