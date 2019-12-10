@@ -25,6 +25,7 @@ export interface GameData {
 export interface OnlineGameData extends GameData {
   readonly player: OnlinePlayer
   readonly game: OnlineGame
+  readonly orientation: Color
   readonly takebackable: boolean
   watchers?: GameWatchers
   readonly url: {

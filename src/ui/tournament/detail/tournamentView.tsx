@@ -8,7 +8,7 @@ import { Opening } from '../../../lidraughts/interfaces/game'
 import { formatTournamentDuration, formatTournamentTimeControl } from '../../../utils'
 import * as helper from '../../helper'
 import settings from '../../../settings'
-import miniBoard from '../../shared/miniBoard'
+import MiniBoard from '../../shared/miniBoard'
 import CountdownTimer from '../../shared/CountdownTimer'
 
 import faq from '../faq'
@@ -283,7 +283,7 @@ function tournamentFeaturedGame(ctrl: TournamentCtrl) {
   return (
     <div className="tournamentGames">
       <div className="tournamentMiniBoard">
-        {h(miniBoard, {
+        {h(MiniBoard, {
           fixed: false,
           fen: featured.fen,
           variant: data.variant,
@@ -291,7 +291,6 @@ function tournamentFeaturedGame(ctrl: TournamentCtrl) {
           orientation: featured.color,
           link: () => router.set(`/tournament/${data.id}/game/${featured.id}?color=${featured.color}&goingBack=1`),
           gameObj: featured,
-          delay: 800,
         })}
       </div>
     </div>
