@@ -1,4 +1,5 @@
 import { Plugins, AppState, NetworkStatus, PluginListenerHandle } from '@capacitor/core'
+import debounce from 'lodash-es/debounce'
 import Zanimo from '../../utils/zanimo'
 import globalConfig from '../../config'
 import socket, { SocketIFace } from '../../socket'
@@ -21,6 +22,8 @@ import { dailyPuzzle as dailyPuzzleXhr, featuredTournaments as featuredTournamen
 
 export default class HomeCtrl {
   public selectedTab: number
+
+  public isScrolling: boolean = false
 
   public socketIface?: SocketIFace
   public tvFeed?: EventSource
@@ -59,6 +62,19 @@ export default class HomeCtrl {
     })
   }
 
+  // workaround for scroll overflow issue on ios
+  private afterScroll = debounce(() => {
+    this.isScrolling = false
+    redraw()
+  }, 200)
+  public onScroll = () => {
+    this.isScrolling = true
+    this.afterScroll()
+  }
+  public redrawIfNotScrolling = () => {
+    if (!this.isScrolling) redraw()
+  }
+
   public socketSend = <D>(t: string, d: D): void => {
     if (this.socketIface) this.socketIface.send(t, d)
   }
@@ -85,13 +101,16 @@ export default class HomeCtrl {
       })
 
       this.tvFeed = new EventSource(globalConfig.apiEndPoint + '/tv/feed')
+      this.tvFeed.onerror = () => {
+        if (this.tvFeed) this.tvFeed.close()
+      }
       this.tvFeed.onmessage = (ev) => {
         const data = JSON.parse(ev.data)
         if (data.t === 'fen') {
           if (this.featured) {
             this.featured.fen = data.d.fen
             this.featured.lastMove = data.d.lm
-            redraw()
+            this.redrawIfNotScrolling()
           }
         }
 
@@ -107,22 +126,29 @@ export default class HomeCtrl {
       Promise.all([
         dailyPuzzleXhr(),
         featuredTournamentsXhr(),
-        timelineXhr()
       ])
       .then(results => {
-        const [dailyData, featuredTournamentsData, timeline] = results
+        const [dailyData, featuredTournamentsData] = results
         this.dailyPuzzle = dailyData
         this.featuredTournaments = featuredTournamentsData.featured
-        this.timeline = timeline.entries
-          .filter((o: TimelineEntry) => supportedTimelineTypes.indexOf(o.type) !== -1)
-          .slice(0, 15)
-          .map(o => {
-            o.fromNow = fromNow(new Date(o.date))
-            return o
-          })
         redraw()
       })
       .catch(noop)
+
+      timelineXhr()
+      .then((timeline) => {
+        this.timeline = timeline.entries
+        .filter((o: TimelineEntry) => supportedTimelineTypes.indexOf(o.type) !== -1)
+        .slice(0, 15)
+        .map(o => {
+          o.fromNow = fromNow(new Date(o.date))
+          return o
+        })
+        redraw()
+      })
+      .catch(() => {
+        this.timeline = []
+      })
     }
   }
 
@@ -183,7 +209,7 @@ export default class HomeCtrl {
         }
       }
 
-      redraw()
+      this.redrawIfNotScrolling()
     })
   }
 
@@ -192,7 +218,7 @@ export default class HomeCtrl {
       corresSeeksXhr(false)
       .then(d => {
         this.corresPool = fixSeeks(d).filter(s => settings.game.supportedVariants.indexOf(s.variant.key) !== -1)
-        redraw()
+        this.redrawIfNotScrolling()
       })
     }
   }
