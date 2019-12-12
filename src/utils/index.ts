@@ -166,7 +166,9 @@ const perfIconsMap: {[index: string]: string} = {
   breakthrough: '',
   russian: '',
   brazilian: '(',
-  ultraBullet: '{'
+  ultraBullet: '{',
+  computer: 'n',
+  bot: 'n',
 }
 
 export function gameIcon(perf?: PerfKey): string {

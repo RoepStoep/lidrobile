@@ -57,26 +57,37 @@ function offline(ctrl: HomeCtrl) {
 
 function online(ctrl: HomeCtrl) {
   const playbanEndsAt = session.currentBan()
-  const isPlayban = playbanEndsAt && ((playbanEndsAt.valueOf() - Date.now()) / 1000) > 1
 
   return (
     <div className="home">
-      { playbanEndsAt && isPlayban ? renderPlayban(playbanEndsAt) : renderLobby(ctrl) }
-      <div className="home__start">
-        { isPlayban ? undefined : 
-          <button className="buttonMetal"
-            oncreate={helper.ontapY(() => newGameForm.openRealTime('custom'))}
-          >
-            {i18n('createAGame')}
-          </button>
-        }
-        { isPlayban ? undefined : 
-          <button className="buttonMetal"
-            oncreate={helper.ontapY(() => challengeForm.open())}
-          >
-            {i18n('playWithAFriend')}
-          </button>
-        }
+      {playbanEndsAt && ((playbanEndsAt.valueOf() - Date.now()) / 1000) > 1 ?
+        renderPlayban(playbanEndsAt) : renderLobby(ctrl)
+      }
+      {renderStart(ctrl)}
+      <div className="home__side">
+        {renderFeaturedTournaments(ctrl)}
+        {renderTimeline(ctrl)}
+      </div>
+      {renderFeatured(ctrl)}
+      {renderDailyPuzzle(ctrl)}
+    </div>
+  )
+}
+
+function renderStart(ctrl: HomeCtrl) {
+  return (
+    <div className="home__start">
+      <div className="home__buttons">
+        <button className="buttonMetal"
+          oncreate={helper.ontapY(() => newGameForm.openRealTime('custom'))}
+        >
+          {i18n('createAGame')}
+        </button>
+        <button className="buttonMetal"
+          oncreate={helper.ontapY(() => challengeForm.open())}
+        >
+          {i18n('playWithAFriend')}
+        </button>
         <button className="buttonMetal"
           oncreate={helper.ontapY(playMachineForm.open)}
         >
@@ -84,12 +95,6 @@ function online(ctrl: HomeCtrl) {
         </button>
       </div>
       {h(Stats, { ctrl })}
-      <div className="home__side">
-        {renderFeaturedTournaments(ctrl)}
-        {renderTimeline(ctrl)}
-      </div>
-      {renderFeatured(ctrl)}
-      {renderDailyPuzzle(ctrl)}
     </div>
   )
 }
