@@ -76,9 +76,10 @@ export function searchModal(ctrl: PlayersCtrl) {
         </div>
       </header>
       <ul id="playersSearchResults" className="modal_content native_scroller">
-      {ctrl.searchResults.map(u => {
+      {ctrl.searchResults.map((u, i) => {
+        const evenOrOdd = i % 2 === 0 ? 'even' : 'odd'
         return (
-          <li className="list_item nav" key={u} oncreate={helper.ontapY(() => ctrl.goToProfile(u))}>
+          <li className={`list_item nav ${evenOrOdd}`} key={u} oncreate={helper.ontapY(() => ctrl.goToProfile(u))}>
           {u}
           </li>
         )
@@ -108,7 +109,8 @@ function onPlayerTap(e: Event) {
   }
 }
 
-function renderPlayer(user: User) {
+function renderPlayer(user: User, i: number) {
+  const evenOrOdd = i % 2 === 0 ? 'even' : 'odd'
   let totalGames = 0;
   Object.keys(user.perfs).forEach(pk => {
     if (pk !== 'opening' && pk !== 'puzzle' && pk !== 'puzzlefrisian')
@@ -125,7 +127,7 @@ function renderPlayer(user: User) {
   }, '') as PerfKey | undefined
   const perf = perfKey ? user.perfs[perfKey] : undefined
   return (
-    <li className="list_item playerSuggestion nav" data-id={user.id}>
+    <li className={`list_item playerSuggestion nav ${evenOrOdd}`} data-id={user.id}>
       {userStatus(user)}
       { perf && perf.games ? 
         <span className="rating" data-icon={utils.gameIcon(perfKey)}>

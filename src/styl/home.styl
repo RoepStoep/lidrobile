@@ -35,7 +35,7 @@
   grid-area lobby
 
 .home__stats
-  padding 1vmin 10px
+  padding 1vmin 2vmin
   display flex
   flex-flow row nowrap
   justify-content space-between
@@ -46,22 +46,18 @@
   height calc(((100vw - 40px) * 0.28) * 3 + 40px)
   @media only screen and (min-width 601px)
     height calc(((100vw - 40px) * 0.2) * 3 + 40px)
+  background-color #262421
   background-image url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMTAuMCAyMTAuMCI+PGcgb3BhY2l0eT0iLjEiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2ZmZiIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2Utd2lkdGg9IjYiPjxnIGZpbGw9IiMwMDAiPjxwYXRoIGQ9Ik0gMTAsMTQwIGMgMCw2MCAxOTAsNjAgMTkwLDAgbCAwLC0zNSBsIC0xOTAsMCB6Ii8+PHBhdGggZD0iTSAxMCwxMDUgYyAwLDYwIDE5MCw2MCAxOTAsMCBsIDAsLTM1IGwgLTE5MCwwIHoiLz48cGF0aCBkPSJNIDEwLDcwIGMgMCw2MCAxOTAsNjAgMTkwLDAgYyAwLC02MCAtMTkwLC02MCAtMTkwLDAgeiIvPjwvZz48L2c+PC9zdmc+")
   background-repeat no-repeat
   background-size 100% 100%
   .newGame-pools
-    padding 10px
+    padding 2vmin
     > .newGame-pool
       fluid-type(16px, 35px)
       box-shadow none
-      height calc((100vw - 40px) * 0.28)
-      @media only screen and (min-width 601px)
-        height calc((100vw - 40px) * 0.2)
       background-color transpWhite01
       border 1px solid lighten(#3d3d3d, 20%)
       color inherit
-      &:nth-child(7), &:nth-child(8), &:nth-child(9)
-        margin-bottom 0
       &.active
         background-color rgba(gold, 0.3)
 
@@ -80,6 +76,8 @@
   margin 0 2vmin
   @media only screen and (min-width 601px)
     margin-top 1em
+  @media only screen and (min-width 800px)
+    margin-top 33px
 
 .home__miniPuzzle
   grid-area puzzle
@@ -101,9 +99,10 @@
   padding 0px
   > .tournamentList
     > .tournament_item
-      padding 10px
+      padding 2vmin
 
 .home__timeline
+  margin 0 2vmin
   &.loading
     padding-top 2em
   > .more
@@ -133,7 +132,7 @@
 .homeTitle
   font-weight bold
   text-align center
-  margin 10px 0 5px
+  margin 2vmin 0 5px
 
 .homeOfflineWrapper
   flex-grow 1
@@ -242,20 +241,19 @@
 
   .home
     background themeBgLightHeader
-    .tabs-view-wrapper
-      background-color bglight
-      background-image url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMTAuMCAyMTAuMCI+PGcgb3BhY2l0eT0iLjEiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzAwMCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2Utd2lkdGg9IjYiPjxnIGZpbGw9IiNmZmYiPjxwYXRoIGQ9Ik0gMTAsMTQwIGMgMCw2MCAxOTAsNjAgMTkwLDAgbCAwLC0zNSBsIC0xOTAsMCB6Ii8+PHBhdGggZD0iTSAxMCwxMDUgYyAwLDYwIDE5MCw2MCAxOTAsMCBsIDAsLTM1IGwgLTE5MCwwIHoiLz48cGF0aCBkPSJNIDEwLDcwIGMgMCw2MCAxOTAsNjAgMTkwLDAgYyAwLC02MCAtMTkwLC02MCAtMTkwLDAgeiIvPjwvZz48L2c+PC9zdmc+")
 
+  .home__setupTabView
+    background-color bglight
+    background-image url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMTAuMCAyMTAuMCI+PGcgb3BhY2l0eT0iLjEiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzAwMCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2Utd2lkdGg9IjYiPjxnIGZpbGw9IiNmZmYiPjxwYXRoIGQ9Ik0gMTAsMTQwIGMgMCw2MCAxOTAsNjAgMTkwLDAgbCAwLC0zNSBsIC0xOTAsMCB6Ii8+PHBhdGggZD0iTSAxMCwxMDUgYyAwLDYwIDE5MCw2MCAxOTAsMCBsIDAsLTM1IGwgLTE5MCwwIHoiLz48cGF0aCBkPSJNIDEwLDcwIGMgMCw2MCAxOTAsNjAgMTkwLDAgYyAwLC02MCAtMTkwLC02MCAtMTkwLDAgeiIvPjwvZz48L2c+PC9zdmc+")
     .newGame-pool
       background-color transpWhite04
       border-color borderLightGray
       color inherit
       &.active
         background-color rgba(gold, 0.3)
-
-  .corres_seek
-    > td
-      border-color borderLightGray
+    .corres_seek
+      > td
+        border-color borderLightGray
 
 
 .view-container.transp
