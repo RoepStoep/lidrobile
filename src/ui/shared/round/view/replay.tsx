@@ -6,7 +6,7 @@ import { autoScroll, autoScrollInline, onReplayTap, getMoveEl } from '../util'
 import OnlineRound from '../OnlineRound'
 
 export function renderReplay(ctrl: OnlineRound) {
-  return h('div.replay', {
+  return h('div.replay.box', {
     oncreate: (vnode: Mithril.VnodeDOM<any, any>) => {
       setTimeout(() => autoScroll(vnode.dom as HTMLElement), 100)
       helper.ontapY((e: Event) => onReplayTap(ctrl, e), undefined, getMoveEl)(vnode)
