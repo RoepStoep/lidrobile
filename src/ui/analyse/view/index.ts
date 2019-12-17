@@ -34,13 +34,12 @@ import { toggleCoordinates } from '../../../draughtsground/fen'
 
 export function loadingScreen(isPortrait: boolean, color?: Color, curFen?: string, variant?: VariantKey) {
   const isSmall = settings.analyse.smallBoard()
-  const boardPos = settings.analyse.boardPosition()
   return layout.board(
     loadingBackbutton(),
     [
-      viewOnlyBoard(color || 'white', isSmall, toggleCoordinates(curFen, false) || emptyFen, variant || 'standard', boardPos),
+      viewOnlyBoard(color || 'white', isSmall, toggleCoordinates(curFen, false) || emptyFen, variant || 'standard'),
       h('div.analyse-tableWrapper', spinner.getVdom('monochrome')),
-      isPortrait && boardPos === '2' ? h('section.analyse_actions_bar') : null,
+      isPortrait ? h('section.analyse_actions_bar') : null,
     ]
   )
 }
@@ -49,7 +48,7 @@ export function renderContent(ctrl: AnalyseCtrl, isPortrait: boolean) {
   const availTabs = ctrl.availableTabs()
 
   return h.fragment({
-    key: 'boardPos' + ctrl.settings.s.boardPosition + 'size' + ctrl.settings.s.smallBoard,
+    key: 'size' + ctrl.settings.s.smallBoard,
   }, [
     renderBoard(ctrl),
     h('div.analyse-tableWrapper', [
@@ -100,9 +99,9 @@ export function renderVariantSelector(ctrl: AnalyseCtrl) {
   )
 }
 
-function viewOnlyBoard(color: Color, isSmall: boolean, fen: string, variant: VariantKey, pos: '1' | '2') {
+function viewOnlyBoard(color: Color, isSmall: boolean, fen: string, variant: VariantKey) {
   return h('section.board_wrapper.analyse-boardWrapper', {
-    className: (isSmall ? 'halfsize ' : '') + 'pos' + pos
+    className: isSmall ? 'halfsize ' : ''
   }, h(ViewOnlyBoard, { orientation: color, fen, variant }))
 }
 
@@ -182,7 +181,7 @@ function renderReplay(ctrl: AnalyseCtrl) {
   ])
 }
 
-const TabsContentRendererMap: { [id: string]: (ctrl: AnalyseCtrl) => Mithril.Vnode<any, any> } = {
+const TabsContentRendererMap: { [id: string]: (ctrl: AnalyseCtrl) => Mithril.Children } = {
   infos: renderGameInfos,
   moves: renderReplay,
   explorer: renderExplorer,
@@ -198,7 +197,10 @@ function renderAnalyseTable(ctrl: AnalyseCtrl, availTabs: ReadonlyArray<Tab>) {
     h(TabView, {
       className: 'analyse-tabsContent',
       selectedIndex: ctrl.currentTabIndex(availTabs),
-      contentRenderers: availTabs.map(t => () => TabsContentRendererMap[t.id](ctrl)),
+      tabs: availTabs.map(t => ({
+        id: t.id,
+        f: () => TabsContentRendererMap[t.id](ctrl)
+      })),
       onTabChange: ctrl.onTabChange,
       boardView: true,
     }),

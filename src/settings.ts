@@ -150,7 +150,6 @@ export default {
     showBestMove: prop('analyse.showBestMove', true),
     showComments: prop('analyse.showComments', true),
     smallBoard: prop<boolean>('analyse.smallBoard', true),
-    boardPosition: prop<'1' | '2'>('analyse.boardPosition', '1'),
     fullCapture: prop<boolean>('fullCapture', false),
     explorer: {
       db: prop('analyse.explorer.db', 'lidraughts'),

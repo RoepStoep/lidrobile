@@ -129,7 +129,7 @@ export function renderNewGameButton(ctrl: OfflineRoundInterface) {
 }
 
 export function renderReplay(ctrl: OfflineRoundInterface) {
-  return h('div.replay', {
+  return h('div.replay.box', {
     oncreate: (vnode: Mithril.VnodeDOM<any, any>) => {
       setTimeout(() => autoScroll(vnode.dom as HTMLElement), 100)
       helper.ontapY((e: Event) => onReplayTap(ctrl, e), undefined, getMoveEl)(vnode)
