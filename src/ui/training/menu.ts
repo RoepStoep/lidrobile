@@ -121,7 +121,7 @@ function renderUserInfosOnline(user: PuzzleUserData, variant: VariantKey) {
   const rating = user.rating
   return [
     h('p.trainingRatingHeader', h.trust(i18n('yourPuzzleRatingX', `<strong>${rating}</strong>`))),
-    user.recent ? h('div#training-graph', {
+    user.recent ? h('div#training-graph.training-graph', {
       oncreate({ dom }) {
         drawChart(dom as HTMLElement, user)
       }
@@ -192,6 +192,7 @@ function drawChart(element: HTMLElement, user: PuzzleUserData) {
   g.datum(data)
 
   g.append('g')
+  .attr('class', 'ticks')
   .call(yAxis)
   .append('text')
   .attr('class', 'legend')
