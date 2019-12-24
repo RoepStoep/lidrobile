@@ -241,10 +241,16 @@ function renderContent(ctrl: OnlineRound, isPortrait: boolean) {
   const player = renderPlayTable(ctrl, ctrl.data.player, material[ctrl.data.player.color], 'player')
   const opponent = renderPlayTable(ctrl, ctrl.data.opponent, material[ctrl.data.opponent.color], 'opponent')
 
+  const playable = gameApi.playable(ctrl.data)
+  const myTurn = gameApi.isPlayerTurn(ctrl.data)
+
   const board = h(Board, {
     variant: ctrl.data.game.variant.key,
     draughtsground: ctrl.draughtsground,
-  })
+  }, playable ? [
+    !myTurn ? renderExpiration(ctrl, 'opponent', myTurn) : null,
+    myTurn ? renderExpiration(ctrl, 'player', myTurn) : null,
+  ] : [])
 
   const flip = !ctrl.data.tv && ctrl.vm.flip
 
@@ -275,7 +281,7 @@ function renderExpiration(ctrl: OnlineRound, position: Position, myTurn: boolean
   const timeLeft = Math.max(0, d.movedAt - Date.now() + d.millisToMove)
 
   return h('div.round-expiration', {
-    className: position
+    className: position,
   }, h(CountdownTimer, {
       seconds: Math.round(timeLeft / 1000),
       emergTime: myTurn ? 8 : undefined,
@@ -392,8 +398,6 @@ function renderPlayTable(
 ) {
   const runningColor = ctrl.isClockRunning() ? ctrl.data.game.player : undefined
   const isCrazy = false
-  const playable = gameApi.playable(ctrl.data)
-  const myTurn = gameApi.isPlayerTurn(ctrl.data)
 
   const classN = helper.classSet({
     playTable: true,
@@ -415,9 +419,6 @@ function renderPlayTable(
           renderCorrespondenceClock(
             ctrl.correspondenceClock, player.color, ctrl.data.game.player
           ) : null
-      }
-      { playable && (myTurn && position === 'player' || !myTurn && position === 'opponent') ?
-        renderExpiration(ctrl, position, myTurn) : null
       }
     </section>
   )
