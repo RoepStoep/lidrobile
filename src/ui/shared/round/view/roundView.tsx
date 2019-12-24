@@ -331,6 +331,8 @@ function renderAntagonistInfo(ctrl: OnlineRound, player: Player, material: Mater
   const tournamentRank = ctrl.data.tournament && ctrl.data.tournament.ranks ?
     '#' + ctrl.data.tournament.ranks[player.color] + ' ' : null
 
+  const isBerserk = ctrl.vm.goneBerserk[player.color]
+
   return (
     <div className={'antagonistInfos' + (isCrazy ? ' crazy' : '') + (ctrl.isZen() ? ' zen' : '')} oncreate={vConf}>
       <h2 className="antagonistUser">
@@ -340,6 +342,7 @@ function renderAntagonistInfo(ctrl: OnlineRound, player: Player, material: Mater
           <span className={'fa fa-circle status ' + (player.onGame ? 'ongame' : 'offgame')} /> }
         {tournamentRank}
         {playerName}
+        { isBerserk ? <span className="berserk" data-icon="`" /> : null }
         { isCrazy && position === 'opponent' && user && (user.engine || user.booster) ?
           <span className="warning" data-icon="j"></span> : null
         }
@@ -369,7 +372,7 @@ function renderAntagonistInfo(ctrl: OnlineRound, player: Player, material: Mater
         h(Clock, {
           ctrl: ctrl.clock,
           color: player.color,
-          isBerserk: ctrl.vm.goneBerserk[player.color],
+          isBerserk,
           runningColor
         }) :
         isCrazy && ctrl.correspondenceClock ?
