@@ -1,14 +1,13 @@
 import * as Mithril from 'mithril'
 import h from 'mithril/hyperscript'
-import i18n from '../../../i18n'
-import { oppositeColor } from '../../../utils'
+import i18n, { i18nVdom } from '../../../i18n'
 import spinner from '../../../spinner'
 import * as helper from '../../helper'
 import { renderIndexAndMove } from '../view/moveView'
 import { Feedback, IRetroCtrl } from './RetroCtrl'
 import AnalyseCtrl from '../AnalyseCtrl'
 
-export default function retroView(root: AnalyseCtrl): Mithril.Vnode<any, any> | undefined {
+export default function retroView(root: AnalyseCtrl): Mithril.Child | undefined {
   const ctrl = root.retro
   if (!ctrl) return
   const fb = ctrl.vm.feedback
@@ -40,7 +39,7 @@ function jumpToNext(ctrl: IRetroCtrl) {
   ])
 }
 
-function renderEvalProgress(ctrl: IRetroCtrl): Mithril.Vnode<any, any> {
+function renderEvalProgress(ctrl: IRetroCtrl): Mithril.Child {
   const node = ctrl.node()
   const minDepth = ctrl.variant === 'antidraughts' ? 3 : 8;
   const maxDepth = ctrl.variant === 'antidraughts' ? 10 : 18;
@@ -52,7 +51,7 @@ function renderEvalProgress(ctrl: IRetroCtrl): Mithril.Vnode<any, any> {
 }
 
 const feedback = {
-  find(ctrl: IRetroCtrl): Mithril.Vnode<any, any>[] {
+  find(ctrl: IRetroCtrl): Mithril.Child[] {
     return [
       h('div.retro-player', [
         h('div.piece-no-square', {
@@ -60,22 +59,24 @@ const feedback = {
         }, h('piece.king.' + ctrl.vm.color)),
         h('div.retro-instruction', [
           h('strong', [
-            ...renderIndexAndMove({
+            i18nVdom('xWasPlayed', h('span', renderIndexAndMove({
               withDots: true,
               showGlyphs: true,
               showEval: false,
               algebraic: ctrl.isAlgebraic()
-            }, ctrl.vm.current.fault.node),
-            i18n('xWasPlayed', '')
+            }, ctrl.vm.current.fault.node)))
           ]),
-          h('em', i18n(ctrl.vm.color === 'white' ? 'findBetterMoveForWhite' : 'findBetterMoveForBlack')),
+          h('em', i18n(
+            ctrl.vm.color === 'white' ?
+              'findBetterMoveForWhite' :
+              'findBetterMoveForBlack')),
           skipOrViewSolution(ctrl)
         ])
       ])
     ]
   },
   // user has browsed away from the move to solve
-  offTrack(ctrl: IRetroCtrl): Mithril.Vnode<any, any>[] {
+  offTrack(ctrl: IRetroCtrl): Mithril.Child[] {
     return [
       h('div.retro-player', [
         h('div.retro-icon.off', '!'),
@@ -90,19 +91,22 @@ const feedback = {
       ])
     ]
   },
-  fail(ctrl: IRetroCtrl): Mithril.Vnode<any, any>[] {
+  fail(ctrl: IRetroCtrl): Mithril.Child[] {
     return [
       h('div.retro-player', [
         h('div.retro-icon', '✗'),
         h('div.retro-instruction', [
           h('strong', i18n('youCanDoBetter')),
-          h('em', i18n(ctrl.vm.color === 'white' ? 'tryAnotherMoveForWhite' : 'tryAnotherMoveForBlack')),
+          h('em', i18n(
+            ctrl.vm.color === 'white' ?
+            'tryAnotherMoveForWhite' : 'tryAnotherMoveForBlack')
+          ),
           skipOrViewSolution(ctrl)
         ])
       ])
     ]
   },
-  win(ctrl: IRetroCtrl): Mithril.Vnode<any, any>[] {
+  win(ctrl: IRetroCtrl): Mithril.Child[] {
     return [
       h('div.retro-half.top',
         h('div.retro-player', [
@@ -113,21 +117,19 @@ const feedback = {
       jumpToNext(ctrl)
     ]
   },
-  view(ctrl: IRetroCtrl): Mithril.Vnode<any, any>[] {
+  view(ctrl: IRetroCtrl): Mithril.Child[] {
     return [
       h('div.retro-half.top',
         h('div.retro-player', [
           h('div.retro-icon', '✓'),
           h('div.retro-instruction', [
-            h('strong', i18n('solution') + ':'),
+            h('strong', i18n('solution')),
             h('em', [
-              'Best move was ',
               h('strong', renderIndexAndMove({
                 withDots: true,
                 showEval: false,
                 algebraic: ctrl.isAlgebraic()
-              }, ctrl.vm.current.solution.node)
-              )
+              }, ctrl.vm.current.solution.node))
             ])
           ])
         ])
@@ -135,7 +137,7 @@ const feedback = {
       jumpToNext(ctrl)
     ]
   },
-  eval(ctrl: IRetroCtrl): Mithril.Vnode<any, any>[] {
+  eval(ctrl: IRetroCtrl): Mithril.Child[] {
     return [
       h('div.retro-half.top',
         h('div.retro-player.center', [
@@ -147,7 +149,7 @@ const feedback = {
       )
     ]
   },
-  end(ctrl: IRetroCtrl, hasFullComputerAnalysis: () => boolean): Mithril.Vnode<any, any>[] {
+  end(ctrl: IRetroCtrl, hasFullComputerAnalysis: () => boolean): Mithril.Child[] {
     if (!hasFullComputerAnalysis()) return [
       h('div.retro-half.top',
         h('div.retro-player', [
@@ -164,15 +166,22 @@ const feedback = {
         }, h('piece.king.' + ctrl.vm.color)),
         h('div.retro-instruction', [
           h('em', nothing ?
-            i18n(ctrl.vm.color === 'white' ? 'noMistakesFoundForWhite' : 'noMistakesFoundForBlack') :
-            i18n(ctrl.vm.color === 'white' ? 'doneReviewingWhiteMistakes' : 'doneReviewingBlackMistakes')),
+            i18n(ctrl.vm.color === 'white' ?
+              'noMistakesFoundForWhite' : 'noMistakesFoundForBlack'
+            ) :
+              i18n(ctrl.vm.color === 'white' ?
+                'doneReviewingWhiteMistakes' : 'doneReviewingBlackMistakes'
+              )
+          ),
           h('div.choices.end', [
             nothing ? null : h('button', {
               oncreate: helper.ontap(ctrl.reset)
             }, i18n('doItAgain')),
             h('button', {
               oncreate: helper.ontap(ctrl.flip)
-            }, i18n(oppositeColor(ctrl.vm.color) === 'white' ? 'reviewWhiteMistakes' : 'reviewBlackMistakes'))
+            }, i18n(ctrl.vm.color === 'white' ?
+              'reviewBlackMistakes' : 'reviewWhiteMistakes'
+            ))
           ])
         ])
       ])
@@ -194,11 +203,11 @@ function renderFeedback(root: AnalyseCtrl, fb: Feedback) {
   return feedback[fb](ctrl)
 }
 
-function renderTitle(ctrl: IRetroCtrl): Mithril.Vnode<any, any> {
+function renderTitle(ctrl: IRetroCtrl): Mithril.Child {
   const completion = ctrl.completion()
-  return h('div.title', [
-    h('span', i18n('learnFromYourMistakes')),
-    h('span', Math.min(completion[0] + 1, completion[1]) + ' / ' + completion[1]),
+  return h('div.titleWrapper', [
+    h('div.title', i18n('learnFromYourMistakes')),
+    h('div.mistakeNb', Math.min(completion[0] + 1, completion[1]) + ' / ' + completion[1]),
     h('div.retro-actions', [
       h('button.window-button', {
         oncreate: helper.ontap(ctrl.toggleWindow)

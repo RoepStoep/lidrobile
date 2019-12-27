@@ -123,7 +123,7 @@ export function renderPositionSettings(ctrl: EditorCtrl) {
   ])
 }
 
-function position2option(fen: string, pos: BoardPosition, showEco = false): Mithril.Vnode<any, any> {
+function position2option(fen: string, pos: BoardPosition, showEco = false): Mithril.Child {
   return h('option', {
     value: pos.fen,
     selected: fen === pos.fen
