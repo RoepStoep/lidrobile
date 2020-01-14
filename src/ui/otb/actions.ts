@@ -1,6 +1,5 @@
 import * as h from 'mithril/hyperscript'
 import i18n from '../../i18n'
-import redraw from '../../utils/redraw'
 import settings from '../../settings'
 import formWidgets from '../shared/form'
 import * as helper from '../helper'
@@ -28,9 +27,6 @@ function renderAlways(ctrl: OtbRound) {
     h('div.action', formWidgets.renderCheckbox(
       i18n('Flip pieces and opponent info after move'), 'flipPieces', settings.otb.flipPieces,
         (v) => ground.changeOTBMode(ctrl.draughtsground, v)
-    )),
-    h('div.action', formWidgets.renderCheckbox(
-      i18n('Use symmetric pieces'), 'useSymmetric', settings.otb.useSymmetric, redraw
     ))
   ]
 }

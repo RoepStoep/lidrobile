@@ -142,7 +142,6 @@ export default {
 
   otb: {
     flipPieces: store.prop('settings.otb.flipPieces', false),
-    useSymmetric: store.prop('settings.otb.useSymmetric', false),
     variant: store.prop<VariantKey>('settings.otb.variant', 'standard'),
     availableVariants: offlineAvailableVariants,
     whitePlayer: store.prop('settings.otb.whitePlayer', 'White'),

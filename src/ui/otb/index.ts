@@ -5,7 +5,6 @@ import { getCurrentOTBGame } from '../../utils/offlineGames'
 import * as sleepUtils from '../../utils/sleep'
 import { playerFromFen } from '../../utils/fen'
 import { standardFen } from '../../lidraughts/variant'
-import settings from '../../settings'
 import i18n from '../../i18n'
 import layout from '../layout'
 import { header as renderHeader, viewOnlyBoardContent } from '../shared/common'
@@ -46,16 +45,15 @@ const OtbScreen: Mithril.Component<Attrs, State> = {
   },
   view() {
     let content: Mithril.Children, header: Mithril.Children
-    const pieceTheme = settings.otb.useSymmetric() ? 'symmetric' : undefined
 
     if (this.round.data && this.round.draughtsground) {
       header = renderHeader(h(GameTitle, { data: this.round.data }))
-      content = renderContent(this.round, pieceTheme)
+      content = renderContent(this.round)
     } else {
       const fen = this.round.vm.setupFen || this.round.vm.savedFen || standardFen
       const color = fen ? playerFromFen(fen) : 'white'
       header = renderHeader(i18n('playOnTheBoardOffline'))
-      content = viewOnlyBoardContent(fen, color, undefined, 'standard', undefined, pieceTheme)
+      content = viewOnlyBoardContent(fen, color, undefined, 'standard', undefined)
     }
 
     return layout.board(
