@@ -58,6 +58,7 @@ export default {
 
           return (
             <div>
+              <p className="title">{i18n('createAGame')}</p>
               <div className="action">
                 {hasSpecialSetup ?
                   <div className="select_input disabled">

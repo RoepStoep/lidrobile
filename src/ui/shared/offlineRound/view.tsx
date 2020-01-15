@@ -95,10 +95,9 @@ export function renderGameActionsBarTablet(ctrl: OfflineRoundInterface) {
 export function renderEndedGameStatus(ctrl: OfflineRoundInterface) {
   if (!ctrl.replay) return null
 
-  const sit = ctrl.replay.situation()
   if (gameStatusApi.finished(ctrl.data)) {
     const result = gameApi.result(ctrl.data)
-    const winner = sit.winner
+    const winner = ctrl.data.game.winner
     const status = gameStatusApi.toLabel(ctrl.data.game.status.name, ctrl.data.game.winner, ctrl.data.game.variant.key) +
       (winner ? (ctrl.data.game.status.name !== 'mate' ? '. ' : '') + i18n(winner === 'white' ? 'whiteIsVictorious' : 'blackIsVictorious') + '.' : '')
     return (
@@ -114,7 +113,7 @@ export function renderEndedGameStatus(ctrl: OfflineRoundInterface) {
 }
 
 export function renderClaimDrawButton(ctrl: OfflineRoundInterface) {
-  return gameApi.playable(ctrl.data) ? h('div.claimDraw', {
+  return (gameApi.playable(ctrl.data) && gameApi.threefoldable(ctrl.data)) ? h('div.claimDraw', {
     key: 'claimDraw'
   }, [
     h('button[data-icon=2].draw-yes', {

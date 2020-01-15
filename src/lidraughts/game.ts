@@ -82,6 +82,10 @@ export function moretimeable(data: OnlineGameData) {
   return data.clock && isPlayerPlaying(data) && !mandatory(data)
 }
 
+export function threefoldable(data: GameData) {
+  return data.game.variant.key !== 'frisian' && data.game.variant.key !== 'frysk'
+}
+
 export function imported(data: GameData | AnalyseData) {
   return data.game.source === 'import'
 }
