@@ -87,10 +87,22 @@ export interface TimelineData {
   readonly entries: ReadonlyArray<TimelineEntry>
 }
 
+export interface DailyPuzzleData {
+  readonly puzzle: DailyPuzzle
+  readonly history: DailyPuzzleHistory
+}
+
 export interface DailyPuzzle {
   readonly id: string
   readonly fen: string
   readonly color: Color
+}
+
+export interface DailyPuzzleHistory {
+  readonly id: string
+  readonly fen: string
+  readonly uci?: string
+  readonly san?: string
 }
 
 export interface NowPlayingOpponent {

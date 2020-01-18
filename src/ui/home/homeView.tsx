@@ -85,10 +85,15 @@ function renderFeaturedTournaments(tournaments: TournamentListItem[]) {
 }
 
 function renderDailyPuzzle(ctrl: Ctrl) {
-  const puzzle = ctrl.dailyPuzzle()
+  const puzzleData = ctrl.dailyPuzzle()
+  const puzzle = puzzleData && (puzzleData.history ? puzzleData.history : puzzleData.puzzle)
+  if (puzzle && puzzleData && puzzleData.puzzle) {
+    puzzle.id = puzzleData.puzzle.id;
+  }
   const boardConf = puzzle ? {
     fen: puzzle.fen,
     orientation: puzzle.color,
+    lastMove: puzzle.uci,
     link: () => router.set(`/training/${puzzle.id}?initFen=${puzzle.fen}&initColor=${puzzle.color}`),
   } : {
     orientation: 'white' as Color,

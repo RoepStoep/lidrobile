@@ -1,5 +1,5 @@
 import { fetchJSON } from '../../http'
-import { DailyPuzzle } from '../../lidraughts/interfaces'
+import { DailyPuzzleData } from '../../lidraughts/interfaces'
 import { OnlineGameData } from '../../lidraughts/interfaces/game'
 import { TournamentListItem } from '../../lidraughts/interfaces/tournament'
 
@@ -11,7 +11,7 @@ export function featured(feedback: boolean): Promise<OnlineGameData> {
   return fetchJSON('/tv', undefined, feedback)
 }
 
-export function dailyPuzzle(): Promise<{ puzzle: DailyPuzzle }> {
+export function dailyPuzzle(): Promise<DailyPuzzleData> {
   return fetchJSON('/training/daily', undefined, true)
 }
 

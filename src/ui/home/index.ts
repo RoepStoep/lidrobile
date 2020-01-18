@@ -4,7 +4,7 @@ import redraw from '../../utils/redraw'
 import { timeline as timelineXhr } from '../../xhr'
 import { hasNetwork, noop } from '../../utils'
 import { isForeground, setForeground } from '../../utils/appMode'
-import { PongMessage, TimelineEntry, DailyPuzzle } from '../../lidraughts/interfaces'
+import { PongMessage, TimelineEntry, DailyPuzzleData } from '../../lidraughts/interfaces'
 import { TournamentListItem } from '../../lidraughts/interfaces/tournament'
 import { PuzzleData } from '../../lidraughts/interfaces/training'
 import session from '../../session'
@@ -35,7 +35,7 @@ export default {
   oninit() {
     const nbConnectedPlayers = stream<number>()
     const nbGamesInPlay = stream<number>()
-    const dailyPuzzle = stream<DailyPuzzle>()
+    const dailyPuzzle = stream<DailyPuzzleData>()
     const featuredTournaments = stream<TournamentListItem[]>([])
     const timeline = stream<TimelineEntry[]>([])
     const offlinePuzzle = stream<PuzzleData | undefined>(undefined)
@@ -56,7 +56,7 @@ export default {
         ])
         .then(results => {
           const [dailyData, featuredTournamentsData] = results
-          dailyPuzzle(dailyData.puzzle)
+          dailyPuzzle(dailyData)
           featuredTournaments(featuredTournamentsData.featured)
           redraw()
         })
