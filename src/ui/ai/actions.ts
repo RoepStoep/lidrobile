@@ -6,7 +6,7 @@ import settings from '../../settings'
 
 import * as helper from '../helper'
 import formWidgets from '../shared/form'
-import { renderClaimDrawButton, renderEndedGameStatus } from '../shared/offlineRound/view'
+import { renderClaimDrawButton, renderEndedGameStatus, renderNewGameButton } from '../shared/offlineRound/view'
 import popupWidget from '../shared/popup'
 import router from '../../router'
 import { AiRoundInterface } from '../shared/round'
@@ -87,6 +87,7 @@ export default {
           renderEndedGameStatus(ctrl.root)
         ].concat(
           renderClaimDrawButton(ctrl.root),
+          renderNewGameButton(ctrl.root),
           resignButton(ctrl.root),
           renderAlways(ctrl.root)
         )

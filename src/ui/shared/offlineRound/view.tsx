@@ -122,6 +122,18 @@ export function renderClaimDrawButton(ctrl: OfflineRoundInterface) {
   ]) : null
 }
 
+export function renderNewGameButton(ctrl: OfflineRoundInterface) {
+  return gameStatusApi.finished(ctrl.data) ? [
+    h('div', [
+      h('button', {
+        oncreate: helper.ontap(() => {
+          ctrl.actions.close()
+          ctrl.newGameMenu.open()
+        })
+      }, [h('span.fa.fa-plus-circle'), i18n('createAGame')])
+    ])
+  ] : null
+}
 
 export function renderReplayTable(ctrl: Replay) {
   const curPly = ctrl.ply

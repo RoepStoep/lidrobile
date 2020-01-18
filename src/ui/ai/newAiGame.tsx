@@ -66,6 +66,7 @@ export default {
 
           return (
             <div>
+              <p className="title">{i18n('createAGame')}</p>
               <div className="action">
                 {opponentSelector()}
                 {sideSelector()}

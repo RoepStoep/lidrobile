@@ -3,11 +3,10 @@ import i18n from '../../i18n'
 import settings from '../../settings'
 import formWidgets from '../shared/form'
 import * as helper from '../helper'
-import { renderClaimDrawButton, renderEndedGameStatus } from '../shared/offlineRound/view'
+import { renderClaimDrawButton, renderEndedGameStatus, renderNewGameButton } from '../shared/offlineRound/view'
 import ground from '../shared/offlineRound/ground'
 import popupWidget from '../shared/popup'
 import router from '../../router'
-import gameStatusApi from '../../lidraughts/status'
 
 import OtbRound from './OtbRound'
 
@@ -30,19 +29,6 @@ function renderAlways(ctrl: OtbRound) {
         (v) => ground.changeOTBMode(ctrl.draughtsground, v)
     ))
   ]
-}
-
-function newGameButton(ctrl: OtbRound) {
-  return gameStatusApi.finished(ctrl.data) ? [
-    h('div', [
-      h('button', {
-        oncreate: helper.ontap(() => {
-          ctrl.actions.close()
-          ctrl.newGameMenu.open()
-        })
-      }, [h('span.fa.fa-plus-circle'), i18n('createAGame')])
-    ])
-  ] : null
 }
 
 export default {
@@ -80,7 +66,7 @@ export default {
             renderEndedGameStatus(ctrl.root)
           ].concat(
             renderClaimDrawButton(ctrl.root),
-            newGameButton(ctrl.root),
+            renderNewGameButton(ctrl.root),
             renderAlways(ctrl.root)
           )
         },
