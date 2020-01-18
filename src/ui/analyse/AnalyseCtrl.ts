@@ -297,7 +297,7 @@ export default class AnalyseCtrl {
         const nodeList = ghostEnd ? this.nodeList.slice(1) : this.nodeList;
         this.ceval.start(path, nodeList, !!this.retro)
         this.evalCache.fetch(path, this.ceval.getMultiPv())
-      } else this.ceval.stop();
+      } else this.stopCevalImmediately();
     }
   }
 
@@ -654,7 +654,7 @@ export default class AnalyseCtrl {
     }
   }
 
-  private debouncedStartCeval = debounce(this.startCeval, 800)
+  private debouncedStartCeval = debounce(this.startCeval, 1600)
 
   private updateBoard(noCaptSequences: boolean = false) {
     const node = this.node

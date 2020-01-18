@@ -92,6 +92,7 @@ export default function ScanEngine(variant: VariantKey): IEngine {
       })
 
       return setOption('threads', work.cores)
+      .then(() => curEval = null)
       .then(() => send('pos pos=' + scanFen(work.initialFen) + (work.moves.length != 0 ? (' moves="' + work.moves.join(' ') + '"') : '')))
       .then(() => {
         if (work.maxDepth >= 99) return send('level infinite');
