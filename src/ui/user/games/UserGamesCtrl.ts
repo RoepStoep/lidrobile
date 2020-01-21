@@ -175,7 +175,7 @@ export default function UserGamesCtrl(userId: string, filter?: string): IUserGam
     const g = scrollState.games.find(game => game.id === id)
     if (g) {
       if (!gameApi.isSupportedVariantKey(g.variant.key)) {
-        Plugins.Toast.show({ text: i18n('unsupportedVariant', g.variant.name), duration: 'short' })
+        Plugins.LiToast.show({ text: i18n('unsupportedVariant', g.variant.name), duration: 'short' })
         return
       }
       const whiteUser = g.players.white.user

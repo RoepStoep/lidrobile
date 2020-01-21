@@ -359,7 +359,7 @@ export default class OnlineRound implements OnlineRoundInterface {
     } else {
       this.socketSendMoveOrDrop(move, isPremove, sendBlur)
       if (this.data.game.speed === 'correspondence' && !hasNetwork()) {
-        Plugins.Toast.show({ text: 'You need to be connected to Internet to send your move.', duration: 'short' })
+        Plugins.LiToast.show({ text: 'You need to be connected to Internet to send your move.', duration: 'short' })
       }
     }
   }
@@ -404,7 +404,7 @@ export default class OnlineRound implements OnlineRoundInterface {
         this.socketSendMoveOrDrop(this.vm.dropToSubmit)
       }
       if (this.data.game.speed === 'correspondence' && !hasNetwork()) {
-        Plugins.Toast.show({ text: 'You need to be connected to Internet to send your move.', duration: 'short' })
+        Plugins.LiToast.show({ text: 'You need to be connected to Internet to send your move.', duration: 'short' })
       }
       this.vm.moveToSubmit = null
       this.vm.dropToSubmit = null
@@ -585,7 +585,7 @@ export default class OnlineRound implements OnlineRoundInterface {
     if (!this.data.player.spectator) {
       session.backgroundRefresh()
       sleepUtils.allowSleepAgain()
-      Plugins.Toast.show({ text: this.gameStatus(), duration: 'short' })
+      Plugins.LiToast.show({ text: this.gameStatus(), duration: 'short' })
     }
     this.score === undefined
   }

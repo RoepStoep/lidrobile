@@ -51,7 +51,7 @@ export default {
         const white = settings.otb.whitePlayer
         const black = settings.otb.blackPlayer
         return h('div', [
-          h('p', 'Import current game state with following player names to lidraughts?'),
+          h('p', 'Import current game state with following player names on lidraughts?'),
           h('form', [
             h('div.exchange', {
               oncreate: helper.ontap(() => {
@@ -104,7 +104,7 @@ export default {
                     })
                   }
                 )
-              }, 'Import to lidraughts')
+              }, 'Import on lidraughts')
           ])
         ])
       },

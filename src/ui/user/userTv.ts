@@ -31,7 +31,7 @@ const UserTv: Mithril.Component<Attrs, State> = {
     .then(data => {
       data.userTV = userId
       if (!gameApi.isSupportedVariant(data)) {
-        Plugins.Toast.show({ text: i18n('unsupportedVariant', data.game.variant.name), duration: 'short' })
+        Plugins.LiToast.show({ text: i18n('unsupportedVariant', data.game.variant.name), duration: 'short' })
         router.set('/')
       } else {
         this.round = new OnlineRound(false, data.game.id, data, false, undefined, undefined, userId, onRedirect)

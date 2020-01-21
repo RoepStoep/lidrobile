@@ -122,7 +122,7 @@ function onTap (ctrl: ISearchCtrl, e: Event) {
       const g = ctrl.searchState.games.find(game => game.id === id)
       if (g) {
         if (!isSupportedVariantKey(g.variant.key)) {
-          Plugins.Toast.show({ text: i18n('unsupportedVariant', g.variant.name), duration: 'short' })
+          Plugins.LiToast.show({ text: i18n('unsupportedVariant', g.variant.name), duration: 'short' })
         } else {
           router.set(`/analyse/online/${id}`)
         }

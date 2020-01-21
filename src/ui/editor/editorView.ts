@@ -75,26 +75,26 @@ function renderActionsBar(ctrl: EditorCtrl) {
     h('button.action_bar_button[data-icon=U]', {
       oncreate: helper.ontap(() => {
         if (ctrl.data.game.variant.key() !== 'standard')
-          Plugins.Toast.show({ text: 'You can\'t continue from a variant position', duration: 'long' })
+          Plugins.LiToast.show({ text: 'You can\'t continue from a variant position', duration: 'long', position: 'bottom' })
         else
           ctrl.continuePopup.open(ctrl.computeFen(false), 'standard')
-      }, () => Plugins.Toast.show({ text: i18n('continueFromHere'), duration: 'short' }))
+      }, () => Plugins.LiToast.show({ text: i18n('continueFromHere'), duration: 'short', position: 'bottom' }))
     }),
     h('button.action_bar_button[data-icon=A]', {
       oncreate: helper.ontap(() => {
         const fen = encodeURIComponent(ctrl.computeFen(false))
         const variant = encodeURIComponent(ctrl.data.game.variant.key())
         router.set(`/analyse/variant/${variant}/fen/${fen}`)
-      }, () => Plugins.Toast.show({ text: i18n('analysis'), duration: 'short' }))
+      }, () => Plugins.LiToast.show({ text: i18n('analysis'), duration: 'short', position: 'bottom' }))
     }),
     h('button.action_bar_button.fa.fa-upload', {
       oncreate: helper.ontap(ctrl.pasteFenPopup.open,
-        () => Plugins.Toast.show({ text: i18n('loadAPositionFromFen'), duration: 'short' }))
+        () => Plugins.LiToast.show({ text: i18n('loadAPositionFromFen'), duration: 'short', position: 'bottom' }))
     }),
     h('button.action_bar_button.fa.fa-share-alt', {
       oncreate: helper.ontap(
         () => Plugins.Share.share({ text: ctrl.computeFen(ctrl.isAlgebraic(), true) }),
-        () => Plugins.Toast.show({ text: 'Share FEN', duration: 'short' })
+        () => Plugins.LiToast.show({ text: 'Share FEN', duration: 'short', position: 'bottom' })
       )
     })
   ])

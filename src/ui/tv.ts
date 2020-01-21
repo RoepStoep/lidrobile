@@ -46,7 +46,7 @@ const TV: Mithril.Component<TVAttrs, State> = {
       if (!this.emptyTV) {
         handleXhrError(e)
       } else {
-        Plugins.Toast.show({ text: i18n('noGameFound'), duration: 'short' })
+        Plugins.LiToast.show({ text: i18n('noGameFound'), duration: 'short' })
         redraw()
       }
     })

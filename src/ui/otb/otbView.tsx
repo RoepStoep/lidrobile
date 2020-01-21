@@ -79,20 +79,20 @@ function renderGameActionsBar(ctrl: OtbRound) {
       <button className="action_bar_button fa fa-plus-circle"
         oncreate={helper.ontap(
           ctrl.newGameMenu.open,
-          () => Plugins.Toast.show({ text: i18n('createAGame'), duration: 'short' })
+          () => Plugins.LiToast.show({ text: i18n('createAGame'), duration: 'short', position: 'bottom' })
         )}
       />
       <button className="fa fa-share-alt action_bar_button"
         oncreate={helper.ontap(
           ctrl.sharePDN,
-          () => Plugins.Toast.show({ text: i18n('sharePDN'), duration: 'short' })
+          () => Plugins.LiToast.show({ text: i18n('sharePDN'), duration: 'short', position: 'bottom' })
         )}
       />
       {ctrl.clock ?
         <button className={'fa action_bar_button ' + (ctrl.clock.isRunning() ? 'fa-pause' : 'fa-play') + (ctrl.isClockEnabled() ? '' : ' disabled')}
           oncreate={helper.ontap(
             ctrl.toggleClockPlay,
-            () => Plugins.Toast.show({ text: i18n('draughtsClock'), duration: 'short' })
+            () => Plugins.LiToast.show({ text: i18n('draughtsClock'), duration: 'short', position: 'bottom' })
           )}
         />
         : null
@@ -101,7 +101,7 @@ function renderGameActionsBar(ctrl: OtbRound) {
         <button className="fa fa-cloud-upload action_bar_button"
           oncreate={helper.ontap(
             ctrl.importGamePopup.open,
-            () => Plugins.Toast.show({ text: i18n('Import game to lidraughts'), duration: 'short' })
+            () => Plugins.LiToast.show({ text: i18n('Import game on lidraughts'), duration: 'short', position: 'bottom' })
           )}
         /> : null
       }

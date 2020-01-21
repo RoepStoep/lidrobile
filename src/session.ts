@@ -122,7 +122,7 @@ function myTurnGames() {
 }
 
 function showSavedPrefToast(data: string): string {
-  Plugins.Toast.show({ text: '✓ Your preferences have been saved on lidraughts server.', duration: 'short' })
+  Plugins.LiToast.show({ text: '✓ Your preferences have been saved on lidraughts server.', duration: 'short' })
   return data
 }
 
@@ -317,7 +317,7 @@ function refresh(): Promise<void> {
       session = undefined
       onLogout()
       redraw()
-      Plugins.Toast.show({ text: i18n('signedOut'), duration: 'short' })
+      Plugins.LiToast.show({ text: i18n('signedOut'), duration: 'short' })
     }
   })
 }

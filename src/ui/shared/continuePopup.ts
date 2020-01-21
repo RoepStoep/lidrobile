@@ -86,7 +86,7 @@ export default {
                 if (validateFen(f, v) && positionLooksLegit(f, getVariant(v).board.size)) {
                   router.set(`/ai/variant/${v}/fen/${encodeURIComponent(f)}/color/${c}`)
                 } else {
-                  Plugins.Toast.show({ text: i18n('invalidFen'), duration: 'short' })
+                  Plugins.LiToast.show({ text: i18n('invalidFen'), duration: 'short' })
                 }
               }
             })
@@ -100,7 +100,7 @@ export default {
                 if (validateFen(f, v) && positionLooksLegit(f, getVariant(v).board.size)) {
                   router.set(`/otb/variant/${v}/fen/${encodeURIComponent(f)}`)
                 } else {
-                  Plugins.Toast.show({ text: i18n('invalidFen'), duration: 'short' })
+                  Plugins.LiToast.show({ text: i18n('invalidFen'), duration: 'short' })
                 }
               }
             })

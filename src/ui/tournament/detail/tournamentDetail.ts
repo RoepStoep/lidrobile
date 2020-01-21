@@ -70,7 +70,7 @@ export default {
     let header: Mithril.Children
 
     if (tournament && !isSupportedVariantKey(tournament.variant)) {
-      Plugins.Toast.show({ text: i18n('unsupportedVariant', tournament.variant), duration: 'short' })
+      Plugins.LiToast.show({ text: i18n('unsupportedVariant', tournament.variant), duration: 'short' })
       router.set('/')
       return
     }
