@@ -1,5 +1,5 @@
 import * as Mithril from 'mithril'
-import { Plugins, AppState, PluginListenerHandle } from '@capacitor/core'
+import { Capacitor, Plugins, AppState, PluginListenerHandle } from '@capacitor/core'
 import throttle from 'lodash-es/throttle'
 import Draughtsground from '../../../draughtsground/Draughtsground'
 import * as cg from '../../../draughtsground/interfaces'
@@ -536,7 +536,9 @@ export default class OnlineRound implements OnlineRoundInterface {
     if (this.data.game.speed === 'correspondence') {
       session.refresh()
       .then(() => {
-        Plugins.Badge.setNumber({ badge: session.myTurnGames().length })
+        if (Capacitor.platform === 'ios') {
+          Plugins.Badge.setNumber({ badge: session.myTurnGames().length })
+        }
       })
     }
   }
