@@ -81,7 +81,7 @@ function renderForm(ctrl: TournamentsListCtrl) {
                 )
               })}
             </select>
-          </div> : null
+          </div> : <input value="---" type="hidden" />
         }
         <div className="select_input">
           {formWidgets.renderSelect(i18n('mode'), 'mode', settings.tournament.availableModes, settings.tournament.mode, false)}
