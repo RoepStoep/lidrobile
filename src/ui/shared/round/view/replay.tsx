@@ -5,8 +5,9 @@ import * as helper from '../../../helper'
 import { autoScroll, autoScrollInline, onReplayTap, getMoveEl } from '../util'
 import OnlineRound from '../OnlineRound'
 
-export function renderReplay(ctrl: OnlineRound) {
+export function renderReplay(ctrl: OnlineRound, key?: string) {
   return h('div.replay.box', {
+    key,
     oncreate: (vnode: Mithril.VnodeDOM<any, any>) => {
       setTimeout(() => autoScroll(vnode.dom as HTMLElement), 100)
       helper.ontapY((e: Event) => onReplayTap(ctrl, e), undefined, getMoveEl)(vnode)
@@ -15,12 +16,13 @@ export function renderReplay(ctrl: OnlineRound) {
   }, renderMoves(ctrl))
 }
 
-export function renderInlineReplay(ctrl: OnlineRound) {
+export function renderInlineReplay(ctrl: OnlineRound, key?: string) {
   if (!ctrl.vm.moveList || ctrl.isZen()) {
     return null
   }
   
   return h('div.replay_inline', {
+    key,
     oncreate: (vnode: Mithril.VnodeDOM<any, any>) => {
       setTimeout(() => autoScrollInline(vnode.dom as HTMLElement), 100)
       helper.ontapX((e: Event) => onReplayTap(ctrl, e), undefined, getMoveEl)(vnode)
