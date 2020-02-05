@@ -425,7 +425,9 @@ export default class OnlineRound implements OnlineRoundInterface {
 
     if (this.vm.submitFeedback && (this.vm.submitFeedback[0] + 1 === o.ply ||
       (this.vm.submitFeedback[0] === o.ply && ghosts))) {
-      const duration = performance.now() - this.vm.submitFeedback[1]
+      const feebackDuration = this.data.game.speed === 'correspondence' ?
+        Math.max(500 - (performance.now() - this.vm.submitFeedback[1]), 0) :
+        0
       setTimeout(() => {
         this.vm.submitFeedback = undefined
         if (playing) {
@@ -433,7 +435,7 @@ export default class OnlineRound implements OnlineRoundInterface {
           vibrate.quick()
         }
         redraw()
-      }, Math.max(500 - duration, 0))
+      }, feebackDuration)
     }
     
     d.game.turns = o.ply
