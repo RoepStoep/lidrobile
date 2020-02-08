@@ -33,7 +33,6 @@ export default {
           <li>{externalLink('Contact', 'https://lidraughts.org/contact')}</li>
           <li>{externalLink('Terms of Service', 'https://lidraughts.org/terms-of-service')}</li>
           <li>{externalLink('Privacy Policy', 'https://lidraughts.org/privacy')}</li>
-          <li>{externalLink('lidraughts.org/about', 'https://lidraughts.org/about')}</li>
         </ul>
 
       </div>
