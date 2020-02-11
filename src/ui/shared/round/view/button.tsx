@@ -39,8 +39,11 @@ export default {
   sharePDN(ctrl: OnlineRound) {
     function handler() {
       getPDN(ctrl.data.game.id, ctrl.isAlgebraic())
+        .catch(err => {
+          handleXhrError(err)
+          throw err
+        })
         .then((pdn: string) => Plugins.Share.share({ text: pdn }))
-        .catch(handleXhrError)
     }
     return (
       <button oncreate={helper.ontap(handler)}>
