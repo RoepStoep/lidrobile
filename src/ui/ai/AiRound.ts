@@ -183,7 +183,7 @@ export default class AiRound implements AiRoundInterface, PromotingInterface {
   public sharePDN = () => {
     this.replay.pdn(this.white(), this.black())
     .then((data: draughts.PdnDumpResponse) =>
-      Plugins.Share.share({ text: data.pdn })
+      Plugins.LiShare.share({ text: data.pdn })
     )
   }
 

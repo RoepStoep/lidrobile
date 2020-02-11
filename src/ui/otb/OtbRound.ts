@@ -202,7 +202,7 @@ export default class OtbRound implements OtbRoundInterface, PromotingInterface {
   public sharePDN = () => {
     this.replay.pdn('White', 'Black')
     .then((data: draughts.PdnDumpResponse) =>
-      Plugins.Share.share({ text: data.pdn })
+      Plugins.LiShare.share({ text: data.pdn })
     )
   }
 

@@ -110,7 +110,7 @@ function renderShareMenu(ctrl: AnalyseCtrl) {
     isOnlineAnalyseData(ctrl.data) ? h('button', {
       oncreate: helper.ontap(() => {
         ctrl.menu.close()
-        Plugins.Share.share({ url: gameApi.publicAnalyseUrl(ctrl.data) })
+        Plugins.LiShare.share({ url: gameApi.publicAnalyseUrl(ctrl.data) })
       })
     }, [i18n('shareGameURL')]) : null,
     ctrl.source === 'offline' ? h('button', {
@@ -131,7 +131,7 @@ function renderShareMenu(ctrl: AnalyseCtrl) {
     ctrl.isOfflineOrNotPlayable() ? h('button', {
       oncreate: helper.ontap(() => {
         ctrl.menu.close()
-        Plugins.Share.share({ text: toggleCoordinates(ctrl.node.fen, ctrl.isAlgebraic()) })
+        Plugins.LiShare.share({ text: toggleCoordinates(ctrl.node.fen, ctrl.isAlgebraic()) })
       }),
     }, 'Share current FEN') : null,
   ]))
@@ -147,7 +147,7 @@ function onlinePDNExport(ctrl: AnalyseCtrl, raw: boolean) {
       ctrl.menu.s.computingPDNAnnotated = false
       ctrl.menu.close()
       redraw()
-      Plugins.Share.share({ text: pdn })
+      Plugins.LiShare.share({ text: pdn })
     })
     .catch(e => {
       ctrl.menu.s.computingPDN = false
@@ -181,7 +181,7 @@ function offlinePdnExport(ctrl: AnalyseCtrl) {
       ctrl.menu.s.computingPDN = false
       ctrl.menu.close()
       redraw()
-      Plugins.Share.share({ text: res.pdn })
+      Plugins.LiShare.share({ text: res.pdn })
     })
     .catch(e => {
       ctrl.menu.s.computingPDN = false

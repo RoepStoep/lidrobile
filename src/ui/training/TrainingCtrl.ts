@@ -223,7 +223,7 @@ export default class TrainingCtrl implements PromotingInterface {
   }
 
   public share = () => {
-    Plugins.Share.share({ url: `https://lidraughts.org/training/${this.data.puzzle.variant.key}/${this.data.puzzle.id}` })
+    Plugins.LiShare.share({ url: `https://lidraughts.org/training/${this.data.puzzle.variant.key}/${this.data.puzzle.id}` })
   }
 
   public goToAnalysis = () => {
