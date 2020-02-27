@@ -73,6 +73,8 @@ export default class AiRound implements AiRoundInterface, PromotingInterface {
       if (setupVariant) {
         settings.ai.variant(setupVariant)
       }
+
+      redraw()
     }
 
     const currentVariant = (!setupFen && saved && saved.data.game.variant.key) || <VariantKey>settings.ai.variant()
