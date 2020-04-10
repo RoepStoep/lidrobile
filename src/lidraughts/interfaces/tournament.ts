@@ -31,6 +31,7 @@ export interface Tournament {
   readonly streakable?: boolean
   readonly system: string
   readonly teamBattle?: TeamBattle
+  readonly teamStanding?: ReadonlyArray<TeamStanding>
   readonly variant: VariantKey
   readonly verdicts: Verdicts
 }
@@ -200,8 +201,26 @@ export interface TournamentCreateResponse {
 }
 
 interface TeamBattle {
-  joinswith: ReadonlyArray<string>
+  joinWith: ReadonlyArray<string>
   teams: {
     [teamKey: string]: string
   }
+}
+
+export interface TeamStanding {
+  id: string
+  players: ReadonlyArray<TeamStandingPlayer>
+  rank: number
+  score: number
+}
+
+interface TeamStandingPlayer {
+  score: number
+  user: TeamStandingPlayerUser
+}
+
+interface TeamStandingPlayerUser {
+  id: string
+  name: string
+  patron?: boolean
 }
