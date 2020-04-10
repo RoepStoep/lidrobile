@@ -30,6 +30,7 @@ export interface Tournament {
   readonly startsAt: string
   readonly streakable?: boolean
   readonly system: string
+  readonly teamBattle?: TeamBattle
   readonly variant: VariantKey
   readonly verdicts: Verdicts
 }
@@ -196,4 +197,11 @@ interface Conditions {
 
 export interface TournamentCreateResponse {
   readonly id: string
+}
+
+interface TeamBattle {
+  joinswith: ReadonlyArray<string>
+  teams: {
+    [teamKey: string]: string
+  }
 }
