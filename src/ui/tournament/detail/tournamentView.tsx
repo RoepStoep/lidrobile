@@ -290,18 +290,17 @@ function renderNavButton(icon: string, isEnabled: boolean, action: () => void) {
 function renderPlayerEntry(userName: string, player: StandingPlayer, i: number, teamColor: number) {
   const evenOrOdd = i % 2 === 0 ? 'even' : 'odd'
   const isMe = player.name === userName
-  //<span className={'playerTeam ttc-' + teamColor}> {player.team ? player.team : '' } </span>
-  if (teamColor && !teamColor)
-     return null
+
   return (
     <li key={player.name} data-player={player.name} className={`list_item tournament-list-player ${evenOrOdd}` + (isMe ? ' tournament-me' : '')} >
       <div className="tournamentPlayer">
         <span className="flagRank" data-icon={player.withdraw ? 'b' : ''}> {player.withdraw ? '' : (player.rank + '. ')} </span>
-        <span> {player.name + ' (' + player.rating + (player.provisional ? '?' : '') + ') '} {player.team ? player.team : '' } </span>
+        <span className="playerName"> {player.name + ' (' + player.rating + (player.provisional ? '?' : '') + ') '}</span>
+        <span className={'playerTeam ttc-' + teamColor}> {player.team ? player.team : '' } </span>
       </div>
-      <span className={'tournamentPoints ' + (player.sheet.fire ? 'on-fire' : 'off-fire')} data-icon="Q">
+      <div className={'tournamentPoints ' + (player.sheet.fire ? 'on-fire' : 'off-fire')} data-icon="Q">
         {player.score}
-      </span>
+      </div>
     </li>
   )
 }
@@ -392,9 +391,9 @@ function tournamentTeamLeaderboard(ctrl: TournamentCtrl) {
   const t = ctrl.tournament
   const tb = t.teamBattle
   const standings = t.teamStanding
-  if(!tb || !standings)
+  if (!tb || !standings)
     return null
-  
+
   return (
     <div className="tournamentTeamLeaderboard">
       <ul

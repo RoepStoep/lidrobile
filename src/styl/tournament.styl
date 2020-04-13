@@ -131,6 +131,12 @@
     text-overflow: ellipsis
     white-space: nowrap
     overflow hidden
+    display inherit
+    > .playerName
+      display inline-block
+      padding-right 5px
+    > .playerTeam
+      font-size 0.6em
 
 .list_item.tournament-me
   > .tournamentPlayer
@@ -156,6 +162,7 @@
     text-overflow: ellipsis
     white-space: nowrap
     overflow hidden
+    display inherit
 
 .timeArrow
   font-weight: bold
@@ -163,6 +170,7 @@
 .tournamentHeader
   grid-area infos
   padding 10px 10px 0px 10px
+  min-width 0
 
 .tournamentConditions, .tournamentCreatorInfo, .tournamentPositionInfo, .tournamentTimeInfo, .tournamentSpotlightInfo, .tournamentNoTeam, .tournamentSettings
   margin-bottom 0.4em
@@ -307,12 +315,14 @@
   display flex
   flex-flow column nowrap
   padding 0 10px
+  min-width 0
 
 .tournamentTeamLeaderboard
   grid-area teamLeaderboard
   display flex
   flex-flow column nowrap
   padding 0 10px
+  min-width 0
 
 .ttc-0
   color: hsl(274, 100%, 59%)
