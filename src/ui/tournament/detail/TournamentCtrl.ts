@@ -5,7 +5,7 @@ import redraw from '../../../utils/redraw'
 import { fromNow } from '../../../i18n'
 import * as utils from '../../../utils'
 import * as tournamentApi from '../../../lidraughts/tournament'
-import { Tournament, StandingPlayer, StandingPage } from '../../../lidraughts/interfaces/tournament'
+import { Tournament, StandingPlayer, StandingPage, TeamBattle, TeamColorMap } from '../../../lidraughts/interfaces/tournament'
 
 import * as xhr from '../tournamentXhr'
 import faq, { FaqCtrl } from '../faq'
@@ -34,6 +34,7 @@ export default class TournamentCtrl {
   public faqCtrl: FaqCtrl
   public playerInfoCtrl: PlayerInfoCtrl
   public teamInfoCtrl: TeamInfoCtrl
+  public teamColorMap: TeamColorMap
 
   private pagesCache: PagesCache = {}
 
@@ -64,6 +65,8 @@ export default class TournamentCtrl {
     this.appStateListener = Plugins.App.addListener('appStateChange', (state: AppState) => {
       if (state.isActive) this.reload()
     })
+
+    this.teamColorMap = data.teamBattle ? this.createTeamColorMap (data.teamBattle) : {}
 
     redraw()
   }
@@ -197,6 +200,18 @@ export default class TournamentCtrl {
     if (data.socketVersion) {
       socket.setVersion(data.socketVersion)
     }
+
+    this.teamColorMap = data.teamBattle ? this.createTeamColorMap (data.teamBattle) : {}
+    
     redraw()
+  }
+
+  private createTeamColorMap (tb: TeamBattle) {
+    let tColorMap: TeamColorMap = {}
+    tColorMap = Object.keys(tb.teams).reduce(function (acc, team, i) {
+      acc[team] = i
+      return acc
+    },tColorMap)
+    return tColorMap
   }
 }

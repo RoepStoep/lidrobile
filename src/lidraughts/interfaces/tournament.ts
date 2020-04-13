@@ -98,6 +98,7 @@ export interface StandingPlayer {
   readonly ratingDiff: number
   readonly score: number
   readonly sheet: Sheet
+  readonly team?: string
   readonly withdraw?: boolean
 }
 
@@ -200,7 +201,7 @@ export interface TournamentCreateResponse {
   readonly id: string
 }
 
-interface TeamBattle {
+export interface TeamBattle {
   joinWith: ReadonlyArray<string>
   teams: {
     [teamKey: string]: string
