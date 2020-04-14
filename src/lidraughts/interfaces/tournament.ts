@@ -215,7 +215,7 @@ export interface TeamStanding {
   score: number
 }
 
-interface TeamStandingPlayer {
+export interface TeamStandingPlayer {
   score: number
   user: TeamStandingPlayerUser
 }

@@ -110,7 +110,7 @@ function tournamentCreatorInfo(data: Tournament, startsAt: string) {
   return (
     <div className="tournamentCreatorInfo">
       {data.createdBy === 'lidraughts' ? i18n('tournamentOfficial') : i18n('by', data.createdBy)}
-      &nbsp;•&nbsp;{startsAt}
+      &thinsp;•&thinsp;{startsAt}
     </div>
   )
 }
@@ -294,7 +294,7 @@ function renderPlayerEntry(userName: string, player: StandingPlayer, i: number, 
   return (
     <li key={player.name} data-player={player.name} className={`list_item tournament-list-player ${evenOrOdd}` + (isMe ? ' tournament-me' : '')} >
       <div className="tournamentPlayer">
-        <span className="flagRank" data-icon={player.withdraw ? 'b' : ''}> {player.withdraw ? '' : (player.rank + '. ')} </span>
+        <span className="flagRank" data-icon={player.withdraw ? 'b' : ''}> {player.withdraw ? '' : (player.rank + '.')} &thinsp; </span>
         <span className="playerName"> {player.name + ' (' + player.rating + (player.provisional ? '?' : '') + ') '}</span>
         <span className={'playerTeam ttc-' + teamColor}> {player.team ? player.team : '' } </span>
       </div>
@@ -411,7 +411,7 @@ function renderTeamEntry(teamName: string, teamColor: number, team: TeamStanding
   return (
     <li key={team.id} data-team={team.id} className={`list_item tournament-list-team ${evenOrOdd}`} >
       <div className="tournamentTeam">
-        <span> {team.rank + '. '} </span>
+        <span> {team.rank + '.'} &thinsp; </span>
         <span className={'ttc-' + teamColor}> {teamName} </span>
       </div>
       <span className={'tournamentTeamPoints'}>
