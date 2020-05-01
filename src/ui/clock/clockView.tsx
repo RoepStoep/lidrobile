@@ -44,7 +44,7 @@ export function clockBody(ctrl: IDraughtsClockCtrl) {
 
   const whiteClockTimeShortClass = [
     'clockTime',
-    clock.whiteTime() < 60000 && !whiteFlagged? 'short' : 'noshort'
+    clock.whiteTime() < 60000 && !whiteFlagged ? 'short' : 'noshort'
   ].join(' ')
 
   const blackClockTimeClass = [
