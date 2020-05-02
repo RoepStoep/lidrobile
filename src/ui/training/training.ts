@@ -96,6 +96,7 @@ export default {
       return layout.board(
         renderHeader(this.ctrl!),
         renderContent(this.ctrl!, key),
+        undefined,
         overlay(this.ctrl!)
       )
     }
@@ -111,7 +112,8 @@ export default {
             })
           ]),
           h('div.table.training-tableWrapper')
-        ]
+        ],
+        undefined,
       )
     }
   }

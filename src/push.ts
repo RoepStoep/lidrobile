@@ -67,7 +67,7 @@ export default {
               router.set(`/game/${action.notification.data['lidraughts.challengeId']}`)
               break
             case 'challengeCreate':
-              router.set(`/challenge/${action.notification.data['lidraughts.challengeId']}`)
+              router.set(`/game/${action.notification.data['lidraughts.challengeId']}`)
               break
             case 'corresAlarm':
             case 'gameMove':

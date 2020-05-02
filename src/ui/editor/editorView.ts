@@ -39,6 +39,7 @@ export default function view(ctrl: EditorCtrl) {
         renderActionsBar(ctrl)
       ])
     ],
+    undefined,
     [
       menu.view(ctrl.menu),
       continuePopup.view(ctrl.continuePopup),
