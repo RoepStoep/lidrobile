@@ -9,6 +9,8 @@ import { validateFen } from '../utils/fen'
 import { getVariantKeyById } from '../lidraughts/variant'
 import settings from '../settings'
 import session from '../session'
+import challengesApi from '../lichess/challenges'
+import gamesMenu from './gamesMenu'
 import formWidgets from './shared/form'
 import popupWidget from './shared/popup'
 import ViewOnlyBoard from './shared/ViewOnlyBoard'
@@ -46,7 +48,12 @@ function close(fromBB?: string) {
 function doChallenge() {
   return challengeXhr(userId!, setupFen)
   .then(data => {
-    router.set(`/game/${data.challenge.id}`)
+
+    if (data.challenge.destUser && challengesApi.isPersistent(data.challenge)) {
+      gamesMenu.open(session.nowPlaying().length + challengesApi.all().length)
+    } else {
+      router.set(`/game/${data.challenge.id}`)
+    }
   })
   .catch(utils.handleXhrError)
 }
