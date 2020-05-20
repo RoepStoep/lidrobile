@@ -204,7 +204,7 @@ export interface TournamentCreateResponse {
 export interface TeamBattle {
   joinWith: ReadonlyArray<string>
   teams: {
-    [teamKey: string]: string
+    [teamKey: string]: string | undefined
   }
 }
 
@@ -227,5 +227,5 @@ interface TeamStandingPlayerUser {
 }
 
 export interface TeamColorMap {
-  [teamKey: string]: number
+  [teamKey: string]: number | undefined
 }
