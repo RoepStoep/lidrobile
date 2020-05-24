@@ -64,11 +64,8 @@ function online(ctrl: HomeCtrl) {
         renderPlayban(playbanEndsAt) : renderLobby(ctrl)
       }
       {renderStart(ctrl)}
-      <div className="home__side">
-        {renderFeaturedTournaments(ctrl)}
-        {renderTimeline(ctrl)}
-      </div>
-      {renderFeatured(ctrl)}
+      {renderFeaturedTournaments(ctrl)}
+      {renderTimeline(ctrl)}
       {renderDailyPuzzle(ctrl)}
     </div>
   )
@@ -240,32 +237,6 @@ function renderFeaturedTournaments(ctrl: HomeCtrl) {
     )
   else
     return null
-}
-
-function renderFeatured(ctrl: HomeCtrl) {
-  const featured = ctrl.featured
-  const boardConf = featured ? {
-    fixed: false,
-    fen: featured.fen,
-    variant: featured.variant,
-    orientation: featured.color,
-    lastMove: featured.lastMove,
-    link: () => {
-      router.set('/tv?channel=best')
-    },
-    gameObj: featured,
-  } : {
-    fixed: false,
-    orientation: 'white' as Color,
-    fen: emptyFen,
-    variant: 'standard' as VariantKey
-  }
-
-  return (
-    <section className="home__featured">
-      {h(MiniBoard, boardConf)}
-    </section>
-  )
 }
 
 function renderDailyPuzzle(ctrl: HomeCtrl) {
