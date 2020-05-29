@@ -4,8 +4,8 @@ import h from 'mithril/hyperscript'
 import socket from '../socket'
 import * as helper from './helper'
 import layout from './layout'
-import i18n from '../i18n'
 import { dropShadowHeader, backButton } from './shared/common'
+import i18n from '../i18n'
 
 export default {
   oncreate: helper.viewSlideIn,
