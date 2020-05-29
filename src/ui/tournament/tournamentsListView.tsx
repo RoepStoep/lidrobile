@@ -77,10 +77,11 @@ export function renderTournamentListItem(tournament: TournamentListItem, index: 
   const variant = tournament.variant.key !== 'standard' ?
     capitalize(tournament.variant.short) : ''
   const evenOrOdd = index % 2 === 0 ? ' even ' : ' odd '
+  const tournamentType = determineTournamentType(tournament)
 
   return (
     <li key={tournament.id}
-      className={'list_item tournament_item' + evenOrOdd + (tournament.createdBy === 'lidraughts' ? ' official' : '')}
+      className={'list_item tournament_item' + evenOrOdd + tournamentType}
       data-id={tournament.id}
     >
       <i className="tournamentListIcon" data-icon={tournament.perf.icon} />
@@ -101,4 +102,23 @@ function formatTime(timeInMillis: number) {
   const hours = pad(date.getHours(), 2)
   const mins = pad(date.getMinutes(), 2)
   return hours + ':' + mins
+}
+
+function determineTournamentType (tournament: TournamentListItem) {
+  let tournamentType = ''
+
+  if (tournament.battle) {
+    tournamentType = 'teamBattle'
+  }
+  else if (tournament.createdBy !== 'lidraughts') {
+    tournamentType = 'user'
+  }
+  else if (tournament.hasMaxRating) {
+    tournamentType = 'maxRating'
+  }
+  else {
+    tournamentType = tournament.schedule ? tournament.schedule.freq : ''
+  }
+
+  return tournamentType
 }
