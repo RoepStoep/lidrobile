@@ -54,7 +54,6 @@ export interface Session {
   readonly prefs: Prefs
   readonly nbChallenges: number
   readonly nbFollowers: number
-  readonly nbFollowing: number
   readonly playban?: TempBan
   // sent on login/signup only
   readonly sessionId?: string
