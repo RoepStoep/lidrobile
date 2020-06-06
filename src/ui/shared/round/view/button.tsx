@@ -99,7 +99,7 @@ export default {
       h('div.force_resign_zone', {
         key: 'forceResignZone'
       }, [
-        h('div.notice', i18n('theOtherPlayerHasLeftTheGameYouCanForceResignationOrWaitForHim')),
+        h('div.notice', i18n('opponentLeftChoices')),
         h('div.binary_choice_wrapper', [
           h('button.binary_choice.left', {
             oncreate: helper.ontap(() => { socket.send('resign-force') })
