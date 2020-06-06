@@ -5,6 +5,7 @@ const defaultCode = 'en-GB'
 
 let lang = defaultCode
 let messages = {} as StringMap
+let numberFormat: Intl.NumberFormat = new Intl.NumberFormat()
 
 export default function i18n(key: string, ...args: Array<string | number>): string {
   let str: string = messages[key] || untranslated[key] || key
@@ -13,6 +14,10 @@ export default function i18n(key: string, ...args: Array<string | number>): stri
     else str = str.replace('%s', String(a)) 
   })
   return str
+}
+
+export function formatNumber(n: number): string {
+  return numberFormat.format(n)
 }
 
 export function getLang(): string {
@@ -85,6 +90,7 @@ function loadFile(code: string): Promise<string> {
   .then(data => {
     lang = code
     messages = data
+    numberFormat = new Intl.NumberFormat(code)
     return code
   })
   .catch(error => {
