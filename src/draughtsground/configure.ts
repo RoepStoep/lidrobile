@@ -17,6 +17,7 @@ export function configureBoard(state: State, config: cg.InitConfig): void {
 
   // don't merge destinations. Just override.
   if (config.movable && config.movable.dests) state.movable.dests = null
+  if (config.movable && config.movable.captureUci) state.movable.captureUci = null
 
   merge(state, config)
 
@@ -34,7 +35,10 @@ export function configureBoard(state: State, config: cg.InitConfig): void {
   if (config.captureLength !== undefined)
     state.movable.captLen = config.captureLength;
 
-  if (config.hasOwnProperty('lastMove') && !config.lastMove) state.lastMove = null
+  if (config.hasOwnProperty('lastMove') && !config.lastMove) {
+    state.lastMove = null
+    state.animateFrom = null
+  }
 
   // fix move/premove dests
   if (state.selected) board.setSelected(state, state.selected)
@@ -69,11 +73,20 @@ export function setNewBoardState(d: State, config: cg.SetConfig): void {
   }
 
   if (config.captureLength !== undefined) {
-    d.movable.captLen = config.captureLength;
+    d.movable.captLen = config.captureLength
   }
 
-  if (config.hasOwnProperty('lastMove') && !config.lastMove) d.lastMove = null
-  else if (config.lastMove) d.lastMove = config.lastMove
+  if (config.captureUci !== undefined) {
+    d.movable.captureUci = config.captureUci
+  }
+
+  if (config.hasOwnProperty('lastMove') && !config.lastMove) {
+    d.lastMove = null
+    d.animateFrom = null
+  } else if (config.lastMove) {
+    d.lastMove = config.lastMove
+    d.animateFrom = null
+  }
 
   // fix move/premove dests
   if (d.selected) {

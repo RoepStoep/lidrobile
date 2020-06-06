@@ -7,8 +7,9 @@ export interface State {
   orientation: Color // board orientation. white | black
   turnColor: Color // turn to play. white | black
   check: Key | null // square currently in check "a2"
-  lastMove: Key[] | null // squares part of the last move ["c3", "c4"]
-  selected: Key | null // square currently selected "a1"
+  lastMove: Key[] | null // ucis of the last move [32, 27]
+  animateFrom: number | null; // startindex in lastMove to animate
+  selected: Key | null // square currently selected "32"
   coordinates: number // include coords attributes
   viewOnly: boolean // don't bind events: the user will never be able to move pieces around
   fixed: boolean // board is viewOnly and pieces won't move
@@ -30,6 +31,7 @@ export interface State {
     color: Color | 'both' | null // color that can move.
     dests: DestsMap | null // valid moves. {"a2" ["a3" "a4"] "b1" ["a3" "c3"]}
     captLen: number | null
+    captureUci: string[] | null // possible multicaptures, when played by clicking to the final square (or first ambiguity)
     showDests: boolean // whether to add the move-dest class on squares
     dropped: KeyPair | null // last dropped [orig, dest], not to be animated
     events: {
@@ -87,6 +89,7 @@ export function makeDefaults(): State {
     turnColor: 'white' as Color,
     check: null,
     lastMove: null,
+    animateFrom: null,
     selected: null,
     coordinates: 2,
     otb: false,
@@ -110,6 +113,7 @@ export function makeDefaults(): State {
       dests: null,
       dropped: null,
       captLen: null,
+      captureUci: null,
       showDests: true,
       events: {}
     },

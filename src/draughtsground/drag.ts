@@ -172,7 +172,8 @@ export function end(ctrl: Draughtsground, e: TouchEvent) {
     else {
       board.userMove(state, cur.orig, dest)
       // if we can continue capturing keep the piece selected, so all target squares can be clicked one after the other
-      if (state.movable.captLen !== null && state.movable.captLen > 1)
+      const skipLastMove = state.animateFrom ? state.animateFrom + 1 : 1;
+      if (state.movable.captLen && state.movable.captLen > (state.lastMove ? state.lastMove.length - skipLastMove : 1))
         board.setSelected(state, dest);
     }
   }

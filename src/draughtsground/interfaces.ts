@@ -30,6 +30,7 @@ export interface InitConfig {
     color?: Color | 'both' | null
     dests?: DestsMap | null
     showDests?: boolean
+    captureUci?: string[]
     events?: {
       after?: (orig: Key, dest: Key, metadata: MoveMetadata) => void
       afterNewPiece?: (role: Role, key: Key, metadata: MoveMetadata) => void
@@ -75,7 +76,8 @@ export interface SetConfig {
   orientation?: Color
   fen?: string
   lastMove?: Key[] | null
-  captureLength?: number;
+  captureLength?: number
+  captureUci?: string[]
   turnColor?: Color
   movableColor?: Color | 'both' | null
   dests?: DestsMap | null

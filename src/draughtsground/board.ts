@@ -1,6 +1,7 @@
 import { State } from './state'
 import * as cg from './interfaces'
 import * as util from './util'
+import * as draughtsFormat from '../utils/draughtsFormat'
 import premove from './premove'
 
 export function toggleOrientation(state: State): void {
@@ -12,6 +13,7 @@ export function toggleOrientation(state: State): void {
 
 export function reset(state: State): void {
   state.lastMove = null
+  state.animateFrom = null;
   setSelected(state, null)
   unsetPremove(state)
   unsetPredrop(state)
@@ -156,7 +158,8 @@ export function selectSquare(state: State, key: Key, force?: boolean): void {
     } else if ((state.selectable.enabled || force) && state.selected !== key) {
       if (userMove(state, state.selected, key)) {
         // if we can continue capturing keep the piece selected, so all target squares can be clicked one after the other
-        if (state.movable.captLen !== null && state.movable.captLen > 1)
+        const skipLastMove = state.animateFrom ? state.animateFrom + 1 : 1;
+        if (state.movable.captLen && state.movable.captLen > (state.lastMove ? state.lastMove.length - skipLastMove : 1))
           setSelected(state, key);
       }
     }
@@ -296,8 +299,9 @@ function baseMove(state: State, orig: Key, dest: Key): Piece | boolean {
 
   if (orig === dest || !state.pieces[orig]) return false
 
-  const origPos: cg.Pos = util.key2pos(orig), destPos: cg.Pos = util.key2pos(dest);
   const isCapture = (state.movable.captLen && state.movable.captLen > 0);
+  const captureUci = isCapture && state.movable.captureUci && state.movable.captureUci.find(uci => uci.slice(0, 2) === orig && uci.slice(-2) === dest);
+  const origPos: cg.Pos = util.key2pos(orig), destPos: cg.Pos = captureUci ? util.key2pos(captureUci.slice(2, 4) as Key) : util.key2pos(dest);
   const captKey: Key | null = isCapture ? calcCaptKey(state.pieces, origPos[0], origPos[1], destPos[0], destPos[1]) : null;
   const captPiece: Piece | undefined = (isCapture && captKey) ? state.pieces[captKey] : undefined;
   const origPiece = state.pieces[orig];
@@ -307,57 +311,69 @@ function baseMove(state: State, orig: Key, dest: Key): Piece | boolean {
     if (state.events.move) state.events.move(orig, dest, captPiece)
   }, 0)
 
-  if (!state.movable.free && 
-    (state.movable.captLen === null || state.movable.captLen <= 1) && 
-    origPiece.role === 'man' && (
-      (origPiece.color === 'white' && destPos[1] === 1) || 
-      (origPiece.color === 'black' && destPos[1] === 10)
-    )) {
-    state.pieces[dest] = {
-      role: 'king',
-      color: origPiece.color
-    };
-  } else {
-    state.pieces[dest] = state.pieces[orig];
-  }
+  const captured = captureUci ? (captureUci.length - 2) / 2 : 1
+  const finalDest = captureUci ? util.key2pos(captureUci.slice(captureUci.length - 2) as Key) : destPos
+  const promotable = (state.movable.captLen === null || state.movable.captLen <= captured) && 
+                      origPiece.role === 'man' && (
+                        (origPiece.color === 'white' && finalDest[1] === 1) || 
+                        (origPiece.color === 'black' && finalDest[1] === 10)
+                      )
+  const destPiece = (!state.movable.free && promotable) ? {
+    role: 'king',
+    color: origPiece.color
+  } as Piece : state.pieces[orig];
   delete state.pieces[orig]
 
-  if (isCapture && captKey) {
-
-    const captColor = state.pieces[captKey].color;
-    const captRole = state.pieces[captKey].role;
-    delete state.pieces[captKey]
-
-    //Show a ghostpiece when we capture more than once
-    if (state.movable.captLen !== null && state.movable.captLen > 1) {
-      if (captRole === 'man') {
-        state.pieces[captKey] = {
-          role: 'ghostman',
-          color: captColor
-        };
-      } else if (captRole === 'king') {
-        state.pieces[captKey] = {
-          role: 'ghostking',
-          color: captColor
-        };
+  if (captureUci && captKey) {
+    delete state.pieces[captKey];
+    for (let s = 2; s + 4 <= captureUci.length; s += 2) {
+      const nextOrig = util.key2pos(captureUci.slice(s, s + 2) as Key), nextDest = util.key2pos(captureUci.slice(s + 2, s + 4) as Key);
+      const nextCapt = calcCaptKey(state.pieces, nextOrig[0], nextOrig[1], nextDest[0], nextDest[1]);
+      if (nextCapt) {
+        delete state.pieces[nextCapt];
       }
-    } else {
-      //Remove any remaing ghost pieces if capture sequence is done
-      for (let i = 0; i < util.allKeys.length; i++) {
-        const pc = state.pieces[util.allKeys[i]];
-        if (pc !== undefined && (pc.role === 'ghostking' || pc.role === 'ghostman'))
-          delete state.pieces[ util.allKeys[i]];
+    }
+    state.pieces[dest] = destPiece;
+  } else {
+    state.pieces[dest] = destPiece;
+    if (captKey) {
+
+      const captColor = state.pieces[captKey].color;
+      const captRole = state.pieces[captKey].role;
+      delete state.pieces[captKey]
+
+      //Show a ghostpiece when we capture more than once
+      if (state.movable.captLen !== null && state.movable.captLen > 1) {
+        if (captRole === 'man') {
+          state.pieces[captKey] = {
+            role: 'ghostman',
+            color: captColor
+          };
+        } else if (captRole === 'king') {
+          state.pieces[captKey] = {
+            role: 'ghostking',
+            color: captColor
+          };
+        }
+      } else {
+        //Remove any remaing ghost pieces if capture sequence is done
+        for (let i = 0; i < util.allKeys.length; i++) {
+          const pc = state.pieces[util.allKeys[i]];
+          if (pc !== undefined && (pc.role === 'ghostking' || pc.role === 'ghostman'))
+            delete state.pieces[ util.allKeys[i]];
+        }
       }
     }
   }
 
-  if (state.lastMove !== null && state.lastMove.length > 0 && isCapture) {
-    if (state.lastMove[state.lastMove.length - 1] === orig)
-      state.lastMove.push(dest);
-    else
-      state.lastMove = [orig, dest];
+  if (state.lastMove && state.lastMove.length && isCapture && state.lastMove[state.lastMove.length - 1] === orig) {
+    state.animateFrom = state.lastMove.length - 1;
+    if (captureUci) state.lastMove = state.lastMove.concat(draughtsFormat.decomposeUci(captureUci.slice(2)));
+    else state.lastMove.push(dest);
   } else {
-    state.lastMove = [orig, dest];
+    state.animateFrom = 0;
+    if (captureUci) state.lastMove = draughtsFormat.decomposeUci(captureUci);
+    else state.lastMove = [orig, dest];
   }
 
   setTimeout(state.events.change || util.noop)
