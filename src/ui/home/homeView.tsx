@@ -89,6 +89,7 @@ function renderDailyPuzzle(ctrl: Ctrl) {
   const puzzle = puzzleData && (puzzleData.history ? puzzleData.history : puzzleData.puzzle)
   if (puzzle && puzzleData && puzzleData.puzzle) {
     puzzle.id = puzzleData.puzzle.id;
+    puzzle.color = puzzleData.puzzle.color;
   }
   const boardConf = puzzle ? {
     fen: puzzle.fen,
