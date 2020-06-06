@@ -26,6 +26,15 @@ export const ConfirmResignChoices = [
   [ ConfirmResign.YES, 'yes' ]
 ] as Array<LidraughtsPropOption>
 
+export const FullCapture = {
+  NO: 0,
+  YES: 1
+}
+export const FullCaptureChoices = [
+  [ ConfirmResign.NO, 'stepByStep' ],
+  [ ConfirmResign.YES, 'allAtOnce' ]
+] as Array<LidraughtsPropOption>
+
 export const AutoThreefold = {
   NEVER: 1,
   TIME: 2,

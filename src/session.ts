@@ -149,6 +149,7 @@ function savePreferences(): Promise<string> {
     'animation',
     'captured',
     'kingMoves',
+    'gameResult',
     'highlight',
     'destination',
     'coords',
@@ -159,6 +160,7 @@ function savePreferences(): Promise<string> {
     'premove',
     'takeback',
     'autoThreefold',
+    'fullCapture',
     'submitMove',
     'confirmResign',
     'moretime'
