@@ -452,13 +452,6 @@ export default class OnlineRound implements OnlineRoundInterface {
       const ghosts = countGhosts(o.fen);
       this.vm.ply = d.game.turns + (ghosts > 0 ? 1 : 0);
 
-      const enpassantPieces: {[index: string]: Piece | null} = {}
-      if (o.enpassant) {
-        const p = o.enpassant
-        enpassantPieces[p.key] = null
-      }
-
-      const pieces = Object.assign({}, enpassantPieces)
       const newConf = {
         turnColor: d.game.player,
         dests: playing ?
@@ -471,7 +464,7 @@ export default class OnlineRound implements OnlineRoundInterface {
         this.draughtsground.apiMove(
           move[0],
           move[1],
-          pieces,
+          {},
           newConf
         )
       } else if (isDrop(o)) {

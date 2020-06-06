@@ -34,16 +34,7 @@ export interface MoveOrDrop {
     readonly key: Key
     readonly pieceClass: Role
   }
-  readonly enpassant?: {
-    readonly key: Key
-    readonly color: Color
-  }
   readonly drops?: Array<string>
-  readonly castle?: {
-    readonly king: KeyPair
-    readonly rook: KeyPair
-    readonly color: Color
-  }
 }
 
 export interface Move extends MoveOrDrop {

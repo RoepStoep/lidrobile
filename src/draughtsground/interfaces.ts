@@ -2,7 +2,7 @@ export type Pos = [number, number]
 
 export type Pieces = {[index: string]: Piece}
 
-export type PiecesDiff = {[index: string]: Piece | null}
+export type PiecesDiff = {[index: string]: Piece | undefined}
 
 export interface InitConfig {
   batchRAF: (callback: () => void) => void
