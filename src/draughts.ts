@@ -14,6 +14,7 @@ export interface GameSituation {
   readonly fen: string
   readonly player: Color
   readonly dests: DestsMap
+  readonly destsUci?: ReadonlyArray<string>
   readonly drops?: ReadonlyArray<string>
   readonly captureLength?: number
   readonly end: boolean
@@ -43,6 +44,7 @@ export interface DestsRequest {
   readonly fen: string
   readonly uci?: string
   readonly path?: string
+  readonly fullCapture?: boolean
 }
 
 export interface DestsResponse {
@@ -55,6 +57,7 @@ export interface SituationRequest {
   readonly fen: string
   readonly uci?: string
   readonly path?: string
+  readonly fullCapture?: boolean
 }
 
 export interface SituationResponse {
@@ -68,6 +71,7 @@ export interface MoveRequest {
   readonly orig: Key
   readonly dest: Key
   readonly uci?: string
+  readonly fullCapture?: boolean
   readonly pdnMoves?: ReadonlyArray<string>
   readonly uciMoves?: ReadonlyArray<string>
   readonly path?: string

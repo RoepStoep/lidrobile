@@ -44,6 +44,7 @@ export namespace Tree {
     comments?: Comment[]
     // TODO maybe don't keep both formats for dests & drops
     dests?: string | DestsMap
+    destsUci?: ReadonlyArray<string>
     captLen?: number
     threat?: ClientEval
     ceval?: ClientEval

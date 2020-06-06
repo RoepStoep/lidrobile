@@ -85,6 +85,7 @@ export function copyNode(node: Tree.Node, copyChildren: boolean = false): Tree.N
     drops: node.drops,
     comments: node.comments,
     dests: node.dests,
+    destsUci: node.destsUci,
     captLen: node.captLen,
     threat: node.threat,
     ceval: node.ceval,
@@ -130,8 +131,6 @@ export function mergeExpandedNodes(parent: Tree.Node): Tree.Node {
 
 export function mergeNodes(curNode: Tree.Node, newNode: Tree.Node, mergeChildren = false) {
 
-  const curGhosts = countGhosts(curNode.fen);
-
   if (curNode.mergedNodes)
     curNode.mergedNodes.push(copyNode(newNode));
   else
@@ -140,8 +139,8 @@ export function mergeNodes(curNode: Tree.Node, newNode: Tree.Node, mergeChildren
   curNode.id = curNode.id.slice(0, 1) + newNode.id.slice(1, 2);
   curNode.fen = newNode.fen;
 
-  if (curNode.dests && newNode.dests)
-    curNode.dests = newNode.dests;
+  curNode.dests = newNode.dests;
+  curNode.destsUci = newNode.destsUci;
 
   if (curNode.san && newNode.san) {
     const curX = curNode.san.indexOf('x'), newX = newNode.san.indexOf('x');
@@ -150,10 +149,17 @@ export function mergeNodes(curNode: Tree.Node, newNode: Tree.Node, mergeChildren
   }
 
   if (curNode.uci && newNode.uci) {
-    if (curGhosts === 1)
-      curNode.uci = curNode.uci.substr(0, 4) + newNode.uci.substr(2, 2);
-    else
-      curNode.uci = curNode.uci + newNode.uci.substr(2, 2);
+    if (newNode.uci.length > curNode.uci.length && newNode.uci.indexOf(curNode.uci) === 0) {
+      // 1020 -> 102030 = 102030
+      curNode.uci = newNode.uci;
+    } else if (curNode.uci.slice(-2) === newNode.uci.slice(0, 2)) {
+      // 1020 -> 2030 = 102030 (normal) 
+      // 1020 -> 203040 = 10203040 (fullCapture)
+      curNode.uci = curNode.uci + newNode.uci.slice(2); 
+    } else {
+      // 1020 -> 1030 = 102030 (socket)
+      curNode.uci = curNode.uci + newNode.uci.slice(-2);
+    }
   }
 
   if (curNode.displayPly && countGhosts(newNode.fen) == 0)

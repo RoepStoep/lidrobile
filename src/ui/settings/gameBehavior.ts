@@ -5,13 +5,12 @@ import { hasNetwork } from '../../utils'
 import settings from '../../settings'
 import session from '../../session'
 import { StoredProp } from '../../storage'
-import { Takeback, SubmitMove, AutoThreefold, FullCapture, SubmitMoveChoices, TakebackChoices, AutoThreefoldChoices, FullCaptureChoices } from '../../lidraughts/prefs'
+import { Takeback, SubmitMove, AutoThreefold, SubmitMoveChoices, TakebackChoices, AutoThreefoldChoices } from '../../lidraughts/prefs'
 import * as helper from '../helper'
 import { dropShadowHeader, backButton } from '../shared/common'
 import formWidgets from '../shared/form'
 
 interface Ctrl {
-  readonly fullCapture: StoredProp<number>
   readonly premove: StoredProp<boolean>
   readonly takeback: StoredProp<number>
   readonly autoThreefold: StoredProp<number>
@@ -27,7 +26,6 @@ export default {
 
   oninit() {
     this.ctrl = {
-      fullCapture: session.lidraughtsBackedProp<number>('prefs.fullCapture', session.savePreferences, FullCapture.NO),
       premove: session.lidraughtsBackedProp<boolean>('prefs.premove', session.savePreferences, true),
       takeback: session.lidraughtsBackedProp<number>('prefs.takeback', session.savePreferences, Takeback.ALWAYS),
       autoThreefold: session.lidraughtsBackedProp<number>('prefs.autoThreefold', session.savePreferences, AutoThreefold.TIME),
@@ -59,14 +57,17 @@ function renderAppPrefs() {
         settings.game.pieceMove
       )
     ),
+    h('li.list_item', formWidgets.renderMultipleChoiceButton(
+      i18n('howDoYouPlayMultiCaptures'), [
+        { label: i18n('stepByStep'), value: false },
+        { label: i18n('allAtOnce'), value: true },
+      ], settings.analyse.fullCapture
+    )),
   ]
 }
 
 function renderLidraughtsPrefs(ctrl: Ctrl) {
   return [
-    h('li.list_item', formWidgets.renderMultipleChoiceButton(
-      i18n('howDoYouPlayMultiCaptures'), FullCaptureChoices.map(formWidgets.lidraughtsPropToOption), ctrl.fullCapture
-    )),
     h('li.list_item', formWidgets.renderMultipleChoiceButton(
       i18n('premovesPlayingDuringOpponentTurn'), [
         { label: i18n('no'), value: false },

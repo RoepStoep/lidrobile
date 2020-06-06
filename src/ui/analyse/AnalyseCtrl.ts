@@ -535,7 +535,8 @@ export default class AnalyseCtrl {
       uci,
       variant: this.data.game.variant.key,
       fen: this.node.fen,
-      path: this.path
+      path: this.path,
+      fullCapture: settings.analyse.fullCapture()
     }
     draughts.move(move)
     .then(this.addNode)
@@ -545,6 +546,13 @@ export default class AnalyseCtrl {
   private userMove = (orig: Key, dest: Key, captured?: Piece) => {
     if (captured) sound.capture()
     else sound.move()
+    if (settings.analyse.fullCapture() && this.node.destsUci) {
+      const uci = this.node.destsUci.find(u => u.slice(0, 2) === orig && u.slice(-2) === dest)
+      if (uci) {
+        this.sendMove(orig, dest, uci);
+        return;    
+      }
+    }
     this.sendMove(orig, dest)
   }
 
@@ -576,6 +584,7 @@ export default class AnalyseCtrl {
       fen: situation.fen,
       children: [],
       dests: situation.dests,
+      destsUci: situation.destsUci,
       drops: situation.drops,
       captLen: situation.captureLength,
       end: situation.end,
@@ -672,6 +681,7 @@ export default class AnalyseCtrl {
       movableColor: this.gameOver() ? null : color,
       dests: dests || null,
       captureLength: node.captLen,
+      captureUci: (settings.analyse.fullCapture() && this.node.destsUci && this.node.destsUci.length) ? this.node.destsUci.concat() : undefined,
       lastMove: node.uci ? draughtsFormat.uciToMoveOrDrop(node.uci) : null
     }
 
@@ -692,11 +702,13 @@ export default class AnalyseCtrl {
         variant: this.data.game.variant.key,
         fen: this.node.fen,
         uci: this.node.uci,
-        path: this.path
+        path: this.path,
+        fullCapture: settings.analyse.fullCapture()
       })
       .then(({ situation, path }) => {
         this.tree.updateAt(path, (node: Tree.Node) => {
           node.dests = situation.dests
+          node.destsUci = situation.destsUci
           node.captLen = situation.captureLength
           node.end = situation.end
           node.player = situation.player

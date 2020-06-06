@@ -18,7 +18,6 @@ export interface TreeWrapper {
   setAmbs(node: Tree.Node, parent: Tree.Node): void;
   addNode(node: Tree.Node, path: Tree.Path): Tree.Path | undefined
   addNodes(nodes: Tree.Node[], path: Tree.Path): Tree.Path | undefined
-  addDests(dests: string, path: Tree.Path, opening?: Tree.Opening): MaybeNode
   setShapes(shapes: ReadonlyArray<Tree.Shape>, path: Tree.Path): MaybeNode
   setCommentAt(comment: Tree.Comment, path: Tree.Path): MaybeNode
   deleteCommentAt(id: string, path: Tree.Path): MaybeNode
@@ -167,6 +166,7 @@ export function build(root: Tree.Node): TreeWrapper {
 
     if (existing) {
       if (newNode.dests !== undefined && existing.dests === undefined) existing.dests = newNode.dests
+      if (newNode.destsUci !== undefined && existing.destsUci === undefined) existing.destsUci = newNode.destsUci
       if (newNode.drops !== undefined && existing.drops === undefined) existing.drops = newNode.drops
       if (newNode.clock !== undefined && existing.clock === undefined) existing.clock = newNode.clock
       return newPath
@@ -222,6 +222,7 @@ export function build(root: Tree.Node): TreeWrapper {
         existing = parent.children.find(function(c) { return c.fen === newNode.fen && c.san === newNode.san; });
         if (existing) {
           if (newNode.dests !== undefined && existing.dests === undefined) existing.dests = newNode.dests
+          if (newNode.destsUci !== undefined && existing.destsUci === undefined) existing.destsUci = newNode.destsUci
           if (newNode.drops !== undefined && existing.drops === undefined) existing.drops = newNode.drops
           if (newNode.clock !== undefined && existing.clock === undefined) existing.clock = newNode.clock
           return path.substr(0, path.length - 2) + existing.id;
@@ -323,12 +324,6 @@ export function build(root: Tree.Node): TreeWrapper {
     setAmbs,
     addNode,
     addNodes,
-    addDests(dests: string, path: Tree.Path, opening?: Tree.Opening): MaybeNode {
-      return updateAt(path, (node: Tree.Node) => {
-        node.dests = dests
-        if (opening) node.opening = opening
-      })
-    },
     setShapes(shapes: ReadonlyArray<Tree.Shape>, path: Tree.Path): MaybeNode {
       return updateAt(path, (node: Tree.Node) => {
         node.shapes = shapes

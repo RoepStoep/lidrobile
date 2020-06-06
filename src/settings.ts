@@ -114,6 +114,7 @@ export default {
     showBestMove: store.prop('settings.analyse.showBestMove', true),
     showComments: store.prop('settings.analyse.showComments', true),
     smallBoard: store.prop('settings.analyse.smallBoard', true),
+    fullCapture: store.prop<boolean>('settings.fullCapture', false),
     explorer: {
       db: store.prop('settings.analyse.explorer.db', 'lidraughts'),
       availableRatings: [1600, 1800, 2000, 2200, 2500],
