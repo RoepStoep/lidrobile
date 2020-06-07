@@ -171,7 +171,7 @@ export function selectSquare(state: State, key: Key, force?: boolean): void {
 export function setSelected(state: State, key: Key | null): void {
   state.selected = key
   if (key && isPremovable(state, key))
-    state.premovable.dests = premove(state.pieces, key, state.premovable.variant)
+    state.premovable.dests = premove(state.pieces, state.boardSize, key, state.premovable.variant)
   else
     state.premovable.dests = null
 }
@@ -215,7 +215,7 @@ export function isPremovable(state: State, orig: Key): boolean {
 export function canPremove(state: State, orig: Key, dest: Key): boolean {
   return orig !== dest &&
     isPremovable(state, orig) &&
-    util.containsX(premove(state.pieces, orig, state.premovable.variant), dest)
+    util.containsX(premove(state.pieces, state.boardSize, orig, state.premovable.variant), dest)
 }
 
 export function canPredrop(state: State, orig: Key, dest: Key): boolean {
@@ -316,7 +316,7 @@ function baseMove(state: State, orig: Key, dest: Key): Piece | boolean {
   const promotable = (state.movable.captLen === null || state.movable.captLen <= captured) && 
                       origPiece.role === 'man' && (
                         (origPiece.color === 'white' && finalDest[1] === 1) || 
-                        (origPiece.color === 'black' && finalDest[1] === 10)
+                        (origPiece.color === 'black' && finalDest[1] === state.boardSize[1])
                       )
   const destPiece = (!state.movable.free && promotable) ? {
     role: 'king',
@@ -405,4 +405,8 @@ function baseUserMove(state: State, orig: Key, dest: Key): Piece | boolean {
     state.animation.current = null
   }
   return result
+}
+
+export function boardFields(s: State): number {
+  return s.boardSize[0] * s.boardSize[1] / 2;
 }

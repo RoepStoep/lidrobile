@@ -1,5 +1,6 @@
 import * as cg from './interfaces'
 import { State } from './state'
+import { boardFields } from './board'
 import * as util from './util'
 
 const files: number[] = [46, 47, 48, 49, 50];
@@ -287,7 +288,7 @@ const posToTranslateAbs = (bounds: ClientRect, boardSize: cg.BoardSize) => {
 };
 
 export const posToTranslateRel = (boardSize: cg.BoardSize) => {
-  return (pos: cg.Pos, asWhite: boolean, shift: number) => posToTranslateBase(pos, boardSize, asWhite, boardSize[0] * 2, boardSize[1], shift);
+  return (pos: cg.Pos, asWhite: boolean, shift: number) => posToTranslateBase(pos, boardSize, asWhite, 2 * 100 / boardSize[0], 100 / boardSize[1], shift);
 }
 
 function positionPiece(d: State, el: HTMLElement, color: Color, pos: NumberPair) {
@@ -386,8 +387,9 @@ export function makeCoords(el: HTMLElement, orientation: Color, dom?: cg.DOM) {
 export function makeFieldnumbers(s: State, dom?: cg.DOM) {
   if (!dom) return;
   clearCoords(dom);
-  const asWhite = s.orientation !== 'black';
-  for (var f = 1; f <= 50; f++) {
+  const asWhite = s.orientation !== 'black',
+    count = boardFields(s);
+  for (var f = 1; f <= count; f++) {
     const field = document.createElement('fieldnumber');
     field.className = 'coord-odd'
     field.textContent = f.toString();

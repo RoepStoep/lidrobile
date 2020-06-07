@@ -1,21 +1,22 @@
 import * as cg from './interfaces'
+import { allKeys } from './util'
 
 export const initial = 'W31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50:B1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20';
 
-export function read(fen: string): cg.Pieces {
+export function read(fen: string, fields?: number): cg.Pieces {
   const pieces: cg.Pieces = {};
   if (!fen) return pieces;
   if (fen === 'start') fen = initial;
   for (let fenPart of fen.split(':')) {
     if (fenPart.length <= 1) continue;
-    let first = fenPart.slice(0, 1), clr;
+    let first = fenPart.slice(0, 1), clr: Color;
     if (first === 'W') clr = 'white';
     else if (first === 'B') clr = 'black';
     else continue;
     const fenPieces = fenPart.slice(1).split(',');
     for (let fenPiece of fenPieces) {
       if (!fenPiece) continue;
-      let fieldNumber, role;
+      let fieldNumber, role: Role;
       switch (fenPiece.slice(0, 1)) {
         case 'K':
           role = 'king';
@@ -35,19 +36,22 @@ export function read(fen: string): cg.Pieces {
           break;
       }
       if (fieldNumber.length === 1) fieldNumber = '0' + fieldNumber;
-      pieces[fieldNumber as Key] = {
-        role: role as Role,
-        color: clr as Color
-      };
+      if (!fields || parseInt(fieldNumber) <= fields) {
+        pieces[fieldNumber as Key] = {
+          color: clr,
+          role
+        };
+      }
     }
   }
   return pieces;
 }
 
-export function write(pieces: cg.Pieces): string {
+export function write(pieces: cg.Pieces, fields?: number): string {
+  const max = fields || 50;
   let fenW = 'W', fenB = 'B';
-  for (let f = 1; f <= 50; f++) {
-    const fStr = f.toString(), piece = pieces[(f < 10 ? '0' + fStr : fStr) as Key];
+  for (let f = 1; f <= max; f++) {
+    const fStr = f.toString(), piece = pieces[allKeys[f - 1]];
     if (!piece) continue;
     if (piece.color === 'white') {
       if (fenW.length > 1) fenW += ',';

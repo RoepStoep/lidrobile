@@ -2,6 +2,7 @@ import * as cg from './interfaces'
 import { State, makeDefaults } from './state'
 import * as board from './board'
 import fen from './fen'
+import { allKeys } from './util'
 
 export function initBoard(cfg: cg.InitConfig): State {
   const defaults = makeDefaults()
@@ -23,7 +24,7 @@ export function configureBoard(state: State, config: cg.InitConfig): void {
 
   // if a fen was provided, replace the pieces
   if (config.fen) {
-    state.pieces = fen.read(config.fen)
+    state.pieces = fen.read(config.fen, board.boardFields(state))
 
     // show kingmoves for frisian variants
     if (state.highlight && state.highlight.kingMoves) {
@@ -95,9 +96,9 @@ export function setNewBoardState(d: State, config: cg.SetConfig): void {
 }
 
 export function setKingMoves(state: State, kingMoves: cg.KingMoves) {
-  for (let f = 1; f <= 50; f++) {
-    const key = (f < 10 ? '0' + f.toString() : f.toString()) as Key,
-      piece = state.pieces[key];
+  const fields = board.boardFields(state)
+  for (let f = 1; f <= fields; f++) {
+    const piece = state.pieces[allKeys[f - 1]];
     if (piece && piece.kingMoves)
       piece.kingMoves = undefined;
   }

@@ -8,30 +8,32 @@ type BoardPos = [number, number]
 
 const key2pos: (key: Key, bs: cg.BoardSize) => BoardPos = cgUtil.key2pos
 
-function circleWidth(current: boolean, bounds: Bounds) {
-  return (current ? 3 : 4) / 512 * bounds.width
+function circleWidth(current: boolean, bounds: Bounds, boardSize: cg.BoardSize) {
+  const factor = 512 * boardSize[0] / 10
+  return (current ? 3 : 4) / factor * bounds.width
 }
 
-function lineWidth(brush: Brush, current: boolean, bounds: Bounds) {
-  return (brush.lineWidth || 10) * (current ? 0.7 : 1) / 512 * bounds.width
+function lineWidth(brush: Brush, current: boolean, bounds: Bounds, boardSize: cg.BoardSize) {
+  const factor = 512 * boardSize[0] / 10
+  return (brush.lineWidth || 10) * (current ? 0.7 : 1) / factor * bounds.width
 }
 
 function opacity(brush: Brush, current: boolean) {
   return (brush.opacity || 1) * (current ? 0.6 : 1)
 }
 
-function arrowMargin(current: boolean, bounds: Bounds) {
-  return (current ? 10 : 20) / 512 * bounds.width
+function arrowMargin(current: boolean, bounds: Bounds, boardSize: cg.BoardSize) {
+  return boardSize[0] * (current ? 1 : 2) / 512 * bounds.width
 }
 
-function pos2px(pos: BoardPos, bounds: Bounds) {
-  return [(2 * pos[0] - (pos[1] % 2 !== 0 ? 0.5 : 1.5)) * bounds.width / 10, (pos[1] - 0.5) * bounds.height / 10];
+function pos2px(pos: BoardPos, bounds: Bounds, boardSize: cg.BoardSize) {
+  return [(2 * pos[0] - (pos[1] % 2 !== 0 ? 0.5 : 1.5)) * bounds.width / boardSize[0], (pos[1] - 0.5) * bounds.height / boardSize[1]];
 }
 
-export function circle(brush: Brush, pos: BoardPos, current: boolean, bounds: Bounds) {
-  const o = pos2px(pos, bounds)
-  const width = circleWidth(current, bounds)
-  const radius = bounds.width / 16
+export function circle(brush: Brush, pos: BoardPos, current: boolean, bounds: Bounds, boardSize: cg.BoardSize) {
+  const o = pos2px(pos, bounds, boardSize)
+  const width = circleWidth(current, bounds, boardSize)
+  const factor = boardSize[0] / 10, radius = bounds.width / (16 * factor)
   return (
     <circle
       stroke={brush.color}
@@ -45,10 +47,10 @@ export function circle(brush: Brush, pos: BoardPos, current: boolean, bounds: Bo
   )
 }
 
-export function arrow(brush: Brush, orig: BoardPos, dest: BoardPos, current: boolean, bounds: Bounds) {
-  const margin = arrowMargin(current, bounds)
-  const a = pos2px(orig, bounds)
-  const b = pos2px(dest, bounds)
+export function arrow(brush: Brush, orig: BoardPos, dest: BoardPos, current: boolean, bounds: Bounds, boardSize: cg.BoardSize) {
+  const margin = arrowMargin(current, bounds, boardSize)
+  const a = pos2px(orig, bounds, boardSize)
+  const b = pos2px(dest, bounds, boardSize)
   const dx = b[0] - a[0],
     dy = b[1] - a[1],
     angle = Math.atan2(dy, dx)
@@ -58,7 +60,7 @@ export function arrow(brush: Brush, orig: BoardPos, dest: BoardPos, current: boo
   return (
     <line
       stroke={brush.color}
-      stroke-width={lineWidth(brush, current, bounds)}
+      stroke-width={lineWidth(brush, current, bounds, boardSize)}
       stroke-linecap="round"
       marker-end={'url(#arrowhead-' + brush.key + ')'}
       opacity={opacity(brush, current)}
@@ -70,8 +72,8 @@ export function arrow(brush: Brush, orig: BoardPos, dest: BoardPos, current: boo
   )
 }
 
-export function piece(theme: string, pos: BoardPos, piece: Piece, bounds: Bounds) {
-  const o = pos2px(pos, bounds)
+export function piece(theme: string, pos: BoardPos, piece: Piece, bounds: Bounds, boardSize: cg.BoardSize) {
+  const o = pos2px(pos, bounds, boardSize)
   const size = bounds.width / 10
   let name = piece.color[0] + piece.role[0].toUpperCase();
   const href = `images/pieces/${theme}/${name}.svg`
@@ -108,8 +110,8 @@ export function defs(brushes: Brush[]) {
   )
 }
 
-export function orient(pos: BoardPos, color: Color): [number, number] {
-  return color === 'white' ? pos : [6 - pos[0], 11 - pos[1]];
+export function orient(pos: BoardPos, color: Color, boardSize: cg.BoardSize): [number, number] {
+  return color === 'white' ? pos : [(boardSize[0] / 2 + 1) - pos[0], (boardSize[1] + 1) - pos[1]];
 }
 
 export function renderShape(
@@ -123,19 +125,19 @@ export function renderShape(
   return function(shape: Shape) {
     if (shape.piece) return piece(
       pieceTheme,
-      orient(key2pos(shape.orig, boardSize), orientation),
+      orient(key2pos(shape.orig, boardSize), orientation, boardSize),
       shape.piece,
-      bounds)
+      bounds, boardSize)
     const brush = brushes[shape.brush]
     if (brush && shape.orig && shape.dest) return arrow(
       brush,
-      orient(key2pos(shape.orig, boardSize), orientation),
-      orient(key2pos(shape.dest, boardSize), orientation),
-      current, bounds)
+      orient(key2pos(shape.orig, boardSize), orientation, boardSize),
+      orient(key2pos(shape.dest, boardSize), orientation, boardSize),
+      current, bounds, boardSize)
     else if (brush && shape.orig) return circle(
       brush,
-      orient(key2pos(shape.orig, boardSize), orientation),
-      current, bounds)
+      orient(key2pos(shape.orig, boardSize), orientation, boardSize),
+      current, bounds, boardSize)
     else return null
   }
 }
