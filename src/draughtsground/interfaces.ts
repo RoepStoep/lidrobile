@@ -14,6 +14,7 @@ export interface InitConfig {
   lastMove?: Key[] | null
   selected?: Key
   coordinates?: number
+  coordSystem?: number
   viewOnly?: boolean
   fixed?: boolean
   otb?: boolean
@@ -77,6 +78,7 @@ export interface InitConfig {
 export interface SetConfig {
   orientation?: Color
   fen?: string
+  boardSize?: BoardSize
   lastMove?: Key[] | null
   captureLength?: number
   captureUci?: string[]

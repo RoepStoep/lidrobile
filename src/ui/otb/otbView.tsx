@@ -36,6 +36,7 @@ export function renderContent(ctrl: OtbRound, pieceTheme?: string) {
 
   const board = h(Board, {
     variant: ctrl.data.game.variant.key,
+    boardSizeKey: ctrl.data.game.variant.board.key,
     draughtsground: ctrl.draughtsground,
     bounds,
     wrapperClasses,

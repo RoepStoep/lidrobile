@@ -12,6 +12,7 @@ export interface State {
   animateFrom: number | null; // startindex in lastMove to animate
   selected: Key | null // square currently selected "32"
   coordinates: number // include coords attributes
+  coordSystem?: number; // coordinate system (0 = fieldnumbers, 1 = algebraic)
   viewOnly: boolean // don't bind events: the user will never be able to move pieces around
   fixed: boolean // board is viewOnly and pieces won't move
   exploding: cg.Exploding | null
@@ -95,6 +96,7 @@ export function makeDefaults(): State {
     animateFrom: null,
     selected: null,
     coordinates: 2,
+    coordSystem: 0,
     otb: false,
     otbMode: 'facing' as cg.OtbMode,
     viewOnly: false,

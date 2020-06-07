@@ -91,7 +91,7 @@ const variantMap: {[key: string]: DocVariant} = {
     id: 11,
     gameType: 25,
     link: 'https://lidraughts.org/variant/russian',
-    title: 'No majority capture rule, always promote on bank rank.',
+    title: 'Russian draughts',
     board: D64,
   }
 }

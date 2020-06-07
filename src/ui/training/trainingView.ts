@@ -34,6 +34,7 @@ export function renderHeader(ctrl: TrainingCtrl) {
 export function renderContent(ctrl: TrainingCtrl, key: string, bounds: Bounds) {
   const board = h(Board, {
     variant: ctrl.data.puzzle.variant.key,
+    boardSizeKey: ctrl.data.puzzle.variant.board.key,
     bounds,
     draughtsground: ctrl.draughtsground
   })

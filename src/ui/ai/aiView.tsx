@@ -30,6 +30,7 @@ export function renderContent(ctrl: AiRound) {
 
   const board = h(Board, {
     variant: ctrl.data.game.variant.key,
+    boardSizeKey: ctrl.data.game.variant.board.key,
     draughtsground: ctrl.draughtsground,
     bounds
   })

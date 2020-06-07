@@ -10,6 +10,7 @@ export interface Bounds {
 
 export interface Attrs {
   variant: VariantKey
+  boardSizeKey: string
   draughtsground: Draughtsground
   bounds: Bounds
   wrapperClasses?: string
@@ -68,14 +69,15 @@ export default {
   },
 
   view(vnode) {
-    const { variant, draughtsground: draughtsgroundground, bounds, wrapperClasses, customPieceTheme, shapes, clearableShapes, alert } = vnode.attrs
+    const { variant, boardSizeKey, draughtsground: draughtsgroundground, bounds, wrapperClasses, customPieceTheme, shapes, clearableShapes, alert } = vnode.attrs
 
     const boardClass = [
       'display_board',
       'orientation-' + draughtsgroundground.state.orientation,
       this.boardTheme,
       customPieceTheme || this.pieceTheme,
-      variant
+      variant,
+      'is' + boardSizeKey
     ].join(' ')
 
     let wrapperClass = 'game_board_wrapper'
