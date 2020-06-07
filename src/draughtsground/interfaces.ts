@@ -32,6 +32,7 @@ export interface InitConfig {
     dests?: DestsMap | null
     showDests?: boolean
     captureUci?: string[]
+    variant?: string
     events?: {
       after?: (orig: Key, dest: Key, metadata: MoveMetadata) => void
       afterNewPiece?: (role: Role, key: Key, metadata: MoveMetadata) => void

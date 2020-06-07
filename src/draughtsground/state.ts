@@ -33,6 +33,7 @@ export interface State {
     dests: DestsMap | null // valid moves. {"a2" ["a3" "a4"] "b1" ["a3" "c3"]}
     captLen: number | null
     captureUci: string[] | null // possible multicaptures, when played by clicking to the final square (or first ambiguity)
+    variant?: string // game variant, to determine motion rules
     showDests: boolean // whether to add the move-dest class on squares
     dropped: KeyPair | null // last dropped [orig, dest], not to be animated
     events: {

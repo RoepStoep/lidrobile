@@ -96,8 +96,8 @@ export function calcCaptKey(pieces: cg.Pieces, boardSize: cg.BoardSize, startX: 
 
 }
 
-export function apiMove(state: State, orig: Key, dest: Key): Piece | boolean {
-  return baseMove(state, orig, dest)
+export function apiMove(state: State, orig: Key, dest: Key, finishCapture?: boolean): Piece | boolean {
+  return baseMove(state, orig, dest, finishCapture)
 }
 
 export function apiNewPiece(state: State, piece: Piece, key: Key): boolean {
@@ -295,9 +295,20 @@ export function stop(state: State): void {
   cancelMove(state)
 }
 
-function baseMove(state: State, orig: Key, dest: Key): Piece | boolean {
+function baseMove(state: State, orig: Key, dest: Key, finishCapture?: boolean): Piece | boolean {
 
-  if (orig === dest || !state.pieces[orig]) return false
+  if (orig === dest || !state.pieces[orig]) {
+    // remove any remaining ghost pieces if capture sequence is done
+    if (finishCapture) {
+      for (let i = 0; i < util.allKeys.length; i++) {
+        const k = util.allKeys[i], pc = state.pieces[k];
+        if (pc && (pc.role === 'ghostking' || pc.role === 'ghostman'))
+          delete state.pieces[k];
+      }
+      if (dest == state.selected) unselect(state);
+    }
+    return false;
+  }
 
   const isCapture = (state.movable.captLen && state.movable.captLen > 0), bs = state.boardSize
   const captureUci = isCapture && state.movable.captureUci && state.movable.captureUci.find(uci => uci.slice(0, 2) === orig && uci.slice(-2) === dest)
@@ -311,13 +322,14 @@ function baseMove(state: State, orig: Key, dest: Key): Piece | boolean {
     if (state.events.move) state.events.move(orig, dest, captPiece)
   }, 0)
 
-  const captured = captureUci ? (captureUci.length - 2) / 2 : 1
-  const finalDest = captureUci ? util.key2pos(captureUci.slice(captureUci.length - 2) as Key, bs) : destPos
-  const promotable = (state.movable.captLen === null || state.movable.captLen <= captured) && 
-                      origPiece.role === 'man' && (
-                        (origPiece.color === 'white' && finalDest[1] === 1) || 
-                        (origPiece.color === 'black' && finalDest[1] === state.boardSize[1])
-                      )
+  const captured = captureUci ? (captureUci.length - 2) / 2 : 1,
+    finalDest = captureUci ? util.key2pos(captureUci.slice(captureUci.length - 2) as Key, bs) : destPos,
+    variant = (state.movable && state.movable.variant) || (state.premovable && state.premovable.variant),
+    promotable = (variant === 'russian' || !state.movable.captLen || state.movable.captLen <= captured) && 
+                    origPiece.role === 'man' && (
+                      (origPiece.color === 'white' && finalDest[1] === 1) || 
+                      (origPiece.color === 'black' && finalDest[1] === state.boardSize[1])
+                  )
   const destPiece = (!state.movable.free && promotable) ? {
     role: 'king',
     color: origPiece.color
@@ -325,42 +337,42 @@ function baseMove(state: State, orig: Key, dest: Key): Piece | boolean {
   delete state.pieces[orig]
 
   if (captureUci && captKey) {
-    delete state.pieces[captKey];
+    delete state.pieces[captKey]
     for (let s = 2; s + 4 <= captureUci.length; s += 2) {
       const nextOrig = util.key2pos(captureUci.slice(s, s + 2) as Key, bs), nextDest = util.key2pos(captureUci.slice(s + 2, s + 4) as Key, bs)
-      const nextCapt = calcCaptKey(state.pieces, bs, nextOrig[0], nextOrig[1], nextDest[0], nextDest[1]);
+      const nextCapt = calcCaptKey(state.pieces, bs, nextOrig[0], nextOrig[1], nextDest[0], nextDest[1])
       if (nextCapt) {
-        delete state.pieces[nextCapt];
+        delete state.pieces[nextCapt]
       }
     }
-    state.pieces[dest] = destPiece;
+    state.pieces[dest] = destPiece
   } else {
-    state.pieces[dest] = destPiece;
+    state.pieces[dest] = destPiece
     if (captKey) {
 
-      const captColor = state.pieces[captKey].color;
-      const captRole = state.pieces[captKey].role;
+      const captColor = state.pieces[captKey].color
+      const captRole = state.pieces[captKey].role
       delete state.pieces[captKey]
 
       //Show a ghostpiece when we capture more than once
-      if (state.movable.captLen !== null && state.movable.captLen > 1) {
+      if (!finishCapture && state.movable.captLen !== null && state.movable.captLen > 1) {
         if (captRole === 'man') {
           state.pieces[captKey] = {
             role: 'ghostman',
             color: captColor
-          };
+          }
         } else if (captRole === 'king') {
           state.pieces[captKey] = {
             role: 'ghostking',
             color: captColor
-          };
+          }
         }
       } else {
         //Remove any remaing ghost pieces if capture sequence is done
         for (let i = 0; i < util.allKeys.length; i++) {
-          const pc = state.pieces[util.allKeys[i]];
-          if (pc !== undefined && (pc.role === 'ghostking' || pc.role === 'ghostman'))
-            delete state.pieces[ util.allKeys[i]];
+          const k = util.allKeys[i], pc = state.pieces[k]
+          if (pc && (pc.role === 'ghostking' || pc.role === 'ghostman'))
+            delete state.pieces[k];
         }
       }
     }

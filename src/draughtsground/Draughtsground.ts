@@ -164,9 +164,9 @@ export default class Draughtsground {
     }
   }
 
-  apiMove(orig: Key, dest: Key, pieces?: cg.PiecesDiff, config?: cg.SetConfig): void {
+  apiMove(orig: Key, dest: Key, pieces?: cg.PiecesDiff, config?: cg.SetConfig, finishCapture?: boolean): void {
     anim(state => {
-      board.apiMove(state, orig, dest)
+      board.apiMove(state, orig, dest, finishCapture)
 
       if (pieces) {
         board.setPieces(state, pieces)
