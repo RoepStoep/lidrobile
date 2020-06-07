@@ -1,6 +1,7 @@
 import { path as treePath, Tree } from '../shared/tree'
 import { decomposeUci } from '../../utils/draughtsFormat'
 import { Puzzle, Line, LineFeedback  } from '../../lidraughts/interfaces/training'
+import settings from '../../settings'
 import { MoveRequest } from '../../draughts'
 import { Mode, Feedback } from './interfaces'
 
@@ -32,6 +33,10 @@ export default function moveTest(
   // search in puzzle lines with current progress
   const curLine = progress.reduce((acc: Line, uci: Uci) => {
     if (!acc) return undefined
+    while (acc && !isLineFeedback(acc) && uci.length > 4) {
+      acc = acc[uci.slice(0, 4)];
+      uci = uci.slice(2);
+    }
     if (isLineFeedback(acc)) return acc
     return acc[uci]
   }, puzzle.lines)
@@ -62,7 +67,8 @@ export default function moveTest(
         orig: opponentUci[0],
         dest: opponentUci[1],
         fen: node.fen,
-        path: path
+        path: path,
+        fullCapture: settings.analyse.fullCapture()
       }
 
       return move

@@ -24,7 +24,8 @@ function makeConfig(
       free: false,
       color: config.movableColor,
       dests: config.dests,
-      showDests: settings.game.pieceDestinations()
+      showDests: settings.game.pieceDestinations(),
+      captureUci: config.captureUci,
     },
     draggable: {
       enabled: pieceMoveConf === 'drag' || pieceMoveConf === 'both',

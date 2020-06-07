@@ -25,6 +25,7 @@ import { getUnsolved, syncPuzzleResult, syncAndLoadNewPuzzle, syncAndClearCache,
 import { Database } from './database'
 import trainingSettings, { ISettingsCtrl } from './trainingSettings'
 import { countGhosts } from '../../draughtsground/fen'
+import { animationDuration } from '../../draughtsground/anim';
 
 export default class TrainingCtrl implements PromotingInterface {
   data!: Data
@@ -316,6 +317,7 @@ export default class TrainingCtrl implements PromotingInterface {
       movableColor: this.gameOver() ? null : this.data.puzzle.color,
       dests: dests || null,
       captureLength: node.captLen,
+      captureUci: (settings.analyse.fullCapture() && this.node.destsUci && this.node.destsUci.length) ? this.node.destsUci.concat() : undefined,
       lastMove: node.uci ? draughtsFormat.uciToMove(node.uci) : null
     }
 
@@ -334,11 +336,13 @@ export default class TrainingCtrl implements PromotingInterface {
         variant: this.data.puzzle.variant.key,
         fen: this.node.fen,
         uci: this.node.uci,
-        path: this.path
+        path: this.path,
+        fullCapture: settings.analyse.fullCapture()
       })
       .then(({ situation, path }) => {
         this.tree.updateAt(path, (node: Tree.Node) => {
           node.dests = situation.dests
+          node.destsUci = situation.destsUci
           node.captLen = situation.captureLength
           node.end = situation.end
           node.player = situation.player
@@ -358,14 +362,16 @@ export default class TrainingCtrl implements PromotingInterface {
     return !!this.node.end
   }
 
-  private sendMove = (orig: Key, dest: Key) => {
+  private sendMove = (orig: Key, dest: Key, uci?: string) => {
     const move: draughts.MoveRequest = {
       orig,
       dest,
+      uci,
       variant: this.data.puzzle.variant.key,
       fen: this.node.fen,
       path: this.path,
-      pdnMoves: this.node.pdnMoves
+      pdnMoves: this.node.pdnMoves,
+      fullCapture: settings.analyse.fullCapture()
     }
     this.sendMoveRequest(move, true)
   }
@@ -380,6 +386,7 @@ export default class TrainingCtrl implements PromotingInterface {
         uci: situation.uci,
         children: [],
         dests: situation.dests,
+        destsUci: situation.destsUci,
         captLen: situation.captureLength,
         kingMoves: situation.kingMoves,
         end: situation.end,
@@ -396,7 +403,8 @@ export default class TrainingCtrl implements PromotingInterface {
         // path can be undefined when solution is clicked in the middle of opponent capt sequence
         return
       }
-      if (userMove && !countGhosts(situation.fen)) this.vm.moveValidationPending = true
+      const ghosts = countGhosts(situation.fen)
+      if (userMove && !ghosts) this.vm.moveValidationPending = true
       this.jump(newPath, !userMove)
       redraw()
 
@@ -406,7 +414,7 @@ export default class TrainingCtrl implements PromotingInterface {
           this.vm.mode, this.node, this.path, this.initialPath, this.nodeList,
           this.data.puzzle
         )
-        if (progress) this.applyProgress(progress)
+        if (progress) this.applyProgress(progress, ghosts !== 0)
       }
     })
     .catch(err => console.error('send move error', move, err))
@@ -415,6 +423,13 @@ export default class TrainingCtrl implements PromotingInterface {
   private userMove = (orig: Key, dest: Key, captured?: Piece) => {
     if (captured) sound.capture()
     else sound.move()
+    if (settings.analyse.fullCapture() && this.node.destsUci) {
+      const uci = this.node.destsUci.find(u => u.slice(0, 2) === orig && u.slice(-2) === dest)
+      if (uci) {
+        this.sendMove(orig, dest, uci);
+        return;    
+      }
+    }
     this.sendMove(orig, dest)
   }
 
@@ -427,7 +442,7 @@ export default class TrainingCtrl implements PromotingInterface {
     }, 500)
   }
 
-  private applyProgress = (progress: Feedback | draughts.MoveRequest) => {
+  private applyProgress = (progress: Feedback | draughts.MoveRequest, contd: boolean) => {
     if (progress === 'fail') {
       this.vm.lastFeedback = 'fail'
       this.revertUserMove(this.path)
@@ -449,10 +464,12 @@ export default class TrainingCtrl implements PromotingInterface {
     } else if (isMoveRequest(progress)) {
       this.vm.moveValidationPending = false
       this.vm.lastFeedback = 'good'
+      const duration = animationDuration(this.draughtsground.state),
+        delay = !contd ? Math.max(500, duration) : duration
       setTimeout(() => {
         // play opponent move
         this.sendMoveRequest(progress)
-      }, 500)
+      }, Math.max(300, delay))
     }
   }
 
