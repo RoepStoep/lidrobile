@@ -108,7 +108,8 @@ export default {
               bounds,
               draughtsgroundground.state.orientation,
               allShapes,
-              this.pieceTheme
+              this.pieceTheme,
+              draughtsgroundground.state.boardSize
             ) : null
         }
       </section>

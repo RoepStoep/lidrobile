@@ -1,15 +1,16 @@
 import cgFen from '../../../draughtsground/fen'
 import { key2pos } from '../../../draughtsground/util'
+import * as cg from '../../../draughtsground/interfaces'
 import svgPieces from './pieces'
 
 type BoardPos = [number, number]
 
-export function makeBoard(fen: string, orientation: Color) {
+export function makeBoard(fen: string, orientation: Color, boardSize: cg.BoardSize) {
   const pieces = cgFen.read(fen)
   const piecesKey = Object.keys(pieces)
   let b = '<svg xmlns="http://www.w3.org/2000/svg" width="360" height="360" viewBox="0 0 2100 2100">'
   for (let i = 0, len = piecesKey.length; i < len; i++) {
-    let pos = pos2px(orient(key2pos(piecesKey[i] as Key), orientation))
+    let pos = pos2px(orient(key2pos(piecesKey[i] as Key, boardSize), orientation))
     b += makePiece(pos, pieces[piecesKey[i]])
   }
   b += '</svg>'

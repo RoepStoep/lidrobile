@@ -30,7 +30,8 @@ const ranksBlack: number[] = [6, 16, 26, 36, 46];
 export function renderBoard(d: State, dom: cg.DOM) {
   const boardElement = dom.board
   const asWhite = d.orientation === 'white'
-  const posToTranslate = d.fixed ? posToTranslateRel : posToTranslateAbs(dom.bounds)
+  const bs = d.boardSize
+  const posToTranslate = d.fixed ? posToTranslateRel(bs) : posToTranslateAbs(dom.bounds, bs)
   const orientationChange = d.prev.orientation && d.prev.orientation !== d.orientation
   d.prev.orientation = d.orientation
   const boundsChange = d.prev.bounds && d.prev.bounds !== dom.bounds
@@ -85,7 +86,7 @@ export function renderBoard(d: State, dom: cg.DOM) {
       if (el.cgDragging && (!d.draggable.current || d.draggable.current.orig !== k)) {
         el.classList.remove('dragging')
         el.classList.remove('magnified')
-        translate = posToTranslate(util.key2pos(k), asWhite, 0)
+        translate = posToTranslate(util.key2pos(k, bs), asWhite, 0)
         positionPiece(d, el, el.cgColor, translate)
         el.cgDragging = false
       }
@@ -102,7 +103,7 @@ export function renderBoard(d: State, dom: cg.DOM) {
         // (otherwise it could animate a captured piece)
         if (anim && el.cgAnimating && el.cgPiece === pieceAtKeyName) {
           animDoubleKey = undefined; // only needed to get the animation started
-          const pos = util.key2pos(k);
+          const pos = util.key2pos(k, bs);
           pos[0] += anim[2];
           pos[1] += anim[3];
           if (d.animation.current && d.animation.current.plan.nextPlan && d.animation.current.plan.nextPlan.anims[k] && !util.isObjectEmpty(d.animation.current.plan.nextPlan.anims[k])) {
@@ -132,7 +133,7 @@ export function renderBoard(d: State, dom: cg.DOM) {
             else if (pieceAtKey.role === 'man')
               el.className = el.className.replace('king', 'man');
           }
-          translate = posToTranslate(util.key2pos(k), asWhite, 0)
+          translate = posToTranslate(util.key2pos(k, bs), asWhite, 0)
           positionPiece(d, el, el.cgColor, translate)
         }
         // same piece: flag as same. Exception for capture ending on the start square, as no pieces are added or removed
@@ -171,14 +172,14 @@ export function renderBoard(d: State, dom: cg.DOM) {
       mvd = mvdset && mvdset.pop()
       if (mvd) {
         mvd.cgKey = k
-        translate = posToTranslate(util.key2pos(k), asWhite, 0)
+        translate = posToTranslate(util.key2pos(k, bs), asWhite, 0)
         positionSquare(d, mvd, translate)
       }
       else {
         const se = document.createElement('square') as cg.SquareNode
         se.className = squareClass
         se.cgKey = k
-        translate = posToTranslate(util.key2pos(k), asWhite, 0)
+        translate = posToTranslate(util.key2pos(k, bs), asWhite, 0)
         positionSquare(d, se, translate)
         boardElement.insertBefore(se, boardElement.firstChild)
       }
@@ -200,7 +201,7 @@ export function renderBoard(d: State, dom: cg.DOM) {
       if (mvd) {
         // apply dom changes
         mvd.cgKey = k
-        const pos = util.key2pos(k);
+        const pos = util.key2pos(k, bs);
         let shift: number;
         if (anim) {
           mvd.cgAnimating = true;
@@ -220,7 +221,7 @@ export function renderBoard(d: State, dom: cg.DOM) {
       else {
         const pe = document.createElement('piece') as cg.PieceNode
         const pName = pieceNameOf(p)
-        const pos = util.key2pos(k)
+        const pos = util.key2pos(k, bs)
         pe.className = pName
         pe.cgPiece = pName
         pe.cgColor = p.color
@@ -249,7 +250,7 @@ export function renderBoard(d: State, dom: cg.DOM) {
     if (tempPiece && !samePieces.has(k)) {
       const pe = document.createElement('piece') as cg.PieceNode
       const pName = pieceNameOf(tempPiece) + " temporary"
-      const pos = util.key2pos(k);
+      const pos = util.key2pos(k, bs);
       pe.className = pName
       pe.cgPiece = pName;
       pe.cgKey = k;
@@ -265,27 +266,29 @@ export function renderBoard(d: State, dom: cg.DOM) {
   movedSquares.forEach(els => els.forEach(rmEl))
 }
 
-function posToTranslateBase(pos: cg.Pos, asWhite: boolean, xFactor: number, yFactor: number, shift: number): NumberPair {
+function posToTranslateBase(pos: cg.Pos, boardSize: cg.BoardSize, asWhite: boolean, xFactor: number, yFactor: number, shift: number): NumberPair {
+  const xf = boardSize[0] / 2 - 0.5;
   if (shift !== 0) {
     return [
-      (!asWhite ? 4.5 - ((shift - 0.5) + pos[0]) : (shift - 0.5) + pos[0]) * xFactor,
-      (!asWhite ? 10 - pos[1] : pos[1] - 1) * yFactor
+      (!asWhite ? xf - ((shift - 0.5) + pos[0]) : (shift - 0.5) + pos[0]) * xFactor,
+      (!asWhite ? boardSize[1] - pos[1] : pos[1] - 1.0) * yFactor
     ];
   } else {
     return [
-      (!asWhite ? 4.5 - ((pos[1] % 2 !== 0 ? -0.5 : -1) + pos[0]) : (pos[1] % 2 !== 0 ? -0.5 : -1) + pos[0]) * xFactor,
-      (!asWhite ? 10 - pos[1] : pos[1] - 1) * yFactor
+      (!asWhite ? xf - ((pos[1] % 2 !== 0 ? -0.5 : -1.0) + pos[0]) : (pos[1] % 2 !== 0 ? -0.5 : -1.0) + pos[0]) * xFactor,
+      (!asWhite ? boardSize[1] - pos[1] : pos[1] - 1.0) * yFactor
     ];
   }
 }
 
-const posToTranslateAbs = (bounds: ClientRect) => {
-  const xFactor = bounds.width / 5, yFactor = bounds.height / 10;
-  return (pos: cg.Pos, asWhite: boolean, shift: number) => posToTranslateBase(pos, asWhite, xFactor, yFactor, shift);
+const posToTranslateAbs = (bounds: ClientRect, boardSize: cg.BoardSize) => {
+  const xFactor = bounds.width / (boardSize[0] / 2), yFactor = bounds.height / boardSize[1];
+  return (pos: cg.Pos, asWhite: boolean, shift: number) => posToTranslateBase(pos, boardSize, asWhite, xFactor, yFactor, shift);
 };
 
-const posToTranslateRel: (pos: cg.Pos, asWhite: boolean, shift: number) => NumberPair =
-  (pos, asWhite, shift: number) => posToTranslateBase(pos, asWhite, 20.0, 10.0, shift);
+export const posToTranslateRel = (boardSize: cg.BoardSize) => {
+  return (pos: cg.Pos, asWhite: boolean, shift: number) => posToTranslateBase(pos, boardSize, asWhite, boardSize[0] * 2, boardSize[1], shift);
+}
 
 function positionPiece(d: State, el: HTMLElement, color: Color, pos: NumberPair) {
   if (d.fixed) {
@@ -388,7 +391,7 @@ export function makeFieldnumbers(s: State, dom?: cg.DOM) {
     const field = document.createElement('fieldnumber');
     field.className = 'coord-odd'
     field.textContent = f.toString();
-    const coords = posToTranslateAbs(dom.bounds)(util.key2pos(util.allKeys[f - 1]), asWhite, 0);
+    const coords = posToTranslateAbs(dom.bounds, s.boardSize)(util.key2pos(util.allKeys[f - 1], s.boardSize), asWhite, 0);
     field.style.transform = util.translate(coords);
     dom.board.appendChild(field);
   }

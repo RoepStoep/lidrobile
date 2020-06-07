@@ -3,23 +3,24 @@ import { State } from './state'
 
 export function noop() {}
 
-export const pos2key = (pos: cg.Pos) => allKeys[pos[0] + 5 * pos[1] - 6];
+export const pos2key = (pos: cg.Pos, s: cg.BoardSize) => allKeys[pos[0] + (s[0] / 2) * (pos[1] - 1) - 1];
 export const field2key = (n: number) => n < 10 ? ('0' + n.toString()) as Key : n.toString() as Key;
 
-export const key2pos = (k: Key) => key2posn(parseInt(k));
-const key2posn = (k: number) => [(k - 1) % 5 + 1, ((k - 1) + (5 - (k - 1) % 5)) / 5] as cg.Pos;
+export const key2pos = (k: Key, s: cg.BoardSize) => key2posn(parseInt(k), s);
+const key2posn = (k: number, s: cg.BoardSize) => [(k - 1) % (s[0] / 2) + 1, ((k - 1) + ((s[0] / 2) - (k - 1) % (s[0] / 2))) / (s[1] / 2)] as cg.Pos;
 
-export function boardpos(pos: cg.Pos, asWhite: boolean): BoardPos {
+export function boardpos(pos: cg.Pos, boardSize: cg.BoardSize, asWhite: boolean): BoardPos {
   return {
-    left: (asWhite ? pos[0] - 1 : 10 - pos[0]) * 10.0,
-    bottom: (asWhite ? pos[1] - 1 : 10 - pos[1]) * 10.0
+    left: (asWhite ? pos[0] - 1 : boardSize[0] - pos[0]) * (boardSize[0] * 1.0),
+    bottom: (asWhite ? pos[1] - 1 : boardSize[1] - pos[1]) * (boardSize[1] * 1.0)
   }
 }
 
-export function posToTranslate(pos: cg.Pos, asWhite: boolean, bounds: ClientRect): NumberPair {
+export function posToTranslate(pos: cg.Pos, boardSize: cg.BoardSize, asWhite: boolean, bounds: ClientRect): NumberPair {
+  const xSize = boardSize[0] / 2, xf = xSize - 0.5;
   return [
-    (!asWhite ? 4.5 - ((pos[1] % 2 !== 0 ? -0.5 : -1) + pos[0]) : (pos[1] % 2 !== 0 ? -0.5 : -1) + pos[0]) * bounds.width / 5,
-    (!asWhite ? 10 - pos[1] : pos[1] - 1) * bounds.height / 10
+    (!asWhite ? xf - ((pos[1] % 2 !== 0 ? -0.5 : -1) + pos[0]) : (pos[1] % 2 !== 0 ? -0.5 : -1) + pos[0]) * bounds.width / xSize,
+    (!asWhite ? boardSize[1] - pos[1] : pos[1] - 1.0) * bounds.height / boardSize[1]
   ];
 }
 
@@ -73,18 +74,19 @@ export function eventPosition(e: TouchEvent): NumberPair {
   return [touch.clientX, touch.clientY]
 }
 
-export function computeSquareBounds(orientation: Color, bounds: ClientRect, key: Key) {
-  const pos = key2pos(key);
+export function computeSquareBounds(orientation: Color, bounds: ClientRect, key: Key, boardSize: cg.BoardSize) {
+  const pos = key2pos(key, boardSize),
+    w = boardSize[0], h = boardSize[1]
   if (orientation !== 'white') {
-    pos[0] = 6 - pos[0];
-    pos[1] = 11 - pos[1];
+    pos[0] = (w / 2 + 1) - pos[0];
+    pos[1] = (h + 1) - pos[1];
   }
 
   return {
-    left: bounds.left + bounds.width * ((pos[0] - 1) * 2 + (pos[1] % 2 !== 0 ? 1 : 0)) / 10,
-    top: bounds.top + bounds.height * (pos[1] - 1) / 10,
-    width: bounds.width / 10,
-    height: bounds.height / 10
+    left: bounds.left + bounds.width * ((pos[0] - 1) * 2 + (pos[1] % 2 !== 0 ? 1 : 0)) / w,
+    top: bounds.top + bounds.height * (pos[1] - 1) / h,
+    width: bounds.width / w,
+    height: bounds.height / h
   };
 }
 

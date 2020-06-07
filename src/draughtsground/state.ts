@@ -4,6 +4,7 @@ import { DragCurrent } from './drag'
 
 export interface State {
   pieces: cg.Pieces
+  boardSize: cg.BoardSize
   orientation: Color // board orientation. white | black
   turnColor: Color // turn to play. white | black
   check: Key | null // square currently in check "a2"
@@ -85,6 +86,7 @@ export interface State {
 export function makeDefaults(): State {
   return {
     pieces: {},
+    boardSize: [10, 10],
     orientation: 'white' as Color,
     turnColor: 'white' as Color,
     check: null,

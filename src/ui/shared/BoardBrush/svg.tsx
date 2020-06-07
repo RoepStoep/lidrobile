@@ -1,11 +1,12 @@
 import * as cgUtil from '../../../draughtsground/util'
+import * as cg from '../../../draughtsground/interfaces'
 import { Bounds } from '../Board'
 import { Shape } from '.'
 import { Brush } from './brushes'
 
 type BoardPos = [number, number]
 
-const key2pos: (key: Key) => BoardPos = cgUtil.key2pos
+const key2pos: (key: Key, bs: cg.BoardSize) => BoardPos = cgUtil.key2pos
 
 function circleWidth(current: boolean, bounds: Bounds) {
   return (current ? 3 : 4) / 512 * bounds.width
@@ -116,23 +117,24 @@ export function renderShape(
   current: boolean,
   brushes: {[key: string]: Brush},
   bounds: Bounds,
-  pieceTheme: string
+  pieceTheme: string,
+  boardSize: cg.BoardSize
 ) {
   return function(shape: Shape) {
     if (shape.piece) return piece(
       pieceTheme,
-      orient(key2pos(shape.orig), orientation),
+      orient(key2pos(shape.orig, boardSize), orientation),
       shape.piece,
       bounds)
     const brush = brushes[shape.brush]
     if (brush && shape.orig && shape.dest) return arrow(
       brush,
-      orient(key2pos(shape.orig), orientation),
-      orient(key2pos(shape.dest), orientation),
+      orient(key2pos(shape.orig, boardSize), orientation),
+      orient(key2pos(shape.dest, boardSize), orientation),
       current, bounds)
     else if (brush && shape.orig) return circle(
       brush,
-      orient(key2pos(shape.orig), orientation),
+      orient(key2pos(shape.orig, boardSize), orientation),
       current, bounds)
     else return null
   }

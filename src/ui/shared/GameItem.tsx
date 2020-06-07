@@ -1,4 +1,5 @@
 import { batchRequestAnimationFrame } from '../../utils/batchRAF'
+import * as cg from '../../draughtsground/interfaces'
 import * as utils from '../../utils'
 import * as playerApi from '../../lidraughts/player'
 import * as gameApi from '../../lidraughts/game'
@@ -35,10 +36,11 @@ export default {
     const star = g.bookmarked ? 't' : 's'
     const withStar = session.isConnected() ? ' withStar' : ''
     const player = g.players[perspectiveColor]
+    const boardSize = g.variant.board.size
 
     return (
       <li data-id={g.id} data-pid={player.id} className={`userGame ${evenOrOdd}${withStar}`}>
-        {renderBoard(g.fen, perspectiveColor, boardTheme)}
+        {renderBoard(g.fen, perspectiveColor, boardSize, boardTheme)}
         <div className="userGame-infos">
           <div className="userGame-versus">
             <span className="variant-icon" data-icon={icon} />
@@ -80,7 +82,7 @@ export default {
   }
 } as Mithril.Component<Attrs, {}>
 
-function renderBoard(fen: string, orientation: Color, boardTheme: string) {
+function renderBoard(fen: string, orientation: Color, boardSize: cg.BoardSize, boardTheme: string) {
 
   const boardClass = [
     'display_board',
@@ -92,7 +94,7 @@ function renderBoard(fen: string, orientation: Color, boardTheme: string) {
       oncreate={({ dom }: Mithril.DOMNode) => {
         const img = document.createElement('img')
         img.className = 'cg-board'
-        img.src = 'data:image/svg+xml;utf8,' + makeBoard(fen, orientation)
+        img.src = 'data:image/svg+xml;utf8,' + makeBoard(fen, orientation, boardSize)
         batchRequestAnimationFrame(() => {
           const placeholder = dom.firstChild
           if (placeholder) dom.replaceChild(img, placeholder)

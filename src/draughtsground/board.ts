@@ -72,7 +72,7 @@ export function unsetPredrop(state: State): void {
   }
 }
 
-export function calcCaptKey(pieces: cg.Pieces, startX: number, startY: number, destX: number, destY: number): Key | null {
+export function calcCaptKey(pieces: cg.Pieces, boardSize: cg.BoardSize, startX: number, startY: number, destX: number, destY: number): Key | null {
 
   const xDiff: number = destX - startX, yDiff: number = destY - startY;
 
@@ -86,13 +86,13 @@ export function calcCaptKey(pieces: cg.Pieces, startX: number, startY: number, d
   const captPos = [startX + xStep, startY + yStep] as cg.Pos;
   if (captPos === undefined) return null;
 
-  const captKey: Key = util.pos2key(captPos);
+  const captKey: Key = util.pos2key(captPos, boardSize);
 
   const piece: Piece | undefined = pieces[captKey];
   if (piece !== undefined && piece.role !== 'ghostman' && piece.role !== 'ghostking')
     return captKey
   else
-    return calcCaptKey(pieces, startX + xStep, startY + yStep, destX, destY)
+    return calcCaptKey(pieces, boardSize, startX + xStep, startY + yStep, destX, destY)
 
 }
 
@@ -299,12 +299,12 @@ function baseMove(state: State, orig: Key, dest: Key): Piece | boolean {
 
   if (orig === dest || !state.pieces[orig]) return false
 
-  const isCapture = (state.movable.captLen && state.movable.captLen > 0);
-  const captureUci = isCapture && state.movable.captureUci && state.movable.captureUci.find(uci => uci.slice(0, 2) === orig && uci.slice(-2) === dest);
-  const origPos: cg.Pos = util.key2pos(orig), destPos: cg.Pos = captureUci ? util.key2pos(captureUci.slice(2, 4) as Key) : util.key2pos(dest);
-  const captKey: Key | null = isCapture ? calcCaptKey(state.pieces, origPos[0], origPos[1], destPos[0], destPos[1]) : null;
-  const captPiece: Piece | undefined = (isCapture && captKey) ? state.pieces[captKey] : undefined;
-  const origPiece = state.pieces[orig];
+  const isCapture = (state.movable.captLen && state.movable.captLen > 0), bs = state.boardSize
+  const captureUci = isCapture && state.movable.captureUci && state.movable.captureUci.find(uci => uci.slice(0, 2) === orig && uci.slice(-2) === dest)
+  const origPos: cg.Pos = util.key2pos(orig, bs), destPos: cg.Pos = captureUci ? util.key2pos(captureUci.slice(2, 4) as Key, bs) : util.key2pos(dest, bs)
+  const captKey: Key | null = isCapture ? calcCaptKey(state.pieces, bs, origPos[0], origPos[1], destPos[0], destPos[1]) : null
+  const captPiece: Piece | undefined = (isCapture && captKey) ? state.pieces[captKey] : undefined
+  const origPiece = state.pieces[orig]
 
   // always call events.move
   setTimeout(() => {
@@ -312,7 +312,7 @@ function baseMove(state: State, orig: Key, dest: Key): Piece | boolean {
   }, 0)
 
   const captured = captureUci ? (captureUci.length - 2) / 2 : 1
-  const finalDest = captureUci ? util.key2pos(captureUci.slice(captureUci.length - 2) as Key) : destPos
+  const finalDest = captureUci ? util.key2pos(captureUci.slice(captureUci.length - 2) as Key, bs) : destPos
   const promotable = (state.movable.captLen === null || state.movable.captLen <= captured) && 
                       origPiece.role === 'man' && (
                         (origPiece.color === 'white' && finalDest[1] === 1) || 
@@ -321,14 +321,14 @@ function baseMove(state: State, orig: Key, dest: Key): Piece | boolean {
   const destPiece = (!state.movable.free && promotable) ? {
     role: 'king',
     color: origPiece.color
-  } as Piece : state.pieces[orig];
+  } as Piece : state.pieces[orig]
   delete state.pieces[orig]
 
   if (captureUci && captKey) {
     delete state.pieces[captKey];
     for (let s = 2; s + 4 <= captureUci.length; s += 2) {
-      const nextOrig = util.key2pos(captureUci.slice(s, s + 2) as Key), nextDest = util.key2pos(captureUci.slice(s + 2, s + 4) as Key);
-      const nextCapt = calcCaptKey(state.pieces, nextOrig[0], nextOrig[1], nextDest[0], nextDest[1]);
+      const nextOrig = util.key2pos(captureUci.slice(s, s + 2) as Key, bs), nextDest = util.key2pos(captureUci.slice(s + 2, s + 4) as Key, bs)
+      const nextCapt = calcCaptKey(state.pieces, bs, nextOrig[0], nextOrig[1], nextDest[0], nextDest[1]);
       if (nextCapt) {
         delete state.pieces[nextCapt];
       }

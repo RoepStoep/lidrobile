@@ -1,12 +1,13 @@
 export type Pos = [number, number]
+export type BoardSize = [number, number]
 
 export type Pieces = {[index: string]: Piece}
-
 export type PiecesDiff = {[index: string]: Piece | undefined}
 
 export interface InitConfig {
   batchRAF: (callback: () => void) => void
   fen?: string
+  boardSize?: BoardSize
   orientation?: Color
   turnColor?: Color
   captureLength?: number;

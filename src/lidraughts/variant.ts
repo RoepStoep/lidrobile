@@ -4,6 +4,7 @@ export const standardFen = 'W:W31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,4
 
 interface DocVariant {
   id: number
+  board: BoardData
   gameType: number
   name: string
   shortName?: string
@@ -14,6 +15,15 @@ interface DocVariant {
   initialFen?: string
 }
 
+const D100: BoardData = {
+  key: '100',
+  size: [10, 10]
+}
+const D64: BoardData = {
+  key: '64',
+  size: [8, 8]
+}
+
 const variantMap: {[key: string]: DocVariant} = {
   standard: {
     name: 'Standard',
@@ -21,7 +31,8 @@ const variantMap: {[key: string]: DocVariant} = {
     id: 1,
     gameType: 20,
     link: 'https://lidraughts.org/variant/standard',
-    title: 'Standard rules of international draughts (FMJD)'
+    title: 'Standard rules of international draughts (FMJD)',
+    board: D100,
   },
   fromPosition: {
     name: 'From position',
@@ -30,6 +41,7 @@ const variantMap: {[key: string]: DocVariant} = {
     id: 3,
     gameType: 99,
     title: 'Custom starting position',
+    board: D100,
   },
   antidraughts: {
     name: 'Antidraughts',
@@ -39,6 +51,7 @@ const variantMap: {[key: string]: DocVariant} = {
     link: 'https://lidraughts.org/variant/antidraughts',
     alert: 'This is an Antidraughts game!\n\nThe game can be won by losing all your pieces, or running out of moves.',
     title: 'Lose all your pieces (or run out of moves) to win the game.',
+    board: D100,
   },
   frysk: {
     name: 'Frysk!',
@@ -48,7 +61,8 @@ const variantMap: {[key: string]: DocVariant} = {
     link: 'https://lidraughts.org/variant/frysk',
     alert: 'This is a Frysk! game!\n\nFrisian draughts starting with 5 pieces each.',
     title: 'Frisian draughts starting with 5 pieces each.',
-    initialFen: 'W:W46,47,48,49,50:B1,2,3,4,5:H0:F1'
+    initialFen: 'W:W46,47,48,49,50:B1,2,3,4,5:H0:F1',
+    board: D100,
   },
   breakthrough: {
     name: 'Breakthrough',
@@ -58,7 +72,8 @@ const variantMap: {[key: string]: DocVariant} = {
     gameType: 96,
     link: 'https://lidraughts.org/variant/breakthrough',
     alert: 'This is a Breakthrough game!\n\nThe first player who makes a king wins.',
-    title: 'The first player who makes a king wins.'
+    title: 'The first player who makes a king wins.',
+    board: D100,
   },
   frisian: {
     name: 'Frisian',
@@ -67,7 +82,17 @@ const variantMap: {[key: string]: DocVariant} = {
     gameType: 40,
     link: 'https://lidraughts.org/variant/frisian',
     alert: 'This is a Frisian Draughts game!\n\nPieces can also capture horizontally and vertically.',
-    title: 'Pieces can also capture horizontally and vertically.'
+    title: 'Pieces can also capture horizontally and vertically.',
+    board: D100,
+  },
+  russian: {
+    name: 'Russian',
+    tinyName: 'Russian',
+    id: 11,
+    gameType: 25,
+    link: 'https://lidraughts.org/variant/russian',
+    title: 'No majority capture rule, always promote on bank rank.',
+    board: D64,
   }
 }
 
@@ -79,9 +104,9 @@ export function getLidraughtsVariant(key: VariantKey): Variant {
   const dv = variantMap[key]
   return {
     key,
-    name: dv.name,
+    name: dv.name, board: dv.board,
     short: dv.shortName || dv.tinyName || dv.name,
-    title: dv.title
+    title: dv.title,
   }
 }
 

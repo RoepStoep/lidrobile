@@ -1,4 +1,5 @@
 import * as h from 'mithril/hyperscript'
+import * as cg from '../../../draughtsground/interfaces'
 import { defs, renderShape } from './svg'
 import { brushes } from './brushes'
 import { Bounds } from '../Board'
@@ -16,7 +17,8 @@ export default function BoardBrush(
   bounds: Bounds,
   orientation: Color,
   shapes: ReadonlyArray<Shape>,
-  pieceTheme: string
+  pieceTheme: string,
+  boardSize: cg.BoardSize
 ) {
   if (!shapes) return null
   if (!bounds) return null
@@ -27,6 +29,6 @@ export default function BoardBrush(
     version: '1.1'
   }, [
     usedBrushes,
-    shapes.map(renderShape(orientation, false, brushes, bounds, pieceTheme))
+    shapes.map(renderShape(orientation, false, brushes, bounds, pieceTheme, boardSize))
   ])
 }

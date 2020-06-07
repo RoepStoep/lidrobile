@@ -9,7 +9,8 @@ const standardVariant: Variant = {
   key: 'standard',
   name: 'Standard',
   short: 'STD',
-  title: 'Standard rules of draughts (FMJD)'
+  title: 'Standard rules of draughts (FMJD)',
+  board: { key: '100', size: [10, 10] }
 }
 
 export interface OfflineDataConfig {

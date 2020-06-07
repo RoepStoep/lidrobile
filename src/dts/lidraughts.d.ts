@@ -78,8 +78,16 @@ interface BoardPositionCategory {
   positions: Array<BoardPosition>
 }
 
+declare type BoardSize = [number, number]
+
+interface BoardData {
+  key: string
+  size: BoardSize
+}
+
 interface Variant {
   key: VariantKey
+  board: BoardData
   name: string
   short: string
   title?: string

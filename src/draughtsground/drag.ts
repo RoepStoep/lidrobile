@@ -29,6 +29,7 @@ export function dragNewPiece(ctrl: Draughtsground, piece: Piece, e: TouchEvent, 
 
   const key: Key = '00'
   const s = ctrl.state
+  const bs = s.boardSize
   const dom = ctrl.dom!
 
   s.pieces[key] = piece
@@ -39,16 +40,16 @@ export function dragNewPiece(ctrl: Draughtsground, piece: Piece, e: TouchEvent, 
   const position = util.eventPosition(e) as NumberPair
   const asWhite = s.orientation === 'white'
   const bounds = dom.bounds
-  const squareBounds = util.computeSquareBounds(s.orientation, bounds, key)
+  const squareBounds = util.computeSquareBounds(s.orientation, bounds, key, bs)
 
   const rel: NumberPair = [
-    (asWhite ? -1 : 10) * squareBounds.width + bounds.left,
-    (!asWhite ? 9 : 0) * squareBounds.height + bounds.top
+    (asWhite ? -1 : bs[0]) * squareBounds.width + bounds.left,
+    (!asWhite ? (bs[1] - 1) : 0) * squareBounds.height + bounds.top
   ]
 
   s.draggable.current = {
     orig: key,
-    origPos: util.key2pos(key),
+    origPos: util.key2pos(key, bs),
     piece,
     rel,
     epos: position,
@@ -89,8 +90,8 @@ export function start(ctrl: Draughtsground, e: TouchEvent) {
   }
   const stillSelected = state.selected === orig
   if (state.pieces[orig] && stillSelected && board.isDraggable(state, orig)) {
-    const squareBounds = util.computeSquareBounds(state.orientation, bounds, orig)
-    const origPos = util.key2pos(orig)
+    const squareBounds = util.computeSquareBounds(state.orientation, bounds, orig, state.boardSize)
+    const origPos = util.key2pos(orig, state.boardSize)
     state.draggable.current = {
       previouslySelected,
       orig,
@@ -214,30 +215,31 @@ export function getKeyAtDomPos(state: State, pos: NumberPair, bounds: ClientRect
   if (typeof bounds !== 'object') {
     throw new Error('function getKeyAtDomPos require bounds object arg')
   }
-  const asWhite = state.orientation === 'white'
+  const asWhite = state.orientation === 'white',
+    bs = state.boardSize
 
-  let row = Math.ceil(10 * ((pos[1] - bounds.top) / bounds.height));
-  if (!asWhite) row = 11 - row;
-  let col = Math.ceil(10 * ((pos[0] - bounds.left) / bounds.width));
-  if (!asWhite) col = 11 - col;
+  let row = Math.ceil(bs[1] * ((pos[1] - bounds.top) / bounds.height))
+  if (!asWhite) row = (bs[1] + 1) - row
+  let col = Math.ceil(bs[0] * ((pos[0] - bounds.left) / bounds.width))
+  if (!asWhite) col = (bs[0] + 1) - col
 
   if (row % 2 !== 0) {
     if (col % 2 !== 0)
-      return null;
+      return null
     else
       col = col / 2;
   } else {
     if (col % 2 === 0)
       return null;
     else
-      col = (col + 1) / 2;
+      col = (col + 1) / 2
   }
 
-  return (col > 0 && col < 6 && row > 0 && row < 11) ? util.pos2key([col, row]) : null;
+  return (col > 0 && col <= bs[0] / 2 && row > 0 && row <= bs[1]) ? util.pos2key([col, row], bs) : null;
 }
 
 function processDrag(ctrl: Draughtsground) {
-  const state = ctrl.state
+  const state = ctrl.state, bs = state.boardSize
   const dom = ctrl.dom!
   const cur = state.draggable.current
   if (!cur) return
@@ -273,7 +275,7 @@ function processDrag(ctrl: Draughtsground) {
           if (ghost && cur.showGhost) {
             ghost.className = `ghost ${cur.piece.color} ${cur.piece.role}`
             const translation = util.posToTranslate(
-              util.key2pos(cur.orig), state.orientation === 'white', bounds
+              util.key2pos(cur.orig, bs), bs, state.orientation === 'white', bounds
             )
             ghost.style.transform = util.transform(state, cur.piece.color, util.translate(translation))
           }
@@ -287,7 +289,7 @@ function processDrag(ctrl: Draughtsground) {
         cur.over = getKeyAtDomPos(state, cur.epos, bounds)
 
         // move piece
-        const translate = util.posToTranslate(cur.origPos, asWhite, bounds)
+        const translate = util.posToTranslate(cur.origPos, bs, asWhite, bounds)
         translate[0] += cur.pos[0] + cur.dec[0]
         translate[1] += cur.pos[1] + cur.dec[1]
         pieceEl.style.transform = util.transform(state, cur.piece.color, util.translate3d(translate))
@@ -297,8 +299,8 @@ function processDrag(ctrl: Draughtsground) {
         if (shadow) {
           if (cur.over && cur.over !== cur.prevOver) {
             const sqSize = bounds.width / 8
-            const pos =  util.key2pos(cur.over)
-            const translate = util.posToTranslate(pos, asWhite, bounds)
+            const pos =  util.key2pos(cur.over, bs)
+            const translate = util.posToTranslate(pos, bs, asWhite, bounds)
             shadow.style.transform = util.translate3d([
               translate[0] - sqSize / 2,
               translate[1] - sqSize / 2
