@@ -3,11 +3,6 @@ import { State } from './state'
 import { boardFields } from './board'
 import * as util from './util'
 
-const files: number[] = [46, 47, 48, 49, 50];
-const filesBlack: number[] = [1, 2, 3, 4, 5];
-const ranks: number[] = [5, 15, 25, 35, 45];
-const ranksBlack: number[] = [6, 16, 26, 36, 46];
-
 /**
  * Board diffing and rendering logic. It runs in 3 main steps:
  *   1. Iterate over all DOM elements under board (pieces and squares).
@@ -65,7 +60,7 @@ export function renderBoard(d: State, dom: cg.DOM) {
     const coords = (dom.elements.coordRanks || dom.elements.coordFiles)
     if (d.coordinates === 2 && coords) {
       const wrapper = coords.parentElement
-      if (wrapper) makeCoords(wrapper, d.orientation, dom)
+      if (wrapper) makeCoords(wrapper, d.boardSize, d.orientation, dom, d.coordSystem)
     } else if (d.coordinates === 1) {
       makeFieldnumbers(d, dom);
     } else {
@@ -364,14 +359,28 @@ function computeSquareClasses(d: State): Map<Key, string> {
   return squares
 }
 
-export function makeCoords(el: HTMLElement, orientation: Color, dom?: cg.DOM) {
+export function makeCoords(el: HTMLElement, boardSize: cg.BoardSize, orientation: Color, dom?: cg.DOM, coordSystem?: number) {
   let coordRanks, coordFiles
-  if (orientation === 'black') {
-    coordRanks = renderCoords(ranksBlack, 'ranks black', 'coord-odd');
-    coordFiles = renderCoords(filesBlack, 'files black', 'coord-even');
+  if (coordSystem === 1) {
+    coordRanks = renderCoords(util.ranksRev, 'ranks is64' + (orientation === 'black' ? ' black' : ''), 'coord-odd');
+    coordFiles = renderCoords(util.files, 'files is64' + (orientation === 'black' ? ' black' : ''), 'coord-even');
+  } else if (orientation === 'black') {
+    const filesBlack: number[] = [], ranksBlack: number[] = [],
+      rankBase = boardSize[0] / 2,
+      fileSteps = boardSize[1] / 2;
+    for (let i = 1; i <= rankBase; i++) filesBlack.push(i);
+    for (let i = 0; i < fileSteps; i++) ranksBlack.push(rankBase + boardSize[0] * i + 1);
+    coordRanks = renderCoords(ranksBlack, 'ranks is100 black', 'coord-odd');
+    coordFiles = renderCoords(filesBlack, 'files is100 black', 'coord-even');
   } else {
-    coordRanks = renderCoords(ranks, 'ranks', 'coord-even');
-    coordFiles = renderCoords(files, 'files', 'coord-odd');
+    const files: number[] = [], ranks: number[] = [],
+      rankBase = boardSize[0] / 2,
+      fields = boardSize[0] * boardSize[1] / 2,
+      fileSteps = boardSize[1] / 2;
+    for (let i = fields - rankBase + 1; i <= fields; i++) files.push(i);
+    for (let i = 0; i < fileSteps; i++) ranks.push(rankBase + boardSize[0] * i);
+    coordRanks = renderCoords(ranks, 'ranks is100', 'coord-even');
+    coordFiles = renderCoords(files, 'files is100', 'coord-odd');
   }
   if (dom) {
     if (dom.elements.coordRanks) el.removeChild(dom.elements.coordRanks)
@@ -390,9 +399,10 @@ export function makeFieldnumbers(s: State, dom?: cg.DOM) {
   const asWhite = s.orientation !== 'black',
     count = boardFields(s);
   for (var f = 1; f <= count; f++) {
-    const field = document.createElement('fieldnumber');
+    const field = document.createElement('fieldnumber'),
+      san = f.toString();
     field.className = 'coord-odd'
-    field.textContent = f.toString();
+    field.textContent = s.coordSystem === 1 ? util.san2alg[san] : san;
     const coords = posToTranslateAbs(dom.bounds, s.boardSize)(util.key2pos(util.allKeys[f - 1], s.boardSize), asWhite, 0);
     field.style.transform = util.translate(coords);
     dom.board.appendChild(field);

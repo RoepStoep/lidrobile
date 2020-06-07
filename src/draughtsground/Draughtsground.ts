@@ -67,7 +67,7 @@ export default class Draughtsground {
     }
 
     if (this.state.coordinates === 2) {
-      makeCoords(wrapper, this.state.orientation, this.dom)
+      makeCoords(wrapper, this.state.boardSize, this.state.orientation, this.dom, this.state.coordSystem)
     } else if (this.state.coordinates === 1) {
       makeFieldnumbers(this.state, this.dom);
     }
