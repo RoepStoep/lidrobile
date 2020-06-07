@@ -15,6 +15,7 @@ function makeConfig(
   const pieceMoveConf = settings.game.pieceMove()
   return {
     fen: config.fen,
+    boardSize: config.boardSize,
     batchRAF: batchRequestAnimationFrame,
     lastMove: config.lastMove,
     turnColor: config.turnColor,
@@ -25,6 +26,7 @@ function makeConfig(
       color: config.movableColor,
       dests: config.dests,
       showDests: settings.game.pieceDestinations(),
+      variant: data.game.variant.key,
       captureUci: config.captureUci,
     },
     draggable: {

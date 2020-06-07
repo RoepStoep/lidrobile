@@ -668,14 +668,11 @@ export default class AnalyseCtrl {
   private updateBoard(noCaptSequences: boolean = false) {
     const node = this.node
 
-    /*if (this.data.game.variant.key === 'threeCheck' && !node.checkCount) {
-      node.checkCount = util.readCheckCount(node.fen)
-    }*/
-
     const color: Color = node.ply % 2 === 0 ? 'white' : 'black'
     const dests = draughtsFormat.readDests(node.dests)
     const config = {
       fen: node.fen,
+      boardSize: this.data.game.variant.board.size,
       turnColor: color,
       orientation: this.settings.s.flip ? oppositeColor(this.orientation) : this.orientation,
       movableColor: this.gameOver() ? null : color,

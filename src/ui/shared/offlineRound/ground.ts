@@ -15,6 +15,7 @@ function makeConfig(data: OfflineGameData, sit: GameSituation): cg.InitConfig {
   return {
     batchRAF: batchRequestAnimationFrame,
     fen: sit.fen,
+    boardSize: data.game.variant.board.size,
     orientation: boardOrientation(data),
     turnColor: sit.player,
     lastMove: lastUci ? uciToMoveOrDrop(lastUci) : null,
@@ -30,6 +31,7 @@ function makeConfig(data: OfflineGameData, sit: GameSituation): cg.InitConfig {
       free: false,
       color: gameApi.isPlayerPlaying(data) ? sit.player : null,
       showDests: settings.game.pieceDestinations(),
+      variant: data.game.variant.key,
       dests: sit.dests
     },
     animation: {

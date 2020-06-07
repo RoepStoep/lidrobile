@@ -23,6 +23,7 @@ function makeConfig(data: OnlineGameData, fen: string, flip: boolean = false, st
 
   return {
     fen: fen,
+    boardSize: data.game.variant.board.size,
     batchRAF: batchRequestAnimationFrame,
     orientation: boardOrientation(data, flip),
     turnColor: turnColor,
@@ -37,6 +38,7 @@ function makeConfig(data: OnlineGameData, fen: string, flip: boolean = false, st
       free: false,
       color: gameApi.isPlayerPlaying(data) ? data.player.color : null,
       dests: gameApi.isPlayerPlaying(data) ? gameApi.parsePossibleMoves(data.possibleMoves) : {},
+      variant: data.game.variant.key,
       showDests: settings.game.pieceDestinations()
     },
     animation: {

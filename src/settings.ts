@@ -6,12 +6,21 @@ function tupleOf(x: number) {
   return [x.toString(), x.toString()]
 }
 
+const offlineAvailableVariantsWithAi: [string, VariantKey][] = [
+  ['Standard', 'standard'],
+  ['Frisian', 'frisian'],
+  ['Frysk!', 'frysk'],
+  ['Antidraughts', 'antidraughts'],
+  ['Breakthrough', 'breakthrough'],
+]
+
 const offlineAvailableVariants: [string, VariantKey][] = [
   ['Standard', 'standard'],
   ['Frisian', 'frisian'],
   ['Frysk!', 'frysk'],
+  ['Antidraughts', 'antidraughts'],
   ['Breakthrough', 'breakthrough'],
-  ['Antidraughts', 'antidraughts']
+  ['Russian', 'russian'],
 ]
 
 export interface GameSettings {
@@ -104,7 +113,7 @@ export default {
   },
 
   analyse: {
-    supportedVariants: ['standard', 'antidraughts', 'breakthrough', 'fromPosition', 'frisian', 'frysk'],
+    supportedVariants: ['standard', 'antidraughts', 'breakthrough', 'fromPosition', 'frisian', 'frysk', 'russian'],
     availableVariants: offlineAvailableVariants,
     syntheticVariant: store.prop<VariantKey>('settings.analyse.syntheticVariant', 'standard'),
     enableCeval: store.prop('settings.analyse.enableCeval', false),
@@ -138,7 +147,7 @@ export default {
     color: store.prop<Color | 'random'>('settings.ai.color', 'white'),
     opponent: store.prop('settings.ai.opponent', '1'),
     variant: store.prop<VariantKey>('settings.ai.variant', 'standard'),
-    availableVariants: offlineAvailableVariants
+    availableVariants: offlineAvailableVariantsWithAi
   },
 
   otb: {

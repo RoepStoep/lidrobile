@@ -15,7 +15,7 @@ declare type ColorMap<T> = {
   [C in Color]: T | undefined
 }
 
-declare type VariantKey = 'standard' | 'antidraughts' | 'breakthrough' | 'fromPosition' | 'frisian' | 'frysk'
+declare type VariantKey = 'standard' | 'antidraughts' | 'breakthrough' | 'fromPosition' | 'frisian' | 'frysk' | 'russian'
 
 declare type Speed = 'ultraBullet' | 'bullet' | 'blitz' | 'rapid' | 'classical' | 'correspondence'
 declare type PerfKey = Speed | VariantKey | 'puzzle' | 'puzzlefrisian'
