@@ -16,7 +16,8 @@ export default function ScanEngine(variant: VariantKey): IEngine {
   let curEval: Tree.ClientEval | null = null
   let expectedPvs = 1
 
-  const frisianVariant = variant === 'frisian' || variant === 'frysk';
+  const frisianVariant = variant === 'frisian' || variant === 'frysk'
+  const uciCache: any = {}
 
   // after a 'go' command, scan will be continue to emit until the 'done'
   // message, reached by depth or after a 'stop' command
@@ -127,7 +128,7 @@ export default function ScanEngine(variant: VariantKey): IEngine {
       multiPv = 1,
       win: number | undefined = undefined;
 
-    const moves = parsePV(work!.currentFen, matches[5], frisianVariant);
+    const moves = parsePV(work!.currentFen, matches[5], frisianVariant, uciCache);
 
     if (Math.abs(ev) > 9000) {
       const ply = ev > 0 ? (10000 - ev) : -(10000 + ev);

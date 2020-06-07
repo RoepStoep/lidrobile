@@ -53,6 +53,7 @@ export interface EngineInterface {
 }
 
 export default function(ctrl: AiRoundInterface): EngineInterface {
+  const uciCache: any = {}
   let initVariant: VariantKey = ctrl.data ? ctrl.data.game.variant.key : 'standard'
   let level = 1
 
@@ -69,7 +70,7 @@ export default function(ctrl: AiRoundInterface): EngineInterface {
         console.debug('[scan >>] ' + msg)
         const match = msg.match(/^done move=([0-9\-xX\s]+)/)
         if (match) {
-          ctrl.onEngineMove(parsePV(currentFen, match[1], initVariant === 'frisian' || initVariant === 'frysk')[0])
+          ctrl.onEngineMove(parsePV(currentFen, match[1], initVariant === 'frisian' || initVariant === 'frysk', uciCache)[0])
         }
       })
 
