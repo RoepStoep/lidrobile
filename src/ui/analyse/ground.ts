@@ -19,6 +19,7 @@ function makeConfig(
     batchRAF: batchRequestAnimationFrame,
     lastMove: config.lastMove,
     turnColor: config.turnColor,
+    captureLength: config.captureLength,
     orientation,
     coordinates: settings.game.coords(),
     movable: {

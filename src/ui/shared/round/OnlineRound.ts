@@ -399,11 +399,12 @@ export default class OnlineRound implements OnlineRoundInterface {
   public apiMove(o: MoveOrDrop) {
     const d = this.data
     const playing = gameApi.isPlayerPlaying(d)
+    const ghosts = countGhosts(o.fen)
 
     if (playing) this.lastMoveMillis = performance.now()
 
     if (this.vm.submitFeedback && (this.vm.submitFeedback[0] + 1 === o.ply ||
-      (this.vm.submitFeedback[0] === o.ply && countGhosts(o.fen)))) {
+      (this.vm.submitFeedback[0] === o.ply && ghosts))) {
       const duration = performance.now() - this.vm.submitFeedback[1]
       setTimeout(() => {
         this.vm.submitFeedback = undefined
@@ -449,7 +450,6 @@ export default class OnlineRound implements OnlineRoundInterface {
     d.captureLength = o.captLen
 
     if (!this.replaying()) {
-      const ghosts = countGhosts(o.fen);
       this.vm.ply = d.game.turns + (ghosts > 0 ? 1 : 0);
 
       const newConf = {
@@ -465,7 +465,8 @@ export default class OnlineRound implements OnlineRoundInterface {
           move[0],
           move[1],
           {},
-          newConf
+          newConf,
+          ghosts === 0
         )
       } else if (isDrop(o)) {
         this.draughtsground.apiNewPiece(

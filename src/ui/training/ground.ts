@@ -13,6 +13,7 @@ export default function makeConfig(
   return {
     batchRAF: batchRequestAnimationFrame,
     fen: ctrl.data.puzzle.fen,
+    boardSize: ctrl.data.puzzle.variant.board.size,
     orientation: ctrl.data.puzzle.color,
     coordinates: settings.game.coords(),
     turnColor: ctrl.node.ply % 2 === 0 ? 'white' : 'black',
@@ -23,7 +24,8 @@ export default function makeConfig(
     movable: {
       free: false,
       color: ctrl.data.puzzle.color,
-      showDests: settings.game.pieceDestinations()
+      showDests: settings.game.pieceDestinations(),
+      variant: ctrl.data.puzzle.variant.key
     },
     events: {
       move: userMove
