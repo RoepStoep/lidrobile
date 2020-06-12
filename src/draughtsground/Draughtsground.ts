@@ -134,8 +134,9 @@ export default class Draughtsground {
       this.state.selected = null;
   }
 
-  reconfigure(config: cg.InitConfig): void {
-    anim(state => configureBoard(state, config), this)
+  reconfigure(config: cg.InitConfig, animate?: boolean): void {
+    if (animate) anim(state => configureBoard(state, config), this)
+    else configureBoard(this.state, config)
   }
 
   toggleOrientation = (): void => {

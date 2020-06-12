@@ -1,6 +1,8 @@
 import * as debounce from 'lodash/debounce'
 import Draughtsground from '../../draughtsground/Draughtsground'
+import * as cg from '../../draughtsground/interfaces'
 import * as cgDrag from '../../draughtsground/drag'
+import { getLidraughtsVariant, getInitialFen } from '../../lidraughts/variant'
 import router from '../../router'
 import settings from '../../settings'
 import menu from './menu'
@@ -62,16 +64,21 @@ export default class Editor {
     }
 
     this.extraPositions = [{
-      fen: startingFen,
+      fen: 'init',
       name: i18n('startPosition')
     }, {
       fen: 'W:W:B',
       name: i18n('clearBoard')
     }]
 
-    this.draughtsground = new Draughtsground({
+    this.draughtsground = new Draughtsground(this.makeConfig(initFen))
+  }
+
+  public makeConfig = (initFen: string): cg.InitConfig => {
+    return {
       batchRAF: batchRequestAnimationFrame,
       fen: initFen,
+      boardSize: this.getVariant().board.size,
       orientation: 'white',
       coordinates: settings.game.coords(),
       movable: {
@@ -101,8 +108,11 @@ export default class Editor {
           this.updateHref()
         }
       }
-    })
+    }
   }
+ 
+  public getVariant = () => 
+    getLidraughtsVariant(this.data.game.variant.key())
 
   public updateHref = debounce(() => {
     const newFen = this.computeFen()
@@ -145,6 +155,8 @@ export default class Editor {
   }
 
   public loadNewFen = (newFen: string) => {
+    if (!newFen) return;
+    if (newFen === 'init') newFen = getInitialFen(this.getVariant().key)
     if (fenUtil.validateFen(newFen))
       router.set(`/editor/variant/${encodeURIComponent(this.data.game.variant.key())}/fen/${encodeURIComponent(newFen)}`, true)
     else

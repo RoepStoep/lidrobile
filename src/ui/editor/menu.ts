@@ -3,6 +3,9 @@ import popupWidget from '../shared/popup'
 import router from '../../router'
 import * as h from 'mithril/hyperscript'
 import Editor, { MenuInterface } from './Editor'
+import { getInitialFen } from '../../lidraughts/variant'
+import redraw from '../../utils/redraw'
+import { fenCompare } from '../../utils/draughtsFormat'
 
 export default {
 
@@ -92,8 +95,22 @@ export function renderPositionSettings(ctrl: Editor) {
         id: 'select_editor_variant',
         value: ctrl.data.game.variant.key(),
         onchange(e: Event) {
+          const oldVariant = ctrl.getVariant(),
+            oldBoardSize = oldVariant.board.size,
+            oldInitialFen = getInitialFen(oldVariant.key),
+            isInitial = fenCompare(ctrl.computeFen(), oldInitialFen)
           ctrl.data.game.variant.key((e.target as HTMLInputElement).value as VariantKey)
           ctrl.updateHref()
+          const newVariant = ctrl.getVariant(),
+            newBoardSize = newVariant.board.size,
+            newInitialFen = getInitialFen(newVariant.key)
+          if (oldBoardSize !== newBoardSize || (isInitial && !fenCompare(oldInitialFen, newInitialFen))) {
+            ctrl.draughtsground.reconfigure(ctrl.makeConfig('W:W:B'))
+            ctrl.draughtsground.redrawSync()
+            ctrl.draughtsground.set({ fen: newInitialFen })
+            ctrl.draughtsground.redrawSync()
+            redraw()
+          }
         },
       }, [
         h('option[value=standard]', 'Standard'),
@@ -101,6 +118,7 @@ export function renderPositionSettings(ctrl: Editor) {
         h('option[value=frysk]', 'Frysk!'),
         h('option[value=antidraughts]', 'Antidraughts'),
         h('option[value=breakthrough]', 'Breakthrough'),
+        h('option[value=russian]', 'Russian'),
       ])
     ])
   ])
