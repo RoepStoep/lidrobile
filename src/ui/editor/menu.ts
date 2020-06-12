@@ -108,7 +108,6 @@ export function renderPositionSettings(ctrl: Editor) {
             ctrl.draughtsground.reconfigure(ctrl.makeConfig('W:W:B'))
             ctrl.draughtsground.redrawSync()
             ctrl.draughtsground.set({ fen: newInitialFen })
-            ctrl.draughtsground.redrawSync()
             redraw()
           }
         },
