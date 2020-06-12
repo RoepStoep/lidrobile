@@ -4,6 +4,7 @@ import * as gameApi from '../../../lidraughts/game'
 import settings from '../../../settings'
 import { OfflineGameData } from '../../../lidraughts/interfaces/game'
 import { AfterMoveMeta } from '../../../lidraughts/interfaces/move'
+import getVariant from '../../../lidraughts/variant'
 import { boardOrientation } from '../../../utils'
 import { uciToMoveOrDrop } from '../../../utils/draughtsFormat'
 import { batchRequestAnimationFrame } from '../../../utils/batchRAF'
@@ -12,10 +13,11 @@ import { GameSituation } from '../../../draughts'
 function makeConfig(data: OfflineGameData, sit: GameSituation): cg.InitConfig {
   const lastUci = sit.uciMoves.length ? sit.uciMoves[sit.uciMoves.length - 1] : null
   const pieceMoveConf = settings.game.pieceMove()
+  const board = getVariant(data.game.variant.key).board
   return {
     batchRAF: batchRequestAnimationFrame,
     fen: sit.fen,
-    boardSize: data.game.variant.board.size,
+    boardSize: board.size,
     orientation: boardOrientation(data),
     turnColor: sit.player,
     lastMove: lastUci ? uciToMoveOrDrop(lastUci) : null,

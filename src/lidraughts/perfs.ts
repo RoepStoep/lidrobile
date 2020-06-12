@@ -13,7 +13,8 @@ const perfMap: { [k: string]: Perf } = {
   frisian: { name: 'Frisian', shortName: 'Frisian' },
   frysk: { name: 'Frysk!', shortName: 'Frysk!' },
   breakthrough: { name: 'Breakthrough', shortName: 'Breakthrough' },
-  antidraughts: { name: 'Antidraughts', shortName: 'Antidraughts' }
+  antidraughts: { name: 'Antidraughts', shortName: 'Antidraughts' },
+  russian: { name: 'Russian', shortName: 'Russian' },
 }
 
 export const perfTypes = Object.keys(perfMap).map(k =>

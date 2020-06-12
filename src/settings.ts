@@ -99,7 +99,7 @@ export default {
   },
 
   game: {
-    supportedVariants: ['standard', 'antidraughts', 'breakthrough', 'fromPosition', 'frisian', 'frysk'],
+    supportedVariants: ['standard', 'antidraughts', 'breakthrough', 'fromPosition', 'frisian', 'frysk', 'russian'],
     animations: store.prop<boolean>('settings.gameAnimations', true),
     highlights: store.prop<boolean>('settings.boardHighlights', true),
     pieceDestinations: store.prop<boolean>('settings.pieceDestinations', true),
@@ -318,7 +318,8 @@ export default {
         ['Frisian', '10'],
         ['Frysk!', '8'],
         ['Antidraughts', '6'],
-        ['Breakthrough', '9']
+        ['Breakthrough', '9'],
+        ['Russian', '11']
       ],
       availableRatingRanges: {
         min: range(800, 2900, 100).map(tupleOf),
@@ -349,6 +350,7 @@ export default {
         ['Frysk!', '8'],
         ['Antidraughts', '6'],
         ['Breakthrough', '9'],
+        ['Russian', '11'],
         ['From Position', '3']
       ],
       color: store.prop('settings.game.invite.color', 'random'),
@@ -372,7 +374,8 @@ export default {
       ['Frisian', '10'],
       ['Frysk!', '8'],
       ['Antidraughts', '6'],
-      ['Breakthrough', '9']
+      ['Breakthrough', '9'],
+      ['Russian', '11']
     ],
     availableModes: [
       ['casual', '0'],

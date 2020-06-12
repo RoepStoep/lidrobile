@@ -6,6 +6,7 @@ import * as draughtsFormat from '../../utils/draughtsFormat'
 import settings from '../../settings'
 import gameStatusApi from '../../lidraughts/status'
 import { OfflineGameData, GameStatus } from '../../lidraughts/interfaces/game'
+import { getInitialFen } from '../../lidraughts/variant'
 import { oppositeColor } from '../../utils'
 import { StoredOfflineGame, setCurrentOTBGame } from '../../utils/offlineGames'
 import redraw from '../../utils/redraw'
@@ -124,12 +125,9 @@ export default class OtbRound implements OtbRoundInterface, PromotingInterface {
 
   public startNewGame(variant: VariantKey, setupFen?: string, clockType?: ClockTypeWithNone) {
     const payload: InitPayload = {
-      variant
+      variant,
+      fen: setupFen || getInitialFen(variant)
     }
-    if (setupFen) {
-      payload.fen = setupFen
-    }
-
     const clock = clockType ? clockSet[clockType](this.onFlag) : null
 
     draughts.init(payload)
@@ -153,11 +151,12 @@ export default class OtbRound implements OtbRoundInterface, PromotingInterface {
         this.vm.setupFen = undefined
         router.replacePath('/otb')
       }
+      this.draughtsground.redraw()
     })
   }
 
   public goToAnalysis = () => {
-    router.set(`/analyse/offline/otb/${this.data.player.color}?ply=${this.replay.ply}&curFen=${this.replay.situation().fen}`)
+    router.set(`/analyse/offline/otb/${this.data.player.color}?ply=${this.replay.ply}&curFen=${this.replay.situation().fen}&variant=${this.data.game.variant.key}`)
   }
 
   public save = () => {

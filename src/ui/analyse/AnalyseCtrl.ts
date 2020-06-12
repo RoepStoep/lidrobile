@@ -503,7 +503,8 @@ export default class AnalyseCtrl {
     router.setQueryParams({
       tabId: this.currentTab(this.availableTabs()).id,
       ply: String(this.node.ply),
-      curFen: this.node.fen
+      curFen: this.node.fen,
+      variant: this.data.game.variant.key
     })
   }, 200)
 
