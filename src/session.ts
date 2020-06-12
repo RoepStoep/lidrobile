@@ -33,7 +33,8 @@ interface Profile {
   readonly bio?: string
   readonly firstName?: string
   readonly lastName?: string
-  readonly fideRating?: number
+  readonly fmjdRating?: number
+  readonly kndbRating?: number
   readonly links?: string
 }
 

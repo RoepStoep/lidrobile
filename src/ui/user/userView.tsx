@@ -1,7 +1,6 @@
 import * as h from 'mithril/hyperscript'
 import router from '../../router'
 import { dropShadowHeader, backButton as renderBackbutton } from '../shared/common'
-import { getLanguageNativeName } from '../../utils/langs'
 import { hasNetwork, lidraughtsAssetSrc, gameIcon } from '../../utils'
 import { linkify } from '../../utils/html'
 import { perfTypes, provisionalDeviation } from '../../lidraughts/perfs'
@@ -86,15 +85,11 @@ function renderProfile(user: ProfileUser) {
         <p className="profileBio">{h.trust(linkify(user.profile.bio))}</p> : null
         }
         <div>
-          { user.profile.fideRating ?
-            <p>FIDE rating: <strong>{user.profile.fideRating}</strong></p> : null
+          { user.profile.fmjdRating ?
+            <p>FMJD rating: <strong>{user.profile.fmjdRating}</strong></p> : null
           }
-          {
-            user.language ?
-              <p className="language withIcon">
-                <span className="fa fa-comment-o" />
-                {getLanguageNativeName(user.language)}
-              </p> : null
+          { user.profile.kndbRating ?
+            <p>KNDB rating: <strong>{user.profile.kndbRating}</strong></p> : null
           }
           <p className="location">
             {location}
