@@ -55,6 +55,9 @@ export function setNewBoardState(d: State, config: cg.SetConfig): void {
   if (config.fen) {
     d.pieces = fen.read(config.fen)
   }
+  if (config.boardSize) {
+    d.boardSize = config.boardSize
+  } 
 
   // kingmoves for frisian variants
   if (d.highlight && d.highlight.kingMoves) {
@@ -64,7 +67,7 @@ export function setNewBoardState(d: State, config: cg.SetConfig): void {
 
   if (config.orientation !== undefined) d.orientation = config.orientation
   if (config.turnColor !== undefined) d.turnColor = config.turnColor
-
+  
   if (config.dests !== undefined) {
     d.movable.dests = config.dests
   }

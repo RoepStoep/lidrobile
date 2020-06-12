@@ -3,6 +3,7 @@ import router from '../router'
 import redraw from '../utils/redraw'
 import { challenge as challengeXhr } from '../xhr'
 import { validateFen } from '../utils/fen'
+import { getVariantKeyById } from '../lidraughts/variant'
 import settings from '../settings'
 import session from '../session'
 import formWidgets from './shared/form'
@@ -142,7 +143,7 @@ function renderForm() {
           if (setupFen) router.set(`/editor/${encodeURIComponent(setupFen)}`)
         })
       }, [
-        h(ViewOnlyBoard, { fen: setupFen, orientation: 'white', bounds: { width: 100, height: 100 }})
+        h(ViewOnlyBoard, { fen: setupFen, variant: getVariantKeyById(settingsObj.variant()) || 'standard', orientation: 'white', bounds: { width: 100, height: 100 }})
       ])
       ] : null
     ) : null,

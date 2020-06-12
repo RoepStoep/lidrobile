@@ -155,7 +155,7 @@ export default {
         overlay(this.ctrl!)
       )
     } else {
-      return loadingScreen(isPortrait, vnode.attrs.color, vnode.attrs.curFen)
+      return loadingScreen(isPortrait, vnode.attrs.color, vnode.attrs.curFen, vnode.attrs.variant)
     }
   }
 } as Mithril.Component<Attrs, State>

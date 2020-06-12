@@ -45,7 +45,7 @@ export default function view(ctrl: OnlineRound) {
 export function emptyTV(channel?: string, onTVChannelChange?: () => void) {
   return layout.board(
     renderEmptyHeader(channel, onTVChannelChange),
-    viewOnlyBoardContent(emptyFen, 'white')
+    viewOnlyBoardContent(emptyFen, 'white', 'standard')
   )
 }
 
@@ -201,7 +201,6 @@ function renderContent(ctrl: OnlineRound, isPortrait: boolean) {
 
   const board = h(Board, {
     variant: ctrl.data.game.variant.key,
-    boardSizeKey: ctrl.data.game.variant.board.key,
     draughtsground: ctrl.draughtsground,
     bounds
   })

@@ -1,6 +1,7 @@
 import settings from '../../settings'
 import redraw from '../../utils/redraw'
 import Draughtsground from '../../draughtsground/Draughtsground'
+import getVariant from '../../lidraughts/variant'
 import BoardBrush, { Shape } from './BoardBrush'
 
 export interface Bounds {
@@ -10,7 +11,6 @@ export interface Bounds {
 
 export interface Attrs {
   variant: VariantKey
-  boardSizeKey: string
   draughtsground: Draughtsground
   bounds: Bounds
   wrapperClasses?: string
@@ -69,15 +69,14 @@ export default {
   },
 
   view(vnode) {
-    const { variant, boardSizeKey, draughtsground: draughtsgroundground, bounds, wrapperClasses, customPieceTheme, shapes, clearableShapes, alert } = vnode.attrs
-
+    const { variant, draughtsground: draughtsgroundground, bounds, wrapperClasses, customPieceTheme, shapes, clearableShapes, alert } = vnode.attrs
     const boardClass = [
       'display_board',
       'orientation-' + draughtsgroundground.state.orientation,
       this.boardTheme,
       customPieceTheme || this.pieceTheme,
       variant,
-      'is' + boardSizeKey
+      'is' + getVariant(variant).board.key
     ].join(' ')
 
     let wrapperClass = 'game_board_wrapper'

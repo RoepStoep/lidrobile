@@ -24,6 +24,7 @@ export function body(ctrl: Ctrl) {
     const puzzleData = ctrl.offlinePuzzle()
     const boardConf = puzzleData ? {
       fen: puzzleData.puzzle.fen,
+      variant: puzzleData.puzzle.variant.key,
       orientation: puzzleData.puzzle.color,
       link: () => router.set('/training'),
     } : null
@@ -90,15 +91,18 @@ function renderDailyPuzzle(ctrl: Ctrl) {
   if (puzzle && puzzleData && puzzleData.puzzle) {
     puzzle.id = puzzleData.puzzle.id;
     puzzle.color = puzzleData.puzzle.color;
+    puzzle.variant = puzzleData.puzzle.variant;
   }
   const boardConf = puzzle ? {
     fen: puzzle.fen,
+    variant: puzzle.variant.key,
     orientation: puzzle.color,
     lastMove: puzzle.uci,
     link: () => router.set(`/training/${puzzle.id}?initFen=${puzzle.fen}&initColor=${puzzle.color}`),
   } : {
     orientation: 'white' as Color,
-    fen: emptyFen
+    fen: emptyFen,
+    variant: 'standard' as VariantKey
   }
 
   return (

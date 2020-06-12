@@ -32,13 +32,13 @@ import renderBoard from './boardView'
 import renderGameInfos from './gameInfosView'
 import renderActionsBar from './actionsView'
 
-export function loadingScreen(isPortrait: boolean, color?: Color, curFen?: string) {
+export function loadingScreen(isPortrait: boolean, color?: Color, curFen?: string, variant?: VariantKey) {
   const isSmall = settings.analyse.smallBoard()
   const bounds = helper.getBoardBounds(helper.viewportDim(), isPortrait, isSmall)
   return layout.board(
     loadingBackbutton(),
     [
-      viewOnlyBoard(color || 'white', bounds, isSmall, curFen || emptyFen),
+      viewOnlyBoard(color || 'white', bounds, isSmall, curFen || emptyFen, variant || 'standard'),
       h('div.analyse-tableWrapper', spinner.getVdom('monochrome'))
     ]
   )
@@ -96,10 +96,10 @@ export function renderVariantSelector(ctrl: AnalyseCtrl) {
   )
 }
 
-function viewOnlyBoard(color: Color, bounds: Bounds, isSmall: boolean, fen: string) {
+function viewOnlyBoard(color: Color, bounds: Bounds, isSmall: boolean, fen: string, variant: VariantKey) {
   return h('section.board_wrapper', {
     className: isSmall ? 'halfsize' : ''
-  }, h(ViewOnlyBoard, { orientation: color, bounds, fen }))
+  }, h(ViewOnlyBoard, { orientation: color, bounds, fen, variant }))
 }
 
 function renderOpening(ctrl: AnalyseCtrl) {

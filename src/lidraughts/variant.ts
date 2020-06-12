@@ -101,6 +101,16 @@ export default function getVariant(key: VariantKey): DocVariant {
   return variantMap[key]
 }
 
+export function getVariantKeyById(id: string): VariantKey | undefined {
+  const nId = parseInt(id)
+  for (let key of Object.keys(variantMap)) {
+    const variant = variantMap[key]
+    if (variant.id == nId) {
+      return key as VariantKey;
+    }
+  }
+}
+
 export function getLidraughtsVariant(key: VariantKey): Variant {
   const dv = variantMap[key]
   return {
@@ -116,8 +126,8 @@ export function getInitialFen(key: VariantKey): string {
   return v.initialFen || standardFen
 }
 
-export const specialFenVariants = new Set(['frysk']) as Set<VariantKey>
+export const specialFenVariants = new Set(['frysk', 'russian']) as Set<VariantKey>
 
 export const openingSensibleVariants = new Set([
-'standard', 'antidraughts', 'frisian', 'breakthrough'
+'standard', 'antidraughts', 'frisian', 'breakthrough', 'russian'
 ]) as Set<VariantKey>

@@ -49,9 +49,10 @@ export default {
       content = renderContent(this.round)
     } else {
       const fen = this.round.vm.setupFen || this.round.vm.savedFen || standardFen
+      const variant = this.round.vm.setupVariant || this.round.vm.savedVariant || 'standard'
       const color = playerFromFen(fen)
       header = renderHeader(i18n('playOfflineComputer'))
-      content = viewOnlyBoardContent(fen, color, undefined)
+      content = viewOnlyBoardContent(fen, color, variant, undefined)
     }
 
     return layout.board(

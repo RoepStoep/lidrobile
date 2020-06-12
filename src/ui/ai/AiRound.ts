@@ -55,7 +55,9 @@ export default class AiRound implements AiRoundInterface, PromotingInterface {
     this.vm = {
       engineSearching: false,
       setupFen,
-      savedFen: saved ? saved.data.game.fen : undefined
+      setupVariant,
+      savedFen: saved ? saved.data.game.fen : undefined,
+      savedVariant: saved ? saved.data.game.variant.key : undefined
     }
 
     if (setupFen) {

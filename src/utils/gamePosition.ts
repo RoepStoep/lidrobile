@@ -2,7 +2,8 @@ import LRUMap from './lru'
 
 interface Position {
   fen: string
-  orientation: Color
+  orientation: Color,
+  variant: VariantKey
 }
 
 // remember game positions to improve game screen loading

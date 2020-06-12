@@ -18,7 +18,7 @@ export interface Attrs {
   readonly lastMove?: string
   readonly bounds?: Bounds
   readonly customPieceTheme?: string
-  readonly variant?: VariantKey
+  readonly variant: VariantKey
   readonly fixed?: boolean
   readonly delay?: Millis
 }

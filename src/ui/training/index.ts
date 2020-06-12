@@ -107,6 +107,7 @@ export default {
             h(ViewOnlyBoard, {
               fen: attrs.initFen || emptyFen,
               orientation: attrs.initColor || 'white',
+              variant: attrs.variant || 'standard',
               bounds
             })
           ]),

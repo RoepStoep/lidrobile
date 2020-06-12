@@ -53,7 +53,9 @@ export default class OtbRound implements OtbRoundInterface, PromotingInterface {
     this.vm = {
       flip: false,
       setupFen,
-      savedFen: saved ? saved.data.game.fen : undefined
+      setupVariant,
+      savedFen: saved ? saved.data.game.fen : undefined,
+      savedVariant: saved ? saved.data.game.variant.key : undefined
     }
 
     if (setupFen) {

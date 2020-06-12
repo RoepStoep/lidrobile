@@ -103,7 +103,7 @@ function close(fromBB?: string) {
 
 function joinGame(g: NowPlayingGame) {
   lastJoined = g
-  positionsCache.set(g.fullId, { fen: g.fen, orientation: g.color })
+  positionsCache.set(g.fullId, { fen: g.fen, orientation: g.color, variant: g.variant.key })
   close()
   router.set('/game/' + g.fullId)
 }
@@ -126,7 +126,7 @@ function declineChallenge(id: string) {
 
 function renderViewOnlyBoard(fen: string, orientation: Color, lastMove?: string, variant?: VariantKey) {
   return h('div.boardWrapper',
-    h(ViewOnlyBoard, { fen, lastMove, orientation, variant })
+    h(ViewOnlyBoard, { fen, lastMove, orientation, variant: variant || 'standard' })
   )
 }
 

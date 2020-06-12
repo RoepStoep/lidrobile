@@ -87,7 +87,7 @@ export default {
                             router.set(`/editor/${encodeURIComponent(ctrl.root.vm.setupFen)}`)
                         })}
                       >
-                        {h(ViewOnlyBoard, { fen: ctrl.root.vm.setupFen, orientation: 'white', bounds: { width: 130, height: 130 }})}
+                        {h(ViewOnlyBoard, { fen: ctrl.root.vm.setupFen, variant: setupVariant, orientation: 'white', bounds: { width: 130, height: 130 }})}
                       </div>
                     </div>
                   </div> : null

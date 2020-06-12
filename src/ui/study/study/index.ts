@@ -22,6 +22,7 @@ export interface Attrs {
   tabId?: string
   // fen used for placeholder board while loading
   curFen?: string
+  variant?: VariantKey
 }
 
 export interface State {
@@ -109,7 +110,7 @@ export default {
         this.hammerHandlers
       )
     } else {
-      return loadingScreen(isPortrait, undefined, vnode.attrs.curFen)
+      return loadingScreen(isPortrait, undefined, vnode.attrs.curFen, vnode.attrs.variant)
     }
   }
 

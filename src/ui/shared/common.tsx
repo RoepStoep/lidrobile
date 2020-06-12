@@ -22,7 +22,7 @@ export const LoadingBoard = {
   view() {
     return layout.board(
       connectingHeader(),
-      viewOnlyBoardContent(emptyFen, 'white')
+      viewOnlyBoardContent(emptyFen, 'white', 'standard')
     )
   }
 }
@@ -210,7 +210,7 @@ export function loadingBackbutton(title?: string) {
   )
 }
 
-export function viewOnlyBoardContent(fen: string, orientation: Color, lastMove?: string, variant?: VariantKey, wrapperClass?: string, customPieceTheme?: string) {
+export function viewOnlyBoardContent(fen: string, orientation: Color, variant: VariantKey, lastMove?: string, wrapperClass?: string, customPieceTheme?: string) {
   const isPortrait = helper.isPortrait()
   const { vw, vh } = helper.viewportDim()
   const orientKey = 'viewonlyboard' + (isPortrait ? 'portrait' : 'landscape')

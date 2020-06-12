@@ -272,6 +272,7 @@ function tournamentFeaturedGame(ctrl: TournamentCtrl) {
           bounds: miniBoardSize(isPortrait),
           fixed: false,
           fen: featured.fen,
+          variant: data.variant,
           lastMove: featured.lastMove,
           orientation: 'white',
           link: () => router.set(`/tournament/${data.id}/game/${featured.id}?goingBack=1`),

@@ -170,7 +170,7 @@ export default function UserGamesCtrl(userId: string, filter?: string): IUserGam
     const g = scrollState.games.find(game => game.id === id)
     if (g) {
       const userColor: Color = g.players.white.userId === userId ? 'white' : 'black'
-      positionsCache.set(g.id, { fen: g.fen, orientation: userColor })
+      positionsCache.set(g.id, { fen: g.fen, orientation: userColor, variant: g.variant.key })
       const mePlaying = session.getUserId() === userId
       if (mePlaying && playerId !== undefined) {
         router.set(`/game/${id}${playerId}?goingBack=1`)

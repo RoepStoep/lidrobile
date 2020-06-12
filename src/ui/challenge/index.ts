@@ -113,7 +113,7 @@ const ChallengeScreen: Mithril.Component<Attrs, ChallengeState> = {
 
   view() {
     let overlay: Mithril.Children | undefined = undefined
-    let board = viewOnlyBoardContent(standardFen, 'white')
+    let board = viewOnlyBoardContent(standardFen, 'white', 'standard')
 
     const challenge = this.challenge()
 
@@ -122,7 +122,7 @@ const ChallengeScreen: Mithril.Component<Attrs, ChallengeState> = {
     if (challenge) {
       board = viewOnlyBoardContent(
         challenge.initialFen || standardFen,
-        'white'
+        'white', challenge.variant.key
       )
 
       if (challenge.direction === 'in') {

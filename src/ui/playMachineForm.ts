@@ -2,6 +2,7 @@ import * as utils from '../utils'
 import router from '../router'
 import * as xhr from '../xhr'
 import settings, { AiSettings } from '../settings'
+import { getVariantKeyById } from '../lidraughts/variant'
 import formWidgets from './shared/form'
 import popupWidget from './shared/popup'
 import i18n from '../i18n'
@@ -105,7 +106,7 @@ function renderForm(formName: string, settingsObj: AiSettings, variants: string[
           }
         })
       }, [
-        h(ViewOnlyBoard, { fen: fromPositionFen, orientation: 'white', bounds: { width: 100, height: 100 }})
+        h(ViewOnlyBoard, { fen: fromPositionFen, variant: getVariantKeyById(settingsObj.variant()) || 'standard', orientation: 'white', bounds: { width: 100, height: 100 }})
       ])
       ] : h('div', h('button.withIcon.fa.fa-pencil', {
         oncreate: helper.ontap(() => {

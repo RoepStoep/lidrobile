@@ -4,6 +4,7 @@ import Draughtsground from '../../draughtsground/Draughtsground'
 import { uciToMove } from '../../utils/draughtsFormat'
 import settings from '../../settings'
 import { Bounds } from './Board'
+import getVariant from '../../lidraughts/variant'
 
 export interface Attrs {
   readonly fen: string
@@ -11,7 +12,7 @@ export interface Attrs {
   readonly lastMove?: string
   readonly bounds?: Bounds
   readonly customPieceTheme?: string
-  readonly variant?: VariantKey
+  readonly variant: VariantKey
   readonly fixed?: boolean
   readonly delay?: Millis
 }
@@ -78,12 +79,13 @@ const ViewOnlyBoard: Mithril.Component<Attrs, State> = {
   },
 
   view({ attrs }) {
-
+    const boardSizeKey = getVariant(attrs.variant).board.key
     const boardClass = [
       'display_board',
       attrs.customPieceTheme || this.pieceTheme,
       this.boardTheme,
-      attrs.variant || 'standard'
+      attrs.variant,
+      'is' + boardSizeKey
     ].join(' ')
 
     return h('div', { className: boardClass })

@@ -124,14 +124,13 @@ export default {
     let board: Mithril.Child
 
     if (pov) {
-      board = viewOnlyBoardContent(pov.fen, pov.color, pov.lastMove,
-        pov.variant.key)
+      board = viewOnlyBoardContent(pov.fen, pov.color, pov.variant.key, pov.lastMove)
     } else {
       const g = positionsCache.get(attrs.id)
       if (g)
-        board = viewOnlyBoardContent(g.fen, g.orientation)
+        board = viewOnlyBoardContent(g.fen, g.orientation, g.variant)
       else
-        board = viewOnlyBoardContent(emptyFen, 'white')
+        board = viewOnlyBoardContent(emptyFen, 'white', 'standard')
     }
 
     return layout.board(

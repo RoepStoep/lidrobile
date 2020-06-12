@@ -1,8 +1,8 @@
 import { batchRequestAnimationFrame } from '../../utils/batchRAF'
-import * as cg from '../../draughtsground/interfaces'
 import * as utils from '../../utils'
 import * as playerApi from '../../lidraughts/player'
 import * as gameApi from '../../lidraughts/game'
+import getVariant from '../../lidraughts/variant'
 import gameStatus from '../../lidraughts/status'
 import { UserGamePlayer, UserGameWithDate } from '../../lidraughts/interfaces/user'
 import session from '../../session'
@@ -36,11 +36,10 @@ export default {
     const star = g.bookmarked ? 't' : 's'
     const withStar = session.isConnected() ? ' withStar' : ''
     const player = g.players[perspectiveColor]
-    const boardSize = g.variant.board.size
 
     return (
       <li data-id={g.id} data-pid={player.id} className={`userGame ${evenOrOdd}${withStar}`}>
-        {renderBoard(g.fen, perspectiveColor, boardSize, boardTheme)}
+        {renderBoard(g.fen, perspectiveColor, g.variant.key, boardTheme)}
         <div className="userGame-infos">
           <div className="userGame-versus">
             <span className="variant-icon" data-icon={icon} />
@@ -82,11 +81,12 @@ export default {
   }
 } as Mithril.Component<Attrs, {}>
 
-function renderBoard(fen: string, orientation: Color, boardSize: cg.BoardSize, boardTheme: string) {
-
+function renderBoard(fen: string, orientation: Color, variant: VariantKey, boardTheme: string) {
+  const board = getVariant(variant).board
   const boardClass = [
     'display_board',
-    boardTheme
+    boardTheme,
+    'is' + board.key
   ].join(' ')
 
   return (
@@ -94,7 +94,7 @@ function renderBoard(fen: string, orientation: Color, boardSize: cg.BoardSize, b
       oncreate={({ dom }: Mithril.DOMNode) => {
         const img = document.createElement('img')
         img.className = 'cg-board'
-        img.src = 'data:image/svg+xml;utf8,' + makeBoard(fen, orientation, boardSize)
+        img.src = 'data:image/svg+xml;utf8,' + makeBoard(fen, orientation, board.size)
         batchRequestAnimationFrame(() => {
           const placeholder = dom.firstChild
           if (placeholder) dom.replaceChild(img, placeholder)
