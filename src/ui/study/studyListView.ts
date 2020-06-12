@@ -1,6 +1,7 @@
 import * as h from 'mithril/hyperscript'
 import * as throttle from 'lodash/throttle'
 import * as debounce from 'lodash/debounce'
+import i18n from '../../i18n'
 import redraw from '../../utils/redraw'
 import spinner from '../../spinner'
 import * as playerApi from '../../lidraughts/player'
@@ -34,7 +35,7 @@ export default function studyListView(ctrl: StudyListCtrl) {
               oncreate: helper.ontap(ctrl.cancelSearch)
             }, closeIcon) : null,
           ]),
-          h('button', 'Search'),
+          h('button', i18n('search')),
         ]) :
         h('div.study-pagerSelectWrapper', [
           h('div.categories',
@@ -45,7 +46,7 @@ export default function studyListView(ctrl: StudyListCtrl) {
               h('option', {
                 key: c[0],
                 value: c[0],
-              }, c[1])
+              }, i18n(c[1]))
             ))
           ),
           h('div.orders',
@@ -56,7 +57,7 @@ export default function studyListView(ctrl: StudyListCtrl) {
               h('option', {
                 key: o[0],
                 value: o[0],
-              }, o[1])
+              }, i18n(o[1]))
             ))
           ),
         ]),
@@ -70,19 +71,19 @@ export default function studyListView(ctrl: StudyListCtrl) {
 }
 
 const categories: ReadonlyArray<[PagerCategory, string]> = [
-  ['all', 'All studies'],
-  ['mine', 'My studies'],
-  ['member', 'Studies I contribute to'],
-  ['public', 'My public studies'],
-  ['private', 'My private studies'],
-  ['likes', 'Favourite studies'],
+  ['all', 'allStudies'],
+  ['mine', 'myStudies'],
+  ['member', 'studiesIContributeTo'],
+  ['public', 'myPublicStudies'],
+  ['private', 'myPrivateStudies'],
+  ['likes', 'myFavoriteStudies'],
 ]
 
 const orders: ReadonlyArray<[PagerOrder, string]> = [
-  ['hot', 'Hot'],
-  ['newest', 'Date added (newest)'],
-  ['updated', 'Recently updated'],
-  ['popular', 'Most popular'],
+  ['hot', 'hot'],
+  ['newest', 'dateAddedNewest'],
+  ['updated', 'dateAddedOldest'],
+  ['popular', 'mostPopular'],
 ]
 
 function studyList(ctrl: StudyListCtrl) {
@@ -99,7 +100,7 @@ function studyList(ctrl: StudyListCtrl) {
         }, [...studies.map((study, index) =>
           h(Item, { study, index })
         ), ctrl.state.isLoading ? h('li.study-pagerItem', 'loading...') : []]) :
-          h('div.study-pagerEmpty', 'None yet') :
+          h('div.study-pagerEmpty', i18n('noneYet')) :
     h('div.study-pagerLoader', spinner.getVdom('monochrome'))
   )
 }

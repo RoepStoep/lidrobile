@@ -26,7 +26,7 @@ function skipOrViewSolution(ctrl: IRetroCtrl) {
     }, i18n('viewTheSolution')),
     h('button', {
       oncreate: helper.ontap(ctrl.skip)
-    }, 'Skip this move')
+    }, i18n('skipThisMove'))
   ])
 }
 
@@ -35,7 +35,7 @@ function jumpToNext(ctrl: IRetroCtrl) {
     oncreate: helper.ontap(ctrl.jumpToNext)
   }, [
     h('i[data-icon=G]'),
-    'Next'
+    i18n('next')
   ])
 }
 
@@ -64,9 +64,9 @@ const feedback = {
               showGlyphs: true,
               showEval: false
             }, ctrl.vm.current.fault.node),
-            ' was played'
+            i18n('xWasPlayed', '')
           ]),
-          h('em', 'Find a better move for ' + ctrl.vm.color),
+          h('em', i18n(ctrl.vm.color === 'white' ? 'findBetterMoveForWhite' : 'findBetterMoveForBlack')),
           skipOrViewSolution(ctrl)
         ])
       ])
@@ -78,11 +78,11 @@ const feedback = {
       h('div.retro-player', [
         h('div.retro-icon.off', '!'),
         h('div.retro-instruction', [
-          h('strong', 'You browsed away'),
+          h('strong', i18n('youBrowsedAway')),
           h('div.choices.off', [
             h('button', {
               oncreate: helper.ontap(ctrl.jumpToNext)
-            }, 'Resume learning')
+            }, i18n('resumeLearning'))
           ])
         ])
       ])
@@ -93,8 +93,8 @@ const feedback = {
       h('div.retro-player', [
         h('div.retro-icon', '✗'),
         h('div.retro-instruction', [
-          h('strong', 'You can do better'),
-          h('em', 'Try another move for ' + ctrl.vm.color),
+          h('strong', i18n('youCanDoBetter')),
+          h('em', i18n(ctrl.vm.color === 'white' ? 'tryAnotherMoveForWhite' : 'tryAnotherMoveForBlack')),
           skipOrViewSolution(ctrl)
         ])
       ])
@@ -117,7 +117,7 @@ const feedback = {
         h('div.retro-player', [
           h('div.retro-icon', '✓'),
           h('div.retro-instruction', [
-            h('strong', 'Solution:'),
+            h('strong', i18n('solution') + ':'),
             h('em', [
               'Best move was ',
               h('strong', renderIndexAndMove({
@@ -137,7 +137,7 @@ const feedback = {
       h('div.retro-half.top',
         h('div.retro-player.center', [
           h('div.retro-instruction', [
-            h('strong', 'Evaluating your move'),
+            h('strong', i18n('evaluatingYourMove')),
             renderEvalProgress(ctrl)
           ])
         ])
@@ -149,7 +149,7 @@ const feedback = {
       h('div.retro-half.top',
         h('div.retro-player', [
           h('div.retro-icon', spinner.getVdom()),
-          h('div.retro-instruction', 'Waiting for analysis...')
+          h('div.retro-instruction', i18n('waitingForAnalysis'))
         ])
       )
     ]
@@ -161,15 +161,15 @@ const feedback = {
         }, h('piece.king.' + ctrl.vm.color)),
         h('div.retro-instruction', [
           h('em', nothing ?
-            'No mistakes found for ' + ctrl.vm.color :
-            'Done reviewing ' + ctrl.vm.color + ' mistakes'),
+            i18n(ctrl.vm.color === 'white' ? 'noMistakesFoundForWhite' : 'noMistakesFoundForBlack') :
+            i18n(ctrl.vm.color === 'white' ? 'doneReviewingWhiteMistakes' : 'doneReviewingBlackMistakes')),
           h('div.choices.end', [
             nothing ? null : h('button', {
               oncreate: helper.ontap(ctrl.reset)
-            }, 'Do it again'),
+            }, i18n('doItAgain')),
             h('button', {
               oncreate: helper.ontap(ctrl.flip)
-            }, 'Review ' + oppositeColor(ctrl.vm.color) + ' mistakes')
+            }, i18n(oppositeColor(ctrl.vm.color) === 'white' ? 'reviewWhiteMistakes' : 'reviewBlackMistakes'))
           ])
         ])
       ])
@@ -194,7 +194,7 @@ function renderFeedback(root: AnalyseCtrl, fb: Feedback) {
 function renderTitle(ctrl: IRetroCtrl): Mithril.BaseNode {
   const completion = ctrl.completion()
   return h('div.title', [
-    h('span', 'Learn from your mistakes'),
+    h('span', i18n('learnFromYourMistakes')),
     h('span', Math.min(completion[0] + 1, completion[1]) + ' / ' + completion[1]),
     h('div.retro-actions', [
       h('button.window-button', {

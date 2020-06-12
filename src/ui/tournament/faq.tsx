@@ -71,7 +71,8 @@ export default {
             {i18n('howDoesItEndAnswer')}
 
             <h2>{i18n('otherRules')}</h2>
-            {i18n('otherRulesAnswer')}
+            {i18n('thereIsACountdown')}
+            {' ' + i18n('drawingWithinNbMoves', 10)}
           </div>
         </div>
       </div>

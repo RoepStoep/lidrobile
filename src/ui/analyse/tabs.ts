@@ -24,7 +24,7 @@ export const ceval: Tab = {
 
 export const explorer: Tab = {
   id: 'explorer',
-  title: 'Opening explorer & tablebase',
+  title: 'openingExplorerAndTablebase',
   className: 'fa fa-book'
 }
 
@@ -36,7 +36,7 @@ export const charts: Tab = {
 
 export const pdnTags: Tab = {
   id: 'pdnTags',
-  title: 'PDN tags',
+  title: 'pdnTags',
   className: 'fa fa-tags'
 }
 

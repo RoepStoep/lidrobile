@@ -121,12 +121,12 @@ function renderGameAnalysisRequest(ctrl: AnalyseCtrl) {
 function renderStudyAnalysisRequest(ctrl: AnalyseCtrl) {
   return h('div.analyse-computerAnalysis.request', {
     key: 'request-analysis'
-  }, ctrl.mainline.length < 5 ? h('p', 'The study is too short to be analysed.') :
-      !ctrl.study!.canContribute() ? h('p', 'Only the study contributors can request a computer analysis') : [
+  }, ctrl.mainline.length < 5 ? h('p', i18n('theChapterIsTooShortToBeAnalysed')) :
+      !ctrl.study!.canContribute() ? h('p', i18n('onlyContributorsCanRequestAnalysis')) : [
         h('p', [
-          'Get a full server-side computer analysis of the main line.',
+          i18n('getAFullComputerAnalysis'),
           h('br'),
-          'Make sure the chapter is complete, for you can only request analysis once.'
+          i18n('makeSureTheChapterIsComplete')
         ]),
         ctrl.analysisProgress ? h('div.analyse-requestProgress', [
           h('span', 'Analysis in progress'),

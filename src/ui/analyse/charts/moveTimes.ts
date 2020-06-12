@@ -2,6 +2,7 @@ import { select } from 'd3-selection'
 import { axisLeft } from 'd3-axis'
 import { scaleLinear } from 'd3-scale'
 import { area as d3Area } from 'd3-shape'
+import i18n from '../../../i18n'
 
 import { AnalyseData } from '../../../lidraughts/interfaces/analyse'
 
@@ -119,10 +120,10 @@ export default function drawMoveTimesChart(
 
   if (division && (division.middle || division.end)) {
     if (division.middle) {
-      addDivisionLine(x(division.middle), 'Middlegame')
+      addDivisionLine(x(division.middle), i18n('middlegame'))
     }
     if (division.end) {
-      addDivisionLine(x(division.end), 'Endgame')
+      addDivisionLine(x(division.end), i18n('endgame'))
     }
   }
 

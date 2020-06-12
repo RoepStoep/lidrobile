@@ -3,6 +3,7 @@ import router from '../../../../router'
 import { lightPlayerName } from '../../../../lidraughts/player'
 import { StudyMemberMap, StudyMember } from '../../../../lidraughts/interfaces/study'
 import * as helper from '../../../helper'
+import i18n from '../../../../i18n'
 import CloseSlideHandler from '../../../shared/sideMenu/CloseSlideHandler'
 import CloseSwipeHandler from '../../../shared/sideMenu/CloseSwipeHandler'
 import { expandMore, expandLess } from '../../../shared/icons'
@@ -37,7 +38,6 @@ export default {
     const { studyCtrl } = attrs
     const study = studyCtrl.data
     const members = sortMembers(study.members)
-    const membPluralSuffix = members.length > 1 ? 's' : ''
     return h('aside#studyMenu', {
       oncreate: ({ dom }: Mithril.DOMNode) => {
         if (window.cordova.platformId === 'ios') {
@@ -51,7 +51,7 @@ export default {
         h('h2.study-menu-title.study-members', {
           oncreate: helper.ontapXY(() => this.showMembers = !this.showMembers)
         }, [
-          h('span', `${members.length} member${membPluralSuffix}`),
+          h('span', i18n('nbMembers', members.length)),
           this.showMembers ? expandLess : expandMore
         ]),
         this.showMembers ? h('ul', members.map(memb =>
@@ -64,7 +64,7 @@ export default {
             h('span', memb.user ? lightPlayerName(memb.user) : '?')
           ])
         )) : null,
-        h('h2.study-menu-title.study-chapters', `${study.chapters.length} chapters`),
+        h('h2.study-menu-title.study-chapters', i18n('nbChapters', study.chapters.length)),
         h('ol', {
           oncreate: helper.ontapXY(e => {
             const el = helper.getLI(e)

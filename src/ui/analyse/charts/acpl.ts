@@ -1,6 +1,7 @@
 import { select } from 'd3-selection'
 import { scaleLinear } from 'd3-scale'
 import { area as d3Area } from 'd3-shape'
+import i18n from '../../../i18n'
 
 import { ops as treeOps, Tree } from '../../shared/tree'
 import AnalyseCtrl from '../AnalyseCtrl';
@@ -101,12 +102,12 @@ export default function drawAcplChart(element: SVGElement, aCtrl: AnalyseCtrl, c
   .attr('d', line)
 
   if (division && (division.middle || division.end)) {
-    addDivisionLine(x(0), 'Opening')
+    addDivisionLine(x(0), i18n('opening'))
     if (division.middle) {
-      addDivisionLine(x(division.middle), 'Middlegame')
+      addDivisionLine(x(division.middle), i18n('middlegame'))
     }
     if (division.end) {
-      addDivisionLine(x(division.end), 'Endgame')
+      addDivisionLine(x(division.end), i18n('endgame'))
     }
   }
 
