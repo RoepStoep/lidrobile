@@ -20,6 +20,7 @@ export interface Attrs {
 interface Config {
   batchRAF: (c: () => void) => void
   fen: string
+  boardSize: BoardSize
   orientation: Color
   viewOnly: boolean
   minimalDom: boolean
@@ -94,7 +95,7 @@ const ViewOnlyBoard: Mithril.Component<Attrs, State> = {
 
 export default ViewOnlyBoard
 
-function makeConfig({ fen, lastMove, orientation, fixed = true }: Attrs) {
+function makeConfig({ fen, lastMove, orientation, variant, fixed = true }: Attrs) {
   const conf: Config = {
     batchRAF: batchRequestAnimationFrame,
     viewOnly: true,
@@ -102,6 +103,7 @@ function makeConfig({ fen, lastMove, orientation, fixed = true }: Attrs) {
     minimalDom: true,
     coordinates: 0,
     fen,
+    boardSize: getVariant(variant).board.size,
     lastMove: lastMove ? uciToMove(lastMove) : null,
     orientation: orientation || 'white'
   }

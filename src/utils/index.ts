@@ -151,7 +151,7 @@ const perfIconsMap: {[index: string]: string} = {
   frisian: '\'',
   antidraughts: '@',
   puzzle: '-',
-  puzzlefrisian: '$',
+  puzzlefrisian: '',
   frysk: '_',
   fromPosition: '*',
   breakthrough: '',

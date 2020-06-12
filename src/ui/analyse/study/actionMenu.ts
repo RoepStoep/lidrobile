@@ -76,7 +76,7 @@ function renderStudyMenu(ctrl: AnalyseCtrl) {
       oncreate: helper.ontap(() => {
         ctrl.study!.actionMenu.s.showShareMenu = true
       })
-    }, [h('span.fa.fa-share'), i18n('shareAndExport')]),
+    }, [h('span.fa.fa-share-alt'), i18n('shareAndExport')]),
     h('button', {
       key: 'like',
       oncreate: helper.ontap(ctrl.study!.toggleLike)

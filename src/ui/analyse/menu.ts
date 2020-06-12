@@ -74,7 +74,7 @@ function renderAnalyseMenu(ctrl: AnalyseCtrl) {
       oncreate: helper.ontap(() => {
         ctrl.menu.s.showShareMenu = true
       })
-    }, [h('span.fa.fa-share'), i18n('share')]),
+    }, [h('span.fa.fa-share-alt'), i18n('shareAndExport')]),
     h('button[data-icon=B]', {
       key: 'flipBoard',
       oncreate: helper.ontap(ctrl.settings.flip)
