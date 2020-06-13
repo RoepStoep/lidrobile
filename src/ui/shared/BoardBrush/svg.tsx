@@ -6,6 +6,10 @@ import { Brush } from './brushes'
 
 type BoardPos = [number, number]
 
+export interface ArrowDests {
+  [key: string]: number; // how many arrows land on a square
+}
+
 const key2pos: (key: Key, bs: cg.BoardSize) => BoardPos = cgUtil.key2pos
 
 function circleWidth(current: boolean, bounds: Bounds, boardSize: cg.BoardSize) {
@@ -22,8 +26,8 @@ function opacity(brush: Brush, current: boolean) {
   return (brush.opacity || 1) * (current ? 0.6 : 1)
 }
 
-function arrowMargin(current: boolean, bounds: Bounds, boardSize: cg.BoardSize) {
-  return boardSize[0] * (current ? 1 : 2) / 512 * bounds.width
+function arrowMargin(bounds: Bounds, shorten: boolean, boardSize: cg.BoardSize) {
+  return boardSize[0] * (shorten ? 2 : 1) / 512 * bounds.width
 }
 
 function pos2px(pos: BoardPos, bounds: Bounds, boardSize: cg.BoardSize) {
@@ -33,7 +37,7 @@ function pos2px(pos: BoardPos, bounds: Bounds, boardSize: cg.BoardSize) {
 export function circle(brush: Brush, pos: BoardPos, current: boolean, bounds: Bounds, boardSize: cg.BoardSize) {
   const o = pos2px(pos, bounds, boardSize)
   const width = circleWidth(current, bounds, boardSize)
-  const factor = boardSize[0] / 10, radius = bounds.width / (16 * factor)
+  const radius = (bounds.width + bounds.height) / (2 * (boardSize[0] + boardSize[1]));
   return (
     <circle
       stroke={brush.color}
@@ -47,8 +51,8 @@ export function circle(brush: Brush, pos: BoardPos, current: boolean, bounds: Bo
   )
 }
 
-export function arrow(brush: Brush, orig: BoardPos, dest: BoardPos, current: boolean, bounds: Bounds, boardSize: cg.BoardSize) {
-  const margin = arrowMargin(current, bounds, boardSize)
+export function arrow(brush: Brush, orig: BoardPos, dest: BoardPos, current: boolean, shorten: boolean, bounds: Bounds, boardSize: cg.BoardSize) {
+  const margin = arrowMargin(bounds, shorten && !current, boardSize)
   const a = pos2px(orig, bounds, boardSize)
   const b = pos2px(dest, bounds, boardSize)
   const dx = b[0] - a[0],
@@ -118,6 +122,7 @@ export function renderShape(
   orientation: Color,
   current: boolean,
   brushes: {[key: string]: Brush},
+  arrowDests: ArrowDests,
   bounds: Bounds,
   pieceTheme: string,
   boardSize: cg.BoardSize
@@ -133,7 +138,8 @@ export function renderShape(
       brush,
       orient(key2pos(shape.orig, boardSize), orientation, boardSize),
       orient(key2pos(shape.dest, boardSize), orientation, boardSize),
-      current, bounds, boardSize)
+      current, arrowDests[shape.dest] > 1,
+      bounds, boardSize)
     else if (brush && shape.orig) return circle(
       brush,
       orient(key2pos(shape.orig, boardSize), orientation, boardSize),
