@@ -116,6 +116,7 @@ export default class Replay {
     const sit = this.situation()
     return draughts.pdnDump({
       variant: this.variant,
+      algebraic: this.isAlgebraic(),
       initialFen: this.initialFen,
       pdnMoves: sit.pdnMoves,
       finalSquare: true,

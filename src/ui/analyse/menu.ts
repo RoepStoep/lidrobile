@@ -150,7 +150,7 @@ function renderShareMenu(ctrl: AnalyseCtrl) {
 function onlinePDNExport(ctrl: AnalyseCtrl, raw: boolean) {
   if (!ctrl.menu.s.computingPDN) {
     ctrl.menu.s.computingPDN = true
-    getPDN(ctrl.data.game.id, raw)
+    getPDN(ctrl.data.game.id, ctrl.isAlgebraic(), raw)
     .then((pdn: string) => {
       ctrl.menu.s.computingPDN = false
       ctrl.menu.close()
@@ -177,6 +177,7 @@ function offlinePdnExport(ctrl: AnalyseCtrl) {
     (ctrl.data.game.id === 'offline_ai' ? ctrl.data.opponent.username : 'Anonymous')
     draughts.pdnDump({
       variant: ctrl.data.game.variant.key,
+      algebraic: ctrl.isAlgebraic(),
       initialFen: ctrl.data.game.initialFen,
       pdnMoves: endSituation.pdnMoves || [],
       finalSquare: true,

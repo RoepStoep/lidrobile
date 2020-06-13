@@ -106,6 +106,7 @@ export interface ThreefoldTestResponse {
 
 export interface PdnDumpRequest {
   readonly variant: VariantKey
+  readonly algebraic: boolean
   readonly initialFen: string
   readonly pdnMoves: ReadonlyArray<string>
   readonly white?: string

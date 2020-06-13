@@ -41,7 +41,7 @@ export default {
   },
   sharePDN(ctrl: OnlineRound) {
     function handler() {
-      getPDN(ctrl.data.game.id)
+      getPDN(ctrl.data.game.id, ctrl.isAlgebraic())
       .then((pdn: string) => window.plugins.socialsharing.share(pdn))
       .catch(handleXhrError)
     }
