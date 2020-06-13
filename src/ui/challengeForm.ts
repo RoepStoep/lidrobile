@@ -15,6 +15,7 @@ import * as helper from './helper'
 import * as h from 'mithril/hyperscript'
 import * as stream from 'mithril/stream'
 import { toggleCoordinates } from '../draughtsground/fen'
+import { fenFromTag } from '../utils/draughtsFormat'
 
 let actionName = ''
 let userId: string | undefined
@@ -117,7 +118,7 @@ function renderForm() {
     h('input[type=text][name=fen]', {
       placeholder: i18n('pasteTheFenStringHere'),
       oninput: (e: Event) => {
-        const rawfen = toggleCoordinates((e.target as HTMLInputElement).value, false)
+        const rawfen = toggleCoordinates(fenFromTag((e.target as HTMLInputElement).value), false)
         if (validateFen(rawfen, getVariantKeyById(settingsObj.variant()) || 'standard')) {
           setupFen = rawfen
           setupFenError = undefined

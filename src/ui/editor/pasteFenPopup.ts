@@ -3,6 +3,7 @@ import popupWidget from '../shared/popup'
 import router from '../../router'
 import * as h from 'mithril/hyperscript'
 import Editor, { MenuInterface } from './Editor'
+import { fenFromTag } from '../../utils/draughtsFormat'
 
 export default {
 
@@ -40,7 +41,7 @@ export default {
             const input = (e.target as HTMLFormElement)[0] as HTMLInputElement
             const value = input.value
             if (value && value.length)
-              ctrl.root.loadNewFen(input.value)
+              ctrl.root.loadNewFen(fenFromTag(input.value))
           }
         }, [
           h('input[type=text]', {

@@ -54,6 +54,17 @@ export function fenCompare(fen1: string, fen2: string) {
   return true;
 }
 
+export function fenFromTag(tag: string) {
+  if (!tag || !tag.startsWith('[') || !tag.endsWith(']') || !tag.includes('FEN')) {
+    return tag;
+  }
+  const fenStart = tag.indexOf('"'), fenEnd = tag.lastIndexOf('"');
+  if (fenStart === -1 || fenEnd === -1 || fenStart === fenEnd) {
+    return tag;
+  }
+  return tag.slice(fenStart + 1, fenEnd);
+}
+
 function isString(o: DestsMap | string): o is string {
   return typeof o === 'string'
 }
