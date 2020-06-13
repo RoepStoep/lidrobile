@@ -79,6 +79,7 @@ export interface SetConfig {
   orientation?: Color
   fen?: string
   boardSize?: BoardSize
+  coordSystem?: number
   lastMove?: Key[] | null
   captureLength?: number
   captureUci?: string[]

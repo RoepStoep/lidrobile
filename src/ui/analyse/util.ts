@@ -1,4 +1,4 @@
-import { fixCrazySan } from '../../utils/draughtsFormat'
+import { san2alg } from '../../utils/draughtsFormat'
 import { AnalyseData } from '../../lidraughts/interfaces/analyse'
 import { Tree } from '../shared/tree'
 import { Eval, NodeEvals } from './ceval/interfaces'
@@ -60,9 +60,9 @@ export function plyToTurn(ply: number): number {
   return Math.floor((ply - 1) / 2) + 1
 }
 
-export function nodeFullName(node: Tree.Node) {
+export function nodeFullName(node: Tree.Node, algebraic: boolean) {
   if (node.san) return plyToTurn(node.ply) + (
     node.ply % 2 === 1 ? '.' : '...'
-  ) + ' ' + fixCrazySan(node.san)
+  ) + ' ' + (algebraic ? san2alg(node.san) : node.san)
   return 'Initial position'
 }

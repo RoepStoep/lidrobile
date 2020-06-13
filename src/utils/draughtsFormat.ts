@@ -1,4 +1,5 @@
 import * as isObject from 'lodash/isObject'
+import { san2alg as san2algMap } from '../draughtsground/util'
 
 export function uciToMove(uci: string): Key[] {
     return decomposeUci(uci);
@@ -16,11 +17,6 @@ export function uciTolastDrop(uci: string): KeyPair {
   return [<Key>uci.substr(2, 2), <Key>uci.substr(2, 2)]
 }
 
-export function fixCrazySan(san: San): San {
-  return san;
-  //return san[0] === 'P' ? san.slice(1) : san
-}
-
 export function decomposeUci(uci: Uci): Key[] {
   const uciArray: Key[] = new Array<Key>();
   if (uci.length > 1) {
@@ -29,6 +25,14 @@ export function decomposeUci(uci: Uci): Key[] {
       }
   }
   return uciArray;
+}
+
+export function san2alg(san?: string | null): string {
+  if (!san) return ''
+  const capture = san.includes('x'),
+    fields = san.split(capture ? 'x' : '-'),
+    algs = fields.map(f => san2algMap[f]);
+  return algs.join(capture ? ':' : '-');
 }
 
 export function scan2uci(san: string): string {

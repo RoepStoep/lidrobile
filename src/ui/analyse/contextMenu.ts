@@ -3,6 +3,7 @@ import redraw from '../../utils/redraw'
 import popupWidget from '../shared/popup'
 import * as helper from '../helper'
 import { nodeFullName } from './util'
+import i18n from '../../i18n'
 import AnalyseCtrl from './AnalyseCtrl'
 
 export function view(ctrl: AnalyseCtrl): Mithril.BaseNode | null {
@@ -15,12 +16,12 @@ export function view(ctrl: AnalyseCtrl): Mithril.BaseNode | null {
 
   return popupWidget(
     'analyse-cm',
-    () => nodeFullName(node),
+    () => nodeFullName(node, ctrl.isAlgebraic()),
     () => {
       return [
-        onMainline ? null : action('S', 'Promote variation', () => ctrl.promote(path, false)),
-        onMainline ? null : action('E', 'Make main line', () => ctrl.promote(path, true)),
-        action('q', 'Delete from here', () => ctrl.deleteNode(path))
+        onMainline ? null : action('S', i18n('promoteVariation'), () => ctrl.promote(path, false)),
+        onMainline ? null : action('E', i18n('makeMainLine'), () => ctrl.promote(path, true)),
+        action('q', i18n('deleteFromHere'), () => ctrl.deleteNode(path))
       ]
     },
     true,

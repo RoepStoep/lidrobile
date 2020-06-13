@@ -1,5 +1,5 @@
 import * as h from 'mithril/hyperscript'
-import { fixCrazySan } from '../../../utils/draughtsFormat'
+import { san2alg } from '../../../utils/draughtsFormat'
 import { linkify } from '../../../utils/html'
 import * as gameApi from '../../../lidraughts/game'
 import { Glyph, CommentAuthor } from '../../../lidraughts/interfaces/analyse'
@@ -186,7 +186,7 @@ function renderMoveOf(ctx: Ctx, node: Tree.Node, opts: Opts): Mithril.BaseNode {
   const ply = node.displayPly ? node.displayPly : node.ply
   const content: Mithril.Children = [
     opts.withIndex || ply & 1 ? renderIndex(ply, true) : null,
-    fixCrazySan(node.san!)
+    ctx.ctrl.isAlgebraic() ? san2alg(node.san) : node.san!
   ]
   if (node.glyphs) renderGlyphs(node.glyphs).forEach(g => content.push(g))
   return h('move', {

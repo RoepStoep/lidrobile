@@ -2,9 +2,12 @@ import i18n from '../../../i18n'
 import * as draughts from '../../../draughts'
 import { countGhosts } from '../../../draughtsground/fen'
 import { GameStatus } from '../../../lidraughts/interfaces/game'
+import settings from '../../../settings'
+import getVariant from '../../../lidraughts/variant'
 
 export default class Replay {
   public variant!: VariantKey
+  private boardKey!: string
   private initialFen!: string
   private onReplayAdded: (sit: draughts.GameSituation) => void
   private onThreefoldRepetition: (newStatus: GameStatus) => void
@@ -20,7 +23,6 @@ export default class Replay {
     onReplayAdded: (sit: draughts.GameSituation) => void,
     onThreefoldRepetition: (newStatus: GameStatus) => void
   ) {
-
     this.init(variant, initialFen, initSituations, initPly)
     this.onReplayAdded = onReplayAdded
     this.onThreefoldRepetition = onThreefoldRepetition
@@ -28,6 +30,7 @@ export default class Replay {
 
   public init(variant: VariantKey, initialFen: string, situations: Array<draughts.GameSituation>, ply: number) {
     this.variant = variant
+    this.boardKey = getVariant(variant).board.key
     this.initialFen = initialFen
     this.situations = situations
     this.ply = ply || 0
@@ -43,6 +46,12 @@ export default class Replay {
     }
     return this.situations[i]
   }
+
+  public isAlgebraic = (): boolean =>
+    settings.game.coordSystem() === 1 && this.boardKey === '64'
+  
+  public coordSystem= (): number => 
+    this.isAlgebraic() ? 1 : 0
 
   private displayPly = (sit: draughts.GameSituation): number => {
     return countGhosts(sit.fen) ? sit.ply + 1 : sit.ply

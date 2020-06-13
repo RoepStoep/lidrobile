@@ -81,6 +81,7 @@ export default class Editor {
       boardSize: this.getVariant().board.size,
       orientation: 'white',
       coordinates: settings.game.coords(),
+      coordSystem: this.coordSystem(),
       movable: {
         free: true,
         color: 'both'
@@ -111,8 +112,17 @@ export default class Editor {
     }
   }
  
-  public getVariant = () => 
-    getLidraughtsVariant(this.data.game.variant.key())
+  public isAlgebraic = (): boolean => {
+    return settings.game.coordSystem() === 1 && this.getVariant().board.key === '64';
+  }
+  
+  public coordSystem = (): number => {
+    return this.isAlgebraic() ? 1 : 0;
+  }
+
+  public getVariant = () => {
+    return getLidraughtsVariant(this.data.game.variant.key())
+  }
 
   public updateHref = debounce(() => {
     const newFen = this.computeFen()

@@ -24,6 +24,7 @@ function makeConfig(data: OfflineGameData, sit: GameSituation): cg.InitConfig {
     captureLength: data.captureLength || sit.captureLength,
     otb: data.game.id === 'offline_otb',
     coordinates: settings.game.coords(),
+    coordSystem: (settings.game.coordSystem() === 1 && board.key === '64') ? 1 : 0,
     otbMode: settings.otb.flipPieces() ? 'flip' : 'facing',
     highlight: {
       lastMove: settings.game.highlights(),

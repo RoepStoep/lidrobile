@@ -174,6 +174,14 @@ export default class OnlineRound implements OnlineRoundInterface {
     redraw()
   }
 
+  public isAlgebraic = (): boolean => {
+    return settings.game.coordSystem() === 1 && this.data.game.variant.board.key === '64';
+  }
+  
+  public coordSystem = (): number => {
+    return this.isAlgebraic() ? 1 : 0;
+  }
+
   public isZen = () => this.zenModeEnabled && !this.data.player.spectator &&
     !(gameStatusApi.finished(this.data) || gameStatusApi.aborted(this.data))
 

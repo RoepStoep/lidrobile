@@ -19,6 +19,15 @@ function renderBody() {
           settings.game.coords
         )
       ),
+      h('li.list_item',
+        formWidgets.renderMultipleChoiceButton(
+          i18n('coordinateSystem8x8'), [
+            { label: i18n('fieldnumbers8x8'), value: 0 },
+            { label: i18n('algebraic8x8'), value: 1 },
+          ],
+          settings.game.coordSystem
+        )
+      ),
       h('li.list_item', formWidgets.renderCheckbox(i18n('pieceAnimation'), 'animations',
         settings.game.animations)),
       h('li.list_item', formWidgets.renderCheckbox('Magnified dragged piece', 'magnified',

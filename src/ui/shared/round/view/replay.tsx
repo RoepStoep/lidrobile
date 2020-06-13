@@ -1,5 +1,5 @@
 import * as h from 'mithril/hyperscript'
-import { fixCrazySan } from '../../../../utils/draughtsFormat'
+import { san2alg } from '../../../../utils/draughtsFormat'
 import * as helper from '../../../helper'
 import OnlineRound from '../OnlineRound'
 
@@ -44,7 +44,7 @@ export function renderTable(ctrl: OnlineRound) {
                 'data-ply': s.ply,
               }, [
                 s.ply & 1 ? h('index', renderIndex(s.ply, true)) : null,
-                fixCrazySan(s.san!)
+                ctrl.isAlgebraic() ? san2alg(s.san) : s.san!
               ]))
             }
         </div>

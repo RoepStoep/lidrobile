@@ -104,6 +104,7 @@ export default {
     highlights: store.prop<boolean>('settings.boardHighlights', true),
     pieceDestinations: store.prop<boolean>('settings.pieceDestinations', true),
     coords: store.prop<number>('settings.coords', 2),
+    coordSystem: store.prop<number>('settings.coordSystem', 0),
     magnified: store.prop<boolean>('settings.pieceMagnified', true),
     zenMode: store.prop<boolean>('settings.zenMode', false),
     kingMoves: store.prop<boolean>('settings.kingMoves', true),

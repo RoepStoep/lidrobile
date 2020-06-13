@@ -1,5 +1,5 @@
 import * as h from 'mithril/hyperscript'
-import { fixCrazySan } from '../../../utils/draughtsFormat'
+import { san2alg } from '../../../utils/draughtsFormat'
 import { Tree } from '../../shared/tree'
 import { renderEval as normalizeEval, getBestEval } from '../util'
 
@@ -7,6 +7,7 @@ export interface Ctx {
   withDots?: boolean
   showEval: boolean
   showGlyphs?: boolean
+  algebraic?: boolean
 }
 
 function plyToTurn(ply: Ply): number {
@@ -33,7 +34,7 @@ export function renderIndex(ply: Ply, withDots?: boolean): Mithril.BaseNode {
 
 export function renderMove(ctx: Ctx, node: Tree.Node): Mithril.BaseNode[] {
   const ev: any = getBestEval({client: node.ceval, server: node.eval}) || {}
-  return [h('san', fixCrazySan(node.san!))]
+  return [h('san', ctx.algebraic ? san2alg(node.san) : node.san!)]
     .concat((node.glyphs && ctx.showGlyphs) ? renderGlyphs(node.glyphs) : [])
     .concat(ctx.showEval ? (
       ev.cp !== undefined ? [renderEval(normalizeEval(ev.cp))] : (

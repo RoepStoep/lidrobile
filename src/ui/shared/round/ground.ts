@@ -30,6 +30,7 @@ function makeConfig(data: OnlineGameData, fen: string, flip: boolean = false, st
     captureLength: data.captureLength,
     lastMove,
     coordinates: settings.game.coords(),
+    coordSystem: (settings.game.coordSystem() === 1 && data.game.variant.board.key === '64') ? 1 : 0,
     highlight: {
       lastMove: settings.game.highlights(),
       kingMoves: settings.game.kingMoves() && (data.game.variant.key === 'frisian' || data.game.variant.key === 'frysk')

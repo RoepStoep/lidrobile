@@ -3,7 +3,7 @@ import * as h from 'mithril/hyperscript'
 import i18n from '../../../i18n'
 import * as gameApi from '../../../lidraughts/game'
 import gameStatusApi from '../../../lidraughts/status'
-import { fixCrazySan } from '../../../utils/draughtsFormat'
+import { san2alg } from '../../../utils/draughtsFormat'
 import { renderMaterial } from '../../shared/round/view/roundView'
 import * as helper from '../../helper'
 import { OfflineRoundInterface, Position, Material } from '../round'
@@ -181,7 +181,7 @@ function renderTable(ctrl: Replay, curPly: number) {
           'data-ply': s.ply,
         }, [
           s.ply & 1 ? h('index', renderIndex(s.ply, true)) : null,
-          fixCrazySan(s.san!)
+          ctrl.isAlgebraic() ? san2alg(s.san) : s.san!
         ]))
       }
     </div>

@@ -11,7 +11,7 @@ import vibrate from '../../vibrate'
 import sound from '../../sound'
 import { toggleGameBookmark } from '../../xhr'
 import socket from '../../socket'
-import { openingSensibleVariants } from '../../lidraughts/variant'
+import getVariant, { openingSensibleVariants } from '../../lidraughts/variant'
 import { playerName as gamePlayerName } from '../../lidraughts/player'
 import * as gameApi from '../../lidraughts/game'
 import { AnalyseData, AnalyseDataWithTree, isOnlineAnalyseData } from '../../lidraughts/interfaces/analyse'
@@ -608,6 +608,15 @@ export default class AnalyseCtrl {
     redraw()
   }
 
+  isAlgebraic(): boolean {
+    const board = this.data.game.variant.board || getVariant(this.data.game.variant.key).board
+    return settings.game.coordSystem() === 1 && board.key === '64';
+  }
+
+  coordSystem(): number {
+    return this.isAlgebraic() ? 1 : 0;
+  }
+
   private isCevalAllowed(): boolean {
     const study = this.study && this.study.data
 
@@ -671,9 +680,11 @@ export default class AnalyseCtrl {
 
     const color: Color = node.ply % 2 === 0 ? 'white' : 'black'
     const dests = draughtsFormat.readDests(node.dests)
+    const board = this.data.game.variant.board || getVariant(this.data.game.variant.key).board
     const config = {
       fen: node.fen,
-      boardSize: this.data.game.variant.board.size,
+      boardSize: board.size,
+      coordSystem: this.coordSystem(),
       turnColor: color,
       orientation: this.settings.s.flip ? oppositeColor(this.orientation) : this.orientation,
       movableColor: this.gameOver() ? null : color,

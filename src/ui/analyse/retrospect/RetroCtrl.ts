@@ -28,6 +28,7 @@ export interface IRetroCtrl {
   onCeval(): void
   onMergeAnalysisData(): void
   isSolving(): boolean
+  isAlgebraic(): boolean
   completion(): [number, number]
   reset(): void
   flip(): void
@@ -226,6 +227,7 @@ export default function RetroCtrl(root: AnalyseCtrl): IRetroCtrl {
     onCeval: checkCeval,
     onMergeAnalysisData,
     isSolving,
+    isAlgebraic: () => root.isAlgebraic(),
     completion: () => [solvedPlies.length, candidateNodes.length],
     flip() {
       root.settings.flip()

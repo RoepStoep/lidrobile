@@ -87,6 +87,14 @@ export default class TrainingCtrl implements PromotingInterface {
     redraw()
   }
 
+  isAlgebraic(): boolean {
+    return settings.game.coordSystem() === 1 && this.data.puzzle.variant.board && this.data.puzzle.variant.board.key === '64';
+  }
+  
+  coordSystem(): number {
+    return this.isAlgebraic() ? 1 : 0;
+  }
+
   public setPath = (path: Tree.Path): void => {
     this.path = path
     this.nodeList = this.tree.getNodeList(path)

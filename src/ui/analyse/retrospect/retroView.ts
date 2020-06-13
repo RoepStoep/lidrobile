@@ -62,7 +62,8 @@ const feedback = {
             ...renderIndexAndMove({
               withDots: true,
               showGlyphs: true,
-              showEval: false
+              showEval: false,
+              algebraic: ctrl.isAlgebraic()
             }, ctrl.vm.current.fault.node),
             i18n('xWasPlayed', '')
           ]),
@@ -122,7 +123,8 @@ const feedback = {
               'Best move was ',
               h('strong', renderIndexAndMove({
                 withDots: true,
-                showEval: false
+                showEval: false,
+                algebraic: ctrl.isAlgebraic()
               }, ctrl.vm.current.solution.node)
               )
             ])

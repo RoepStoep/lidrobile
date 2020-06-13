@@ -22,6 +22,7 @@ function makeConfig(
     captureLength: config.captureLength,
     orientation,
     coordinates: settings.game.coords(),
+    coordSystem: config.coordSystem,
     movable: {
       free: false,
       color: config.movableColor,
