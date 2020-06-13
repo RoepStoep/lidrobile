@@ -87,7 +87,7 @@ function renderProfileActions(user: Session) {
       </li>
       <li className="side_link" oncreate={helper.ontapXY(menu.popup(friendsPopup.open))}>
         <span data-icon="f" />
-        {i18n('onlineFriends') + ` (${friendsApi.count()})`}
+        {i18n('nbFriendsOnline', friendsApi.count())}
       </li>
       <li className="side_link" oncreate={helper.ontapXY(menu.route(`/@/${user.id}/following`))}>
         <span className="fa fa-arrow-circle-right" />

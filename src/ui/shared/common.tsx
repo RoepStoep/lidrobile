@@ -55,7 +55,7 @@ export function bookmarkButton(action: () => void, flag: boolean): Mithril.Child
 
 export function friendsButton() {
   const nbFriends = friendsApi.count()
-  const longAction = () => window.plugins.toast.show(i18n('onlineFriends'), 'short', 'top')
+  const longAction = () => window.plugins.toast.show(i18n('nbFriendsOnline', '').trim(), 'short', 'top')
 
   return (
     <button className="main_header_button friends_button" key="friends" data-icon="f"

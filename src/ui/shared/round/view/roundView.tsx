@@ -449,7 +449,7 @@ function renderGameEndedActions(ctrl: OnlineRound) {
   const shareActions = h('button', {
     key: 'showShareActions',
     oncreate: helper.ontap(ctrl.showShareActions),
-  }, [h('span.fa.fa-share'), i18n('share')])
+  }, [h('span.fa.fa-share-alt'), i18n('shareAndExport')])
 
   if (ctrl.vm.showingShareActions) {
     buttons = [
