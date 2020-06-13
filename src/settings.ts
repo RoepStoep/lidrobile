@@ -87,7 +87,7 @@ export default {
         ['flat', 'Flat' ],
         ['basic', 'Basic' ]
       ],
-      board: store.prop('settings.theme.board', 'brown'),
+      board: store.prop('settings.theme.board', 'maple'),
       piece: store.prop('settings.theme.piece', 'wide_crown')
     },
     vibrateOnGameEvents: store.prop('settings.vibrateOnGameEvents', false),
