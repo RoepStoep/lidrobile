@@ -50,7 +50,7 @@ function renderEditorMenu(ctrl: Editor) {
 }
 
 export function renderPositionSettings(ctrl: Editor) {
-  const fen = ctrl.computeFen()
+  const fen = ctrl.computeFen(false)
   return h('div.editorSelectors', [
     h('div.select_input', [
       h('label', {
@@ -98,7 +98,7 @@ export function renderPositionSettings(ctrl: Editor) {
           const oldVariant = ctrl.getVariant(),
             oldBoardSize = oldVariant.board.size,
             oldInitialFen = getInitialFen(oldVariant.key),
-            isInitial = fenCompare(ctrl.computeFen(), oldInitialFen)
+            isInitial = fenCompare(ctrl.computeFen(false), oldInitialFen)
           ctrl.data.game.variant.key((e.target as HTMLInputElement).value as VariantKey)
           ctrl.updateHref()
           const newVariant = ctrl.getVariant(),

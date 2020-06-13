@@ -6,7 +6,7 @@ import svgPieces from './pieces'
 type BoardPos = [number, number]
 
 export function makeBoard(fen: string, orientation: Color, boardSize: cg.BoardSize) {
-  const pieces = cgFen.read(fen)
+  const pieces = cgFen.read(fen, boardSize[0] * boardSize[1] / 2)
   const piecesKey = Object.keys(pieces)
   const width = 210 * boardSize[0], height = 210 * boardSize[1]
   let b = '<svg xmlns="http://www.w3.org/2000/svg" width="360" height="360" viewBox="0 0 ' + width + ' ' + height + '">'

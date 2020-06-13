@@ -52,12 +52,12 @@ export function configureBoard(state: State, config: cg.InitConfig): void {
 export function setNewBoardState(d: State, config: cg.SetConfig): void {
   if (!config) return
 
-  if (config.fen) {
-    d.pieces = fen.read(config.fen)
-  }
   if (config.boardSize) {
     d.boardSize = config.boardSize
   } 
+  if (config.fen) {
+    d.pieces = fen.read(config.fen, board.boardFields(d))
+  }
 
   // kingmoves for frisian variants
   if (d.highlight && d.highlight.kingMoves) {

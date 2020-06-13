@@ -19,7 +19,7 @@ export function cleanFenUri(fenUri: string): string {
 }
 
 export function validateFen(fen: string, variant: VariantKey = 'standard') {
-  const tokens = fen.split(':')
+  const tokens = fenUtil.toggleCoordinates(fen, false).split(':')
   if (!validateTokens(tokens))
     return false
 
@@ -99,22 +99,31 @@ function validateTokens(tokens: string[]): boolean {
 }
 
 
-export function positionLooksLegit(fen: string) {
-  const pieces = fenUtil.read(fen);
+export function positionLooksLegit(fen: string, boardSize: BoardSize) {
   const totals = {
     white: 0,
     black: 0
   };
+  const fields = boardSize[0] * boardSize[1] / 2,
+    width = boardSize[0] / 2,
+    pieces = fenUtil.read(fen, fields),
+    backrankWhite = [], backrankBlack = [];
+  for (let i = 1; i <= width; i++) {
+    backrankWhite.push(i < 10 ? '0' +  i.toString() :  i.toString());
+  }
+  for (let i = fields - width + 1; i <= fields; i++) {
+    backrankBlack.push(i < 10 ? '0' +  i.toString() :  i.toString());
+  }
   for (const pos in pieces) {
-      if (pieces[pos] && (pieces[pos].role === 'king' || pieces[pos].role === 'man')) {
-          if (pieces[pos].role === 'man') {
-              if (pieces[pos].color === 'white' && (pos === "01" || pos === "02" || pos === "03" || pos === "04" || pos === "05"))
-                  return false;
-              else if (pieces[pos].color === 'black' && (pos === "46" || pos === "47" || pos === "48" || pos === "49" || pos === "50"))
-                  return false;
-          }
-          totals[pieces[pos].color]++;
+    if (pieces[pos] && (pieces[pos].role === 'king' || pieces[pos].role === 'man')) {
+      if (pieces[pos].role === 'man') {
+        if (pieces[pos].color === 'white' && backrankWhite.includes(pos))
+          return false;
+        else if (pieces[pos].color === 'black' && backrankBlack.includes(pos))
+          return false;
       }
+      totals[pieces[pos].color]++;
+    }
   }
   return totals.white !== 0 && totals.black !== 0 && (totals.white + totals.black) < 50;
 }

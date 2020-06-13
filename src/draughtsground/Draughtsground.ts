@@ -99,8 +99,8 @@ export default class Draughtsground {
     this.state.batchRAF(this.redrawSync)
   }
 
-  getFen = (): string => {
-    return fen.write(this.state.pieces)
+  getFen = (algebraic?: boolean): string => {
+    return fen.write(this.state.pieces, board.boardFields(this.state), algebraic)
   }
 
   getMaterialDiff(): cg.MaterialDiff {

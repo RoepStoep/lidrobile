@@ -13,6 +13,7 @@ import { getPDN } from '../shared/round/roundXhr'
 import * as helper from '../helper'
 
 import AnalyseCtrl from './AnalyseCtrl'
+import { toggleCoordinates } from '../../draughtsground/fen'
 
 export interface IMainMenuCtrl {
   open: () => void
@@ -140,7 +141,7 @@ function renderShareMenu(ctrl: AnalyseCtrl) {
       key: 'shareFEN',
       oncreate: helper.ontap(() => {
         ctrl.menu.close()
-        window.plugins.socialsharing.share(null, null, null, ctrl.node.fen)
+        window.plugins.socialsharing.share(toggleCoordinates(ctrl.node.fen, ctrl.isAlgebraic()))
       }),
     }, 'Share current FEN') : null,
   ])

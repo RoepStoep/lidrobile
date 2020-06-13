@@ -1,7 +1,7 @@
 import i18n from '../../i18n'
 import router from '../../router'
 import { validateFen, positionLooksLegit } from '../../utils/fen'
-import { specialFenVariants } from '../../lidraughts/variant'
+import getVariant, { specialFenVariants } from '../../lidraughts/variant'
 import popupWidget from '../shared/popup'
 import * as helper from '../helper'
 import playMachineForm from '../playMachineForm'
@@ -9,6 +9,7 @@ import challengeForm from '../challengeForm'
 import { hasNetwork } from '../../utils'
 import * as h from 'mithril/hyperscript'
 import * as stream from 'mithril/stream'
+import { toggleCoordinates } from '../../draughtsground/fen'
 
 export interface Controller {
   open(fentoSet: string, variantToSet: VariantKey, colorToSet?: Color): void
@@ -77,14 +78,14 @@ export default {
           h('button', {
             oncreate: helper.ontap(() => {
               ctrl.close()
-              const f = ctrl.fen()
+              const f = toggleCoordinates(ctrl.fen(), false)
               const v = ctrl.variant()
               const c = ctrl.color()
               if (f) {
-                if (validateFen(f, v) && positionLooksLegit(f)) {
+                if (validateFen(f, v) && positionLooksLegit(f, getVariant(v).board.size)) {
                   router.set(`/ai/variant/${v}/fen/${encodeURIComponent(f)}/color/${c}`)
                 } else {
-                  window.plugins.toast.show('Invalid FEN', 'short', 'center')
+                  window.plugins.toast.show(i18n('invalidFen'), 'short', 'center')
                 }
               }
             })
@@ -95,10 +96,10 @@ export default {
               const f = ctrl.fen()
               const v = ctrl.variant()
               if (f) {
-                if (validateFen(f, v) && positionLooksLegit(f)) {
+                if (validateFen(f, v) && positionLooksLegit(f, getVariant(v).board.size)) {
                   router.set(`/otb/variant/${v}/fen/${encodeURIComponent(f)}`)
                 } else {
-                  window.plugins.toast.show('Invalid FEN', 'short', 'center')
+                  window.plugins.toast.show(i18n('invalidFen'), 'short', 'center')
                 }
               }
             })

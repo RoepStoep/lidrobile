@@ -77,13 +77,13 @@ function renderActionsBar(ctrl: Editor) {
         if (ctrl.data.game.variant.key() !== 'standard')
           window.plugins.toast.show('You can\'t continue from a variant position', 'long', 'center')
         else
-          ctrl.continuePopup.open(ctrl.computeFen(), 'standard')
+          ctrl.continuePopup.open(ctrl.computeFen(false), 'standard')
       }, () => window.plugins.toast.show(i18n('continueFromHere'), 'short', 'center'))
     }),
     h('button.action_bar_button[data-icon=A]', {
       key: 'analyse',
       oncreate: helper.ontap(() => {
-        const fen = encodeURIComponent(ctrl.computeFen())
+        const fen = encodeURIComponent(ctrl.computeFen(false))
         const variant = encodeURIComponent(ctrl.data.game.variant.key())
         router.set(`/analyse/variant/${variant}/fen/${fen}`)
       }, () => window.plugins.toast.show(i18n('analysis'), 'short', 'center'))
@@ -91,12 +91,12 @@ function renderActionsBar(ctrl: Editor) {
     h('button.action_bar_button.fa.fa-upload', {
       key: 'pastePosition',
       oncreate: helper.ontap(ctrl.pasteFenPopup.open,
-        () => window.plugins.toast.show(i18n('Load position from FEN'), 'short', 'center'))
+        () => window.plugins.toast.show(i18n('loadAPositionFromFen'), 'short', 'center'))
     }),
     h('button.action_bar_button.fa.fa-share-alt', {
       key: 'sharePosition',
       oncreate: helper.ontap(
-        () => window.plugins.socialsharing.share(ctrl.computeFen(true)),
+        () => window.plugins.socialsharing.share(ctrl.computeFen(ctrl.isAlgebraic(), true)),
         () => window.plugins.toast.show('Share FEN', 'short', 'bottom')
       )
     })

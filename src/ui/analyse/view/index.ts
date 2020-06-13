@@ -31,6 +31,7 @@ import renderAnalysis from './analysisView'
 import renderBoard from './boardView'
 import renderGameInfos from './gameInfosView'
 import renderActionsBar from './actionsView'
+import { toggleCoordinates } from '../../../draughtsground/fen'
 
 export function loadingScreen(isPortrait: boolean, color?: Color, curFen?: string, variant?: VariantKey) {
   const isSmall = settings.analyse.smallBoard()
@@ -38,7 +39,7 @@ export function loadingScreen(isPortrait: boolean, color?: Color, curFen?: strin
   return layout.board(
     loadingBackbutton(),
     [
-      viewOnlyBoard(color || 'white', bounds, isSmall, curFen || emptyFen, variant || 'standard'),
+      viewOnlyBoard(color || 'white', bounds, isSmall, toggleCoordinates(curFen, false) || emptyFen, variant || 'standard'),
       h('div.analyse-tableWrapper', spinner.getVdom('monochrome'))
     ]
   )

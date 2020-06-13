@@ -14,6 +14,7 @@ import { renderContent, overlay, loadingScreen } from '../../analyse/view'
 import { load as loadStudy } from '../studyXhr'
 import { notFound, studyHeader } from './view/studyView'
 import RightSideMenu from './view/RightSideMenu'
+import { toggleCoordinates } from '../../../draughtsground/fen'
 
 export interface Attrs {
   id: string
@@ -110,7 +111,7 @@ export default {
         this.hammerHandlers
       )
     } else {
-      return loadingScreen(isPortrait, undefined, vnode.attrs.curFen, vnode.attrs.variant)
+      return loadingScreen(isPortrait, undefined, toggleCoordinates(vnode.attrs.curFen, false), vnode.attrs.variant)
     }
   }
 

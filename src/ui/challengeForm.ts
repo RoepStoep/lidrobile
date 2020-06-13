@@ -14,6 +14,7 @@ import ViewOnlyBoard from './shared/ViewOnlyBoard'
 import * as helper from './helper'
 import * as h from 'mithril/hyperscript'
 import * as stream from 'mithril/stream'
+import { toggleCoordinates } from '../draughtsground/fen'
 
 let actionName = ''
 let userId: string | undefined
@@ -116,12 +117,12 @@ function renderForm() {
     h('input[type=text][name=fen]', {
       placeholder: i18n('pasteTheFenStringHere'),
       oninput: (e: Event) => {
-        const rawfen = (e.target as HTMLInputElement).value
-        if (validateFen(rawfen)) {
+        const rawfen = toggleCoordinates((e.target as HTMLInputElement).value, false)
+        if (validateFen(rawfen, getVariantKeyById(settingsObj.variant()) || 'standard')) {
           setupFen = rawfen
           setupFenError = undefined
         }
-        else setupFenError = 'Invalid FEN'
+        else setupFenError = i18n('invalidFen')
         redraw()
       }
     }) : h('div', h('button.withIcon', {

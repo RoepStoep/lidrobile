@@ -17,6 +17,7 @@ import { gameAnalysis as gameAnalysisXhr } from './analyseXhr'
 import { renderContent, overlay, loadingScreen, renderVariantSelector } from './view'
 import AnalyseCtrl from './AnalyseCtrl'
 import { Source } from './interfaces'
+import { toggleCoordinates } from '../../draughtsground/fen'
 
 export interface Attrs {
   id: string
@@ -155,7 +156,7 @@ export default {
         overlay(this.ctrl!)
       )
     } else {
-      return loadingScreen(isPortrait, vnode.attrs.color, vnode.attrs.curFen, vnode.attrs.variant)
+      return loadingScreen(isPortrait, vnode.attrs.color, toggleCoordinates(vnode.attrs.curFen, false), vnode.attrs.variant)
     }
   }
 } as Mithril.Component<Attrs, State>

@@ -2,6 +2,7 @@ import * as debounce from 'lodash/debounce'
 import Draughtsground from '../../draughtsground/Draughtsground'
 import * as cg from '../../draughtsground/interfaces'
 import * as cgDrag from '../../draughtsground/drag'
+import { toggleCoordinates } from '../../draughtsground/fen'
 import { getLidraughtsVariant, getInitialFen } from '../../lidraughts/variant'
 import router from '../../router'
 import settings from '../../settings'
@@ -48,7 +49,7 @@ export default class Editor {
   public extraPositions: Array<BoardPosition>
 
   public constructor(fen?: string, variant?: VariantKey) {
-    const initFen = fen || startingFen
+    const initFen = fen ? toggleCoordinates(fen, false) : startingFen
 
     this.menu = menu.controller(this)
     this.pasteFenPopup = pasteFenPopup.controller(this)
@@ -125,9 +126,10 @@ export default class Editor {
   }
 
   public updateHref = debounce(() => {
-    const newFen = this.computeFen()
-    if (fenUtil.validateFen(newFen)) {
-      const path = `/editor/variant/${encodeURIComponent(this.data.game.variant.key())}/fen/${encodeURIComponent(newFen)}`
+    const newFen = this.computeFen(false)
+    const v = this.data.game.variant.key()
+    if (fenUtil.validateFen(newFen, v)) {
+      const path = `/editor/variant/${encodeURIComponent(v)}/fen/${encodeURIComponent(newFen)}`
       try {
         window.history.replaceState(window.history.state, '', '?=' + path)
       } catch (e) { console.error(e) }
@@ -157,20 +159,22 @@ export default class Editor {
     }
   }
 
-  public computeFen = (small: boolean = false) => {
+  public computeFen = (algebraic: boolean, small: boolean = false) => {
     const data = this.data.editor
-    const fen = data.color().toUpperCase() + ':' + this.draughtsground.getFen()
+    const fen = data.color().toUpperCase() + ':' + this.draughtsground.getFen(algebraic)
     if (small) return fen
     else return fen + ':H' + data.halfmove() + ':F' + data.moves()
   }
 
   public loadNewFen = (newFen: string) => {
     if (!newFen) return;
-    if (newFen === 'init') newFen = getInitialFen(this.getVariant().key)
-    if (fenUtil.validateFen(newFen))
-      router.set(`/editor/variant/${encodeURIComponent(this.data.game.variant.key())}/fen/${encodeURIComponent(newFen)}`, true)
+    const v = this.data.game.variant.key()
+    if (newFen === 'init') newFen = getInitialFen(v)
+    else newFen = toggleCoordinates(newFen, false)
+    if (fenUtil.validateFen(newFen, v))
+      router.set(`/editor/variant/${encodeURIComponent(v)}/fen/${encodeURIComponent(newFen)}`, true)
     else
-      window.plugins.toast.show('Invalid FEN', 'short', 'center')
+      window.plugins.toast.show(i18n('invalidFen'), 'short', 'center')
   }
 
   private readFen(fen: string): EditorData {
