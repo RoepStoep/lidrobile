@@ -6,9 +6,10 @@
     <content src="index.html" />
     <access origin="https://lidraughts.org" />
     <access origin="https://*.lidraughts.org" />
+    <access origin="https://lidraughts.dev" />
+    <access origin="https://*.lidraughts.dev" />
     <access origin="https://sentry.io" />
     <access origin="https://veloce.github.io" />
-    <access origin="http://lidraughts-stage.org" />
     <icon src="res/icon.png" />
     <hook src="scripts/link_locales.js" type="before_prepare" />
     <platform name="android">
