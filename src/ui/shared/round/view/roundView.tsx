@@ -31,6 +31,7 @@ import { view as renderCorrespondenceClock } from '../correspondenceClock/corres
 import { renderTable as renderReplayTable } from './replay'
 import OnlineRound from '../OnlineRound'
 import { Position, Material } from '../'
+import getVariant from '../../../../lidraughts/variant'
 
 export default function view(ctrl: OnlineRound) {
   const isPortrait = helper.isPortrait()
@@ -43,9 +44,14 @@ export default function view(ctrl: OnlineRound) {
 }
 
 export function emptyTV(channel?: string, onTVChannelChange?: () => void) {
+  let variant: VariantKey;
+  if (channel) {
+    variant = channel.toLowerCase() as VariantKey
+    if (!getVariant(variant)) variant = 'standard'
+  } else variant = 'standard'
   return layout.board(
     renderEmptyHeader(channel, onTVChannelChange),
-    viewOnlyBoardContent(emptyFen, 'white', 'standard')
+    viewOnlyBoardContent(emptyFen, 'white', variant)
   )
 }
 
