@@ -148,6 +148,7 @@ export interface PieceNode extends KeyedNode {
 export interface SquareNode extends KeyedNode { }
 
 export interface PrevData {
+  boardSize: BoardSize | null
   orientation: Color | null
   bounds: ClientRect | null
   turnColor: Color | null

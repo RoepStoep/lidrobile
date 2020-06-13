@@ -105,9 +105,7 @@ export function renderPositionSettings(ctrl: Editor) {
             newBoardSize = newVariant.board.size,
             newInitialFen = getInitialFen(newVariant.key)
           if (oldBoardSize !== newBoardSize || (isInitial && !fenCompare(oldInitialFen, newInitialFen))) {
-            ctrl.draughtsground.reconfigure(ctrl.makeConfig('W:W:B'))
-            ctrl.draughtsground.redrawSync()
-            ctrl.draughtsground.set({ fen: newInitialFen })
+            ctrl.draughtsground.reconfigure(ctrl.makeConfig(newInitialFen))
             redraw()
           }
         },

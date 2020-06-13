@@ -28,11 +28,13 @@ export function renderBoard(d: State, dom: cg.DOM) {
   const asWhite = d.orientation === 'white'
   const bs = d.boardSize
   const posToTranslate = d.fixed ? posToTranslateRel(bs) : posToTranslateAbs(dom.bounds, bs)
+  const boardSizeChange = d.prev.boardSize && (d.prev.boardSize[0] !== d.boardSize[0] || d.prev.boardSize[1] !== d.boardSize[1])
+  d.prev.boardSize = [d.boardSize[0], d.boardSize[1]]
   const orientationChange = d.prev.orientation && d.prev.orientation !== d.orientation
   d.prev.orientation = d.orientation
   const boundsChange = d.prev.bounds && d.prev.bounds !== dom.bounds
   d.prev.bounds = dom.bounds
-  const allChange = boundsChange || orientationChange
+  const allChange = boundsChange || orientationChange || boardSizeChange
   const pieces = d.pieces
   const anims = d.animation.current && d.animation.current.plan.anims
   const temporaryPieces = d.animation.current && d.animation.current.plan.captures
@@ -56,7 +58,7 @@ export function renderBoard(d: State, dom: cg.DOM) {
     otbChange = !!(otbTurnFlipChange || otbModeChange)
   }
 
-  if (orientationChange) {
+  if (orientationChange || boardSizeChange) {
     const coords = (dom.elements.coordRanks || dom.elements.coordFiles)
     if (d.coordinates === 2 && coords) {
       const wrapper = coords.parentElement
@@ -362,16 +364,16 @@ function computeSquareClasses(d: State): Map<Key, string> {
 export function makeCoords(el: HTMLElement, boardSize: cg.BoardSize, orientation: Color, dom?: cg.DOM, coordSystem?: number) {
   let coordRanks, coordFiles
   if (coordSystem === 1) {
-    coordRanks = renderCoords(util.ranksRev, 'ranks is64' + (orientation === 'black' ? ' black' : ''), 'coord-odd');
-    coordFiles = renderCoords(util.files, 'files is64' + (orientation === 'black' ? ' black' : ''), 'coord-even');
+    coordRanks = renderCoords(util.ranksRev, 'ranks is64' + (orientation === 'black' ? ' black' : ''), (i) => i % 2 === 1 ? 'coord-odd' : 'coord-even');
+    coordFiles = renderCoords(util.files, 'files is64' + (orientation === 'black' ? ' black' : ''), (i) => i % 2 === 0 ? 'coord-odd' : 'coord-even');
   } else if (orientation === 'black') {
     const filesBlack: number[] = [], ranksBlack: number[] = [],
       rankBase = boardSize[0] / 2,
       fileSteps = boardSize[1] / 2;
     for (let i = 1; i <= rankBase; i++) filesBlack.push(i);
     for (let i = 0; i < fileSteps; i++) ranksBlack.push(rankBase + boardSize[0] * i + 1);
-    coordRanks = renderCoords(ranksBlack, 'ranks is100 black', 'coord-odd');
-    coordFiles = renderCoords(filesBlack, 'files is100 black', 'coord-even');
+    coordRanks = renderCoords(ranksBlack, 'ranks is100 black', () => 'coord-odd');
+    coordFiles = renderCoords(filesBlack, 'files is100 black', () => 'coord-even');
   } else {
     const files: number[] = [], ranks: number[] = [],
       rankBase = boardSize[0] / 2,
@@ -379,8 +381,8 @@ export function makeCoords(el: HTMLElement, boardSize: cg.BoardSize, orientation
       fileSteps = boardSize[1] / 2;
     for (let i = fields - rankBase + 1; i <= fields; i++) files.push(i);
     for (let i = 0; i < fileSteps; i++) ranks.push(rankBase + boardSize[0] * i);
-    coordRanks = renderCoords(ranks, 'ranks is100', 'coord-even');
-    coordFiles = renderCoords(files, 'files is100', 'coord-odd');
+    coordRanks = renderCoords(ranks, 'ranks is100', () => 'coord-even');
+    coordFiles = renderCoords(files, 'files is100', () => 'coord-odd');
   }
   if (dom) {
     if (dom.elements.coordRanks) el.removeChild(dom.elements.coordRanks)
@@ -423,12 +425,12 @@ function clearCoords(dom: cg.DOM) {
   }
 }
 
-function renderCoords(elems: Array<number | string>, klass: string, coordClass: string) {
+function renderCoords(elems: Array<number | string>, klass: string, coordClass: (i: number) => string) {
   const el = document.createElement('li-coords')
   el.className = klass
-  elems.forEach((content: number | string) => {
+  elems.forEach((content: number | string, index: number) => {
     const f = document.createElement('li-coord')
-    f.className = coordClass
+    f.className = coordClass(index)
     f.textContent = String(content)
     el.appendChild(f)
   })

@@ -150,6 +150,7 @@ export function makeDefaults(): State {
     },
     events: {},
     prev: {
+      boardSize: null,
       orientation: null,
       bounds: null,
       turnColor: null,
