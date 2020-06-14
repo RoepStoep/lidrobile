@@ -75,6 +75,8 @@ export interface MoveRequest {
   readonly pdnMoves?: ReadonlyArray<string>
   readonly uciMoves?: ReadonlyArray<string>
   readonly path?: string
+  readonly kingmovesWhite?: number
+  readonly kingmovesBlack?: number
 }
 
 export interface MoveResponse {
