@@ -46,6 +46,8 @@ function renderPlayer(ctrl: IRelationCtrl, obj: Related) {
   const perfKey = obj.perfs && Object.keys(obj.perfs)[0] as PerfKey
   const perf = obj.perfs && obj.perfs[perfKey]
   const userLink = helper.ontapY(() => router.set(`/@/${obj.user}`))
+  const title64 = obj.title && obj.title.endsWith('-64'),
+    titleClass = 'userTitle' + (obj.title == 'BOT' ? ' titleBot' : (title64 ? ' title64' : ''));
   return (
     <li className="list_item followingList">
       <div className="followingPlayerTitle" oncreate={userLink}>
@@ -54,7 +56,7 @@ function renderPlayer(ctrl: IRelationCtrl, obj: Related) {
             <span className={'patron userStatus ' + status} data-icon="" /> :
             <span className={'userStatus ' + status} data-icon="r" />
           }
-          {obj.title ? <span className="userTitle">{obj.title}&nbsp;</span> : null}
+          {obj.title ? <span className={titleClass}>{title64 ? obj.title.slice(0, obj.title.length - 3) : obj.title}&nbsp;</span> : null}
           {obj.user}
         </div>
         { perfKey ?

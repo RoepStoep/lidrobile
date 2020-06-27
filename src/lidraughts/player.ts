@@ -5,7 +5,7 @@ import { levelToRating } from '../ui/ai/engine'
 
 export function lightPlayerName(player?: LightPlayer, withRating?: boolean) {
   if (player) {
-    return (player.title ? player.title + ' ' + player.name : player.name) + (
+    return (player.title ? (player.title.endsWith('-64') ? player.title.slice(0, player.title.length - 3) : player.title) + ' ' + player.name : player.name) + (
       withRating ? ' (' + player.rating + ')' : '')
   } else {
     return i18n('anonymous')
@@ -16,7 +16,10 @@ export function lightPlayerName(player?: LightPlayer, withRating?: boolean) {
 export function playerName(player: any, withRating = false, tr = false, trLenght?: number): string {
   if (player.name || player.username || player.user) {
     let name = player.name || player.username || player.user.username
-    if (player.user && player.user.title) name = player.user.title + ' ' + name
+    if (player.user && player.user.title) {
+      const t = player.user.title, t64 = t.endsWith('-64')
+      name = (t64 ? t.slice(0, t.length - 3) : t) + ' ' + name
+    }
     if (tr) name = truncate(name, trLenght || 100)
     if (withRating && (player.user || player.rating)) {
       name += ' (' + (player.rating || player.user.rating)

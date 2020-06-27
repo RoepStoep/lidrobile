@@ -1,7 +1,6 @@
 import router from '../../router'
 import * as utils from '../../utils'
 import countries from '../../utils/countries'
-import { getLanguageNativeName } from '../../utils/langs'
 import session from '../../session'
 import i18n from '../../i18n'
 import spinner from '../../spinner'
@@ -63,10 +62,6 @@ function content(mini: any, player: Player, opponent: Player, score?: Score) {
           <p className="country">
             <img className="flag" src={utils.lidraughtsAssetSrc('images/flags/' + user.profile.country + '.png')} />
             {countries[user.profile.country]}
-          </p> : user.language ?
-          <p className="language">
-            <span className="fa fa-comment-o" />
-            {getLanguageNativeName(user.language)}
           </p> : null
         }
       </div>
