@@ -5,7 +5,7 @@ mkdir -p $dir
 
 HOST=${1:-https://lidraughts.org}
 
-for lang in cs-CZ de-DE el-GR en-GB en-US es-ES fr-FR fy-NL it-IT lv-LV mn-MN nl-NL pl-PL pt-PT pt-BR ru-RU uk-UA zh-CN; do
+for lang in be-BY cs-CZ de-DE el-GR en-GB en-US es-ES fr-FR fy-NL it-IT lv-LV mn-MN nl-NL pl-PL pt-PT pt-BR ru-RU uk-UA zh-CN; do
   url="$HOST/assets/trans/$lang.all.json"
   echo $url;
   curl -s -o "$dir/$lang.json" $url
