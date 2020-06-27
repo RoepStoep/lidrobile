@@ -1,6 +1,6 @@
 {
   "name": "lidrobile",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "lidraughts.org mobile application",
   "main": "app.js",
   "repository": {
