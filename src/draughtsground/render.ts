@@ -425,7 +425,7 @@ function clearCoords(dom: cg.DOM) {
   }
 }
 
-function renderCoords(elems: Array<number | string>, klass: string, coordClass: (i: number) => string) {
+function renderCoords(elems: ReadonlyArray<number | string>, klass: string, coordClass: (i: number) => string) {
   const el = document.createElement('li-coords')
   el.className = klass
   elems.forEach((content: number | string, index: number) => {
