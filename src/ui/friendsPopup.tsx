@@ -41,21 +41,22 @@ function close(fromBB?: string) {
 }
 
 function renderFriends() {
+  const list = friendsApi.list()
 
-  return friendsApi.list().length ?
+  return list.length ?
     (
       <ul>
-        {friendsApi.list().map(renderFriend)}
+        {list.map(renderFriend)}
       </ul>
     ) : (
       <div className="native_scroller nofriend">{i18n('noFriendsOnline')}</div>
     )
 }
 
-function renderFriend(user: Friend) {
+function renderFriend([name, status]: Friend) {
 
-  const userId = utils.userFullNameToId(user.name)
-  const userFullName = utils.userFullNameShortTitle(user.name)
+  const userId = utils.userFullNameToId(name)
+  const userFullName = utils.userFullNameShortTitle(name)
 
   function action() {
     close()
@@ -71,7 +72,7 @@ function renderFriend(user: Friend) {
   return (
     <li className="list_item" key={userId} oncreate={helper.ontapY(action)}>
       <div className="friend_name">
-        { user.patron ?
+        { status.patron ?
           <span className="patron is-green" data-icon="" />
           :
           null
@@ -79,7 +80,7 @@ function renderFriend(user: Friend) {
         <span>{userFullName}</span>
       </div>
       <div className="onlineFriends_actions">
-        { user.playing ?
+        { status.playing ?
           <span className="friend_tv" data-icon="1" oncreate={helper.ontapY(onTapTv)}> </span>
           :
           null
