@@ -81,7 +81,7 @@ export function renderPositionSettings(ctrl: EditorCtrl) {
         id: 'select_editor_color',
         value: ctrl.data.editor.color(),
         onchange(e: Event) {
-          ctrl.data.editor.color((e.target as HTMLInputElement).value as Color)
+          ctrl.setColor((e.target as HTMLInputElement).value as Color)
         },
       }, [
         h('option[value=w]', i18n('whitePlays')),

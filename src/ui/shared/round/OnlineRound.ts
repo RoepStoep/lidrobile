@@ -537,7 +537,7 @@ export default class OnlineRound implements OnlineRoundInterface {
       }, 1)
     }
 
-    if (this.data.game.speed === 'correspondence') {
+    if (!!this.data.opponent.ai && session.isConnected() && this.data.game.speed === 'correspondence') {
       session.refresh()
       .then(() => {
         if (Capacitor.platform === 'ios') {

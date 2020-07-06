@@ -159,6 +159,11 @@ export default class EditorCtrl {
     }
   }
 
+  public setColor = (color: Color) => {
+    this.data.editor.color(color)
+    this.updateHref()
+  }
+
   public computeFen = (algebraic: boolean, small: boolean = false) => {
     const data = this.data.editor
     const fen = data.color().toUpperCase() + ':' + this.draughtsground.getFen(algebraic)
@@ -175,6 +180,12 @@ export default class EditorCtrl {
       router.set(`/editor/variant/${encodeURIComponent(v)}/fen/${encodeURIComponent(newFen)}`, true)
     else
       Plugins.LiToast.show({ text: i18n('invalidFen'), duration: 'short' })
+  }
+
+  public goToAnalyse = () => {
+    const fen = encodeURIComponent(this.computeFen(false))
+    const variant = encodeURIComponent(this.data.game.variant.key())
+    router.set(`/analyse/variant/${variant}/fen/${fen}`)
   }
 
   private readFen(fen: string): EditorData {
