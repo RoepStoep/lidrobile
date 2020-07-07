@@ -68,14 +68,11 @@ function renderActionsBar(ctrl: EditorCtrl) {
       oncreate: helper.ontap(ctrl.draughtsground.toggleOrientation)
     }),
     h('button.action_bar_button[data-icon=U]', {
-      oncreate: helper.ontap(() => {
-        if (ctrl.data.game.variant.key() !== 'standard')
-          Plugins.LiToast.show({ text: 'You can\'t continue from a variant position', duration: 'long', position: 'bottom' })
-        else
-          ctrl.continuePopup.open(ctrl.computeFen(false), 'standard')
-      }, () => Plugins.LiToast.show({ text: i18n('continueFromHere'), duration: 'short', position: 'bottom' }))
+      disabled: !ctrl.data.playable,
+      oncreate: helper.ontap(ctrl.continueFromHere, () => Plugins.LiToast.show({ text: i18n('continueFromHere'), duration: 'short', position: 'bottom' }))
     }),
     h('button.action_bar_button[data-icon=A]', {
+      disabled: !ctrl.data.playable,
       oncreate: helper.ontap(ctrl.goToAnalyse, () => Plugins.LiToast.show({ text: i18n('analysis'), duration: 'short', position: 'bottom' }))
     }),
     h('button.action_bar_button.fa.fa-upload', {

@@ -5,9 +5,12 @@ import debounce from 'lodash-es/debounce'
 import Draughtsground from '../../draughtsground/Draughtsground'
 import * as cg from '../../draughtsground/interfaces'
 import * as cgDrag from '../../draughtsground/drag'
+import * as draughts from '../../draughts'
 import { toggleCoordinates } from '../../draughtsground/fen'
 import { getLidraughtsVariant, getInitialFen } from '../../lidraughts/variant'
+import { VariantKey } from '../../lidraughts/interfaces/variant'
 import router from '../../router'
+import redraw from '../../utils/redraw'
 import settings from '../../settings'
 import menu from './menu'
 import pasteFenPopup from './pasteFenPopup'
@@ -31,6 +34,7 @@ interface Data {
       key: Stream<VariantKey>
     }
   }
+  playable: boolean
 }
 
 export interface MenuInterface {
@@ -62,8 +66,11 @@ export default class EditorCtrl {
         variant: {
           key: Stream(variant || 'standard')
         }
-      }
+      },
+      playable: true,
     }
+
+    this.setPlayable(initFen, variant || 'standard').then(redraw)
 
     this.extraPositions = [{
       fen: 'init',
@@ -107,7 +114,7 @@ export default class EditorCtrl {
           // position manually
           this.data.editor.halfmove('0')
           this.data.editor.moves('1')
-          this.updateHref()
+          this.updatePosition()
         }
       }
     }
@@ -125,7 +132,14 @@ export default class EditorCtrl {
     return getLidraughtsVariant(this.data.game.variant.key()) || getLidraughtsVariant('standard')
   }
 
-  public updateHref = debounce(() => {
+  private setPlayable = (fen: string, variant: VariantKey): Promise<void> => {
+    return draughts.situation({ variant, fen })
+      .then(({ situation }) => {
+        this.data.playable = situation.playable
+      })
+  }
+
+  public updatePosition  = debounce(() => {
     const newFen = this.computeFen(false)
     const v = this.data.game.variant.key()
     if (fenUtil.validateFen(newFen, v)) {
@@ -133,6 +147,7 @@ export default class EditorCtrl {
       try {
         window.history.replaceState(window.history.state, '', '?=' + path)
       } catch (e) { console.error(e) }
+      this.setPlayable(newFen, v).then(redraw)
     }
   }, 250)
 
@@ -161,7 +176,7 @@ export default class EditorCtrl {
 
   public setColor = (color: Color) => {
     this.data.editor.color(color)
-    this.updateHref()
+    this.updatePosition()
   }
 
   public computeFen = (algebraic: boolean, small: boolean = false) => {
@@ -183,9 +198,31 @@ export default class EditorCtrl {
   }
 
   public goToAnalyse = () => {
-    const fen = encodeURIComponent(this.computeFen(false))
-    const variant = encodeURIComponent(this.data.game.variant.key())
-    router.set(`/analyse/variant/${variant}/fen/${fen}`)
+    const fen = this.computeFen(false)
+    const variant = this.data.game.variant.key()
+    draughts.situation({ variant, fen })
+      .then(({ situation }) => {
+        if (situation.playable) {
+          router.set(`/analyse/variant/${encodeURIComponent(variant)}/fen/${encodeURIComponent(fen)}`)
+        } else {
+          Plugins.LiToast.show({ text: i18n('invalidFen'), duration: 'short' })
+        }
+      })
+  }
+
+  public continueFromHere = () => {
+    const fen = this.computeFen(false)
+    const variant = this.data.game.variant.key()
+    if (variant !== 'standard') {
+      Plugins.LiToast.show({ text: 'You can\'t continue from a variant position', duration: 'long', position: 'bottom' })
+    } else draughts.situation({ variant, fen })
+      .then(({ situation }) => {
+        if (situation.playable) {
+          this.continuePopup.open(fen, variant)
+        } else {
+          Plugins.LiToast.show({ text: i18n('invalidFen'), duration: 'short' })
+        }
+      })
   }
 
   private readFen(fen: string): EditorData {
