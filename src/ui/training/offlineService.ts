@@ -82,7 +82,7 @@ export function syncAndClearCache(database: Database, user: Session, variant: Va
   return syncPuzzles(database, user, variant)
   .then(() =>
     database.clean(user.id, variant).then(() =>
-      loadNewPuzzle(database, user, variant)
+      syncAndLoadNewPuzzle(database, user, variant)
     )
   )
 }
