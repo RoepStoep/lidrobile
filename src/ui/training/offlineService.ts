@@ -15,36 +15,18 @@ export function syncAndLoadNewPuzzle(
   user: Session,
   variant: VariantKey
 ): Promise<PuzzleData> {
-  return new Promise((resolve, reject) => {
-    syncPuzzles(database, user, variant)
-    .then(data => {
-      if (data && data.unsolved.length > 0) {
-        resolve(data.unsolved[0])
-      }
-      else {
-        reject(`No additional offline puzzles available. Go online to get another ${settings.training.puzzleBufferLen}`)
-      }
-    })
-    .catch(reject)
-  })
+  // try loading first from DB to avoid any unnecessary loading time (spotty
+  // connection)
+  // if no puzzles available, sync and load
+  return loadNewPuzzle(database, user, variant)
+  .catch(() => doLoadPuzzle(() => syncPuzzles(database, user, variant)))
 }
 
 /*
  * Load a new puzzle from offline database.
  */
 export function loadNewPuzzle(database: Database, user: Session, variant: VariantKey): Promise<PuzzleData> {
-  return new Promise((resolve, reject) => {
-    database.fetch(user.id, variant)
-    .then(data => {
-      if (data && data.unsolved.length > 0) {
-        resolve(data.unsolved[0])
-      }
-      else {
-        reject(`No additional offline puzzle available. Go online to get another ${settings.training.puzzleBufferLen}`)
-      }
-    })
-    .catch(reject)
-  })
+  return doLoadPuzzle(() => database.fetch(user.id, variant))
 }
 
 /*
@@ -100,7 +82,7 @@ export function syncAndClearCache(database: Database, user: Session, variant: Va
   return syncPuzzles(database, user, variant)
   .then(() =>
     database.clean(user.id, variant).then(() =>
-      syncAndLoadNewPuzzle(database, user, variant)
+      loadNewPuzzle(database, user, variant)
     )
   )
 }
@@ -160,5 +142,20 @@ function syncPuzzles(database: Database, user: Session, variant: VariantKey): Pr
     })
     // when offline, sync cannot be done so we return same stored data
     .catch(() => stored)
+  })
+}
+
+function doLoadPuzzle(fetchFn: () => Promise<UserOfflineData | null>): Promise<PuzzleData> {
+  return new Promise((resolve, reject) => {
+    fetchFn()
+    .then(data => {
+      if (data && data.unsolved.length > 0) {
+        resolve(data.unsolved[0])
+      }
+      else {
+        reject(`No additional offline puzzle available. Go online to get another ${settings.training.puzzleBufferLen}`)
+      }
+    })
+    .catch(reject)
   })
 }
