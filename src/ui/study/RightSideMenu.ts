@@ -1,14 +1,14 @@
 import * as Mithril from 'mithril'
 import h from 'mithril/hyperscript'
-import router from '../../../../router'
-import { lightPlayerName } from '../../../../lidraughts/player'
-import { StudyMemberMap, StudyMember } from '../../../../lidraughts/interfaces/study'
-import * as helper from '../../../helper'
-import i18n from '../../../../i18n'
-import CloseSlideHandler from '../../../shared/sideMenu/CloseSlideHandler'
-import { expandMore, expandLess } from '../../../shared/icons'
+import router from '../../router'
+import { lightPlayerName } from '../../lidraughts/player'
+import { StudyMemberMap, StudyMember } from '../../lidraughts/interfaces/study'
+import * as helper from '../helper'
+import i18n from '../../i18n'
+import CloseSlideHandler from '../shared/sideMenu/CloseSlideHandler'
+import { expandMore, expandLess } from '../shared/icons'
 
-import StudyCtrl from '../../../analyse/study/StudyCtrl'
+import StudyCtrl from '../analyse/study/StudyCtrl'
 
 export interface Attrs {
   studyCtrl: StudyCtrl
