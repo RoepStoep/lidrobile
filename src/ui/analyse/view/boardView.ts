@@ -11,60 +11,13 @@ import AnalyseCtrl from '../AnalyseCtrl'
 import settings from '../../../settings'
 import i18n from '../../../i18n'
 
-export default function renderBoard(
-  ctrl: AnalyseCtrl,
-) {
-  const player = ctrl.data.game.player
-  const ceval = ctrl.node && ctrl.node.ceval
-  const rEval = ctrl.node && ctrl.node.eval
-
-  let nextBest: string | undefined
-  let curBestShapes: Shape[] = []
-  if (!ctrl.retro && !ctrl.practice && ctrl.settings.s.showBestMove) {
-    nextBest = ctrl.nextNodeBest() || (ceval && ceval.best)
-    const ghostNode = ctrl.node.displayPly && ctrl.node.displayPly !== ctrl.node.ply && ctrl.nodeList.length > 1;
-    if (!nextBest) {
-      const prevCeval = ghostNode ? ctrl.nodeList[ctrl.nodeList.length - 2].ceval : undefined;
-      if (ghostNode && prevCeval && prevCeval.pvs[0].moves[0].indexOf('x') !== -1 && ctrl.node.uci) {
-        const ucis = ctrl.node.uci.match(/.{1,2}/g);
-        if (!!ucis) {
-          const sans = ucis.slice(0, ucis.length - 1).map(uci => parseInt(uci).toString()).join('x');
-          nextBest = prevCeval.pvs[0].moves[0].slice(sans.length + 1);
-        }
-      } else if (ceval)
-        nextBest = ceval.pvs[0].moves[0];
-    }
-    if (nextBest) {
-      const capts = nextBest.split('x').length;
-      curBestShapes = makeShapesFromUci(nextBest, capts > 4 ? 'paleBlue_3' : 'paleBlue', capts > 4 ? 'paleBlue_2' : '')
-    }
-    if (!ghostNode && ceval && ceval.pvs.length > 1) {
-      ceval.pvs.slice(1).forEach(pv => {
-        const shift = povDiff(player, ceval.pvs[0], pv)
-        if (shift >= 0 && shift < 0.2) {
-          const linewidth = Math.round(12 - shift * 50) // 12 to 2
-          curBestShapes = curBestShapes.concat(makeShapesFromUci(pv.moves[0], 'paleBlue' + linewidth))
-        }
-      })
-    }
-  }
-  const pastBestShape: Shape[] = !ctrl.retro && rEval && rEval.best ?
-    makeShapesFromUci(rEval.best, 'paleGreen') : []
-
-  const badNode = ctrl.retro && ctrl.retro.showBadNode()
-  const badMoveShape: Shape[] = badNode && badNode.uci ?
-    makeShapesFromUci(badNode.uci, 'paleRed') : []
-
-  const shapes = [
-    ...pastBestShape, ...curBestShapes, ...badMoveShape
-  ]
-
+export default function renderBoard(ctrl: AnalyseCtrl) {
   return h('div.analyse-boardWrapper', [
     playerBar(ctrl, ctrl.topColor()),
     h(Board, {
       variant: ctrl.data.game.variant.key,
       draughtsground: ctrl.draughtsground,
-      shapes,
+      shapes: computeShapes(ctrl),
       clearableShapes: ctrl.node.shapes,
       wrapperClasses: ctrl.settings.s.smallBoard ? 'halfsize' : '',
       canClearShapes: true,
@@ -103,6 +56,64 @@ export function playerBar(ctrl: AnalyseCtrl, color: Color) {
       h(Clock, { ctrl, color })
     ]) : null,
   ])
+}
+
+function computeShapes(ctrl: AnalyseCtrl): readonly Shape[] {
+  const player = ctrl.data.game.player
+  const ceval = ctrl.node && ctrl.node.ceval
+  const rEval = ctrl.node && ctrl.node.eval
+  let nextBest: string | undefined
+  let curBestShapes: Shape[] = []
+
+  if (ctrl.practice) {
+    const hint = ctrl.practice.hinting()
+    if (hint) {
+      if (hint.mode === 'move') curBestShapes = makeShapesFromUci(hint.uci, 'paleBlue', player)
+      else curBestShapes = [{
+        orig: draughtsFormat.decomposeUci(hint.uci)[0],
+        brush: 'paleBlue'
+      }]
+    }
+  }
+
+  if (!ctrl.retro && !ctrl.practice && ctrl.settings.s.showBestMove) {
+    nextBest = ctrl.nextNodeBest() || (ceval && ceval.best)
+    const ghostNode = ctrl.node.displayPly && ctrl.node.displayPly !== ctrl.node.ply && ctrl.nodeList.length > 1;
+    if (!nextBest) {
+      const prevCeval = ghostNode ? ctrl.nodeList[ctrl.nodeList.length - 2].ceval : undefined;
+      if (ghostNode && prevCeval && prevCeval.pvs[0].moves[0].indexOf('x') !== -1 && ctrl.node.uci) {
+        const ucis = ctrl.node.uci.match(/.{1,2}/g);
+        if (!!ucis) {
+          const sans = ucis.slice(0, ucis.length - 1).map(uci => parseInt(uci).toString()).join('x');
+          nextBest = prevCeval.pvs[0].moves[0].slice(sans.length + 1);
+        }
+      } else if (ceval)
+        nextBest = ceval.pvs[0].moves[0];
+    }
+    if (nextBest) {
+      const capts = nextBest.split('x').length;
+      curBestShapes = makeShapesFromUci(nextBest, capts > 4 ? 'paleBlue_3' : 'paleBlue', capts > 4 ? 'paleBlue_2' : '')
+    }
+    if (!ghostNode && ceval && ceval.pvs.length > 1) {
+      ceval.pvs.slice(1).forEach(pv => {
+        const shift = povDiff(player, ceval.pvs[0], pv)
+        if (shift >= 0 && shift < 0.2) {
+          const linewidth = Math.round(12 - shift * 50) // 12 to 2
+          curBestShapes = curBestShapes.concat(makeShapesFromUci(pv.moves[0], 'paleBlue' + linewidth))
+        }
+      })
+    }
+  }
+  const pastBestShape: Shape[] = !ctrl.retro && rEval && rEval.best ?
+    makeShapesFromUci(rEval.best, 'paleGreen') : []
+
+  const badNode = ctrl.retro && ctrl.retro.showBadNode()
+  const badMoveShape: Shape[] = badNode && badNode.uci ?
+    makeShapesFromUci(badNode.uci, 'paleRed') : []
+
+  return [
+    ...pastBestShape, ...curBestShapes, ...badMoveShape
+  ]
 }
 
 function makeShapesFromUci(uci: Uci, brush: string, brushFirst?: string): Shape[] {
