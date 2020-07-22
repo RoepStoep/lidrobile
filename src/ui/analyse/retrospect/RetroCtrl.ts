@@ -135,8 +135,6 @@ export default function RetroCtrl(root: AnalyseCtrl): IRetroCtrl {
         if (!root.ceval.enabled()) {
           root.ceval.toggle()
           root.initCeval()
-        } else {
-          root.startCeval()
         }
         checkCeval()
       }

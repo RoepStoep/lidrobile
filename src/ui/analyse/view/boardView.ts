@@ -20,7 +20,7 @@ export default function renderBoard(
 
   let nextBest: string | undefined
   let curBestShapes: Shape[] = []
-  if (!ctrl.retro && ctrl.settings.s.showBestMove) {
+  if (!ctrl.retro && !ctrl.practice && ctrl.settings.s.showBestMove) {
     nextBest = ctrl.nextNodeBest() || (ceval && ceval.best)
     const ghostNode = ctrl.node.displayPly && ctrl.node.displayPly !== ctrl.node.ply && ctrl.nodeList.length > 1;
     if (!nextBest) {

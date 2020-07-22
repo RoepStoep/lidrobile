@@ -51,11 +51,11 @@ export default class AnalyseCtrl {
   draughtsground!: Draughtsground
   ceval: ICevalCtrl
   retro: IRetroCtrl | null
+  practice: PracticeCtrl | null
   explorer: IExplorerCtrl
   tree: TreeWrapper
   evalCache: EvalCache
   study?: StudyCtrl
-  practice?: PracticeCtrl
 
   socketIface: SocketIFace
 
@@ -117,6 +117,7 @@ export default class AnalyseCtrl {
     this.notes = session.isConnected() && this.data.game.speed === 'correspondence' ? new NotesCtrl(this.data) : null
 
     this.retro = null
+    this.practice = null
 
     this.ceval = CevalCtrl(
       {
@@ -341,7 +342,7 @@ export default class AnalyseCtrl {
   }
 
   togglePractice = () => {
-    if (this.practice || !this.ceval.allowed) this.practice = undefined
+    if (this.practice || !this.ceval.allowed) this.practice = null
     else {
       if (this.retro) this.toggleRetro()
       this.practice = makePractice(this, () => {
@@ -351,7 +352,7 @@ export default class AnalyseCtrl {
   }
 
   restartPractice() {
-    this.practice = undefined
+    this.practice = null
     this.togglePractice()
   }
 
@@ -372,14 +373,18 @@ export default class AnalyseCtrl {
     this.updateHref()
     if (pathChanged) {
       if (this.retro) this.retro.onJump()
-      else {
-        this.debouncedStartCeval()
-      }
+      if (this.practice) this.practice.onJump()
+      this.debouncedStartCeval()
     }
   }
 
   userJump = (path: Tree.Path, direction?: 'forward' | 'backward') => {
-    this.jump(path, direction)
+    if (this.practice) {
+      const prev = this.path
+      this.practice.preUserJump(prev, path)
+      this.jump(path, direction)
+      this.practice.postUserJump(prev, this.path)
+    } else this.jump(path, direction)
   }
 
   jumpToMain = (ply: number) => {
@@ -566,6 +571,7 @@ export default class AnalyseCtrl {
       path: this.path,
       fullCapture: settings.analyse.fullCapture()
     }
+    if (this.practice) this.practice.onUserMove()
     draughts.move(move)
     .then(this.addNode)
     .catch(err => console.error('send move error', move, err))
@@ -653,6 +659,7 @@ export default class AnalyseCtrl {
 
         if (path === this.path) {
           if (this.retro) this.retro.onCeval()
+          if (this.practice) this.practice.onCeval()
           if (ceval.cloud && ceval.depth >= this.ceval.effectiveMaxDepth()) {
             this.ceval.stop()
           }
