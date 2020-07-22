@@ -40,15 +40,16 @@ export namespace Tree {
     san?: San
     children: Node[]
     mergedNodes?: Node[]
-    drops?: string | ReadonlyArray<string> | undefined | null
     comments?: Comment[]
     // TODO maybe don't keep both formats for dests & drops
     dests?: string | DestsMap
+    drops?: string | ReadonlyArray<string> | undefined | null
     destsUci?: ReadonlyArray<string>
     captLen?: number
     threat?: ClientEval
     ceval?: ClientEval
     eval?: ServerEval
+    tbhit?: TablebaseHit | null
     opening?: Opening | null
     glyphs?: Glyph[]
     clock?: Clock
@@ -64,6 +65,11 @@ export namespace Tree {
     end?: boolean
     // added locally by study gamebook ctrl
     gamebook?: Gamebook
+  }
+
+  export interface TablebaseHit {
+    winner: Color | undefined
+    best?: Uci
   }
 
   export interface Gamebook {

@@ -1,6 +1,7 @@
 import redraw from '../../../utils/redraw'
 import settings from '../../../settings'
 import { evalSwings } from '../nodeFinder'
+import { OpeningData } from '../explorer/interfaces'
 import * as winningChances from '../ceval/winningChances'
 import { path as treePath, Tree } from '../../shared/tree'
 import { empty } from '../util'
@@ -8,6 +9,8 @@ import { empty } from '../util'
 import AnalyseCtrl from '../AnalyseCtrl'
 
 export type Feedback = 'find' | 'eval' | 'win' | 'fail' | 'view'
+
+const useOpeningExplorer = false
 
 interface VM {
   color: Color
@@ -94,8 +97,8 @@ export default function RetroCtrl(root: AnalyseCtrl): IRetroCtrl {
       openingUcis: []
     }
     // fetch opening explorer moves
-    /*if (game.variant.key === 'standard' && game.division && (!game.division.middle || fault.node.ply < game.division.middle)) {
-      root.explorer.fetchMasterOpening(prev.node.fen).then((res) => {
+    if (useOpeningExplorer && game.variant.key === 'standard' && game.division && (!game.division.middle || fault.node.ply < game.division.middle)) {
+      root.explorer.fetchMasterOpening(prev.node.fen).then((res: OpeningData) => {
         const cur = vm.current
         const ucis: Uci[] = []
         res!.moves.forEach((m) => {
@@ -111,7 +114,7 @@ export default function RetroCtrl(root: AnalyseCtrl): IRetroCtrl {
           vm.current = cur
         }
       })
-    }*/
+    }
     root.userJump(prev.path)
     redraw()
   }

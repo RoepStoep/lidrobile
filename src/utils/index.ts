@@ -302,3 +302,6 @@ export function hashCode(str: string) {
   }
   return hash
 }
+
+export const requestIdleCallback: (c: () => void) => void =
+  window.requestIdleCallback || window.setTimeout

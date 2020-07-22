@@ -3,15 +3,15 @@ import h from 'mithril/hyperscript'
 import i18n from '../../../i18n'
 import router from '../../../router'
 import * as helper from '../../helper'
-import settings from '../../../settings'
 import { OnlineGameData } from '../../../lidraughts/interfaces/game'
-import { ExplorerData, Game, Move, Player } from './interfaces'
+import { OpeningData, Game, OpeningMoveStats, Player } from './interfaces'
+import settings from '../../../settings'
 import AnalyseCtrl from '../AnalyseCtrl'
 import * as xhr from '../../../xhr'
 
 export interface Attrs {
   ctrl: AnalyseCtrl
-  data: ExplorerData
+  data: OpeningData
 }
 
 const OpeningTable: Mithril.Component<Attrs, {}> = {
@@ -64,7 +64,7 @@ export function getTR(e: Event): HTMLElement {
     helper.findParentBySelector(target, 'tr')
 }
 
-function resultBar(move: Move) {
+function resultBar(move: OpeningMoveStats) {
   const sum = move.white + move.draws + move.black
   function section(key: string) {
     const num: number = (move as any)[key]
@@ -82,7 +82,7 @@ function resultBar(move: Move) {
 function onTableTap(ctrl: AnalyseCtrl, e: Event) {
   const el = getTR(e)
   const uci = el && el.dataset['uci']
-  if (uci) ctrl.uciMove(uci)
+  if (uci) ctrl.playUci(uci)
 }
 
 function showResult(w: Color) {
@@ -111,7 +111,7 @@ function link(ctrl: AnalyseCtrl, e: Event) {
   }
 }
 
-function showGameTable(ctrl: AnalyseCtrl, title: string, games: Array<Game>) {
+function showGameTable(ctrl: AnalyseCtrl, title: string, games: readonly Game[]) {
   if (!ctrl.explorer.withGames || !games.length) return null
   return (
     <table className="games"
@@ -150,7 +150,7 @@ function showGameTable(ctrl: AnalyseCtrl, title: string, games: Array<Game>) {
   )
 }
 
-function showMoveTable(ctrl: AnalyseCtrl, moves: Array<Move>) {
+function showMoveTable(ctrl: AnalyseCtrl, moves: readonly OpeningMoveStats[]) {
   if (!moves.length) return null
   return (
     <table className="moves"

@@ -146,3 +146,7 @@ export function plyFromFen(fen?: string) {
 
   return 0
 }
+
+export function colorOf(fen: string): Color {
+  return fen.split(' ')[1] === 'w' ? 'white' : 'black'
+}

@@ -32,6 +32,7 @@ export interface TreeWrapper {
   merge(tree: Tree.Node): void
   removeCeval(): void
   removeComputerVariations(): void
+  parentNode(path: Tree.Path): Tree.Node
   getParentClock(node: Tree.Node, path: Tree.Path): Tree.Clock | undefined
 }
 
@@ -243,7 +244,7 @@ export function build(root: Tree.Node): TreeWrapper {
   }
 
   function deleteNodeAt(path: Tree.Path): void {
-    const parent = nodeAtPath(treePath.init(path))
+    const parent = parentNode(path)
     const id = treePath.last(path)
     ops.removeChild(parent, id)
   }
@@ -299,10 +300,10 @@ export function build(root: Tree.Node): TreeWrapper {
 
   function getParentClock(node: Tree.Node, path: Tree.Path): Tree.Clock | undefined {
     if (!('parentClock' in node) || !node.parentClock) {
-      const par = path && parentNode(path)
-      if (!par) node.parentClock = node.clock
-      else if (!('clock' in par)) node.parentClock = undefined
-      else node.parentClock = par.clock
+      const parent = path && parentNode(path)
+      if (!parent) node.parentClock = node.clock
+      else if (!('clock' in parent)) node.parentClock = undefined
+      else node.parentClock = parent.clock
     }
     return node.parentClock
   }
@@ -355,6 +356,7 @@ export function build(root: Tree.Node): TreeWrapper {
         n.children = n.children.filter(c => !c.comp)
       })
     },
+    parentNode,
     getParentClock
   }
 }
