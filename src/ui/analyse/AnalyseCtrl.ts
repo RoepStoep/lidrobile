@@ -201,9 +201,6 @@ export default class AnalyseCtrl {
       this.debouncedExplorerSetStep()
     }
 
-    // TODO
-    this.togglePractice()
-
     setTimeout(this.debouncedScroll, 250)
     setTimeout(this.initCeval, 1000)
   }
@@ -316,8 +313,9 @@ export default class AnalyseCtrl {
         const ghostEnd = (this.nodeList.length > 0 && this.node.displayPly && this.node.displayPly !== this.node.ply);
         const path = ghostEnd ? this.path.slice(2) : this.path;
         const nodeList = ghostEnd ? this.nodeList.slice(1) : this.nodeList;
-        this.ceval.start(path, nodeList, !!this.retro || !!this.practice)
-        this.evalCache.fetch(path, this.ceval.getMultiPv())
+        const forceMaxLv = !!this.retro || !!this.practice
+        this.ceval.start(path, nodeList, forceMaxLv)
+        this.evalCache.fetch(path, forceMaxLv ? 1 : this.ceval.getMultiPv())
       } else this.stopCevalImmediately();
     }
   }
@@ -470,8 +468,9 @@ export default class AnalyseCtrl {
 
   gameOver(node?: Tree.Node): 'draw' | 'checkmate' | false {
     const n = node || this.node
-    if (!n || n.end === undefined) return false
-    if (n.end !== undefined) {
+    if (!n) return false
+    if (n.end === undefined) return false
+    else {
       if (!n.end) return false
       else if (n.dests === '') return 'checkmate'
       else return 'draw'
