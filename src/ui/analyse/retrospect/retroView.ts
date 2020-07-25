@@ -43,7 +43,7 @@ function renderEvalProgress(ctrl: IRetroCtrl): Mithril.Child {
   const node = ctrl.node()
   const minDepth = ctrl.variant === 'antidraughts' ? 3 : 8;
   const maxDepth = ctrl.variant === 'antidraughts' ? 10 : 18;
-  return h('div.retro-progress', h('div', {
+  return h('div.analyse-training_progress', h('div', {
     style: {
       width: `${node.ceval ? (100 * Math.max(0, node.ceval.depth - minDepth) / (maxDepth - minDepth)) + '%' : 0}`
     }
