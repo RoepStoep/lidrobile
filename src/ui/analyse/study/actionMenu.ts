@@ -71,7 +71,7 @@ const baseUrl = 'https://lidraughts.org/'
 
 function renderStudyMenu(ctrl: AnalyseCtrl) {
 
-  return h('div.analyseMenu', [
+  return h('div.analyseMenu', { key: 'studyMenu' }, [
     h('button', {
       oncreate: helper.ontap(() => {
         ctrl.study!.actionMenu.s.showShareMenu = true
@@ -126,7 +126,7 @@ function renderShareMenu(ctrl: AnalyseCtrl) {
     handleXhrError(e)
   }
 
-  return h('div.analyseMenu', [
+  return h('div.analyseMenu', { key: 'shareMenu' }, [
     h('button', {
       oncreate: helper.ontap(() => {
         const url = baseUrl + `study/${ctrl.study!.data.id}`
