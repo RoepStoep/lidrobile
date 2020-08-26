@@ -143,7 +143,7 @@ export interface FeaturedGame {
   black: FeaturedPlayer
   clock?: FeaturedClock
   correspondence?: any // yolo
-  color: Color
+  orientation: Color
   fen: string
   variant: VariantKey,
   id: string
