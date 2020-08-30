@@ -17,17 +17,15 @@ export function renderBody(ctrl: RelatedCtrl) {
     { id: 'following', f: () => renderContent(ctrl, ctrl.following, ctrl.followingPaginator) },
   ]
 
-  const nbFollowers = ctrl.followersPaginator ?
-    ctrl.followersPaginator.nbResults : 0
-  const nbFollowing = ctrl.followingPaginator ?
-    ctrl.followingPaginator.nbResults : 0
+  const nbFollowers = ctrl.followersPaginator && ctrl.followersPaginator.nbResults
+  const nbFollowing = ctrl.followingPaginator && ctrl.followingPaginator.nbResults
 
   return [
     h('div.tabs-nav-header.subHeader',
       h(TabNavigation, {
         buttons: [
-          { label: plural('nbFollowers', nbFollowers) },
-          { label: plural('nbFollowing', nbFollowing) },
+          { label: plural('nbFollowers', nbFollowers || 0, nbFollowers ? undefined : '') },
+          { label: plural('nbFollowing', nbFollowing || 0, nbFollowing ? undefined : '') },
         ],
         selectedIndex: ctrl.currentTab,
         onTabChange: ctrl.onTabChange
@@ -83,6 +81,8 @@ function renderPlayer(ctrl: RelatedCtrl, obj: Related, i: number) {
   const perfKey = obj.perfs && Object.keys(obj.perfs)[0] as PerfKey
   const perf = obj.perfs && obj.perfs[perfKey]
   const userLink = helper.ontapY(() => router.set(`/@/${obj.user}`))
+  const title64 = obj.title && obj.title.endsWith('-64')
+  const titleClass = 'userTitle' + (obj.title == 'BOT' ? ' titleBot' : (title64 ? ' title64' : ''))
   const evenOrOdd = i % 2 === 0 ? 'even' : 'odd'
   return (
     <li className={`list_item followingList ${evenOrOdd}`}>
@@ -92,7 +92,7 @@ function renderPlayer(ctrl: RelatedCtrl, obj: Related, i: number) {
             <span className={'patron userStatus ' + status} data-icon="" /> :
             <span className={'fa fa-circle userStatus ' + status} />
           }
-          {obj.title ? <span className="userTitle">{obj.title}&nbsp;</span> : null}
+          {obj.title ? <span className={titleClass}>{title64 ? obj.title.slice(0, obj.title.length - 3) : obj.title}&nbsp;</span> : null}
           {obj.user}
         </div>
         { perfKey ?
