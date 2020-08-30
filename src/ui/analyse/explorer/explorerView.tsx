@@ -89,7 +89,7 @@ function winner(stm: string, move: TablebaseMoveStats) {
 
 function showDtw(stm: string, move: TablebaseMoveStats) {
   if (move.dtm) return h('result.' + winner(stm, move), {
-    title: plural('winInXHalfMoves', Math.abs(move.dtm), Math.abs(move.dtm)),
+    title: plural('winInXHalfMoves', Math.abs(move.dtm)),
   }, 'DTW ' + Math.abs(move.dtm))
   else return null
 }
@@ -107,7 +107,7 @@ function showDtz(stm: string, move: TablebaseMoveStats) {
     else return h('result.' + winner(stm, move), i18n('pawnMove'))
   }
   else return h('result.' + winner(stm, move), {
-    title: plural('nextCaptureOrPawnMoveInXHalfMoves', Math.abs(move.dtz), Math.abs(move.dtz))
+    title: plural('nextCaptureOrPawnMoveInXHalfMoves', Math.abs(move.dtz))
   }, 'DTZ ' + Math.abs(move.dtz))
 }
 

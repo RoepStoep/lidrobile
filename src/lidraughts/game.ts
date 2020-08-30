@@ -149,7 +149,7 @@ export function time(data: GameData | UserGame | AnalyseData | FeaturedGame) {
     return t + '+' + data.clock.increment
   }
   else if (data.correspondence) {
-    return plural('nbDays', data.correspondence.daysPerTurn, data.correspondence.daysPerTurn)
+    return plural('nbDays', data.correspondence.daysPerTurn)
   }
   else {
     return '∞'

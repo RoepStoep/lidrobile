@@ -24,7 +24,7 @@ export function renderHeader(ctrl: TrainingCtrl) {
     ]),
     h('h2.header-subTitle', ([
       i18n('rating'), ' ' + (ctrl.vm.mode === 'view' ? ctrl.data.puzzle.rating : '?'),
-      ' • ', plural('playedXTimes', ctrl.data.puzzle.attempts, ctrl.data.puzzle.attempts)
+      ' • ', plural('playedXTimes', ctrl.data.puzzle.attempts)
     ] as Mithril.Child[]).concat(!hasNetwork() ? [
       ' • ',
       h('span.fa.fa-database'),
