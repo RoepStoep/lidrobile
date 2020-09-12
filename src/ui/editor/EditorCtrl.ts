@@ -1,5 +1,3 @@
-import * as Mithril from 'mithril'
-import Stream from 'mithril/stream'
 import { Plugins } from '@capacitor/core'
 import debounce from 'lodash-es/debounce'
 import Draughtsground from '../../draughtsground/Draughtsground'
@@ -10,6 +8,7 @@ import { toggleCoordinates } from '../../draughtsground/fen'
 import { getLidraughtsVariant, getInitialFen } from '../../lidraughts/variant'
 import { VariantKey } from '../../lidraughts/interfaces/variant'
 import router from '../../router'
+import { loadLocalJsonFile, prop, Prop } from '../../utils'
 import redraw from '../../utils/redraw'
 import settings from '../../settings'
 import menu from './menu'
@@ -22,16 +21,16 @@ import drag from './drag'
 const startingFen = 'W:W31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50:B1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20:H0:F1'
 
 interface EditorData {
-  color: Stream<Color>
-  halfmove: Stream<string>
-  moves: Stream<string>
+  color: Prop<Color>
+  halfmove: Prop<string>
+  moves: Prop<string>
 }
 
 interface Data {
   editor: EditorData
   game: {
     variant: {
-      key: Stream<VariantKey>
+      key: Prop<VariantKey>
     }
   }
   playable: boolean
@@ -64,7 +63,7 @@ export default class EditorCtrl {
       editor: this.readFen(initFen),
       game: {
         variant: {
-          key: Stream(variant || 'standard')
+          key: prop<VariantKey>(variant || 'standard')
         }
       },
       playable: true,
@@ -228,9 +227,9 @@ export default class EditorCtrl {
   private readFen(fen: string): EditorData {
     const fenData = fenUtil.readFen(fen)
     return {
-      color: Stream(fenData.color as Color),
-      halfmove: Stream(fenData.halfmove.toString()),
-      moves: Stream(fenData.moves.toString())
+      color: prop(fenData.color as Color),
+      halfmove: prop(fenData.halfmove.toString()),
+      moves: prop(fenData.moves.toString())
     }
   }
 }

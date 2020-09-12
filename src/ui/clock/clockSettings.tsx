@@ -1,6 +1,6 @@
-import Stream from 'mithril/stream'
 import h from 'mithril/hyperscript'
 import { Plugins } from '@capacitor/core'
+import { Prop } from '~/utils'
 import redraw from '../../utils/redraw'
 import settings from '../../settings'
 import formWidgets from '../shared/form'
@@ -20,7 +20,7 @@ interface IClockSettingsCtrl {
 
 export default {
 
-  controller(reload: () => void, clockObj: Stream<IDraughtsClock>): IClockSettingsCtrl {
+  controller(reload: () => void, clockObj: Prop<IDraughtsClock>): IClockSettingsCtrl {
     let isOpen = false
 
     function open() {

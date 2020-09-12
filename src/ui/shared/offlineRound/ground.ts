@@ -58,7 +58,7 @@ function make(
   data: OfflineGameData,
   sit: GameSituation,
   userMove: (orig: Key, dest: Key, meta: AfterMoveMeta) => void,
-  onMove: (orig: Key, dest: Key, capturedPiece: Piece) => void,
+  onMove: (orig: Key, dest: Key, capturedPiece?: Piece) => void,
 ) {
   const config = makeConfig(data, sit)
   config.movable!.events = {

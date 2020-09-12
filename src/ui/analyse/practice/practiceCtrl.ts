@@ -1,8 +1,7 @@
-import Stream from 'mithril/stream'
 import { scan2uci, scan2san } from '../../../utils/draughtsFormat'
 import settings from '../../../settings'
 import redraw from '../../../utils/redraw'
-import { requestIdleCallback } from '../../../utils'
+import { requestIdleCallback, prop, Prop } from '../../../utils'
 import { path as treePath, Tree } from '../../shared/tree'
 import { detectThreefold } from '../nodeFinder'
 import { tablebaseGuaranteed, defined } from '../util'
@@ -32,10 +31,10 @@ export interface PracticeCtrl {
   onCeval(): void
   onJump(): void
   isMyTurn(): boolean
-  comment: Stream<Comment | null>
-  running: Stream<boolean>
-  hinting: Stream<Hinting | null>
-  minimized: Stream<boolean>
+  comment: Prop<Comment | null>
+  running: Prop<boolean>
+  hinting: Prop<Hinting | null>
+  minimized: Prop<boolean>
   resume(): void
   playableDepth: () => number
   reset(): void
@@ -53,11 +52,11 @@ export interface PracticeCtrl {
 export function make(root: AnalyseCtrl, playableDepth: () => number): PracticeCtrl {
 
   const variant = root.data.game.variant.key,
-  minimized = Stream(false),
-  running = Stream(true),
-  comment = Stream<Comment | null>(null),
-  hinting = Stream<Hinting | null>(null),
-  played = Stream(false)
+  minimized = prop(false),
+  running = prop(true),
+  comment = prop<Comment | null>(null),
+  hinting = prop<Hinting | null>(null),
+  played = prop(false)
 
   function ensureCevalRunning() {
     if (!root.ceval.enabled()) {

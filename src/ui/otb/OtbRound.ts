@@ -209,7 +209,7 @@ export default class OtbRound implements OtbRoundInterface, PromotingInterface {
     this.replay.addMove(orig, dest)
   }
 
-  private onMove = (_: Key, __: Key, capturedPiece: Piece) => {
+  private onMove = (_: Key, __: Key, capturedPiece?: Piece) => {
     if (capturedPiece) {
       sound.capture()
     } else sound.move()

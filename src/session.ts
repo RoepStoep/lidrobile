@@ -223,7 +223,7 @@ function isSession(data: Session | LobbyData | SignupData): data is Session {
 }
 
 function login(username: string, password: string, token: string | null): Promise<Session> {
-  return fetchJSON('/login', {
+  return fetchJSON<Session | LobbyData>('/login', {
     method: 'POST',
     body: JSON.stringify({
       username,
@@ -231,7 +231,7 @@ function login(username: string, password: string, token: string | null): Promis
       token,
     })
   }, true)
-  .then((data: Session | LobbyData) => {
+  .then(data => {
     if (isSession(data)) {
       session = <Session>data
       if (session.sessionId) {
@@ -261,8 +261,8 @@ function logout() {
 }
 
 function confirmEmail(token: string): Promise<Session> {
-  return fetchJSON(`/signup/confirm/${token}`, undefined, true)
-  .then((data: Session) => {
+  return fetchJSON<Session>(`/signup/confirm/${token}`, undefined, true)
+  .then(data => {
     session = data
     storeSession(data)
     return session
@@ -297,8 +297,8 @@ function signup(
 }
 
 function rememberLogin(): Promise<Session> {
-  return fetchJSON('/account/info')
-  .then((data: Session) => {
+  return fetchJSON<Session>('/account/info')
+  .then(data => {
     session = data
     storeSession(data)
     return data

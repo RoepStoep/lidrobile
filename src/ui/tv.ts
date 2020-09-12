@@ -1,5 +1,4 @@
 import { Plugins } from '@capacitor/core'
-import * as Mithril from 'mithril'
 import h from 'mithril/hyperscript'
 import router from '../router'
 import socket from '../socket'

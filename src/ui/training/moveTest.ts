@@ -31,7 +31,7 @@ export default function moveTest(
   })
 
   // search in puzzle lines with current progress
-  const curLine = progress.reduce((acc: Line, uci: Uci) => {
+  const curLine = progress.reduce<Line | undefined>((acc: Line | undefined, uci: Uci) => {
     if (!acc) return undefined
     while (acc && !isLineFeedback(acc) && uci.length > 4) {
       acc = acc[uci.slice(0, 4)];

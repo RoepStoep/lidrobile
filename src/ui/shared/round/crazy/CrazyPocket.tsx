@@ -1,4 +1,3 @@
-import * as Mithril from 'mithril'
 import h from 'mithril/hyperscript'
 import settings from '../../../../settings'
 import * as draughtsgroundDrag from '../../../../draughtsground/drag'
@@ -31,13 +30,15 @@ const CrazyPocket: Mithril.Component<Attrs, State> = {
     const onmove = (e: TouchEvent) => draughtsgroundDrag.move(ctrl.draughtsground, e)
     const onend = (e: TouchEvent) => draughtsgroundDrag.end(ctrl.draughtsground, e)
 
-    this.pocketOnCreate = function({ dom }: Mithril.VnodeDOM<any, any>) {
+    this.pocketOnCreate = function(vnode: Mithril.VnodeDOM<any, any>) {
+      const dom = vnode.dom as HTMLElement
       dom.addEventListener('touchstart', onstart)
       dom.addEventListener('touchmove', onmove)
       dom.addEventListener('touchend', onend)
     }
 
-    this.pocketOnRemove = function({ dom }: Mithril.VnodeDOM<any, any>) {
+    this.pocketOnRemove = function(vnode: Mithril.VnodeDOM<any, any>) {
+      const dom = vnode.dom as HTMLElement
       dom.removeEventListener('touchstart', onstart)
       dom.removeEventListener('touchmove', onmove)
       dom.removeEventListener('touchend', onend)
