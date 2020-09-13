@@ -107,12 +107,14 @@ function renderBoard(fen: string, orientation: Color, variant: VariantKey, board
   return (
     <div className={boardClass}
       oncreate={({ dom }: Mithril.VnodeDOM<any, any>) => {
-        const img = document.createElement('img')
-        img.className = 'cg-board'
-        img.src = 'data:image/svg+xml;utf8,' + makeBoard(fen, orientation, board.size)
         batchRequestAnimationFrame(() => {
-          const placeholder = dom.firstChild
-          if (placeholder) dom.replaceChild(img, placeholder)
+          const img = document.createElement('img')
+          img.className = 'cg-board'
+          img.src = 'data:image/svg+xml;utf8,' + makeBoard(fen, orientation, board.size)
+          batchRequestAnimationFrame(() => {
+            const placeholder = dom.firstChild
+            if (placeholder) dom.replaceChild(img, placeholder)
+          })
         })
       }}
     >
@@ -132,12 +134,14 @@ function emptyBoard(orientation: Color, boardTheme: string) {
   return (
     <div className={boardClass} key={emptyFen}
       oncreate={({ dom }: Mithril.VnodeDOM<any, any>) => {
-        const img = document.createElement('img')
-        img.className = 'cg-board'
-        img.src = 'data:image/svg+xml;utf8,' + makeBoard(emptyFen, orientation, board.size)
         batchRequestAnimationFrame(() => {
-          const placeholder = dom.firstChild
-          if (placeholder) dom.replaceChild(img, placeholder)
+          const img = document.createElement('img')
+          img.className = 'cg-board'
+          img.src = 'data:image/svg+xml;utf8,' + makeBoard(emptyFen, orientation, board.size)
+          batchRequestAnimationFrame(() => {
+            const placeholder = dom.firstChild
+            if (placeholder) dom.replaceChild(img, placeholder)
+          })
         })
       }}
     >
