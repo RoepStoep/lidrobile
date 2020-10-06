@@ -189,6 +189,12 @@ export function userFullNameToId(fullName: string): string {
   return id.toLowerCase()
 }
 
+export function userFullNameShortTitle(fullName: string): string {
+  const split = fullName.split(' ')
+  if (split.length === 1 || !split[0].endsWith('-64')) return fullName
+  return split[0].slice(0, split[0].length - 3) + ' ' + split[1]
+}
+
 export function capitalize(s: string): string {
   return s.charAt(0).toUpperCase() + s.slice(1)
 }

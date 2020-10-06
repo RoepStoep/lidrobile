@@ -55,6 +55,7 @@ function renderFriends() {
 function renderFriend(user: Friend) {
 
   const userId = utils.userFullNameToId(user.name)
+  const userFullName = utils.userFullNameShortTitle(user.name)
 
   function action() {
     close()
@@ -75,7 +76,7 @@ function renderFriend(user: Friend) {
           :
           null
         }
-        <span>{user.name}</span>
+        <span>{userFullName}</span>
       </div>
       { user.playing ?
         <span className="friend_tv" data-icon="1" oncreate={helper.ontapY(onTapTv)}> </span>
