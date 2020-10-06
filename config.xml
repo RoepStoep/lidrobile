@@ -42,6 +42,9 @@
         <splash density="port-xxhdpi" src="res/android/screens/drawable-xxhdpi/screen.png" />
         <splash density="port-xxxhdpi" src="res/android/screens/drawable-xxxhdpi/screen.png" />
     </platform>
+    <platform name="android">
+        <preference name="android-targetSdkVersion" value="29" />
+    </platform>
     <platform name="ios">
         <hook src="scripts/ios/modify_plist.js" type="after_prepare" />
         <preference name="Orientation" value="all" />
