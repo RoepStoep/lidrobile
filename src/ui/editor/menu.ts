@@ -116,6 +116,7 @@ export function renderPositionSettings(ctrl: Editor) {
         h('option[value=antidraughts]', 'Antidraughts'),
         h('option[value=breakthrough]', 'Breakthrough'),
         h('option[value=russian]', 'Russian'),
+        h('option[value=brazilian]', 'Brazilian'),
       ])
     ])
   ])

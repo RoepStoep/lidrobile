@@ -156,6 +156,7 @@ const perfIconsMap: {[index: string]: string} = {
   fromPosition: '*',
   breakthrough: '',
   russian: '',
+  brazilian: '(',
   ultraBullet: '{'
 }
 

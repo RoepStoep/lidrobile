@@ -68,7 +68,7 @@ export default class Replay {
 
   public addMove = (orig: Key, dest: Key) => {
     const sit = this.situation()
-    const km = (sit.variant === 'russian' && sit.kingMoves) ? sit.kingMoves : undefined
+    const km = ((sit.variant === 'russian' || sit.variant === 'brazilian') && sit.kingMoves) ? sit.kingMoves : undefined
     draughts.move({
       variant: this.variant,
       fen: sit.fen,

@@ -94,6 +94,16 @@ const variantMap: {[key: string]: DocVariant} = {
     title: 'Russian draughts',
     initialFen: 'W:W21,22,23,24,25,26,27,28,29,30,31,32:B1,2,3,4,5,6,7,8,9,10,11,12:H0:F1',
     board: D64,
+  },
+  brazilian: {
+    name: 'Brazilian',
+    tinyName: 'Brazilian',
+    id: 12,
+    gameType: 26,
+    link: 'https://lidraughts.org/variant/brazilian',
+    title: 'Brazilian draughts',
+    initialFen: 'W:W21,22,23,24,25,26,27,28,29,30,31,32:B1,2,3,4,5,6,7,8,9,10,11,12:H0:F1',
+    board: D64,
   }
 }
 
@@ -126,8 +136,8 @@ export function getInitialFen(key: VariantKey): string {
   return v.initialFen || standardFen
 }
 
-export const specialFenVariants = new Set(['frysk', 'russian']) as Set<VariantKey>
+export const specialFenVariants = new Set(['frysk', 'russian', 'brazilian']) as Set<VariantKey>
 
 export const openingSensibleVariants = new Set([
-'standard', 'antidraughts', 'frisian', 'breakthrough', 'russian'
+'standard', 'antidraughts', 'frisian', 'breakthrough', 'russian', 'brazilian'
 ]) as Set<VariantKey>

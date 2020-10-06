@@ -1,5 +1,5 @@
 
-export type VariantKey = 'standard' | 'antidraughts' | 'breakthrough' | 'fromPosition' | 'frisian' | 'frysk' | 'russian'
+export type VariantKey = 'standard' | 'antidraughts' | 'breakthrough' | 'fromPosition' | 'frisian' | 'frysk' | 'russian' | 'brazilian'
 
 export type BoardSize = [number, number]
 

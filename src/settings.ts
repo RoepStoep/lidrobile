@@ -21,6 +21,7 @@ const offlineAvailableVariants: [string, VariantKey][] = [
   ['Antidraughts', 'antidraughts'],
   ['Breakthrough', 'breakthrough'],
   ['Russian', 'russian'],
+  ['Brazilian', 'brazilian'],
 ]
 
 export interface GameSettings {
@@ -99,8 +100,8 @@ export default {
   },
 
   game: {
-    supportedVariants: ['standard', 'antidraughts', 'breakthrough', 'fromPosition', 'frisian', 'frysk', 'russian'],
-    supportedPerfs:  ['ultraBullet', 'bullet', 'blitz', 'rapid', 'classical', 'correspondence', 'antidraughts', 'breakthrough', 'frisian', 'frysk', 'russian', 'puzzle', 'puzzleFrisian'],
+    supportedVariants: ['standard', 'antidraughts', 'breakthrough', 'fromPosition', 'frisian', 'frysk', 'russian', 'brazilian'],
+    supportedPerfs:  ['ultraBullet', 'bullet', 'blitz', 'rapid', 'classical', 'correspondence', 'antidraughts', 'breakthrough', 'frisian', 'frysk', 'russian', 'brazilian', 'puzzle', 'puzzleFrisian'],
     animations: store.prop<boolean>('settings.gameAnimations', true),
     highlights: store.prop<boolean>('settings.boardHighlights', true),
     pieceDestinations: store.prop<boolean>('settings.pieceDestinations', true),
@@ -115,7 +116,7 @@ export default {
   },
 
   analyse: {
-    supportedVariants: ['standard', 'antidraughts', 'breakthrough', 'fromPosition', 'frisian', 'frysk', 'russian'],
+    supportedVariants: ['standard', 'antidraughts', 'breakthrough', 'fromPosition', 'frisian', 'frysk', 'russian', 'brazilian'],
     availableVariants: offlineAvailableVariants,
     syntheticVariant: store.prop<VariantKey>('settings.analyse.syntheticVariant', 'standard'),
     enableCeval: store.prop('settings.analyse.enableCeval', false),
@@ -321,7 +322,8 @@ export default {
         ['Frysk!', '8'],
         ['Antidraughts', '6'],
         ['Breakthrough', '9'],
-        ['Russian', '11']
+        ['Russian', '11'],
+        ['Brazilian', '12']
       ],
       availableRatingRanges: {
         min: range(800, 2900, 100).map(tupleOf),
@@ -353,6 +355,7 @@ export default {
         ['Antidraughts', '6'],
         ['Breakthrough', '9'],
         ['Russian', '11'],
+        ['Brazilian', '12'],
         ['From Position', '3']
       ],
       color: store.prop('settings.game.invite.color', 'random'),
@@ -377,7 +380,8 @@ export default {
       ['Frysk!', '8'],
       ['Antidraughts', '6'],
       ['Breakthrough', '9'],
-      ['Russian', '11']
+      ['Russian', '11'],
+      ['Brazilian', '12']
     ],
     availableModes: [
       ['casual', '0'],
