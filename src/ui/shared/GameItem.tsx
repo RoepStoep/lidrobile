@@ -9,6 +9,7 @@ import session from '../../session'
 import i18n from '../../i18n'
 import * as helper from '../helper'
 import { makeBoard } from './svgboard'
+import { emptyFen } from '../../utils/fen'
 
 interface Attrs {
   g: UserGameWithDate
@@ -30,7 +31,8 @@ export default {
     `${time} • ${g.variant.name} • ${mode}`
     const status = gameStatus.toLabel(g.status.name, g.winner, g.variant.key) +
       (g.winner ? (g.status.name !== 'mate' ? '. ' : '') + i18n(g.winner === 'white' ? 'whiteIsVictorious' : 'blackIsVictorious') + '.' : '')
-    const icon = g.source === 'import' ? '/' : utils.gameIcon(g.perf) || ''
+    const knownVariant = gameApi.isSupportedVariantKey(g.variant.key)
+    const icon = knownVariant ? (g.source === 'import' ? '/' : utils.gameIcon(g.perf) || '') : ''
     const perspectiveColor: Color = userId ? g.players.white.userId === userId ? 'white' : 'black' : 'white'
     const evenOrOdd = index % 2 === 0 ? 'even' : 'odd'
     const star = g.bookmarked ? 't' : 's'
@@ -39,7 +41,7 @@ export default {
 
     return (
       <li data-id={g.id} data-pid={player.id} className={`userGame ${evenOrOdd}${withStar}`}>
-        {renderBoard(g.fen, perspectiveColor, g.variant.key, boardTheme)}
+        {knownVariant ? renderBoard(g.fen, perspectiveColor, g.variant.key, boardTheme) : emptyBoard(perspectiveColor, boardTheme)}
         <div className="userGame-infos">
           <div className="userGame-versus">
             <span className="variant-icon" data-icon={icon} />
@@ -59,6 +61,7 @@ export default {
             </div>
           </div>
           <div className="userGame-meta">
+            {!knownVariant ? <p className="warning" data-icon="j">{i18n('unsupportedVariant', g.variant.name)}</p> : null}
             <p className="game-infos">
             {g.date} • {title}
             </p>
@@ -82,7 +85,7 @@ export default {
 } as Mithril.Component<Attrs, {}>
 
 function renderBoard(fen: string, orientation: Color, variant: VariantKey, boardTheme: string) {
-  const board = getVariant(variant).board
+  const board = (getVariant(variant) || getVariant('standard')).board
   const boardClass = [
     'display_board',
     boardTheme,
@@ -95,6 +98,31 @@ function renderBoard(fen: string, orientation: Color, variant: VariantKey, board
         const img = document.createElement('img')
         img.className = 'cg-board'
         img.src = 'data:image/svg+xml;utf8,' + makeBoard(fen, orientation, board.size)
+        batchRequestAnimationFrame(() => {
+          const placeholder = dom.firstChild
+          if (placeholder) dom.replaceChild(img, placeholder)
+        })
+      }}
+    >
+      <div className="cg-board" />
+    </div>
+  )
+}
+
+function emptyBoard(orientation: Color, boardTheme: string) {
+  const board = getVariant('standard').board
+  const boardClass = [
+    'display_board',
+    boardTheme,
+    'is' + board.key
+  ].join(' ')
+
+  return (
+    <div className={boardClass} key={emptyFen}
+      oncreate={({ dom }: Mithril.DOMNode) => {
+        const img = document.createElement('img')
+        img.className = 'cg-board'
+        img.src = 'data:image/svg+xml;utf8,' + makeBoard(emptyFen, orientation, board.size)
         batchRequestAnimationFrame(() => {
           const placeholder = dom.firstChild
           if (placeholder) dom.replaceChild(img, placeholder)

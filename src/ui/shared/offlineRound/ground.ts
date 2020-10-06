@@ -13,7 +13,7 @@ import { GameSituation } from '../../../draughts'
 function makeConfig(data: OfflineGameData, sit: GameSituation): cg.InitConfig {
   const lastUci = sit.uciMoves.length ? sit.uciMoves[sit.uciMoves.length - 1] : null
   const pieceMoveConf = settings.game.pieceMove()
-  const board = getVariant(data.game.variant.key).board
+  const board = (getVariant(data.game.variant.key) || getVariant('standard')).board
   return {
     batchRAF: batchRequestAnimationFrame,
     fen: sit.fen,

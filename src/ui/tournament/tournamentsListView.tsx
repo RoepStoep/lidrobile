@@ -6,6 +6,7 @@ import { TournamentListItem } from '../../lidraughts/interfaces/tournament'
 import * as helper from '../helper'
 import TabNavigation from '../shared/TabNavigation'
 import TabView from '../shared/TabView'
+import { isSupportedVariantKey } from '../../lidraughts/game'
 
 import newTournamentForm from './newTournamentForm'
 import TournamentsListCtrl from './TournamentsListCtrl'
@@ -69,7 +70,7 @@ export function renderFooter() {
 export function renderTournamentList(list: ReadonlyArray<TournamentListItem>) {
   return h('ul.native_scroller.tournamentList', {
     oncreate: helper.ontapXY(onTournamentTap, undefined, helper.getLI)
-  }, list.map(renderTournamentListItem))
+  }, list.filter(t => isSupportedVariantKey(t.variant.key)).map(renderTournamentListItem))
 }
 
 function renderTournamentListItem(tournament: TournamentListItem, index: number) {

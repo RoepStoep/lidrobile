@@ -181,3 +181,11 @@ export function publicAnalyseUrl(data: AnalyseData) {
 export function isSupportedVariant(data: GameData) {
   return settings.game.supportedVariants.indexOf(data.game.variant.key) !== -1
 }
+
+export function isSupportedVariantKey(key: VariantKey) {
+  return settings.game.supportedVariants.indexOf(key) !== -1
+}
+
+export function isSupportedPerf(key: PerfKey) {
+  return settings.game.supportedPerfs.indexOf(key) !== -1
+}

@@ -3,11 +3,13 @@ import router from '../../router'
 import socket from '../../socket'
 import * as helper from '../helper'
 import * as sleepUtils from '../../utils/sleep'
+import * as gameApi from '../../lidraughts/game'
 import { handleXhrError } from '../../utils'
 import { LoadingBoard } from '../shared/common'
 import OnlineRound from '../shared/round/OnlineRound'
 import roundView from '../shared/round/view/roundView'
 import { tv } from './userXhr'
+import i18n from '../../i18n'
 
 interface Attrs {
   id: string
@@ -27,7 +29,12 @@ const UserTv: Mithril.Component<Attrs, State> = {
     tv(userId)
     .then(data => {
       data.userTV = userId
-      this.round = new OnlineRound(false, data.game.id, data, false, undefined, undefined, userId, onRedirect)
+      if (!gameApi.isSupportedVariant(data)) {
+        window.plugins.toast.show(i18n('unsupportedVariant', data.game.variant.name), 'short', 'center')
+        router.set('/')
+      } else {
+        this.round = new OnlineRound(false, data.game.id, data, false, undefined, undefined, userId, onRedirect)
+      }
     })
     .catch(handleXhrError)
   },

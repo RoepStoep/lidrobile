@@ -30,7 +30,7 @@ export default class Replay {
 
   public init(variant: VariantKey, initialFen: string, situations: Array<draughts.GameSituation>, ply: number) {
     this.variant = variant
-    this.boardKey = getVariant(variant).board.key
+    this.boardKey = (getVariant(variant) || getVariant('standard')).board.key
     this.initialFen = initialFen
     this.situations = situations
     this.ply = ply || 0

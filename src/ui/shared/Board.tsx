@@ -70,13 +70,14 @@ export default {
 
   view(vnode) {
     const { variant, draughtsground: draughtsgroundground, bounds, wrapperClasses, customPieceTheme, shapes, clearableShapes, alert } = vnode.attrs
+    const docVariant = getVariant(variant) || getVariant('standard')
     const boardClass = [
       'display_board',
       'orientation-' + draughtsgroundground.state.orientation,
       this.boardTheme,
       customPieceTheme || this.pieceTheme,
       variant,
-      'is' + getVariant(variant).board.key
+      'is' + docVariant.board.key
     ].join(' ')
 
     let wrapperClass = 'game_board_wrapper'

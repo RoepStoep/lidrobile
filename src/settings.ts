@@ -100,6 +100,7 @@ export default {
 
   game: {
     supportedVariants: ['standard', 'antidraughts', 'breakthrough', 'fromPosition', 'frisian', 'frysk', 'russian'],
+    supportedPerfs:  ['ultraBullet', 'bullet', 'blitz', 'rapid', 'classical', 'correspondence', 'antidraughts', 'breakthrough', 'frisian', 'frysk', 'russian', 'puzzle', 'puzzleFrisian'],
     animations: store.prop<boolean>('settings.gameAnimations', true),
     highlights: store.prop<boolean>('settings.boardHighlights', true),
     pieceDestinations: store.prop<boolean>('settings.pieceDestinations', true),

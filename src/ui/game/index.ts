@@ -42,7 +42,7 @@ export default {
       .then(data => {
         gameData = data
 
-        if (!data.player.spectator && !gameApi.isSupportedVariant(data)) {
+        if (!gameApi.isSupportedVariant(data)) {
           window.plugins.toast.show(i18n('unsupportedVariant', data.game.variant.name), 'short', 'center')
           router.set('/')
         }

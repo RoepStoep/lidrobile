@@ -5,6 +5,8 @@ import { dropShadowHeader as headerWidget, backButton, connectingDropShadowHeade
 import * as helper from '../../helper'
 import layout from '../../layout'
 import { tournamentBody, renderPlayerInfoOverlay, renderFAQOverlay, renderFooter, timeInfo } from './tournamentView'
+import { isSupportedVariantKey } from '../../../lidraughts/game'
+import router from '../../../router'
 
 import passwordForm from './passwordForm'
 import TournamentCtrl from './TournamentCtrl'
@@ -42,6 +44,12 @@ export default {
 
     const tournament = this.ctrl.tournament
     let header: Mithril.Children
+
+    if (tournament && !isSupportedVariantKey(tournament.variant)) {
+      window.plugins.toast.show(i18n('unsupportedVariant', tournament.variant), 'short', 'center')
+      router.set('/')
+      return
+    }
 
     if (tournament) {
       header = headerWidget(null,

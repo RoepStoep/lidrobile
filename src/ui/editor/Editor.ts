@@ -122,7 +122,7 @@ export default class Editor {
   }
 
   public getVariant = () => {
-    return getLidraughtsVariant(this.data.game.variant.key())
+    return getLidraughtsVariant(this.data.game.variant.key()) || getLidraughtsVariant('standard')
   }
 
   public updateHref = debounce(() => {

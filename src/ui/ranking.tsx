@@ -11,6 +11,7 @@ import * as xhr from './players/playerXhr'
 import layout from './layout'
 import { userStatus, dropShadowHeader } from './shared/common'
 import * as helper from './helper'
+import { isSupportedPerf } from '../lidraughts/game'
 
 interface State {
   ranking: Mithril.Stream<Rankings | undefined>
@@ -60,7 +61,7 @@ function renderBody(ctrl: State) {
 
   const keys = Object.keys(ranking) as RankingKey[]
   const categories = keys
-    .filter(k => k !== 'online')
+    .filter(k => k !== 'online' && isSupportedPerf(k))
     .map((k: PerfKey) => renderRankingCategory(ctrl, ranking, k))
   return (
     <div id="allRanking" className="native_scroller page">

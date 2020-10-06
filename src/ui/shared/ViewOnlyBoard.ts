@@ -80,13 +80,13 @@ const ViewOnlyBoard: Mithril.Component<Attrs, State> = {
   },
 
   view({ attrs }) {
-    const boardSizeKey = getVariant(attrs.variant).board.key
+    const docVariant = getVariant(attrs.variant) || getVariant('standard')
     const boardClass = [
       'display_board',
       attrs.customPieceTheme || this.pieceTheme,
       this.boardTheme,
       attrs.variant,
-      'is' + boardSizeKey
+      'is' + docVariant.board.key
     ].join(' ')
 
     return h('div', { className: boardClass })
@@ -96,6 +96,7 @@ const ViewOnlyBoard: Mithril.Component<Attrs, State> = {
 export default ViewOnlyBoard
 
 function makeConfig({ fen, lastMove, orientation, variant, fixed = true }: Attrs) {
+  const docVariant = getVariant(variant) || getVariant('standard')
   const conf: Config = {
     batchRAF: batchRequestAnimationFrame,
     viewOnly: true,
@@ -103,7 +104,7 @@ function makeConfig({ fen, lastMove, orientation, variant, fixed = true }: Attrs
     minimalDom: true,
     coordinates: 0,
     fen,
-    boardSize: getVariant(variant).board.size,
+    boardSize: docVariant.board.size,
     lastMove: lastMove ? uciToMove(lastMove) : null,
     orientation: orientation || 'white'
   }

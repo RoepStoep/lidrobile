@@ -7,6 +7,7 @@ import spinner from '../../spinner'
 
 import * as helper from '../helper'
 import GameItem from '../shared/GameItem'
+import { isSupportedVariantKey } from '../../lidraughts/game'
 
 import { ISearchCtrl } from './SearchCtrl'
 import { SearchQuery } from './interfaces'
@@ -119,7 +120,11 @@ function onTap (ctrl: ISearchCtrl, e: Event) {
     if (id) {
       const g = ctrl.searchState.games.find(game => game.id === id)
       if (g) {
-        router.set(`/analyse/online/${id}`)
+        if (!isSupportedVariantKey(g.variant.key)) {
+          window.plugins.toast.show(i18n('unsupportedVariant', g.variant.name), 'short', 'center')
+        } else {
+          router.set(`/analyse/online/${id}`)
+        }
       }
     }
   }

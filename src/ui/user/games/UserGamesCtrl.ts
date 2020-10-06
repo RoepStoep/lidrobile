@@ -10,6 +10,8 @@ import { toggleGameBookmark } from '../../../xhr'
 import redraw from '../../../utils/redraw'
 import { Paginator } from '../../../lidraughts/interfaces'
 import { GameFilter, UserFullProfile, UserGameWithDate } from '../../../lidraughts/interfaces/user'
+import * as gameApi from '../../../lidraughts/game'
+import i18n from '../../../i18n'
 
 export interface IUserGamesCtrl {
   scrollState: ScrollState
@@ -169,6 +171,10 @@ export default function UserGamesCtrl(userId: string, filter?: string): IUserGam
   const goToGame = (id: string, playerId?: string) => {
     const g = scrollState.games.find(game => game.id === id)
     if (g) {
+      if (!gameApi.isSupportedVariantKey(g.variant.key)) {
+        window.plugins.toast.show(i18n('unsupportedVariant', g.variant.name), 'short', 'center')
+        return
+      }
       const userColor: Color = g.players.white.userId === userId ? 'white' : 'black'
       positionsCache.set(g.id, { fen: g.fen, orientation: userColor, variant: g.variant.key })
       const mePlaying = session.getUserId() === userId
