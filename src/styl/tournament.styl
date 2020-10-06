@@ -87,7 +87,7 @@
 .tournamentHeader
   padding 10px 10px 0px 10px
 
-.tournamentConditions, .tournamentCreatorInfo, .tournamentPositionInfo, .tournamentTimeInfo, .tournamentSpotlightInfo
+.tournamentConditions, .tournamentCreatorInfo, .tournamentPositionInfo, .tournamentTimeInfo, .tournamentSpotlightInfo, .tournamentSettings
   margin-bottom 0.4em
   padding-bottom 0.4em
 
@@ -115,7 +115,13 @@
   &.anonymous
     color inherit
 
-.tournamentCreatorInfo, .tournamentPositionInfo, .tournamentConditions
+.tournamentSettings
+  display flex
+  flex-flow column nowrap
+  > .setting
+    display flex
+
+.tournamentCreatorInfo, .tournamentPositionInfo, .tournamentConditions, .tournamentSettings
   font-size 0.9em
 
 .tournamentNotFound

@@ -72,10 +72,11 @@ function tournamentHeader(data: Tournament, ctrl: TournamentCtrl) {
   return (
     <div key="header" className="tournamentHeader">
       {tournamentTimeInfo(data)}
-      {data.spotlight ? tournamentSpotlightInfo(data.spotlight) : null}
+      {tournamentSpotlightInfo(data.spotlight, data.description)}
       {tournamentCreatorInfo(data, ctrl.startsAt!)}
       {data.position ? tournamentPositionInfo(data.position) : null}
       {data.verdicts.list.length > 0 ? tournamentConditions(data.verdicts) : null}
+      {tournamentSettings(data.berserkable, data.streakable)}
    </div>
   )
 }
@@ -135,10 +136,30 @@ function tournamentConditions(verdicts: Verdicts) {
   )
 }
 
-function tournamentSpotlightInfo(spotlight: Spotlight) {
-  return (
+function tournamentSpotlightInfo(spotlight?: Spotlight, description?: string) {
+  const text = spotlight ? spotlight.description : description
+  return text ? (
     <div className="tournamentSpotlightInfo">
-      {spotlight.description}
+      {text}
+    </div>
+  ) : null
+}
+
+function tournamentSettings(berserkable?: boolean, streakable?: boolean) {
+  return (berserkable && streakable) ? null : (
+    <div className="tournamentSettings">
+      {berserkable ? null : 
+        <div className="setting">
+          <span className="withIcon" data-icon="`" />
+          <p>{i18n('noBerserkAllowed')}</p>
+        </div>
+      }
+      {streakable ? null : 
+        <div className="setting">
+          <span className="withIcon" data-icon="Q" />
+          <p>No arena streaks</p>
+        </div>
+      }
     </div>
   )
 }

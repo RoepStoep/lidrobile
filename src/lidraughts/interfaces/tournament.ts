@@ -1,8 +1,10 @@
 import { Opening } from './game'
 
 export interface Tournament {
+  readonly berserkable?: boolean
   readonly clock: TournamentClock
   readonly createdBy: string
+  readonly description?: string
   featured?: FeaturedGame
   readonly fullName: string
   readonly id: string
@@ -25,6 +27,7 @@ export interface Tournament {
   readonly spotlight?: Spotlight
   readonly standing: StandingPage
   readonly startsAt: string
+  readonly streakable?: boolean
   readonly system: string
   readonly variant: VariantKey
   readonly verdicts: Verdicts
