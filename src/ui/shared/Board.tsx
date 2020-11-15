@@ -2,7 +2,7 @@ import h from 'mithril/hyperscript'
 import settings from '../../settings'
 import redraw from '../../utils/redraw'
 import Draughtsground from '../../draughtsground/Draughtsground'
-import getVariant from '../../lidraughts/variant'
+import { getVariant } from '../../lidraughts/variant'
 import BoardBrush, { Shape } from './BoardBrush'
 
 export interface Attrs {

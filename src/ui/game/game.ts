@@ -13,7 +13,7 @@ import * as sleepUtils from '../../utils/sleep'
 import { isOnlineGameData, OnlineGameData } from '../../lidraughts/interfaces/game'
 import { ChallengeData } from '../../lidraughts/interfaces/challenge'
 import * as gameApi from '../../lidraughts/game'
-import variantApi from '../../lidraughts/variant'
+import { getVariant } from '../../lidraughts/variant'
 import socket from '../../socket'
 import * as helper from '../helper'
 import roundView, { viewOnlyBoardContent } from '../shared/round/view/roundView'
@@ -114,7 +114,7 @@ function loadRound(
     ) {
       sound.dong()
       vibrate.quick()
-      const variant = variantApi(data.game.variant.key)
+      const variant = getVariant(data.game.variant.key)
       const storageKey = variantStorageKey(data.game.variant.key)
       if (
         variant.alert && [1, 3].indexOf(variant.id) === -1 &&

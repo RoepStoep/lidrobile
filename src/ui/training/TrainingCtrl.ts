@@ -18,7 +18,7 @@ import { PromotingInterface } from '../shared/round'
 
 import moveTest from './moveTest'
 import makeGround from './ground'
-import getVariant from '../../lidraughts/variant'
+import { getVariant } from '../../lidraughts/variant'
 import menu, { IMenuCtrl } from './menu'
 import * as xhr from './xhr'
 import { VM, Data, PimpedGame, Feedback } from './interfaces'

@@ -34,7 +34,6 @@ export interface UserFullProfile extends User {
 
 export interface Perf {
   readonly rating: number
-  readonly progress: number
   readonly rd: number
   readonly prog: number
   readonly games: number

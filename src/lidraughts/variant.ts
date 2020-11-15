@@ -24,7 +24,7 @@ const D64: BoardData = {
   size: [8, 8]
 }
 
-const variantMap: {[key: string]: DocVariant} = {
+const variantMap: {[key in VariantKey]: DocVariant} = {
   standard: {
     name: 'Standard',
     tinyName: 'Std',
@@ -107,14 +107,14 @@ const variantMap: {[key: string]: DocVariant} = {
   }
 }
 
-export default function getVariant(key: VariantKey): DocVariant {
+export function getVariant(key: VariantKey): DocVariant {
   return variantMap[key]
 }
 
 export function getVariantKeyById(id: string): VariantKey | undefined {
   const nId = parseInt(id)
   for (let key of Object.keys(variantMap)) {
-    const variant = variantMap[key]
+    const variant = variantMap[key as VariantKey]
     if (variant.id == nId) {
       return key as VariantKey;
     }

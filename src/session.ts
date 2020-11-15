@@ -9,7 +9,7 @@ import i18n from './i18n'
 import push from './push'
 import settings, { Prop } from './settings'
 import { TempBan, LobbyData, NowPlayingGame } from './lidraughts/interfaces'
-import { PlayTime } from './lidraughts/interfaces/user'
+import { PlayTime, Perfs } from './lidraughts/interfaces/user'
 import friendsApi from './lidraughts/friends'
 import challengesApi from './lidraughts/challenges'
 import storage from './storage'
@@ -46,7 +46,7 @@ export interface Session {
   readonly patron: boolean
   readonly language?: string
   readonly profile?: Profile
-  readonly perfs: any
+  readonly perfs: Perfs
   readonly createdAt: number
   readonly seenAt: number
   readonly playTime: PlayTime

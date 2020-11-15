@@ -2,7 +2,7 @@ import * as cg from '../../draughtsground/interfaces'
 import settings from '../../settings'
 
 import TrainingCtrl from './TrainingCtrl'
-import getVariant from '../../lidraughts/variant'
+import { getVariant } from '../../lidraughts/variant'
 
 export default function makeConfig(
   ctrl: TrainingCtrl,

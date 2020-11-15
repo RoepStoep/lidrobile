@@ -31,7 +31,7 @@ import { view as renderCorrespondenceClock } from '../correspondenceClock/corres
 import { renderInlineReplay, renderReplay } from './replay'
 import OnlineRound from '../OnlineRound'
 import { Position, Material } from '../'
-import getVariant from '../../../../lidraughts/variant'
+import { getVariant } from '../../../../lidraughts/variant'
 
 export default function view(ctrl: OnlineRound) {
   const isPortrait = helper.isPortrait()

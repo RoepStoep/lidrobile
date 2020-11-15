@@ -4,7 +4,7 @@ import * as draughts from '../../../draughts'
 import { countGhosts } from '../../../draughtsground/fen'
 import { GameStatus } from '../../../lidraughts/interfaces/game'
 import settings from '../../../settings'
-import getVariant from '../../../lidraughts/variant'
+import { getVariant } from '../../../lidraughts/variant'
 
 export default class Replay {
   public variant!: VariantKey

@@ -3,7 +3,7 @@ import { batchRequestAnimationFrame } from '../../utils/batchRAF'
 import Draughtsground from '../../draughtsground/Draughtsground'
 import { uciToMove } from '../../utils/draughtsFormat'
 import settings from '../../settings'
-import getVariant from '../../lidraughts/variant'
+import { getVariant } from '../../lidraughts/variant'
 
 export interface Attrs {
   readonly fen: string
