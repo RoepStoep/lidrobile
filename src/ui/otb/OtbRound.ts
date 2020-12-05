@@ -62,7 +62,7 @@ export default class OtbRound implements OtbRoundInterface, PromotingInterface {
       savedVariant: saved ? saved.data.game.variant.key : undefined
     }
 
-    this.moveList = settings.game.moveList()
+    this.moveList = !!settings.game.moveList()
 
     if (setupFen) {
       this.newGameMenu.open()

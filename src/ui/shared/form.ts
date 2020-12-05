@@ -3,12 +3,21 @@ import h from 'mithril/hyperscript'
 import i18n from '../../i18n'
 import redraw from '../../utils/redraw'
 import { Prop } from '../../settings'
-import { LidraughtsPropOption } from '../../lidraughts/prefs'
 import * as helper from '../helper'
 
 type SelectOption = ReadonlyArray<string>
+interface MultiOption<T> {
+  label: string
+  value: T
+  labelArg?: string
+  dataIcon?: string
+}
 
 export default {
+  booleanChoice: [
+    { label: 'no', value: false },
+    { label: 'yes', value: true }
+  ] as readonly MultiOption<boolean>[],
 
   renderRadio(
     label: string,
@@ -61,29 +70,6 @@ export default {
     ]
   },
 
-  renderLidraughtsPropSelect(
-    label: string,
-    name: string,
-    options: ReadonlyArray<LidraughtsPropOption>,
-    settingsProp: Prop<number>,
-    isDisabled?: boolean
-  ) {
-    const prop = settingsProp()
-    return [
-      h('label', {
-        'for': 'select_' + name
-      }, i18n(label)),
-      h('select', {
-        id: 'select_' + name,
-        disabled: isDisabled,
-        onchange(e: Event) {
-          const val = (e.target as HTMLSelectElement).value
-          settingsProp(~~val)
-        }
-      }, options.map(e => renderLidraughtsPropOption(e[1], e[0], prop, e[2])))
-    ]
-  },
-
   renderCheckbox(
     label: Mithril.Children,
     name: string,
@@ -115,7 +101,7 @@ export default {
 
   renderMultipleChoiceButton<T>(
     label: string,
-    options: ReadonlyArray<{ label: string, value: T, dataIcon?: string }>,
+    options: ReadonlyArray<MultiOption<T>>,
     prop: Prop<T>,
     wrap: boolean = false,
     callback?: (v: T) => void,
@@ -126,24 +112,17 @@ export default {
       h('div.form-multipleChoice', {
         className: wrap ? 'wrap' : ''
       }, options.map(o => {
-        return h('span', {
+        const l = o.labelArg !== undefined ? i18n(o.label, o.labelArg) : i18n(o.label)
+        return h('div', {
           className: o.value === selected ? 'selected' : '',
           'data-icon': o.dataIcon,
           oncreate: helper.ontap(() => {
             prop(o.value)
             if (callback) callback(o.value)
           })
-        }, o.label)
+        }, l)
       }))
     ])
-  },
-
-  lidraughtsPropToOption([value, label, labelArg]: LidraughtsPropOption) {
-    const l = labelArg !== undefined ? i18n(label, labelArg) : i18n(label)
-    return {
-      label: l,
-      value
-    }
   },
 
   renderSlider(
@@ -184,15 +163,6 @@ export default {
 function renderOption(label: string, value: string, prop: string, labelArg?: string, labelArg2?: string) {
   const l = labelArg && labelArg2 ? i18n(label, labelArg, labelArg2) :
     labelArg ? i18n(label, labelArg) : i18n(label)
-  return h('option', {
-    key: value,
-    value,
-    selected: prop === value
-  }, l)
-}
-
-function renderLidraughtsPropOption(label: string, value: number, prop: number, labelArg?: string) {
-  const l = labelArg ? i18n(label, labelArg) : i18n(label)
   return h('option', {
     key: value,
     value,

@@ -1,12 +1,18 @@
 .settings_list
   flex-grow 1
+  &.multiChoices
+    .list_item
+      border-bottom none
+      margin-bottom 1rem
   .explanation
     padding 15px
   .list_item
-    &.selected
-      background-color lighten(bgdark, 5%)
     > .fa-check
       margin-left 1em
+    label
+      font-family 'Roboto'
+      font-weight 300
+      font-size 1.1em
 
 .app_version
   flex-grow 0
@@ -20,7 +26,7 @@
   input.radio:empty
     display none
   input.radio:checked + label
-    background-color lighten(bgdark, 5%)
+    background-color lighten(bgdarkPage, 5%)
   input.radio:checked + label:after
     display inline-block
     font normal normal normal 14px/1 FontAwesome
@@ -138,59 +144,49 @@
 
 .list_item.piece_theme
   line-height 60px
-  > label
-    background-repeat no-repeat
-    background-position right 10px center, right 70px center
-    background-size 60px 60px
-    @media only screen and (min-width 600px)
-      background-position right 130px center, right 190px center, right 10px center, right 70px center;
+  background-repeat no-repeat
+  background-position right 10px center, right 70px center
+  background-size 60px 60px
+  text-transform capitalize
+  @media only screen and (min-width 600px)
+    background-position right 130px center, right 190px center, right 10px center, right 70px center;
   &.wide_crown
-    > label
-      background-image url('../../images/pieces/wide_crown/wM.svg'),url('../../images/pieces/wide_crown/wK.svg')
-      @media only screen and (min-width 600px)
-        background-image url('../../images/pieces/wide_crown/wM.svg'),url('../../images/pieces/wide_crown/wK.svg'),url('../../images/pieces/wide_crown/bM.svg'),url('../../images/pieces/wide_crown/bK.svg')
+    background-image url('../../images/pieces/wide_crown/wM.svg'),url('../../images/pieces/wide_crown/wK.svg')
+    @media only screen and (min-width 600px)
+      background-image url('../../images/pieces/wide_crown/wM.svg'),url('../../images/pieces/wide_crown/wK.svg'),url('../../images/pieces/wide_crown/bM.svg'),url('../../images/pieces/wide_crown/bK.svg')
   &.wide
-    > label
-      background-image url('../../images/pieces/wide/wM.svg'),url('../../images/pieces/wide/wK.svg')
-      @media only screen and (min-width 600px)
-        background-image url('../../images/pieces/wide/wM.svg'),url('../../images/pieces/wide/wK.svg'),url('../../images/pieces/wide/bM.svg'),url('../../images/pieces/wide/bK.svg')
+    background-image url('../../images/pieces/wide/wM.svg'),url('../../images/pieces/wide/wK.svg')
+    @media only screen and (min-width 600px)
+      background-image url('../../images/pieces/wide/wM.svg'),url('../../images/pieces/wide/wK.svg'),url('../../images/pieces/wide/bM.svg'),url('../../images/pieces/wide/bK.svg')
   &.narrow_edge
-    > label
-      background-image url('../../images/pieces/narrow_edge/wM.svg'),url('../../images/pieces/narrow_edge/wK.svg')
-      @media only screen and (min-width 600px)
-        background-image url('../../images/pieces/narrow_edge/wM.svg'),url('../../images/pieces/narrow_edge/wK.svg'),url('../../images/pieces/narrow_edge/bM.svg'),url('../../images/pieces/narrow_edge/bK.svg')
+    background-image url('../../images/pieces/narrow_edge/wM.svg'),url('../../images/pieces/narrow_edge/wK.svg')
+    @media only screen and (min-width 600px)
+      background-image url('../../images/pieces/narrow_edge/wM.svg'),url('../../images/pieces/narrow_edge/wK.svg'),url('../../images/pieces/narrow_edge/bM.svg'),url('../../images/pieces/narrow_edge/bK.svg')
   &.narrow
-    > label
-      background-image url('../../images/pieces/narrow/wM.svg'),url('../../images/pieces/narrow/wK.svg')
-      @media only screen and (min-width 600px)
-        background-image url('../../images/pieces/narrow/wM.svg'),url('../../images/pieces/narrow/wK.svg'),url('../../images/pieces/narrow/bM.svg'),url('../../images/pieces/narrow/bK.svg')
+    background-image url('../../images/pieces/narrow/wM.svg'),url('../../images/pieces/narrow/wK.svg')
+    @media only screen and (min-width 600px)
+      background-image url('../../images/pieces/narrow/wM.svg'),url('../../images/pieces/narrow/wK.svg'),url('../../images/pieces/narrow/bM.svg'),url('../../images/pieces/narrow/bK.svg')
   &.fabirovsky
-    > label
-      background-image url('../../images/pieces/fabirovsky/wM.svg'),url('../../images/pieces/fabirovsky/wK.svg')
-      @media only screen and (min-width 600px)
-        background-image url('../../images/pieces/fabirovsky/wM.svg'),url('../../images/pieces/fabirovsky/wK.svg'),url('../../images/pieces/fabirovsky/bM.svg'),url('../../images/pieces/fabirovsky/bK.svg')
+    background-image url('../../images/pieces/fabirovsky/wM.svg'),url('../../images/pieces/fabirovsky/wK.svg')
+    @media only screen and (min-width 600px)
+      background-image url('../../images/pieces/fabirovsky/wM.svg'),url('../../images/pieces/fabirovsky/wK.svg'),url('../../images/pieces/fabirovsky/bM.svg'),url('../../images/pieces/fabirovsky/bK.svg')
   &.ringed
-    > label
-      background-image url('../../images/pieces/ringed/wM.svg'),url('../../images/pieces/ringed/wK.svg')
-      @media only screen and (min-width 600px)
-        background-image url('../../images/pieces/ringed/wM.svg'),url('../../images/pieces/ringed/wK.svg'),url('../../images/pieces/ringed/bM.svg'),url('../../images/pieces/ringed/bK.svg')
+    background-image url('../../images/pieces/ringed/wM.svg'),url('../../images/pieces/ringed/wK.svg')
+    @media only screen and (min-width 600px)
+      background-image url('../../images/pieces/ringed/wM.svg'),url('../../images/pieces/ringed/wK.svg'),url('../../images/pieces/ringed/bM.svg'),url('../../images/pieces/ringed/bK.svg')
   &.flat
-    > label
-      background-image url('../../images/pieces/flat/wM.svg'),url('../../images/pieces/flat/wK.svg')
-      @media only screen and (min-width 600px)
-        background-image url('../../images/pieces/flat/wM.svg'),url('../../images/pieces/flat/wK.svg'),url('../../images/pieces/flat/bM.svg'),url('../../images/pieces/flat/bK.svg')
+    background-image url('../../images/pieces/flat/wM.svg'),url('../../images/pieces/flat/wK.svg')
+    @media only screen and (min-width 600px)
+      background-image url('../../images/pieces/flat/wM.svg'),url('../../images/pieces/flat/wK.svg'),url('../../images/pieces/flat/bM.svg'),url('../../images/pieces/flat/bK.svg')
   &.basic
-    > label
-      background-image url('../../images/pieces/basic/wM.svg'),url('../../images/pieces/basic/wK.svg')
-      @media only screen and (min-width 600px)
-        background-image url('../../images/pieces/basic/wM.svg'),url('../../images/pieces/basic/wK.svg'),url('../../images/pieces/basic/bM.svg'),url('../../images/pieces/basic/bK.svg')
+    background-image url('../../images/pieces/basic/wM.svg'),url('../../images/pieces/basic/wK.svg')
+    @media only screen and (min-width 600px)
+      background-image url('../../images/pieces/basic/wM.svg'),url('../../images/pieces/basic/wK.svg'),url('../../images/pieces/basic/bM.svg'),url('../../images/pieces/basic/bK.svg')
   &.frisianovsky
-    > label
-      background-image url('../../images/pieces/frisianovsky/wM.svg'),url('../../images/pieces/frisianovsky/wK.svg')
-      @media only screen and (min-width 600px)
-        background-image url('../../images/pieces/frisianovsky/wM.svg'),url('../../images/pieces/frisianovsky/wK.svg'),url('../../images/pieces/frisianovsky/bM.svg'),url('../../images/pieces/frisianovsky/bK.svg')
+    background-image url('../../images/pieces/frisianovsky/wM.svg'),url('../../images/pieces/frisianovsky/wK.svg')
+    @media only screen and (min-width 600px)
+      background-image url('../../images/pieces/frisianovsky/wM.svg'),url('../../images/pieces/frisianovsky/wK.svg'),url('../../images/pieces/frisianovsky/bM.svg'),url('../../images/pieces/frisianovsky/bK.svg')
   &.eightbit
-    > label
-      background-image url('../../images/pieces/eightbit/wM.svg'),url('../../images/pieces/eightbit/wK.svg')
-      @media only screen and (min-width 600px)
-        background-image url('../../images/pieces/eightbit/wM.svg'),url('../../images/pieces/eightbit/wK.svg'),url('../../images/pieces/eightbit/bM.svg'),url('../../images/pieces/eightbit/bK.svg')
+    background-image url('../../images/pieces/eightbit/wM.svg'),url('../../images/pieces/eightbit/wK.svg')
+    @media only screen and (min-width 600px)
+      background-image url('../../images/pieces/eightbit/wM.svg'),url('../../images/pieces/eightbit/wK.svg'),url('../../images/pieces/eightbit/bM.svg'),url('../../images/pieces/eightbit/bK.svg')

@@ -1,4 +1,5 @@
 import { getLidraughtsVariant, getInitialFen } from '../../lidraughts/variant'
+import settings from '../../settings'
 import { AnalyseData } from '../../lidraughts/interfaces/analyse'
 import { playerFromFen, plyFromFen } from '../../utils/fen'
 import { oppositeColor } from '../../utils'
@@ -34,9 +35,8 @@ export function makeDefaultData(variantKey: VariantKey, fen?: string): AnalyseDa
       color: player
     },
     pref: {
-      animationDuration: 300,
-      destination: true,
-      highlight: true
+      destination: settings.game.pieceDestinations(),
+      highlight: settings.game.highlights(),
     },
     treeParts: [
       {

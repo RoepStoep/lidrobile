@@ -41,7 +41,7 @@ function makeConfig(data: OnlineGameData, fen: string, flip: boolean = false, st
       showDests: settings.game.pieceDestinations()
     },
     animation: {
-      enabled: settings.game.animations(),
+      enabled: !!settings.game.animations(),
       duration: data.pref.animationDuration
     },
     premovable: {

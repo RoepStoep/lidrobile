@@ -11,11 +11,11 @@ import settings, { Prop } from './settings'
 import { TempBan, LobbyData, NowPlayingGame } from './lidraughts/interfaces'
 import { PlayTime, Perfs } from './lidraughts/interfaces/user'
 import friendsApi from './lidraughts/friends'
+import { PrefValue } from './lidraughts/prefs'
 import challengesApi from './lidraughts/challenges'
 import storage from './storage'
 import asyncStorage from './asyncStorage'
 
-type PrefValue = number | string | boolean
 interface Prefs {
   [key: string]: PrefValue
 }
@@ -121,7 +121,7 @@ function myTurnGames() {
 }
 
 function showSavedPrefToast(data: string): string {
-  Plugins.LiToast.show({ text: '✓ Your preferences have been saved on lidraughts server.', duration: 'short' })
+  Plugins.LiToast.show({ text: '✓ lidraughts.org: ' + i18n('yourPreferencesHaveBeenSaved'), duration: 'short' })
   return data
 }
 
@@ -144,7 +144,7 @@ function numValue(v: string | boolean | number): string {
 }
 
 function makeReducer(prefix: string) {
-  return function(acc: Prefs, [k, v]: [string, PrefValue]) {
+  return function(acc: Partial<Prefs>, [k, v]: [string, PrefValue]) {
     return {
       ...acc,
       [prefix + k]: numValue(v)
@@ -152,7 +152,7 @@ function makeReducer(prefix: string) {
   }
 }
 
-function savePreferences(): Promise<string> {
+const savePreferences = throttle((): Promise<string> => {
 
   const prefs = session && session.prefs || {}
 
@@ -197,9 +197,9 @@ function savePreferences(): Promise<string> {
     body: serializeQueryParameters({ ...rest, ...display, ...behavior })
   }, true)
   .then(showSavedPrefToast)
-}
+}, 1000)
 
-function lidraughtsBackedProp<T extends string | number | boolean>(path: string, prefRequest: () => Promise<string>, defaultVal: T): Prop<T> {
+function lidraughtsBackedProp<T extends PrefValue>(path: string, defaultVal: T): Prop<T> {
   return function() {
     if (arguments.length) {
       let oldPref: T
@@ -207,10 +207,10 @@ function lidraughtsBackedProp<T extends string | number | boolean>(path: string,
         oldPref = <T>getAtPath(session, path)
         setAtPath(session, path, arguments[0])
       }
-      prefRequest()
+      savePreferences()
       .catch((err) => {
         if (session) setAtPath(session, path, oldPref)
-        handleXhrError(err)
+        if (hasNetwork()) handleXhrError(err)
       })
     }
 
@@ -360,7 +360,6 @@ export default {
   restoreStoredSession,
   refresh: throttle(refresh, 1000),
   backgroundRefresh: throttle(backgroundRefresh, 1000),
-  savePreferences: throttle(savePreferences, 1000),
   get: getSession,
   getUserId,
   appUser(fallback: string) {

@@ -2,10 +2,10 @@ import Draughtsground from '../../../draughtsground/Draughtsground'
 import * as cg from '../../../draughtsground/interfaces'
 import * as gameApi from '../../../lidraughts/game'
 import settings from '../../../settings'
+import { boardOrientation, animationDuration } from '../../../utils'
 import { OfflineGameData } from '../../../lidraughts/interfaces/game'
 import { AfterMoveMeta } from '../../../lidraughts/interfaces/move'
 import { getVariant } from '../../../lidraughts/variant'
-import { boardOrientation } from '../../../utils'
 import { uciToMoveOrDrop } from '../../../utils/draughtsFormat'
 import { GameSituation } from '../../../draughts'
 
@@ -36,8 +36,8 @@ function makeConfig(data: OfflineGameData, sit: GameSituation): cg.InitConfig {
       dests: sit.dests
     },
     animation: {
-      enabled: settings.game.animations(),
-      duration: 300
+      enabled: !!settings.game.animations(),
+      duration: animationDuration(settings.game.animations()),
     },
     premovable: {
       enabled: false

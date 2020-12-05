@@ -17,7 +17,7 @@ export default {
     const header = dropShadowHeader(null, backButton(i18n('about')))
     return layout.free(
       header,
-      <div class="aboutBody native_scroller">
+      <div class="aboutBody native_scroller page">
         <p>lidraughts.org is a free, open-source draughts server powered by volunteers.</p>
 
         <p>Chess websites are around abundantly anno 2018, with many powerful features to play, learn and interact (all for free on {externalLink('lichess.org', 'https://lichess.org')}). The surprising absence of such a website for international draughts was an important motivation to create Lidraughts. Founded on the love for draughts, it hopes to grow into a place where people from all over the world can come to enjoy this beautiful game, for free.</p>

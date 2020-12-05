@@ -374,7 +374,7 @@ function renderAntagonistInfo(ctrl: OnlineRound, player: Player, material: Mater
         {checksNb !== undefined ?
           <div className="checkCount">+{checksNb}</div> : null
         }
-        {renderMaterial(material)}
+        {!ctrl.vm.showCaptured ? null : renderMaterial(material)}
       </div> : null
       }
       {isCrazy && ctrl.clock ?
@@ -468,6 +468,7 @@ function renderGameRunningActions(ctrl: OnlineRound) {
   }, ctrl.data.player.spectator ? [
     gameButton.shareLink(ctrl),
   ] : [
+    gameButton.toggleZen(ctrl),
     gameButton.analysisBoard(ctrl),
     gameButton.moretime(ctrl),
     gameButton.standard(ctrl, gameApi.abortable, 'L', 'abortGame', 'abort'),

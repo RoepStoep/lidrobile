@@ -1,11 +1,10 @@
 import Draughtsground from '../../draughtsground/Draughtsground'
 import * as cg from '../../draughtsground/interfaces'
 import settings from '../../settings'
-import { AnalyseData } from '../../lidraughts/interfaces/analyse'
+import { animationDuration } from '../../utils'
 
 
 function makeConfig(
-  data: AnalyseData,
   config: cg.SetConfig,
   orientation: Color,
   onMove: (orig: Key, dest: Key, capturedPiece?: Piece) => void
@@ -25,7 +24,7 @@ function makeConfig(
       color: config.movableColor,
       dests: config.dests,
       showDests: settings.game.pieceDestinations(),
-      variant: data.game.variant.key,
+      variant: config.variant,
       captureUci: config.captureUci,
     },
     draggable: {
@@ -46,20 +45,19 @@ function makeConfig(
       kingMoves: settings.game.kingMoves()
     },
     animation: {
-      enabled: settings.game.animations(),
-      duration: data.pref.animationDuration
+      enabled: !!settings.game.animations(),
+      duration: animationDuration(settings.game.animations()),
     }
   }
 }
 
 export default {
   make(
-    data: AnalyseData,
     config: cg.SetConfig,
     orientation: Color,
     onMove: (orig: Key, dest: Key, capturedPiece?: Piece) => void,
   ) {
-    return new Draughtsground(makeConfig(data, config, orientation, onMove))
+    return new Draughtsground(makeConfig(config, orientation, onMove))
   },
 
   promote(ground: Draughtsground, key: Key) {

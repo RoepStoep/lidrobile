@@ -45,7 +45,7 @@ export function configureBoard(state: State, config: cg.InitConfig): void {
   if (state.selected) board.setSelected(state, state.selected)
 
   // no need for such short animations
-  if (!state.animation.duration || state.animation.duration < 10)
+  if (!state.animation.duration || state.animation.duration < 100)
     state.animation.enabled = false
 }
 
