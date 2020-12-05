@@ -82,7 +82,7 @@ function renderPlayer(ctrl: RelatedCtrl, obj: Related, i: number) {
   const perf = obj.perfs && obj.perfs[perfKey]
   const userLink = helper.ontapY(() => router.set(`/@/${obj.user}`))
   const title64 = obj.title && obj.title.endsWith('-64')
-  const titleClass = 'userTitle' + (obj.title == 'BOT' ? ' titleBot' : (title64 ? ' title64' : ''))
+  const titleClass = 'userTitle' + (obj.title == 'BOT' ? ' bot' : (title64 ? ' title64' : ''))
   const evenOrOdd = i % 2 === 0 ? 'even' : 'odd'
   return (
     <li className={`list_item followingList ${evenOrOdd}`}>
