@@ -1,5 +1,4 @@
 import { Capacitor, Plugins, AppState, PluginListenerHandle } from '@capacitor/core'
-import throttle from 'lodash-es/throttle'
 import Draughtsground from '../../../draughtsground/Draughtsground'
 import * as cg from '../../../draughtsground/interfaces'
 import fen, { countGhosts } from '../../../draughtsground/fen'
@@ -8,7 +7,7 @@ import { hasNetwork, boardOrientation, handleXhrError } from '../../../utils'
 import * as sleepUtils from '../../../utils/sleep'
 import session from '../../../session'
 import settings from '../../../settings'
-import socket, { SocketIFace } from '../../../socket'
+import socket from '../../../socket'
 import i18n from '../../../i18n'
 import router from '../../../router'
 import sound from '../../../sound'
@@ -23,11 +22,12 @@ import { MoveRequest, DropRequest, MoveOrDrop, AfterMoveMeta, isMove, isDrop, is
 import * as draughtsFormat from '../../../utils/draughtsFormat'
 import { Chat } from '../../shared/chat'
 
+import TransientMove from './TransientMove'
 import ground from './ground'
 import { NotesCtrl } from './notes'
 import ClockCtrl from './clock/ClockCtrl'
 import CorresClockCtrl from './correspondenceClock/corresClockCtrl'
-import socketHandler from './socketHandler'
+import RoundSocket from './socket'
 import * as xhr from './roundXhr'
 import { OnlineRoundInterface } from './'
 
@@ -69,7 +69,7 @@ export default class OnlineRound implements OnlineRoundInterface {
   public tv!: string
   public score?: Score
   public readonly goingBack: boolean
-  public socketIface: SocketIFace
+  public socket: RoundSocket
 
   private zenModeEnabled: boolean
   private lastMoveMillis?: number
@@ -79,6 +79,7 @@ export default class OnlineRound implements OnlineRoundInterface {
 
   private readonly playableOnInit: boolean
 
+  private transientMove: TransientMove
   private appStateListener: PluginListenerHandle
 
   public constructor(
@@ -136,16 +137,10 @@ export default class OnlineRound implements OnlineRoundInterface {
       offlineWatcher: !hasNetwork()
     }
 
-    this.socketIface = socket.createGame(
-      this.data.url.socket,
-      this.data.player.version,
-      socketHandler(this, this.onFeatured, this.onUserTVRedirect),
-      this.data.url.round,
-      this.data.userTV
-    )
+    this.socket = new RoundSocket(this, this.onFeatured, this.onUserTVRedirect)
 
     this.chat = (session.isKidMode() || this.data.tv || (!this.data.player.spectator && (this.data.game.tournamentId || this.data.opponent.ai))) ? null : new Chat(
-      this.socketIface,
+      this.socket.iface,
       this.data.game.id,
       this.data.chat || [],
       this.data.player.spectator ? undefined : this.data.player,
@@ -165,7 +160,7 @@ export default class OnlineRound implements OnlineRoundInterface {
     )
 
     this.clock = this.data.clock ? new ClockCtrl(this.data, {
-      onFlag: this.outoftime,
+      onFlag: this.socket.outoftime,
       soundColor: (this.data.player.spectator || !this.data.pref.clockSound) ? null : this.data.player.color,
       showTenths: this.data.pref.clockTenths,
     }) : null
@@ -176,6 +171,8 @@ export default class OnlineRound implements OnlineRoundInterface {
     this.appStateListener = Plugins.App.addListener('appStateChange', (state: AppState) => {
       if (state.isActive) this.onResume()
     })
+
+    this.transientMove = new TransientMove(this)
 
     redraw()
   }
@@ -267,7 +264,7 @@ export default class OnlineRound implements OnlineRoundInterface {
   public offerDraw = () => {
     if (this.canOfferDraw()) {
       this.lastDrawOfferAtPly = this.vm.ply
-      this.socketIface.send('draw-yes', null)
+      this.socket.iface.send('draw-yes', null)
     }
   }
 
@@ -360,7 +357,7 @@ export default class OnlineRound implements OnlineRoundInterface {
         redraw()
       }, this.data.pref.animationDuration || 0)
     } else {
-      this.socketSendMoveOrDrop(move, isPremove, sendBlur)
+      this.actualSendMove(move, isPremove, sendBlur)
       if (this.data.game.speed === 'correspondence' && !hasNetwork()) {
         Plugins.LiToast.show({ text: 'You need to be connected to Internet to send your move.', duration: 'short' })
       }
@@ -380,7 +377,7 @@ export default class OnlineRound implements OnlineRoundInterface {
         redraw()
       }, this.data.pref.animationDuration || 0)
     } else {
-      this.socketSendMoveOrDrop(drop, isPredrop, sendBlur)
+      this.actualSendMove(drop, isPredrop, sendBlur)
     }
   }
 
@@ -402,9 +399,9 @@ export default class OnlineRound implements OnlineRoundInterface {
   public submitMove = (v: boolean) => {
     if (v && (this.vm.moveToSubmit || this.vm.dropToSubmit) && !this.vm.submitFeedback) {
       if (this.vm.moveToSubmit) {
-        this.socketSendMoveOrDrop(this.vm.moveToSubmit)
+        this.actualSendMove(this.vm.moveToSubmit)
       } else if (this.vm.dropToSubmit) {
-        this.socketSendMoveOrDrop(this.vm.dropToSubmit)
+        this.actualSendMove(this.vm.dropToSubmit)
       }
       if (this.data.game.speed === 'correspondence' && !hasNetwork()) {
         Plugins.LiToast.show({ text: 'You need to be connected to Internet to send your move.', duration: 'short' })
@@ -531,6 +528,10 @@ export default class OnlineRound implements OnlineRoundInterface {
       else this.data.expiration.movedAt = Date.now()
     }
 
+    if (playing && playedColor === d.player.color) {
+      this.transientMove.clear()
+    }
+
     if (!this.replaying() && playedColor !== d.player.color &&
       (this.draughtsground.state.premovable.current || this.draughtsground.state.predroppable.current)) {
       setTimeout(() => {
@@ -566,8 +567,20 @@ export default class OnlineRound implements OnlineRoundInterface {
     redraw()
   }
 
-  public reloadGameData = () => {
-    xhr.reload(this).then(this.onReload)
+  public reloadGameData = (isRetry = false) => {
+    Promise.all([
+      xhr.reload(this),
+      socket.getVersion(),
+    ])
+    .then(([data, version]) => {
+      if ((version === null) || version > data.player.version) {
+        // race condition! try to reload again
+        if (isRetry) router.reload() // give up and reload the screen
+        else this.reloadGameData(true)
+      }
+      else this.onReload(data)
+    })
+    .catch(router.reload)
   }
 
   public endWithData = (o: ApiEnd) => {
@@ -611,7 +624,7 @@ export default class OnlineRound implements OnlineRoundInterface {
   }
 
   public goBerserk() {
-    throttle((): void => this.socketIface.send('berserk', null, { ackable: true }), 500)()
+    this.socket.berserk()
     sound.berserk()
   }
 
@@ -646,20 +659,16 @@ export default class OnlineRound implements OnlineRoundInterface {
   private makeCorrespondenceClock() {
     if (this.data.correspondence && !this.correspondenceClock)
       this.correspondenceClock = new CorresClockCtrl(
-        this.data.correspondence, this.outoftime
+        this.data.correspondence, this.socket.outoftime
       )
   }
-
-  private outoftime = throttle(() => {
-    this.socketIface.send('flag', this.data.game.player)
-  }, 500)
 
   private correspondenceClockTick = () => {
     if (this.correspondenceClock && gameApi.playable(this.data))
       this.correspondenceClock.tick(this.data.game.player)
   }
 
-  private socketSendMoveOrDrop(moveOrDropReq: MoveRequest | DropRequest, premove = false, blur = false) {
+  private actualSendMove(moveOrDropReq: MoveRequest | DropRequest, premove = false, blur = false) {
     const millis = premove ? 0 : this.lastMoveMillis !== undefined ?
       performance.now() - this.lastMoveMillis : undefined
 
@@ -671,11 +680,13 @@ export default class OnlineRound implements OnlineRoundInterface {
     }
 
     if (isMoveRequest(moveOrDropReq)) {
-      this.socketIface.send('move', moveOrDropReq, opts)
+      this.socket.iface.send('move', moveOrDropReq, opts)
     }
     else if (isDropRequest(moveOrDropReq)) {
-      this.socketIface.send('drop', moveOrDropReq, opts)
+      this.socket.iface.send('drop', moveOrDropReq, opts)
     }
+
+    this.transientMove.register()
   }
 
   private userMove = (orig: Key, dest: Key, meta: AfterMoveMeta) => {
