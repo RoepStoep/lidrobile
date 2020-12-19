@@ -47,14 +47,14 @@ export default function view(ctrl: OnlineRound) {
   )
 }
 
-export function emptyTV(channel?: string, onTVChannelChange?: () => void) {
+export function emptyTV(channel?: string, onFeatured?: () => void) {
   let variant: VariantKey;
   if (channel) {
     variant = channel.toLowerCase() as VariantKey
     if (!getVariant(variant)) variant = 'standard'
   } else variant = 'standard'
   return layout.board(
-    renderEmptyHeader(channel, onTVChannelChange),
+    renderEmptyHeader(channel, onFeatured),
     viewOnlyBoardContent(emptyFen, 'white', variant)
   )
 }
@@ -152,7 +152,7 @@ function renderTitle(ctrl: OnlineRound) {
     if (ctrl.data.tv) {
       return h('div.main_header_title.withSub', [
         h('h1.header-gameTitle', [
-          tvChannelSelector(ctrl.onTVChannelChange)
+          tvChannelSelector(ctrl.onFeatured)
         ]),
         h('h2.header-subTitle', gameApi.title(ctrl.data)),
       ])
@@ -188,11 +188,11 @@ function renderTitle(ctrl: OnlineRound) {
   }
 }
 
-function renderEmptyTitle(channel?: string, onTVChannelChange?: () => void) {
+function renderEmptyTitle(channel?: string, onFeatured?: () => void) {
   if (channel) {
     return h('div.main_header_title.withSub', [
       h('h1.header-gameTitle', [h('span.withIcon[data-icon=1]'), 'Lidraughts TV']),
-      h('h2.header-subTitle', tvChannelSelector(onTVChannelChange))
+      h('h2.header-subTitle', tvChannelSelector(onFeatured))
     ])
   } else {
     return (
@@ -227,10 +227,10 @@ function renderHeader(ctrl: OnlineRound) {
   }, children)
 }
 
-function renderEmptyHeader(channel?: string, onTVChannelChange?: () => void) {
+function renderEmptyHeader(channel?: string, onFeatured?: () => void) {
   const children = [
     menuButton(),
-    renderEmptyTitle(channel, onTVChannelChange),
+    renderEmptyTitle(channel, onFeatured),
     headerBtns()
   ]
   return h('nav', {
@@ -445,7 +445,7 @@ function renderPlayTable(
   )
 }
 
-function tvChannelSelector(onTVChannelChange?: () => void) {
+function tvChannelSelector(onFeatured?: () => void) {
   const channels = perfApi.perfTypes.filter(e => e[0] !== 'correspondence').map(e => [e[1], e[0]])
   channels.unshift(['Top rated', 'best'])
   channels.push(['Bot', 'bot'])
@@ -467,7 +467,7 @@ function tvChannelSelector(onTVChannelChange?: () => void) {
         onchange(e: Event) {
           const val = (e.target as HTMLSelectElement).value
           settings.tv.channel(val)
-          onTVChannelChange && onTVChannelChange()
+          onFeatured && onFeatured()
           setTimeout(redraw, 10)
         }
       }, channels.map(v =>

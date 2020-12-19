@@ -28,9 +28,6 @@ const TV: Mithril.Component<TVAttrs, State> = {
   oninit(vnode) {
     sleepUtils.keepAwake()
 
-    const onChannelChange = () => router.set('/tv', true)
-    const onFeatured = () => router.set('/tv', true)
-
     if (vnode.attrs.channel) {
       settings.tv.channel(vnode.attrs.channel)
     }
@@ -38,7 +35,7 @@ const TV: Mithril.Component<TVAttrs, State> = {
     xhr.featured(settings.tv.channel(), vnode.attrs.flip)
     .then(d => {
       d.tv = settings.tv.channel()
-      this.round = new OnlineRound(false, vnode.attrs.id, d, vnode.attrs.flip, onFeatured, onChannelChange)
+      this.round = new OnlineRound(false, vnode.attrs.id, d, vnode.attrs.flip, router.reload)
     })
     .catch(e => {
       this.emptyTV = e.status === 404 && e.body.error === 'No game found'

@@ -24,7 +24,6 @@ const UserTv: Mithril.Component<Attrs, State> = {
     sleepUtils.keepAwake()
 
     const userId = vnode.attrs.id
-    const onRedirect = () => router.set(`/@/${userId}/tv`, true)
 
     tv(userId)
     .then(data => {
@@ -33,7 +32,7 @@ const UserTv: Mithril.Component<Attrs, State> = {
         Plugins.LiToast.show({ text: i18n('unsupportedVariant', data.game.variant.name), duration: 'short' })
         router.set('/')
       } else {
-        this.round = new OnlineRound(false, data.game.id, data, false, undefined, undefined, userId, onRedirect)
+        this.round = new OnlineRound(false, data.game.id, data, false, undefined, userId)
       }
     })
     .catch(handleXhrError)
