@@ -2,7 +2,7 @@ import h from 'mithril/hyperscript'
 import layout from '../../layout'
 import i18n from '../../../i18n'
 import session from '../../../session'
-import { AnimationChoices, Animation, Replay, ReplayChoices } from '../../../lidraughts/prefs'
+import { AnimationChoices, Animation } from '../../../lidraughts/prefs'
 import * as helper from '../../helper'
 import { dropShadowHeader, backButton } from '../../shared/common'
 import formWidgets from '../../shared/form'
@@ -21,7 +21,6 @@ export default {
 const prefsCtrl = {
   animation: session.lidraughtsBackedProp<number>('prefs.animation', Animation.NORMAL),
   showCaptured: session.lidraughtsBackedProp<boolean>('prefs.captured', true),
-  replay: session.lidraughtsBackedProp<number>('prefs.replay', Replay.ALWAYS),
 }
 
 export function render(ctrl: typeof prefsCtrl) {
@@ -31,9 +30,6 @@ export function render(ctrl: typeof prefsCtrl) {
     ),
     h('li.list_item',
       formWidgets.renderMultipleChoiceButton(i18n('materialDifference'), formWidgets.booleanChoice, ctrl.showCaptured),
-    ),
-    h('li.list_item',
-      formWidgets.renderMultipleChoiceButton(i18n('moveListWhilePlaying'), ReplayChoices, ctrl.replay)
     ),
   ]
 }
