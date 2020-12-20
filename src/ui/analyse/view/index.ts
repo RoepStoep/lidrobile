@@ -30,6 +30,7 @@ import renderAnalysis from './analysisView'
 import renderBoard from './boardView'
 import renderGameInfos from './gameInfosView'
 import renderActionsBar from './actionsView'
+import renderForecasts from '../forecast/forecastView'
 import { toggleCoordinates } from '../../../draughtsground/fen'
 
 export function loadingScreen(isPortrait: boolean, color?: Color, curFen?: string, variant?: VariantKey) {
@@ -189,6 +190,7 @@ const TabsContentRendererMap: { [id: string]: (ctrl: AnalyseCtrl) => Mithril.Chi
   ceval: renderCeval,
   pdnTags: renderPdnTags,
   comments: renderReadonlyComments,
+  forecasts: renderForecasts,
 }
 
 function renderAnalyseTable(ctrl: AnalyseCtrl, availTabs: ReadonlyArray<Tab>) {

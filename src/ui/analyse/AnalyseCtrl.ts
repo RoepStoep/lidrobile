@@ -41,6 +41,7 @@ import { make as makeEvalCache, EvalCache } from './evalCache'
 import { Source } from './interfaces'
 import * as tabs from './tabs'
 import StudyCtrl from './study/StudyCtrl'
+import ForecastCtrl from './forecast/ForecastCtrl'
 import i18n from '../../i18n'
 
 export default class AnalyseCtrl {
@@ -58,6 +59,7 @@ export default class AnalyseCtrl {
   tree: TreeWrapper
   evalCache: EvalCache
   study?: StudyCtrl
+  forecast?: ForecastCtrl
 
   socket: SocketIFace
 
@@ -100,8 +102,8 @@ export default class AnalyseCtrl {
     this.synthetic = util.isSynthetic(data)
     this.ongoing = !this.synthetic && gameApi.playable(data)
     this.initialPath = treePath.root
-
     this.study = studyData !== undefined ? new StudyCtrl(studyData, this) : undefined
+    this.forecast = data.forecast?.steps ? new ForecastCtrl(data.forecast.steps) : undefined
 
     this._currentTabIndex = (!this.study || this.study.data.chapter.tags.length === 0) && this.synthetic ? 0 : 1
 
@@ -242,6 +244,9 @@ export default class AnalyseCtrl {
     if (!this.retro && !this.practice && this.ceval.enabled()) val = [...val, tabs.ceval]
     if (this.study || (isOnlineAnalyseData(this.data) && gameApi.analysable(this.data))) {
       val = [...val, tabs.charts]
+    }
+    if (hasNetwork() && !this.synthetic && gameApi.playable(this.data)) {
+      val = [tabs.forecasts, ...val]
     }
     if (hasNetwork() && this.explorer.allowed) val = [...val, tabs.explorer]
 
