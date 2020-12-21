@@ -19,12 +19,13 @@ let firstConnection = true
 const requestIdleCallback: (c: () => void) => void =
   window.requestIdleCallback || window.setTimeout
 
-export default function appInit(info: DeviceInfo) {
+export default function appInit(info: DeviceInfo, cpuCores: number) {
 
   window.deviceInfo = {
     platform: info.platform,
     uuid: info.uuid,
     appVersion: info.appVersion,
+    cpuCores,
   }
 
   if (Capacitor.platform === 'ios') {
