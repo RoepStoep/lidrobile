@@ -1,11 +1,12 @@
+import { Plugins } from '@capacitor/core'
 import { VariantKey } from '../lidraughts/interfaces/variant'
 
-export function send(text: string) {
+export function send(text: string): Promise<void> {
   console.debug('[scan <<] ' + text)
-  return Scan.cmd(text)
+  return Plugins.Scan.cmd({ cmd: text })
 }
 
-export function setOption(name: string, value: string | number | boolean) {
+export function setOption(name: string, value: string | number | boolean): Promise<void> {
   return send(`set-param name=${name} value=${value}`)
 }
 

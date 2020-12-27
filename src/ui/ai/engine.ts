@@ -1,3 +1,4 @@
+import { Plugins } from '@capacitor/core'
 import { AiRoundInterface } from '../shared/round'
 import { send, getNbCores, setOption, parsePV, parseVariant, scanFen } from '../../utils/scan'
 
@@ -47,6 +48,7 @@ export const levelToRating: LevelToNumber = {
 
 export interface EngineInterface {
   init(variant: VariantKey): Promise<void>
+  newGame(): Promise<void>
   search(level: number, initialFen: string, currentFen: string, moves: string[]): void
   exit(): Promise<void>
   variant(): VariantKey
@@ -55,25 +57,32 @@ export interface EngineInterface {
 export default function(ctrl: AiRoundInterface): EngineInterface {
   const uciCache: any = {}
   let initVariant: VariantKey = ctrl.data ? ctrl.data.game.variant.key : 'standard'
+  let searchFen: string = ''
   let level = 1
 
   return {
     init(v: VariantKey) {
       initVariant = v
-      return Scan.init(parseVariant(initVariant))
+
+      Plugins.Scan.addListener('output', ({ line }: { line: string }) => {
+        console.debug('[scan >>] ' + line)
+        const match = line.match(/^done move=([0-9\-xX\s]+)/)
+        if (match) {
+          ctrl.onEngineMove(parsePV(searchFen, match[1], initVariant === 'frisian' || initVariant === 'frysk', uciCache)[0])
+        }
+      })
+
+      return Plugins.Scan.start(parseVariant(initVariant))
         .then(onInit)
         .catch(console.error.bind(console))
     },
 
-    search(l: number, initialFen: string, currentFen: string, moves: string[]) {
-      Scan.output((msg: string) => {
-        console.debug('[scan >>] ' + msg)
-        const match = msg.match(/^done move=([0-9\-xX\s]+)/)
-        if (match) {
-          ctrl.onEngineMove(parsePV(currentFen, match[1], initVariant === 'frisian' || initVariant === 'frysk', uciCache)[0])
-        }
-      })
+    newGame() {
+      return send('new-game')
+    },
 
+    search(l: number, initialFen: string, currentFen: string, moves: string[]) {
+      searchFen = currentFen
       initialFen = scanFen(initialFen)
       level = l
 
@@ -119,9 +128,7 @@ export default function(ctrl: AiRoundInterface): EngineInterface {
       });
 
       // TODO: Movetimes might need a different approach
-      setOption('threads', getNbCores())
-        .then(() => send('new-game'))
-        .then(() => send('pos pos=' + initialFen + (scanMoves.length != 0 ? (' moves="' + scanMoves.join(' ') + '"') : '')))
+      send('pos pos=' + initialFen + (scanMoves.length != 0 ? (' moves="' + scanMoves.join(' ') + '"') : ''))
         .then(() => handicap ? send(`level handicap=${handicap}`) : Promise.resolve())
         .then(() => ply ? send(`level ply=${ply}`) : Promise.resolve())
         .then(() => nodes ? send(`level nodes=${nodes}`) : Promise.resolve())
@@ -134,7 +141,8 @@ export default function(ctrl: AiRoundInterface): EngineInterface {
     },
 
     exit() {
-      return Scan.exit()
+      Plugins.Scan.removeAllListeners()
+      return Plugins.Scan.exit()
     },
 
     variant() { 
@@ -146,9 +154,9 @@ export default function(ctrl: AiRoundInterface): EngineInterface {
 function onInit() {
   return send('hub')
     .then(() => send('init'))
+    .then(() => setOption('threads', getNbCores()))
+    .then(async () => {
+      const { value: mem }= await Plugins.Scan.getMaxMemory()
+      setOption('hash', mem)
+    })
 }
-
-/*function moveTime(level: number) {
-  const maxMoveTime = 8000
-  return level * maxMoveTime / 8
-}*/

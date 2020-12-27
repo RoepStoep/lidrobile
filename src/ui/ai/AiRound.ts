@@ -144,7 +144,8 @@ export default class AiRound implements AiRoundInterface, PromotingInterface {
       payload.fen = setupFen
     }
 
-    draughts.init(payload)
+    this.engine.newGame(variant)
+    .then(() => draughts.init(payload))
     .then((data: draughts.InitResponse) => {
       this.init(makeData({
         id: 'offline_ai',

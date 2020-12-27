@@ -1,3 +1,4 @@
+import { Plugins } from '@capacitor/core'
 import { Tree } from '../../shared/tree/interfaces'
 import { Work, IEngine } from './interfaces'
 import { send, setOption, scanFen, parsePV, parseVariant } from '../../../utils/scan'
@@ -36,13 +37,11 @@ export default function ScanEngine(variant: VariantKey): IEngine {
    * Init engine with default options and variant
    */
   function init() {
-    return Scan.init(parseVariant(variant))
-      .then(() => {
-        return send('hub')
-          .then(() => setOption('bb-size', '0'))
-          .then(() => send('init'))
-      })
-      .catch(err => console.error('scan init error', err))
+    return Plugins.Scan.start(parseVariant(variant))
+      .then(() => send('hub'))
+      .then(() => setOption('bb-size', '0'))
+      .then(() => send('init'))
+      .catch((err: any) => console.error('scan init error', err))
   }
 
   /*
@@ -60,7 +59,7 @@ export default function ScanEngine(variant: VariantKey): IEngine {
       stopTimeoutId = setTimeout(reject, 5 * 1000)
     })
 
-    Promise.race([readyPromise, timeout])
+    return Promise.race([readyPromise, timeout])
     .then(search)
     .catch(() => {
       reset().then(search)
@@ -87,13 +86,17 @@ export default function ScanEngine(variant: VariantKey): IEngine {
       stopped = false
       finished = false
       startQueue = []
+      curEval = null
 
       readyPromise = new Promise((resolve) => {
-        Scan.output((msg: string) => processOutput(msg, work, resolve))
+        Plugins.Scan.removeAllListeners()
+        Plugins.Scan.addListener('output', ({ line }: { line: string }) => {
+          processOutput(line, work, resolve)
+        })
       })
 
       return setOption('threads', work.cores)
-      .then(() => curEval = null)
+      .then(() => setOption('hash', work.hash))
       .then(() => send('pos pos=' + scanFen(work.initialFen) + (work.moves.length != 0 ? (' moves="' + work.moves.join(' ') + '"') : '')))
       .then(() => {
         if (work.maxDepth >= 99) return send('level infinite');
@@ -179,7 +182,8 @@ export default function ScanEngine(variant: VariantKey): IEngine {
   }
   
   function exit() {
-    return Scan.exit()
+    Plugins.Scan.removeAllListeners()
+    return Plugins.Scan.exit()
   }
 
   function reset() {
