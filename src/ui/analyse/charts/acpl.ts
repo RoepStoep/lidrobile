@@ -3,7 +3,7 @@ import { scaleLinear } from 'd3-scale'
 import { area as d3Area } from 'd3-shape'
 import i18n from '../../../i18n'
 
-import { ops as treeOps, Tree } from '../../shared/tree'
+import * as Tree from '../../shared/tree'
 import AnalyseCtrl from '../AnalyseCtrl';
 
 interface Point {
@@ -125,7 +125,7 @@ export default function drawAcplChart(
 }
 
 function makeSerieData(ctrl: AnalyseCtrl): Point[] {
-  const treeParts = treeOps.mainlineNodeList(ctrl.tree.root)
+  const treeParts = Tree.ops.mainlineNodeList(ctrl.tree.root)
   return treeParts.slice(1).reduce((acc: Point[], node: Partial<Tree.Node>) => {
     const ply = node.ply!
     const color = ply & 1

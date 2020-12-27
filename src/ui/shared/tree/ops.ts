@@ -1,4 +1,4 @@
-import { Tree } from './interfaces'
+import * as Tree from './interfaces'
 import { countGhosts } from '../../../draughtsground/fen'
 import { fenCompare } from '../../../utils/draughtsFormat'
 
