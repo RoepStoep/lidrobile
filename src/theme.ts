@@ -183,6 +183,6 @@ export function setStatusBarStyle(bgTheme: string): Promise<void> {
     // Plugins.StatusBar.setOverlaysWebView({
     //   overlay: isTransparent(bgTheme)
     // }),
-  ]).then(() => {})
+  ]).then(() => { /* noop */ })
 }
 

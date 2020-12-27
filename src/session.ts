@@ -200,12 +200,12 @@ const savePreferences = throttle((): Promise<string> => {
 }, 1000)
 
 function lidraughtsBackedProp<T extends PrefValue>(path: string, defaultVal: T): Prop<T> {
-  return function() {
-    if (arguments.length) {
+  return function(...args: unknown[]) {
+    if (args.length) {
       let oldPref: T
       if (session) {
         oldPref = <T>getAtPath(session, path)
-        setAtPath(session, path, arguments[0])
+        setAtPath(session, path, args[0])
       }
       savePreferences()
       .catch((err) => {

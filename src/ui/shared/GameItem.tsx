@@ -94,7 +94,7 @@ export default {
       </li>
     )
   }
-} as Mithril.Component<Attrs, {}>
+} as Mithril.Component<Attrs>
 
 function renderBoard(fen: string, orientation: Color, variant: VariantKey, boardTheme: string) {
   const board = (getVariant(variant) || getVariant('standard')).board

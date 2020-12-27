@@ -19,7 +19,7 @@ export interface IDraughtsClockCtrl {
   appStateListener: PluginListenerHandle
 }
 
-function noop() {}
+function noop() { /* noop */ }
 
 export default function DraughtsClockCtrl(): IDraughtsClockCtrl {
 

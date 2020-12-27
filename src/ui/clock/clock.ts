@@ -10,7 +10,8 @@ interface State {
   ctrl: IDraughtsClockCtrl
 }
 
-const DraughtsClockScreen: Mithril.Component<{}, State> = {
+
+const DraughtsClockScreen: Mithril.Component<Record<string, never>, State> = {
   oncreate: helper.viewFadeIn,
 
   oninit() {

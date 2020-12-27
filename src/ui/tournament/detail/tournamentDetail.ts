@@ -66,15 +66,13 @@ export default {
     }
 
     const tournament = this.ctrl.tournament
-    let header: Mithril.Children
-
     if (tournament && !isSupportedVariantKey(tournament.variant)) {
       Plugins.LiToast.show({ text: i18n('unsupportedVariant', tournament.variant), duration: 'short' })
       router.set('/')
       return
     }
 
-    header = headerWidget(null,
+    const header = headerWidget(null,
       backButton(h('div.main_header_title.withSub', [
         h('h1', [
           h('span.fa.fa-trophy'),

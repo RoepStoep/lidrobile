@@ -195,7 +195,7 @@ export function setServerLang(lang: string): Promise<void> {
         lang
       })
     })
-    .then(() => {})
+    .then(() => { /* noop */ })
   } else {
     return Promise.resolve()
   }

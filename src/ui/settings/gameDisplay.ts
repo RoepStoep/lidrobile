@@ -13,7 +13,7 @@ export default {
     const header = dropShadowHeader(null, backButton(i18n('gameDisplay')))
     return layout.free(header, renderBody())
   }
-} as Mithril.Component<{}, {}>
+} as Mithril.Component
 
 function renderBody() {
   return [

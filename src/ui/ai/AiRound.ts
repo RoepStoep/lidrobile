@@ -335,15 +335,14 @@ export default class AiRound implements AiRoundInterface, PromotingInterface {
   }
 
   public onGameEnd = () => {
-    const self = this
     if (this.engineNextMove) {
       clearTimeout(this.engineNextMove)
       this.engineNextMove = undefined;
     }
     this.draughtsground.cancelMove()
     this.draughtsground.stop()
-    setTimeout(function() {
-      self.actions.open()
+    setTimeout(() => {
+      this.actions.open()
       redraw()
     }, 500)
   }
