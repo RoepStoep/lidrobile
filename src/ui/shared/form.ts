@@ -103,7 +103,7 @@ export default {
     label: string,
     options: ReadonlyArray<MultiOption<T>>,
     prop: Prop<T>,
-    wrap: boolean = false,
+    wrap = false,
     callback?: (v: T) => void,
   ) {
     const selected = prop()

@@ -210,7 +210,7 @@ function renderHeader(ctrl: OnlineRound) {
     children = [
       backButton([
         renderTitle(ctrl),
-        bookmarkButton(ctrl.toggleBookmark, ctrl.data.bookmarked!!),
+        bookmarkButton(ctrl.toggleBookmark, ctrl.data.bookmarked!),
       ])
     ]
   } else {
@@ -316,8 +316,8 @@ function renderSubmitMovePopup(ctrl: OnlineRound) {
 function userInfos(user: User, player: Player, playerName: string) {
   let title: string
   if (user) {
-    let onlineStatus = user.online ? 'connected to lidraughts' : 'offline'
-    let onGameStatus = player.onGame ? 'currently on this game' : 'currently not on this game'
+    const onlineStatus = user.online ? 'connected to lidraughts' : 'offline'
+    const onGameStatus = player.onGame ? 'currently on this game' : 'currently not on this game'
     title = `${playerName}: ${onlineStatus}; ${onGameStatus}`
   } else {
     title = playerName
@@ -327,7 +327,7 @@ function userInfos(user: User, player: Player, playerName: string) {
 
 function renderPlayerName(player: Player) {
   if (player.name || player.username || player.user) {
-    let name = player.name || player.username || player.user?.username
+    const name = player.name || player.username || player.user?.username
     return h('span', [
       player.user?.title ? [
         h('span.userTitle' + (player.user?.title === 'BOT' ? '.bot' : ''), player.user.title),

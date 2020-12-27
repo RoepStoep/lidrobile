@@ -145,7 +145,7 @@ export interface PieceNode extends KeyedNode {
   cgCaptured?: boolean
   cgDragging?: boolean
 }
-export interface SquareNode extends KeyedNode { }
+export type SquareNode = KeyedNode
 
 export interface PrevData {
   boardSize: BoardSize | null

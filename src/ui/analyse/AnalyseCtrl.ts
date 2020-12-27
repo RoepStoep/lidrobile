@@ -68,7 +68,7 @@ export default class AnalyseCtrl {
   mainline!: Tree.Node[]
 
   // state flags
-  onMainline: boolean = true
+  onMainline = true
   synthetic: boolean // false if coming from a real game
   ongoing: boolean // true if real game is ongoing
 
@@ -78,13 +78,13 @@ export default class AnalyseCtrl {
   contextMenu: Tree.Path | null = null
 
   // various view state flags
-  replaying: boolean = false
+  replaying = false
   cgConfig?: cg.SetConfig
-  analysisProgress: boolean = false
-  retroGlowing: boolean = false
+  analysisProgress = false
+  retroGlowing = false
   formattedDate?: string
 
-  private _currentTabIndex: number = 0
+  private _currentTabIndex = 0
 
   private debouncedExplorerSetStep: () => void
 
@@ -701,7 +701,7 @@ export default class AnalyseCtrl {
       coordSystem: this.coordSystem(),
       turnColor: color,
       orientation: this.settings.s.flip ? oppositeColor(this.orientation) : this.orientation,
-      movableColor: Boolean(this.gameOver()) ? null : color,
+      movableColor: this.gameOver() ? null : color,
       dests: dests || null,
       captureLength: node.captLen,
       captureUci: (settings.analyse.fullCapture() && this.node.destsUci && this.node.destsUci.length) ? this.node.destsUci.concat() : undefined,
@@ -739,7 +739,7 @@ export default class AnalyseCtrl {
         if (path === this.path) {
           this.updateBoard()
           redraw()
-          if (Boolean(this.gameOver())) this.stopCevalImmediately()
+          if (this.gameOver()) this.stopCevalImmediately()
         }
       })
       .catch(err => console.error('get dests error', err))
@@ -752,7 +752,7 @@ export default class AnalyseCtrl {
       this.node.ply <= 20 && this.node.ply > 0 &&
       openingSensibleVariants.has(this.data.game.variant.key)
     ) {
-      let msg: { fen: string, path: string, variant?: VariantKey } = {
+      const msg: { fen: string, path: string, variant?: VariantKey } = {
         fen: this.node.fen,
         path: this.path
       }
