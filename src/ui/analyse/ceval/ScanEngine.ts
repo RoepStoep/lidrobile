@@ -1,7 +1,6 @@
-import { Plugins } from '@capacitor/core'
 import { Tree } from '../../shared/tree/interfaces'
 import { Work, IEngine } from './interfaces'
-import { send, setOption, scanFen, parsePV, parseVariant } from '../../../utils/scan'
+import { Scan, send, setOption, scanFen, parsePV, parseVariant } from '../../../scan'
 
 const EVAL_REGEX = new RegExp(''
   + /^info depth=(\d+) mean-depth=\S+ /.source
@@ -37,7 +36,7 @@ export default function ScanEngine(variant: VariantKey): IEngine {
    * Init engine with default options and variant
    */
   function init() {
-    return Plugins.Scan.start(parseVariant(variant))
+    return Scan.start(parseVariant(variant))
       .then(() => send('hub'))
       .then(() => setOption('bb-size', '0'))
       .then(() => send('init'))
@@ -89,8 +88,8 @@ export default function ScanEngine(variant: VariantKey): IEngine {
       curEval = null
 
       readyPromise = new Promise((resolve) => {
-        Plugins.Scan.removeAllListeners()
-        Plugins.Scan.addListener('output', ({ line }: { line: string }) => {
+        Scan.removeAllListeners()
+        Scan.addListener('output', ({ line }: { line: string }) => {
           processOutput(line, work, resolve)
         })
       })
@@ -182,8 +181,8 @@ export default function ScanEngine(variant: VariantKey): IEngine {
   }
   
   function exit() {
-    Plugins.Scan.removeAllListeners()
-    return Plugins.Scan.exit()
+    Scan.removeAllListeners()
+    return Scan.exit()
   }
 
   function reset() {

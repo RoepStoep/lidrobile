@@ -1,6 +1,5 @@
-import { Plugins } from '@capacitor/core'
 import { AiRoundInterface } from '../shared/round'
-import { send, getNbCores, setOption, parsePV, parseVariant, scanFen } from '../../utils/scan'
+import { Scan, send, getNbCores, setOption, parsePV, parseVariant, scanFen } from '../utils/scan'
 
 interface LevelToNumber {
   [index: number]: number
@@ -64,7 +63,7 @@ export default function(ctrl: AiRoundInterface): EngineInterface {
     init(v: VariantKey) {
       initVariant = v
 
-      Plugins.Scan.addListener('output', ({ line }: { line: string }) => {
+      Scan.addListener('output', ({ line }) => {
         console.debug('[scan >>] ' + line)
         const match = line.match(/^done move=([0-9\-xX\s]+)/)
         if (match) {
@@ -72,7 +71,7 @@ export default function(ctrl: AiRoundInterface): EngineInterface {
         }
       })
 
-      return Plugins.Scan.start(parseVariant(initVariant))
+      return Scan.start(parseVariant(initVariant))
         .then(onInit)
         .catch(console.error.bind(console))
     },
@@ -141,8 +140,8 @@ export default function(ctrl: AiRoundInterface): EngineInterface {
     },
 
     exit() {
-      Plugins.Scan.removeAllListeners()
-      return Plugins.Scan.exit()
+      Scan.removeAllListeners()
+      return Scan.exit()
     },
 
     variant() { 
@@ -156,7 +155,7 @@ function onInit() {
     .then(() => send('init'))
     .then(() => setOption('threads', getNbCores()))
     .then(async () => {
-      const { value: mem }= await Plugins.Scan.getMaxMemory()
+      const { value: mem } = await Scan.getMaxMemory()
       setOption('hash', mem)
     })
 }

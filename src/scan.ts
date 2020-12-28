@@ -1,9 +1,20 @@
 import { Plugins } from '@capacitor/core'
-import { VariantKey } from '../lidraughts/interfaces/variant'
+import { VariantKey } from './lidraughts/interfaces/variant'
+
+export interface ScanPlugin {
+  addListener(event: 'output', callback: (v: { line: string }) => void): void
+  removeAllListeners(): void
+  getMaxMemory(): Promise<{ value: number }>
+  start(options: { variant: string } ): Promise<void>
+  cmd(options: { cmd: string }): Promise<void>
+  exit(): Promise<void>
+}
+
+export const Scan = Plugins.Scan as ScanPlugin
 
 export function send(text: string): Promise<void> {
   console.debug('[scan <<] ' + text)
-  return Plugins.Scan.cmd({ cmd: text })
+  return Scan.cmd({ cmd: text })
 }
 
 export function setOption(name: string, value: string | number | boolean): Promise<void> {
