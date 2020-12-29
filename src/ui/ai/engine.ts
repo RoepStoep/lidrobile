@@ -1,3 +1,4 @@
+import { Capacitor } from '@capacitor/core'
 import { AiRoundInterface } from '../shared/round'
 import { Scan, getNbCores, getMaxMemory, parsePV, parseVariant, scanFen } from '../utils/scan'
 
@@ -46,23 +47,23 @@ export const levelToRating: LevelToNumber = {
 }
 
 export default class Engine {
-  private const uciCache: any = {}
+  private uciCache: any = {}
   private searchFen: string = ''
   private level = 1
   private scan: Scan
 
   constructor(readonly ctrl: AiRoundInterface, readonly variant: VariantKey) {
     this.scan = new Scan(variant)
-  }
-
-  public init() {
+  
     this.scan.addListener(line => {
       const match = line.match(/^done move=([0-9\-xX\s]+)/)
       if (match) {
         ctrl.onEngineMove(parsePV(this.searchFen, match[1], this.scan.variant === 'frisian' || this.scan.variant === 'frysk', this.uciCache)[0])
       }
     })
+  }
 
+  public init() {
     return Scan.start(parseVariant(this.scan.variant))
       .then(() => {
         return this.scan.send('hub')
@@ -70,7 +71,7 @@ export default class Engine {
           .then(() => this.scan.setOption('threads', getNbCores()))
           .then(async () => {
             const { value: mem } = await getMaxMemory()
-            this.scan.setOption('hash', mem)
+            if (Capacitor.platform !== 'web') this.scan.setOption('hash', mem)
           })
       })
       .catch(console.error.bind(console))

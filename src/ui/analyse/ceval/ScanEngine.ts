@@ -1,3 +1,4 @@
+import { Capacitor } from '@capacitor/core'
 import { Tree } from '../../shared/tree/interfaces'
 import { Work, IEngine } from './interfaces'
 import { Scan, scanFen, parsePV, parseVariant } from '../../../scan'
@@ -89,14 +90,15 @@ export default function ScanEngine(variant: VariantKey): IEngine {
       curEval = null
 
       readyPromise = new Promise((resolve) => {
-        scan.plugin.removeAllListeners()
         scan.addListener(line => {
           processOutput(line, work, resolve)
         })
       })
 
       return scan.setOption('threads', work.cores)
-      .then(() => scan.setOption('hash', work.hash))
+      .then(() => Capacitor.platform !== 'web' ?
+        scan.setOption('hash', work.hash) : Promise.resolve()
+      )
       .then(() => scan.send('pos pos=' + scanFen(work.initialFen) + (work.moves.length != 0 ? (' moves="' + work.moves.join(' ') + '"') : '')))
       .then(() => {
         if (work.maxDepth >= 99) return scan.send('level infinite');

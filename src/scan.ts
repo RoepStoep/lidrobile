@@ -1,5 +1,83 @@
-import { Plugins } from '@capacitor/core'
+import { Capacitor, Plugins, WebPlugin, registerWebPlugin, PluginListenerHandle, ListenerCallback } from '@capacitor/core'
 import { VariantKey } from './lidraughts/interfaces/variant'
+
+// custom web plugin registration done here for now
+// because importing code from node_modules causes capacitor runtime code to
+// be included twice
+if (Capacitor.platform === 'web') {
+  class ScanWeb extends WebPlugin {
+    private worker?: Worker
+    private listener?: ListenerCallback
+
+    constructor() {
+      super({
+        name: 'Scan',
+        platforms: ['web']
+      })
+    }
+
+    addListener(_: string, callback: ListenerCallback): PluginListenerHandle {
+      this.listener = callback
+      if (this.worker) {
+        this.worker.onmessage = msg => {
+          if (this.listener) this.listener({ line: msg.data })
+        }
+      }
+
+      return {
+        remove: () => {
+          if (this.worker) this.worker.onmessage = null
+        }
+      }
+    }
+
+    removeAllListeners(): void {
+      if (this.worker) this.worker.onmessage = null
+    }
+
+    async getMaxMemory(): Promise<number> {
+      return 1024
+    }
+
+    async start() {
+      return new Promise((resolve) => {
+        if (this.worker) {
+          this.worker.onmessage = msg => {
+            if (this.listener) this.listener({ line: msg.data })
+          }
+          setTimeout(resolve, 1)
+        } else {
+          this.worker = new Worker('../scan.js')
+          this.worker.onmessage = msg => {
+            if (this.listener) this.listener({ line: msg.data })
+          }
+          setTimeout(resolve, 1)
+        }
+      })
+    }
+
+    async cmd({ cmd }: { cmd: string }) {
+      return new Promise((resolve) => {
+        if (this.worker) this.worker.postMessage(cmd)
+        setTimeout(resolve, 1)
+      })
+    }
+
+    async exit() {
+      return new Promise((resolve) => {
+        if (this.worker) {
+          this.worker.terminate()
+          this.worker = undefined
+        }
+        setTimeout(resolve, 1)
+      })
+    }
+  }
+
+  const scanWeb = new ScanWeb()
+
+  registerWebPlugin(scanWeb)
+}
 
 export interface ScanPlugin {
   addListener(event: 'output', callback: (v: { line: string }) => void): void
@@ -14,7 +92,7 @@ const ScanPlugin = Plugins.Scan as ScanPlugin
 
 export class Scan {
   public plugin: ScanPlugin
-  private const variant: VariantKey
+  private variant: VariantKey
 
   constructor(readonly v: VariantKey) {
     this.plugin = ScanPlugin
@@ -24,7 +102,7 @@ export class Scan {
   public addListener(callback: (line: string) => void) {
     this.plugin.removeAllListeners()
     this.plugin.addListener('output', ({ line }) => {
-      console.debug('[stockfish >>] ' + line)
+      console.debug('[scan >>] ' + line)
       callback(line)
     })
   }
