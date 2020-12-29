@@ -51,6 +51,7 @@ export default class Engine {
   private searchFen: string = ''
   private level = 1
   private scan: Scan
+  private isInit = false
 
   constructor(readonly ctrl: AiRoundInterface, readonly variant: VariantKey) {
     this.scan = new Scan(variant)
@@ -66,13 +67,16 @@ export default class Engine {
   public init() {
     return Scan.start(parseVariant(this.scan.variant))
       .then(() => {
-        return this.scan.send('hub')
-          .then(() => this.scan.send('init'))
-          .then(() => this.scan.setOption('threads', getNbCores()))
-          .then(async () => {
-            const { value: mem } = await getMaxMemory()
-            if (Capacitor.platform !== 'web') this.scan.setOption('hash', mem)
-          })
+        if (!this.isInit) {
+          this.isInit = true
+          return this.scan.send('hub')
+            .then(() => this.scan.send('init'))
+            .then(() => this.scan.setOption('threads', getNbCores()))
+            .then(async () => {
+              const { value: mem } = await getMaxMemory()
+              if (Capacitor.platform !== 'web') this.scan.setOption('hash', mem)
+            })
+        }
       })
       .catch(console.error.bind(console))
   }
@@ -81,12 +85,16 @@ export default class Engine {
     return this.scan.send('new-game')
   }
 
-  public async search(l: number, initialFen: string, currentFen: string, moves: string[]) {
+  public setLevel(l: number) {
+    this.level = l
+  }
+
+  public async search(initialFen: string, currentFen: string, moves: string[]) {
     const initVariant = this.scan.variant
 
     this.searchFen = currentFen
     initialFen = scanFen(initialFen)
-    this.level = l
+    const l = this.level
 
     const bookPly = LVL_BOOK_PLY[l - 1], 
       bookMargin = LVL_BOOK_MARGIN[l - 1],
