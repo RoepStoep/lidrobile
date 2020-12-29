@@ -23,7 +23,7 @@ import { ClockType } from '../shared/clock/interfaces'
 import Replay from '../shared/offlineRound/Replay'
 
 import actions, { AiActionsCtrl } from './actions'
-import engineCtrl, { EngineInterface } from './engine'
+import Engine from './engine'
 import newGameMenu, { NewAiGameCtrl } from './newAiGame'
 
 interface InitPayload {
@@ -40,7 +40,7 @@ export default class AiRound implements AiRoundInterface, PromotingInterface {
   public vm: AiVM
   public moveList: boolean
 
-  public engine: EngineInterface
+  public engine?: Engine
   private engineNextMove: number | undefined
 
   public constructor(
@@ -49,7 +49,6 @@ export default class AiRound implements AiRoundInterface, PromotingInterface {
     setupVariant?: VariantKey,
     setupColor?: Color
   ) {
-    this.engine = engineCtrl(this)
     this.actions = actions.controller(this)
     this.newGameMenu = newGameMenu.controller(this)
 
@@ -75,24 +74,20 @@ export default class AiRound implements AiRoundInterface, PromotingInterface {
       }
 
       redraw()
-    }
-
-    const currentVariant = (!setupFen && saved && saved.data.game.variant.key) || <VariantKey>settings.ai.variant()
-    this.engine.init(currentVariant)
-    .then(() => {
-      if (!setupFen) {
-        if (saved) {
-          try {
-            this.init(saved.data, saved.situations, saved.ply)
-          } catch (e) {
-            console.log(e, 'Fail to load saved game')
-            this.startNewGame(currentVariant)
-          }
-        } else {
+    } else {
+      const currentVariant = <VariantKey>settings.ai.variant()
+      if (saved) {
+        try {
+          this.init(saved.data, saved.situations, saved.ply)
+        } catch (e) {
+          console.log(e, 'Fail to load saved game')
           this.startNewGame(currentVariant)
         }
+      } else {
+        this.startNewGame(currentVariant)
       }
-    })
+    }
+
   }
 
   public init(data: OfflineGameData, situations: Array<draughts.GameSituation>, ply: number) {
@@ -128,6 +123,18 @@ export default class AiRound implements AiRoundInterface, PromotingInterface {
 
     this.save()
     redraw()
+
+    if (this.engine && this.engine.variant === variant) {
+      this.engine.init()
+      .then(() => {
+        if (this.isEngineToMove()) {
+          this.engineMove()
+        }
+      })
+    } else {
+      this.engine = new Engine(this, variant)
+      this.engine.init()
+    }
   }
 
   // clockType preceded by underscore until we implement AI timed games
@@ -144,8 +151,7 @@ export default class AiRound implements AiRoundInterface, PromotingInterface {
       payload.fen = setupFen
     }
 
-    this.engine.newGame(variant)
-    .then(() => draughts.init(payload))
+    draughts.init(payload)
     .then((data: draughts.InitResponse) => {
       this.init(makeData({
         id: 'offline_ai',

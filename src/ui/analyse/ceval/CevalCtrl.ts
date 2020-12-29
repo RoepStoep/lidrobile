@@ -1,6 +1,6 @@
 import settings from '../../../settings'
 import { Tree } from '../../shared/tree'
-import { Scan, getNbCores } from '../../../scan'
+import { getMaxMemory, getNbCores } from '../../../scan'
 import ScanEngine from './ScanEngine'
 import { Opts, Work, ICevalCtrl } from './interfaces'
 
@@ -8,8 +8,6 @@ export default function CevalCtrl(
   opts: Opts,
   emit: (path: string, res?: Tree.ClientEval) => void,
 ): ICevalCtrl {
-
-  const hashPromise = Scan.getMaxMemory()
 
   let initialized = false
 
@@ -33,7 +31,7 @@ export default function CevalCtrl(
     if (!enabled()) {
       return
     }
-    const { value: hash } = await hashPromise
+    const hash = await getMaxMemory()
     const step = nodes[nodes.length - 1]
     if (step.ceval && step.ceval.depth >= effectiveMaxDepth()) {
       return

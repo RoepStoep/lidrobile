@@ -10,20 +10,34 @@ export interface ScanPlugin {
   exit(): Promise<void>
 }
 
-export const Scan = Plugins.Scan as ScanPlugin
+const ScanPlugin = Plugins.Scan as ScanPlugin
 
-export function send(text: string): Promise<void> {
-  console.debug('[scan <<] ' + text)
-  return Scan.cmd({ cmd: text })
-}
+export class Scan {
+  public plugin: ScanPlugin
+  private const variant: VariantKey
 
-export function setOption(name: string, value: string | number | boolean): Promise<void> {
-  return send(`set-param name=${name} value=${value}`)
-}
+  constructor(readonly v: VariantKey) {
+    this.plugin = ScanPlugin
+    this.variant = v
+  }
 
-export function getNbCores(): number {
-  const cores = window.deviceInfo.cpuCores
-  return cores > 2 ? cores - 1 : 1
+  public addListener(callback: (line: string) => void) {
+    this.plugin.removeAllListeners()
+    this.plugin.addListener('output', ({ line }) => {
+      console.debug('[stockfish >>] ' + line)
+      callback(line)
+    })
+  }
+
+  public send(text: string): Promise<void> {
+    console.debug('[scan <<] ' + text)
+    return this.plugin.cmd({ cmd: text })
+  }
+
+  public setOption(name: string, value: string | number | boolean): Promise<void> {
+    return this.send(`set-param name=${name} value=${value}`)
+  }
+
 }
 
 export function scanPieces(fen: string): string[] {
@@ -181,4 +195,15 @@ export function parsePV(fen: string, pv: string, frisian: boolean, uciCache: any
       return result
     } else return m
   });
+}
+
+const memPromise = ScanPlugin.getMaxMemory().then(r => r.value)
+
+export function getMaxMemory(): Promise<number> {
+  return memPromise
+}
+
+export function getNbCores(): number {
+  const cores = window.deviceInfo.cpuCores
+  return cores > 2 ? cores - 1 : 1
 }

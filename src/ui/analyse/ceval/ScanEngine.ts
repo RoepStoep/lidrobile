@@ -1,6 +1,6 @@
 import { Tree } from '../../shared/tree/interfaces'
 import { Work, IEngine } from './interfaces'
-import { Scan, send, setOption, scanFen, parsePV, parseVariant } from '../../../scan'
+import { Scan, scanFen, parsePV, parseVariant } from '../../../scan'
 
 const EVAL_REGEX = new RegExp(''
   + /^info depth=(\d+) mean-depth=\S+ /.source
@@ -9,6 +9,7 @@ const EVAL_REGEX = new RegExp(''
   + /pv=\"?([0-9\-xX\s]+)\"?/.source);
 
 export default function ScanEngine(variant: VariantKey): IEngine {
+  const scan = new Scan(variant)
 
   let stopTimeoutId: number
   let readyPromise: Promise<void> = Promise.resolve()
@@ -36,10 +37,10 @@ export default function ScanEngine(variant: VariantKey): IEngine {
    * Init engine with default options and variant
    */
   function init() {
-    return Scan.start(parseVariant(variant))
-      .then(() => send('hub'))
-      .then(() => setOption('bb-size', '0'))
-      .then(() => send('init'))
+    return scan.plugin.start(parseVariant(variant))
+      .then(() => scan.send('hub'))
+      .then(() => scan.setOption('bb-size', '0'))
+      .then(() => scan.send('init'))
       .catch((err: any) => console.error('scan init error', err))
   }
 
@@ -71,7 +72,7 @@ export default function ScanEngine(variant: VariantKey): IEngine {
   function stop() {
     if (!stopped) {
       stopped = true
-      send('stop')
+      scan.send('stop')
     }
   }
 
@@ -88,20 +89,20 @@ export default function ScanEngine(variant: VariantKey): IEngine {
       curEval = null
 
       readyPromise = new Promise((resolve) => {
-        Scan.removeAllListeners()
-        Scan.addListener('output', ({ line }: { line: string }) => {
+        scan.plugin.removeAllListeners()
+        scan.addListener(line => {
           processOutput(line, work, resolve)
         })
       })
 
-      return setOption('threads', work.cores)
-      .then(() => setOption('hash', work.hash))
-      .then(() => send('pos pos=' + scanFen(work.initialFen) + (work.moves.length != 0 ? (' moves="' + work.moves.join(' ') + '"') : '')))
+      return scan.setOption('threads', work.cores)
+      .then(() => scan.setOption('hash', work.hash))
+      .then(() => scan.send('pos pos=' + scanFen(work.initialFen) + (work.moves.length != 0 ? (' moves="' + work.moves.join(' ') + '"') : '')))
       .then(() => {
-        if (work.maxDepth >= 99) return send('level infinite');
-        else return send('level depth=' + work.maxDepth);
+        if (work.maxDepth >= 99) return scan.send('level infinite');
+        else return scan.send('level depth=' + work.maxDepth);
       })
-      .then(() => send('go analyze'))
+      .then(() => scan.send('go analyze'))
     }
   }
 
@@ -112,13 +113,11 @@ export default function ScanEngine(variant: VariantKey): IEngine {
    */
   function processOutput(text: string, work: Work, rdyResolve: () => void) {
     if (text.indexOf('done') === 0) {
-      console.debug('[scan >>] ' + text)
       finished = true
       rdyResolve()
       work.emit()
     }
     if (finished || stopped) return
-    // console.debug(text)
 
     const matches = text.match(EVAL_REGEX)
     if (!matches) return
@@ -181,8 +180,8 @@ export default function ScanEngine(variant: VariantKey): IEngine {
   }
   
   function exit() {
-    Scan.removeAllListeners()
-    return Scan.exit()
+    scan.plugin.removeAllListeners()
+    return scan.plugin.exit()
   }
 
   function reset() {

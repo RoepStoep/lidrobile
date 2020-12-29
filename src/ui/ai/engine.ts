@@ -1,5 +1,5 @@
 import { AiRoundInterface } from '../shared/round'
-import { Scan, send, getNbCores, setOption, parsePV, parseVariant, scanFen } from '../utils/scan'
+import { Scan, getNbCores, getMaxMemory, parsePV, parseVariant, scanFen } from '../utils/scan'
 
 interface LevelToNumber {
   [index: number]: number
@@ -45,117 +45,105 @@ export const levelToRating: LevelToNumber = {
   8: 2700
 }
 
-export interface EngineInterface {
-  init(variant: VariantKey): Promise<void>
-  newGame(): Promise<void>
-  search(level: number, initialFen: string, currentFen: string, moves: string[]): void
-  exit(): Promise<void>
-  variant(): VariantKey
-}
+export default class Engine {
+  private const uciCache: any = {}
+  private searchFen: string = ''
+  private level = 1
+  private scan: Scan
 
-export default function(ctrl: AiRoundInterface): EngineInterface {
-  const uciCache: any = {}
-  let initVariant: VariantKey = ctrl.data ? ctrl.data.game.variant.key : 'standard'
-  let searchFen: string = ''
-  let level = 1
-
-  return {
-    init(v: VariantKey) {
-      initVariant = v
-
-      Scan.addListener('output', ({ line }) => {
-        console.debug('[scan >>] ' + line)
-        const match = line.match(/^done move=([0-9\-xX\s]+)/)
-        if (match) {
-          ctrl.onEngineMove(parsePV(searchFen, match[1], initVariant === 'frisian' || initVariant === 'frysk', uciCache)[0])
-        }
-      })
-
-      return Scan.start(parseVariant(initVariant))
-        .then(onInit)
-        .catch(console.error.bind(console))
-    },
-
-    newGame() {
-      return send('new-game')
-    },
-
-    search(l: number, initialFen: string, currentFen: string, moves: string[]) {
-      searchFen = currentFen
-      initialFen = scanFen(initialFen)
-      level = l
-
-      const bookPly = LVL_BOOK_PLY[level - 1], 
-        bookMargin = LVL_BOOK_MARGIN[level - 1],
-        moveTime = LVL_MOVETIMES[level - 1]
-      let pst: number, handicap: number, depth: number, ply: number, nodes: number;
-      if (initVariant === 'frysk') {
-        pst = LVL_PST_FY[level - 1]
-        handicap = LVL_HANDICAPS_FY[level - 1]
-        depth = LVL_DEPTHS_FY[level - 1]
-        ply = 0
-        // frysk "opening book"
-        if (initialFen === "Wbbbbbeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeewwwww" && moves.length < 4)
-            nodes = 1
-        else
-            nodes = LVL_NODES_FY[level - 1]
-      } else if (initVariant === 'frisian') {
-        pst = LVL_PST[level - 1]
-        handicap = LVL_HANDICAPS_FR[level - 1]
-        depth = LVL_DEPTHS_FR[level - 1]
-        ply = 0
-        nodes = LVL_NODES_FR[level - 1]
-      } else if (initVariant === 'antidraughts') {
-        pst = LVL_PST_L[level - 1]
-        handicap = LVL_HANDICAPS_L[level - 1]
-        depth = LVL_DEPTHS_L[level - 1]
-        ply = LVL_PLY_L[level - 1]
-        nodes = LVL_NODES_L[level - 1]
-      } else {
-        pst = LVL_PST[level - 1]
-        handicap = LVL_HANDICAPS[level - 1]
-        depth = LVL_DEPTHS[level - 1]
-        ply = 0
-        nodes = LVL_NODES[level - 1]
-      }
- 
-      const scanMoves = moves.map(m => {
-        if (m.length > 4)
-          return m.slice(0, 2) + 'x' + m.slice(2);
-        else
-          return m.slice(0, 2) + '-' + m.slice(2);
-      });
-
-      // TODO: Movetimes might need a different approach
-      send('pos pos=' + initialFen + (scanMoves.length != 0 ? (' moves="' + scanMoves.join(' ') + '"') : ''))
-        .then(() => handicap ? send(`level handicap=${handicap}`) : Promise.resolve())
-        .then(() => ply ? send(`level ply=${ply}`) : Promise.resolve())
-        .then(() => nodes ? send(`level nodes=${nodes}`) : Promise.resolve())
-        .then(() => setOption('eval', pst ? 'pst' : 'pattern'))
-        .then(() => bookMargin ? setOption('book-margin', bookMargin) : Promise.resolve())
-        .then(() => setOption('book-ply', bookPly))
-        .then(() => depth ? send(`level depth=${depth}`) : Promise.resolve())
-        .then(() => moveTime ? send(`level move-time=${moveTime / 1000}`) : Promise.resolve())
-        .then(() => send('go think'))
-    },
-
-    exit() {
-      Scan.removeAllListeners()
-      return Scan.exit()
-    },
-
-    variant() { 
-      return initVariant
-    }
+  constructor(readonly ctrl: AiRoundInterface, readonly variant: VariantKey) {
+    this.scan = new Scan(variant)
   }
-}
 
-function onInit() {
-  return send('hub')
-    .then(() => send('init'))
-    .then(() => setOption('threads', getNbCores()))
-    .then(async () => {
-      const { value: mem } = await Scan.getMaxMemory()
-      setOption('hash', mem)
+  public init() {
+    this.scan.addListener(line => {
+      const match = line.match(/^done move=([0-9\-xX\s]+)/)
+      if (match) {
+        ctrl.onEngineMove(parsePV(this.searchFen, match[1], this.scan.variant === 'frisian' || this.scan.variant === 'frysk', this.uciCache)[0])
+      }
     })
+
+    return Scan.start(parseVariant(this.scan.variant))
+      .then(() => {
+        return this.scan.send('hub')
+          .then(() => this.scan.send('init'))
+          .then(() => this.scan.setOption('threads', getNbCores()))
+          .then(async () => {
+            const { value: mem } = await getMaxMemory()
+            this.scan.setOption('hash', mem)
+          })
+      })
+      .catch(console.error.bind(console))
+  }
+
+  public newGame() {
+    return this.scan.send('new-game')
+  }
+
+  public async search(l: number, initialFen: string, currentFen: string, moves: string[]) {
+    const initVariant = this.scan.variant
+
+    this.searchFen = currentFen
+    initialFen = scanFen(initialFen)
+    this.level = l
+
+    const bookPly = LVL_BOOK_PLY[l - 1], 
+      bookMargin = LVL_BOOK_MARGIN[l - 1],
+      moveTime = LVL_MOVETIMES[l - 1]
+    let pst: number, handicap: number, depth: number, ply: number, nodes: number;
+    if (initVariant === 'frysk') {
+      pst = LVL_PST_FY[l - 1]
+      handicap = LVL_HANDICAPS_FY[l - 1]
+      depth = LVL_DEPTHS_FY[l - 1]
+      ply = 0
+      // frysk "opening book"
+      if (initialFen === "Wbbbbbeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeewwwww" && moves.length < 4)
+          nodes = 1
+      else
+          nodes = LVL_NODES_FY[l - 1]
+    } else if (initVariant === 'frisian') {
+      pst = LVL_PST[l - 1]
+      handicap = LVL_HANDICAPS_FR[l - 1]
+      depth = LVL_DEPTHS_FR[l - 1]
+      ply = 0
+      nodes = LVL_NODES_FR[l - 1]
+    } else if (initVariant === 'antidraughts') {
+      pst = LVL_PST_L[l - 1]
+      handicap = LVL_HANDICAPS_L[l - 1]
+      depth = LVL_DEPTHS_L[l - 1]
+      ply = LVL_PLY_L[l - 1]
+      nodes = LVL_NODES_L[l - 1]
+    } else {
+      pst = LVL_PST[l - 1]
+      handicap = LVL_HANDICAPS[l - 1]
+      depth = LVL_DEPTHS[l - 1]
+      ply = 0
+      nodes = LVL_NODES[l - 1]
+    }
+
+    const scanMoves = moves.map(m => {
+      if (m.length > 4)
+        return m.slice(0, 2) + 'x' + m.slice(2);
+      else
+        return m.slice(0, 2) + '-' + m.slice(2);
+    });
+
+    // TODO: Movetimes might need a different approach
+    this.scan.send('pos pos=' + initialFen + (scanMoves.length != 0 ? (' moves="' + scanMoves.join(' ') + '"') : ''))
+      .then(() => handicap ? this.scan.send(`level handicap=${handicap}`) : Promise.resolve())
+      .then(() => ply ? this.scan.send(`level ply=${ply}`) : Promise.resolve())
+      .then(() => nodes ? this.scan.send(`level nodes=${nodes}`) : Promise.resolve())
+      .then(() => this.scan.setOption('eval', pst ? 'pst' : 'pattern'))
+      .then(() => bookMargin ? this.scan.setOption('book-margin', bookMargin) : Promise.resolve())
+      .then(() => this.scan.setOption('book-ply', bookPly))
+      .then(() => depth ? this.scan.send(`level depth=${depth}`) : Promise.resolve())
+      .then(() => moveTime ? this.scan.send(`level move-time=${moveTime / 1000}`) : Promise.resolve())
+      .then(() => this.scan.send('go think'))
+  }
+
+  public exit() {
+    this.scan.plugin.removeAllListeners()
+    return this.scan.plugin.exit()
+  }
+
 }
