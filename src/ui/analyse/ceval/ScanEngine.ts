@@ -9,7 +9,11 @@ const EVAL_REGEX = new RegExp(''
   + /time=(\S+) (?:nps=\S+ )?/.source
   + /pv=\"?([0-9\-xX\s]+)\"?/.source);
 
-export default function ScanEngine(variant: VariantKey): IEngine {
+export default function ScanEngine(
+  variant: VariantKey,
+  threads: number,
+  hash: number,
+): IEngine {
   const scan = new Scan(variant)
 
   let stopTimeoutId: number
@@ -41,6 +45,10 @@ export default function ScanEngine(variant: VariantKey): IEngine {
     return scan.plugin.start(parseVariant(variant))
       .then(() => scan.send('hub'))
       .then(() => scan.setOption('bb-size', '0'))
+      .then(() => scan.setOption('threads', threads))
+      .then(() => Capacitor.platform !== 'web' ?
+        scan.setOption('hash', hash) : Promise.resolve()
+      )
       .then(() => scan.send('init'))
       .catch((err: any) => console.error('scan init error', err))
   }
@@ -95,11 +103,7 @@ export default function ScanEngine(variant: VariantKey): IEngine {
         })
       })
 
-      return scan.setOption('threads', work.cores)
-      .then(() => Capacitor.platform !== 'web' ?
-        scan.setOption('hash', work.hash) : Promise.resolve()
-      )
-      .then(() => scan.send('pos pos=' + scanFen(work.initialFen) + (work.moves.length != 0 ? (' moves="' + work.moves.join(' ') + '"') : '')))
+      return scan.send('pos pos=' + scanFen(work.initialFen) + (work.moves.length != 0 ? (' moves="' + work.moves.join(' ') + '"') : ''))
       .then(() => {
         if (work.maxDepth >= 99) return scan.send('level infinite');
         else return scan.send('level depth=' + work.maxDepth);

@@ -1,6 +1,5 @@
 import settings from '../../../settings'
 import { Tree } from '../../shared/tree'
-import { getMaxMemory, getNbCores } from '../../../scan'
 import ScanEngine from './ScanEngine'
 import { Opts, Work, ICevalCtrl } from './interfaces'
 
@@ -14,7 +13,7 @@ export default function CevalCtrl(
   const minDepth = 6
   const maxDepth = opts.variant === 'antidraughts' ? 11 : 22
 
-  const engine = ScanEngine(opts.variant)
+  const engine = ScanEngine(opts.variant, opts.cores, opts.hashSize)
 
   let started = false
   let isEnabled = settings.analyse.enableCeval()
@@ -31,7 +30,6 @@ export default function CevalCtrl(
     if (!enabled()) {
       return
     }
-    const hash = await getMaxMemory()
     const step = nodes[nodes.length - 1]
     if (step.ceval && step.ceval.depth >= effectiveMaxDepth()) {
       return
@@ -41,8 +39,6 @@ export default function CevalCtrl(
       currentFen: step.fen,
       moves: new Array<string>(),
       maxDepth: forceMaxLevel ? 18 : effectiveMaxDepth(),
-      cores: forceMaxLevel ? getNbCores() : opts.cores,
-      hash,
       path,
       ply: step.ply,
       multiPv: 1, // forceMaxLevel ? 1 : opts.multiPv,
