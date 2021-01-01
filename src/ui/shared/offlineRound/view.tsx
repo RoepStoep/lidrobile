@@ -1,6 +1,5 @@
 import { Plugins } from '@capacitor/core'
 import h from 'mithril/hyperscript'
-/*import * as utils from '../../../utils'*/
 import i18n from '../../../i18n'
 import * as gameApi from '../../../lidraughts/game'
 import gameStatusApi from '../../../lidraughts/status'
@@ -10,17 +9,7 @@ import * as helper from '../../helper'
 import { OfflineRoundInterface, Position, Material } from '../round'
 import Replay from './Replay'
 import { IDraughtsClock, IStageClock } from '../clock/interfaces'
-import { formatClockTime } from '../round/clock/clockView'
 import { autoScroll, autoScrollInline, onReplayTap, getMoveEl } from '../round/util'
-
-/*function getChecksCount(ctrl: OfflineRoundInterface, color: Color) {
-  const sit = ctrl.replay.situation()
-  if (sit.checkCount)
-    return utils.oppositeColor(color) === 'white' ?
-      sit.checkCount.white : sit.checkCount.black
-  else
-    return 0
-}*/
 
 export function renderAntagonist(
   ctrl: OfflineRoundInterface,
@@ -192,6 +181,31 @@ function renderIndex(ply: Ply, withDots?: boolean): Mithril.Children {
 
 function plyToTurn(ply: number): number {
   return Math.floor((ply - 1) / 2) + 1
+}
+
+function pad2(num: number): string {
+ return (num < 10 ? '0' : '') + num
+}
+
+const sepHigh = ':'
+const sepLow = ' '
+function formatClockTime(time: Millis, isRunning: boolean = false) {
+  const date = new Date(time)
+  const millis = date.getUTCMilliseconds()
+  const minutes = pad2(date.getUTCMinutes())
+  const seconds = pad2(date.getUTCSeconds())
+
+  if (time >= 3600000) {
+    const hours = pad2(date.getUTCHours())
+    const pulse = (isRunning && millis < 500) ? sepLow : sepHigh
+    return hours + pulse + minutes
+  }
+  if (time < 10000) {
+    let tenthsStr = Math.floor(millis / 100).toString()
+    return [minutes + sepHigh + seconds, h('tenths', '.' + tenthsStr)]
+  }
+
+  return minutes + sepHigh + seconds
 }
 
 function renderClock(clock: IDraughtsClock, color: Color) {
