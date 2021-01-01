@@ -189,7 +189,7 @@ function pad2(num: number): string {
 
 const sepHigh = ':'
 const sepLow = ' '
-function formatClockTime(time: Millis, isRunning: boolean = false) {
+function formatClockTime(time: Millis, isRunning = false) {
   const date = new Date(time)
   const millis = date.getUTCMilliseconds()
   const minutes = pad2(date.getUTCMinutes())
@@ -201,7 +201,7 @@ function formatClockTime(time: Millis, isRunning: boolean = false) {
     return hours + pulse + minutes
   }
   if (time < 10000) {
-    let tenthsStr = Math.floor(millis / 100).toString()
+    const tenthsStr = Math.floor(millis / 100).toString()
     return [minutes + sepHigh + seconds, h('tenths', '.' + tenthsStr)]
   }
 
