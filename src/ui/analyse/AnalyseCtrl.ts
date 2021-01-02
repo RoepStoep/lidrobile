@@ -316,7 +316,7 @@ export default class AnalyseCtrl {
         const path = ghostEnd ? this.path.slice(2) : this.path;
         const nodeList = ghostEnd ? this.nodeList.slice(1) : this.nodeList;
         const forceMaxLv = !!this.retro || !!this.practice
-        this.ceval.start(path, nodeList, forceMaxLv)
+        this.ceval.start(path, nodeList, forceMaxLv, false)
         this.evalCache.fetch(path, forceMaxLv ? 1 : this.ceval.getMultiPv())
       } else this.stopCevalImmediately();
     }

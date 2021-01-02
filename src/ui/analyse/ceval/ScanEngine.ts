@@ -19,7 +19,7 @@ export default function ScanEngine(
   let stopTimeoutId: number
   let readyPromise: Promise<void> = Promise.resolve()
 
-  let curEval: Tree.ClientEval | null = null
+  let curEval: Tree.ClientEval | undefined  = undefined 
   let expectedPvs = 1
 
   const frisianVariant = variant === 'frisian' || variant === 'frysk'
@@ -41,23 +41,25 @@ export default function ScanEngine(
   /*
    * Init engine with default options and variant
    */
-  function init() {
-    return scan.plugin.start(parseVariant(variant))
-      .then(() => scan.send('hub'))
-      .then(() => scan.setOption('bb-size', '0'))
-      .then(() => scan.setOption('threads', threads))
-      .then(() => Capacitor.platform !== 'web' ?
-        scan.setOption('hash', hash) : Promise.resolve()
-      )
-      .then(() => scan.send('init'))
-      .catch((err: any) => console.error('scan init error', err))
+  async function init() {
+    try {
+      await scan.plugin.start(parseVariant(variant))
+      await scan.send('hub')
+      await scan.setOption('bb-size', '0')
+      await scan.setOption('threads', threads)
+      if (Capacitor.platform !== 'web') {
+        await scan.setOption('Hash', hash)
+      }
+    } catch (err: any) {
+      console.error('scan init error', err)
+    }
   }
 
   /*
    * Stop current command if not already stopped, then add a search command to
    * the queue.
    * The search will start when scan is ready (after reinit if it takes more
-   * than 5s to stop current search)
+   * than 10s to stop current search)
    */
   function start(work: Work) {
     stop()
@@ -65,7 +67,7 @@ export default function ScanEngine(
 
     clearTimeout(stopTimeoutId)
     const timeout: PromiseLike<void> = new Promise((_, reject) => {
-      stopTimeoutId = setTimeout(reject, 5 * 1000)
+      stopTimeoutId = setTimeout(reject, 10 * 1000)
     })
 
     return Promise.race([readyPromise, timeout])
@@ -89,13 +91,13 @@ export default function ScanEngine(
    * Actual search is launched here, according to work opts, using the last work
    * queued
    */
-  function search() {
+  async function search() {
     const work = startQueue.pop()
     if (work) {
       stopped = false
       finished = false
       startQueue = []
-      curEval = null
+      curEval = undefined
 
       readyPromise = new Promise((resolve) => {
         scan.addListener(line => {
@@ -103,12 +105,13 @@ export default function ScanEngine(
         })
       })
 
-      return scan.send('pos pos=' + scanFen(work.initialFen) + (work.moves.length != 0 ? (' moves="' + work.moves.join(' ') + '"') : ''))
-      .then(() => {
-        if (work.maxDepth >= 99) return scan.send('level infinite');
-        else return scan.send('level depth=' + work.maxDepth);
-      })
-      .then(() => scan.send('go analyze'))
+      await scan.send('pos pos=' + scanFen(work.initialFen) + (work.moves.length != 0 ? (' moves="' + work.moves.join(' ') + '"') : ''))
+      if (work.maxDepth >= 99) {
+        await scan.send('level infinite')
+      } else {
+        await scan.send('level depth=' + work.maxDepth)
+      }
+      await scan.send('go analyze')
     }
   }
 
