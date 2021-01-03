@@ -686,7 +686,7 @@ export default class AnalyseCtrl {
     }
   }
 
-  private debouncedStartCeval = debounce(this.startCeval, 800, { leading: true, trailing: true })
+  private debouncedStartCeval = debounce(this.startCeval, 500, { trailing: true })
 
   private updateBoard(noCaptSequences: boolean = false) {
     const node = this.node
