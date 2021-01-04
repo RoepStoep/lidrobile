@@ -16,6 +16,8 @@ export default function ScanEngine(
 ): IEngine {
   const scan = new Scan(variant)
 
+  let engineName = 'Scan 3.1'
+
   let stopTimeoutId: number
   let readyPromise: Promise<void> = Promise.resolve()
 
@@ -42,8 +44,13 @@ export default function ScanEngine(
    * Init engine with default options and variant
    */
   async function init() {
+    scan.addListener((line: string) => {
+      if (line.startsWith('id name ')) {
+        engineName = line.substring('id name '.length)
+      }
+    })
     try {
-      await scan.plugin.start(parseVariant(variant))
+      await scan.start(parseVariant(variant))
       await scan.send('hub')
       await scan.setOption('bb-size', '0')
       await scan.setOption('threads', threads)
@@ -189,8 +196,7 @@ export default function ScanEngine(
   }
   
   function exit() {
-    scan.plugin.removeAllListeners()
-    return scan.plugin.exit()
+    return scan.exit()
   }
 
   function reset() {
@@ -204,6 +210,9 @@ export default function ScanEngine(
     exit,
     isSearching() {
       return !finished
+    }
+    getName() {
+      return engineName
     }
   }
 }

@@ -1,6 +1,6 @@
 import { Capacitor } from '@capacitor/core'
 import { AiRoundInterface } from '../shared/round'
-import { Scan, getNbCores, getMaxMemory, parsePV, parseVariant, scanFen } from '../utils/scan'
+import { Scan, getNbCores, getMaxMemory, parsePV, parseVariant, scanFen } from '../../scan'
 
 interface LevelToNumber {
   [index: number]: number
@@ -65,7 +65,7 @@ export default class Engine {
   }
 
   public init() {
-    return Scan.start(parseVariant(this.scan.variant))
+    return this.scan.start(parseVariant(this.scan.variant))
       .then(() => {
         if (!this.isInit) {
           this.isInit = true
@@ -151,8 +151,7 @@ export default class Engine {
   }
 
   public exit() {
-    this.scan.plugin.removeAllListeners()
-    return this.scan.plugin.exit()
+    return this.scan.exit()
   }
 
 }
