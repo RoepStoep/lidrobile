@@ -64,28 +64,29 @@ export default class Engine {
     })
   }
 
-  public init() {
-    return this.scan.start(parseVariant(this.scan.variant))
-      .then(() => {
-        if (!this.isInit) {
-          this.isInit = true
-          return this.scan.send('hub')
-            .then(() => this.scan.send('init'))
-            .then(() => this.scan.setOption('threads', getNbCores()))
-            .then(async () => {
-              const { value: mem } = await getMaxMemory()
-              if (Capacitor.platform !== 'web') this.scan.setOption('hash', mem)
-            })
+  public async init() {
+    try {
+      await this.scan.start(parseVariant(this.scan.variant))
+      if (!this.isInit) {
+        this.isInit = true
+        await this.scan.send('hub')
+        await this.scan.send('init')
+        await this.scan.setOption('threads', getNbCores())          
+        const mem = await getMaxMemory()
+        if (Capacitor.platform !== 'web') {
+          await this.scan.setOption('hash', mem)
         }
-      })
-      .catch(console.error.bind(console))
+      }
+    } catch(e) {
+      console.error(e)
+    }
   }
 
   public newGame() {
     return this.scan.send('new-game')
   }
 
-  public setLevel(l: number) {
+  public async setLevel(l: number) {
     this.level = l
   }
 
@@ -150,7 +151,7 @@ export default class Engine {
       .then(() => this.scan.send('go think'))
   }
 
-  public exit() {
+  public async exit() {
     return this.scan.exit()
   }
 
