@@ -30,7 +30,7 @@ export class Scan {
   }
 
   public start(): Promise<void> {
-    return this.plugin.start()
+    return this.plugin.start(this.variant)
   }
 
   public send(text: string): Promise<void> {
