@@ -132,7 +132,7 @@ export default {
     max: number,
     step: number,
     prop: Prop<number>,
-    onChange: (v: number) => void,
+    onChange?: (v: number) => void,
     disabled?: boolean,
   ) {
     const value = prop()
@@ -151,7 +151,7 @@ export default {
           const val = (e.target as HTMLInputElement).value
           const nval = ~~val
           prop(nval)
-          onChange(nval)
+          if (onChange) onChange(nval)
           setTimeout(redraw, 10)
         }
       }),

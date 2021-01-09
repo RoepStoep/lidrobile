@@ -1,5 +1,6 @@
 import { Plugins } from '@capacitor/core'
 import h from 'mithril/hyperscript'
+import settings from '../../../settings'
 import i18n from '../../../i18n'
 import * as helper from '../../helper'
 import { isClientEval } from '../../shared/tree/interfaces'
@@ -21,7 +22,7 @@ export default function renderCeval(ctrl: AnalyseCtrl) {
 function renderCevalInfos(ctrl: AnalyseCtrl) {
   const node = ctrl.node
   const ceval = node.ceval
-  const isInfinite = ctrl.settings.s.cevalInfinite
+  const isInfinite = settings.analyse.cevalInfinite()
 
   if (!ceval) return null
 

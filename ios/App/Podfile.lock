@@ -6,7 +6,7 @@ PODS:
   - CapacitorCordova (2.4.6)
   - CapacitorSoundEffect (0.0.1):
     - Capacitor
-  - CapacitorStockfish (0.0.1):
+  - CapacitorStockfishVariants (0.0.1):
     - Capacitor
   - Firebase/CoreOnly (7.6.0):
     - FirebaseCore (= 7.6.0)
@@ -63,14 +63,14 @@ PODS:
     - nanopb/encode (= 2.30907.0)
   - nanopb/decode (2.30907.0)
   - nanopb/encode (2.30907.0)
-  - PromisesObjC (1.2.12)
+  - PromisesObjC (1.2.11)
 
 DEPENDENCIES:
   - "Capacitor (from `../../node_modules/@capacitor/ios`)"
   - "CapacitorCommunityKeepAwake (from `../../node_modules/@capacitor-community/keep-awake`)"
   - "CapacitorCordova (from `../../node_modules/@capacitor/ios`)"
   - CapacitorSoundEffect (from `../../node_modules/capacitor-sound-effect`)
-  - CapacitorStockfish (from `../../../capacitor-stockfish`)
+  - CapacitorStockfishVariants (from `../../../capacitor-stockfish-variants`)
   - Firebase/Messaging
 
 SPEC REPOS:
@@ -95,15 +95,15 @@ EXTERNAL SOURCES:
     :path: "../../node_modules/@capacitor/ios"
   CapacitorSoundEffect:
     :path: "../../node_modules/capacitor-sound-effect"
-  CapacitorStockfish:
-    :path: "../../../capacitor-stockfish"
+  CapacitorStockfishVariants:
+    :path: "../../../capacitor-stockfish-variants"
 
 SPEC CHECKSUMS:
   Capacitor: 0f131577d41c082931f00cc080e2289d503465c8
   CapacitorCommunityKeepAwake: c4476e4a01406d22ec14df13520e391685441813
   CapacitorCordova: 3375b39b5ebca770ac7869f85e4dea32a642c9e0
   CapacitorSoundEffect: 31a36e64d0220c6d0e1621a61744b5d8c1e7738d
-  CapacitorStockfish: 76c7d03f033b7a180b68174bb1756d2d5bedfd87
+  CapacitorStockfishVariants: 3e14840f540506af0feb3e2e0129f38df1f9c52d
   Firebase: e1e089d9aac215a52442583f818ab61de3c4581b
   FirebaseCore: 0a43b7f1c5b36f3358cd703011ca4c7e0df55870
   FirebaseCoreDiagnostics: ee1184d51da3293335b83355aad20f537acc24cf
@@ -113,8 +113,8 @@ SPEC CHECKSUMS:
   GoogleDataTransport: 1024b1a4dfbd7a0e92cb20d7e0a6f1fb66b449a4
   GoogleUtilities: 31c5b01f978a70c6cff2afc6272b3f1921614b43
   nanopb: 59221d7f958fb711001e6a449489542d92ae113e
-  PromisesObjC: 3113f7f76903778cf4a0586bd1ab89329a0b7b97
+  PromisesObjC: 8c196f5a328c2cba3e74624585467a557dcb482f
 
-PODFILE CHECKSUM: 09b96d20aa796c7f25a118d01a10011541decb4e
+PODFILE CHECKSUM: c09a67dae0e6317bfc1649980840f70ae3956449
 
 COCOAPODS: 1.10.0
