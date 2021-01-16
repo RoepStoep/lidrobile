@@ -55,20 +55,19 @@ export default class Engine {
 
   constructor(readonly ctrl: AiRoundInterface, readonly variant: VariantKey) {
     this.scan = new Scan(variant)
-  
-    this.scan.addListener(line => {
-      const match = line.match(/^done move=([0-9\-xX\s]+)/)
-      if (match) {
-        ctrl.onEngineMove(parsePV(this.searchFen, match[1], this.scan.variant === 'frisian' || this.scan.variant === 'frysk', this.uciCache)[0])
-      }
-    })
   }
 
-  public async init() {
+  public async init(): Promise<void> {
     try {
-      await this.scan.start(parseVariant(this.scan.variant))
       if (!this.isInit) {
-        this.isInit = true
+        await this.scan.start(parseVariant(this.scan.variant))
+        this.isInit = true 
+        this.scan.addListener(line => {
+          const bmMatch = line.match(/^done move=([0-9\-xX\s]+)/)
+          if (bmMatch) {
+            this.ctrl.onEngineMove(parsePV(this.searchFen, bmMatch[1], this.scan.variant === 'frisian' || this.scan.variant === 'frysk', this.uciCache)[0])
+          }
+        })
         await this.scan.send('hub')
         await this.scan.send('init')
         await this.scan.setOption('threads', getNbCores())          
@@ -82,15 +81,15 @@ export default class Engine {
     }
   }
 
-  public newGame() {
+  public async newGame(): Promise<void> {
     return this.scan.send('new-game')
   }
 
-  public async setLevel(l: number) {
+  public async setLevel(l: number): Promise<void> {
     this.level = l
   }
 
-  public async search(initialFen: string, currentFen: string, moves: string[]) {
+  public async search(initialFen: string, currentFen: string, moves: string[]): Promise<void> {
     const initVariant = this.scan.variant
 
     this.searchFen = currentFen
@@ -151,7 +150,7 @@ export default class Engine {
       .then(() => this.scan.send('go think'))
   }
 
-  public async exit() {
+  public async exit(): Promise<void> {
     return this.scan.exit()
   }
 

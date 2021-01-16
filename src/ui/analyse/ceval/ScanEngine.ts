@@ -44,20 +44,16 @@ export default function ScanEngine(
    * Init engine with default options and variant
    */
   async function init() {
-    scan.addListener((line: string) => {
-      if (line.startsWith('id name ')) {
-        engineName = line.substring('id name '.length)
-      }
-    })
     try {
-      await scan.start(parseVariant(variant))
+      const obj = await scan.start(parseVariant(variant))
+      engineName = obj.engineName
       await scan.send('hub')
       await scan.setOption('bb-size', '0')
       await scan.setOption('threads', threads)
       if (Capacitor.platform !== 'web') {
         await scan.setOption('Hash', hash)
       }
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error('scan init error', err)
     }
   }
@@ -107,6 +103,7 @@ export default function ScanEngine(
       curEval = undefined
 
       readyPromise = new Promise((resolve) => {
+        scan.removeAllListeners()
         scan.addListener(line => {
           processOutput(line, work, resolve)
         })
