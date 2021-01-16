@@ -76,7 +76,7 @@ export default class Engine {
           await this.scan.setOption('hash', mem)
         }
       }
-    } catch(e) {
+    } catch (e) {
       console.error(e)
     }
   }
