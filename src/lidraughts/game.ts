@@ -8,6 +8,7 @@ import { FeaturedGame } from './interfaces'
 import { UserGame } from './interfaces/user'
 import { GameData, OnlineGameData, Player } from './interfaces/game'
 import { AnalyseData, OnlineAnalyseData } from './interfaces/analyse'
+import { isSynthetic } from '~/ui/analyse/util'
 
 export const analysableVariants = ['standard', 'antidraughts', 'breakthrough', 'fromPosition', 'frisian', 'frysk']
 export const puzzleVariants = ['standard', 'frisian']
@@ -188,4 +189,8 @@ export function isSupportedVariantKey(key: VariantKey) {
 
 export function isSupportedPerf(key: PerfKey) {
   return settings.game.supportedPerfs.indexOf(key) !== -1
+}
+
+export function forecastable(data: GameData | AnalyseData): boolean {
+  return playable(data) && !isSynthetic(data) && data.game.speed === 'correspondence'
 }

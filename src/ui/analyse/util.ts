@@ -1,7 +1,7 @@
 import { san2alg } from '../../utils/draughtsFormat'
-import { AnalyseData } from '../../lidraughts/interfaces/analyse'
 import { Tree } from '../shared/tree'
 import { Eval, NodeEvals } from './ceval/interfaces'
+import { Game } from '~/lidraughts/interfaces/game'
 
 export function readDrops(line?: string | null): string[] | null {
   if (typeof line === 'undefined' || line === null) return null
@@ -40,7 +40,7 @@ export function getBestEval(evs: NodeEvals): Eval | undefined {
   return serverEv
 }
 
-export function isSynthetic(data: AnalyseData) {
+export function isSynthetic(data: {game: Game}): boolean {
   return data.game.id === 'synthetic'
 }
 
