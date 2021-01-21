@@ -63,7 +63,7 @@ PODS:
     - nanopb/encode (= 2.30907.0)
   - nanopb/decode (2.30907.0)
   - nanopb/encode (2.30907.0)
-  - PromisesObjC (1.2.11)
+  - PromisesObjC (1.2.12)
 
 DEPENDENCIES:
   - "Capacitor (from `../../node_modules/@capacitor/ios`)"
@@ -103,7 +103,7 @@ SPEC CHECKSUMS:
   CapacitorCommunityKeepAwake: c4476e4a01406d22ec14df13520e391685441813
   CapacitorCordova: 3375b39b5ebca770ac7869f85e4dea32a642c9e0
   CapacitorSoundEffect: 31a36e64d0220c6d0e1621a61744b5d8c1e7738d
-  CapacitorStockfishVariants: 40de651eaf8e475b272d73b4175c5ef5db666952
+  CapacitorStockfishVariants: cbfd39128b67c4811957181ec5aa8386f6c8c4da
   Firebase: e1e089d9aac215a52442583f818ab61de3c4581b
   FirebaseCore: 0a43b7f1c5b36f3358cd703011ca4c7e0df55870
   FirebaseCoreDiagnostics: ee1184d51da3293335b83355aad20f537acc24cf
@@ -113,7 +113,7 @@ SPEC CHECKSUMS:
   GoogleDataTransport: 1024b1a4dfbd7a0e92cb20d7e0a6f1fb66b449a4
   GoogleUtilities: 31c5b01f978a70c6cff2afc6272b3f1921614b43
   nanopb: 59221d7f958fb711001e6a449489542d92ae113e
-  PromisesObjC: 8c196f5a328c2cba3e74624585467a557dcb482f
+  PromisesObjC: 3113f7f76903778cf4a0586bd1ab89329a0b7b97
 
 PODFILE CHECKSUM: 8d649a18954c7e9cb06d29b0c44d85341f34f998
 
