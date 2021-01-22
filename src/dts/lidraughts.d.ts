@@ -63,7 +63,6 @@ type RequestIdleCallbackDeadline = {
 
 interface Window {
   lidraughts: LidraughtsOptions
-  Scan: Scan.Static
   Shepherd: TetherShepherd.ShepherdStatic
   AndroidFullScreen: {
     showSystemUI: () => void
