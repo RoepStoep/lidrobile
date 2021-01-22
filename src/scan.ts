@@ -1,11 +1,10 @@
-import { Plugins, PluginListenerHandle } from '@capacitor/core'
+import { Plugins } from '@capacitor/core'
 import { VariantKey } from './lidraughts/interfaces/variant'
 
 export interface ScanPlugin {
-  addListener(event: 'output', callback: (v: { line: string }) => void): PluginListenerHandle
-  removeAllListeners(): void
   getMaxMemory(): Promise<{ value: number }>
   start(options: { variant: string } ): Promise<void>
+  onOutput(callback: (v: { line: string }) => void): void
   cmd(options: { cmd: string }): Promise<void>
   exit(): Promise<void>
 }
@@ -21,27 +20,22 @@ export class Scan {
     this.variant = v
   }
 
-  public addListener(callback: (line: string) => void) {
-    this.plugin.addListener('output', ({ line }) => {
+  public onOutput(callback: (line: string) => void): void {
+    this.plugin.onOutput(({ line }) => {
       console.debug('[scan >>] ' + line)
       callback(line)
     })
   }
 
-  public removeAllListeners(): void {
-    this.plugin.removeAllListeners()
-  }
-
   public async start(): Promise<{ engineName: string }> {
     return new Promise((resolve) => {
       let engineName = 'Stockfish'
-      const handle = this.plugin.addListener('output', ({ line }) => {
+      this.plugin.onOutput(({ line }) => {
         console.debug('[stockfish >>] ' + line)
         if (line.startsWith('id name ')) {
           engineName = line.substring('id name '.length)
         }
         if (line.startsWith('uciok')) {
-          handle.remove()
           resolve({ engineName })
         }
       })
@@ -60,7 +54,6 @@ export class Scan {
   }
 
   public exit(): Promise<void> {
-    this.plugin.removeAllListeners()
     return this.plugin.exit()
   }
 

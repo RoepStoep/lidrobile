@@ -103,8 +103,7 @@ export default function ScanEngine(
       curEval = undefined
 
       readyPromise = new Promise((resolve) => {
-        scan.removeAllListeners()
-        scan.addListener(line => {
+        scan.onOutput(line => {
           processOutput(line, work, resolve)
         })
       })

@@ -62,7 +62,7 @@ export default class Engine {
       if (!this.isInit) {
         await this.scan.start(parseVariant(this.scan.variant))
         this.isInit = true 
-        this.scan.addListener(line => {
+        this.scan.onOutput(line => {
           const bmMatch = line.match(/^done move=([0-9\-xX\s]+)/)
           if (bmMatch) {
             this.ctrl.onEngineMove(parsePV(this.searchFen, bmMatch[1], this.scan.variant === 'frisian' || this.scan.variant === 'frysk', this.uciCache)[0])
