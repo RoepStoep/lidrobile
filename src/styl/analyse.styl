@@ -17,6 +17,10 @@
   flex 1 1 auto
   display flex
 
+.analyse-tabsContent
+  &.withTrainingBox
+    padding-bottom 28px
+
 .analyse-boardWrapper
   display flex
   flex-flow column nowrap
@@ -508,6 +512,9 @@ comment
 
   .analyse-training_box.box
     background #fff
+    > .titleWrapper
+      background-color blue
+      color #fff
 
   .analyse-practice_box
     > .comment
@@ -523,6 +530,8 @@ comment
   .analyse-training_box.box
     background-color #f5f5f5
     color textDarkGray
+    > .titleWrapper
+      background-color rgba(#000, 0.9)
 
   .analyse-practice_box
     > .comment

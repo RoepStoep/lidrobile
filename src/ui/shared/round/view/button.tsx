@@ -202,6 +202,11 @@ export default {
     }
     return null
   },
+  notes(ctrl: OnlineRound) {
+    return ctrl.notes ? h('button', {
+      oncreate: helper.ontap(() => ctrl.notes && ctrl.notes.open())
+    }, [h('span.fa.fa-pencil.withIcon'), i18n('notes')]) : null
+  },
   analysisBoardIconOnly(ctrl: OnlineRound) {
     const d = ctrl.data
     if (gameApi.userAnalysable(d) || gameApi.replayable(d)) {
@@ -324,15 +329,6 @@ export default {
     return (
       <button className={className}
         oncreate={helper.ontap(ctrl.jumpLast)} />
-    )
-  },
-  notes(ctrl: OnlineRound) {
-    return (
-      <button className="action_bar_button fa fa-pencil"
-        oncreate={helper.ontap(
-          () => ctrl.notes && ctrl.notes.open(),
-          () => Plugins.LiToast.show({ text: i18n('notes'), duration: 'short', position: 'bottom' })
-        )} />
     )
   },
   returnToTournament(ctrl: OnlineRound) {
