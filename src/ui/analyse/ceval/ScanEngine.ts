@@ -19,6 +19,7 @@ export default function ScanEngine(
   let engineName = 'Scan 3.1'
 
   let stopTimeoutId: number
+  let listener: (e: Event) => void
   let readyPromise: Promise<void> = Promise.resolve()
 
   let curEval: Tree.ClientEval | undefined  = undefined 
@@ -103,9 +104,9 @@ export default function ScanEngine(
       curEval = undefined
 
       readyPromise = new Promise((resolve) => {
-        scan.onOutput(line => {
-          processOutput(line, work, resolve)
-        })
+        window.removeEventListener('stockfish', listener, false)
+        listener = e => processOutput((e as any).output, work, resolve)
+        window.addEventListener('stockfish', listener, { passive: true })
       })
 
       await scan.send('pos pos=' + scanFen(work.initialFen) + (work.moves.length != 0 ? (' moves="' + work.moves.join(' ') + '"') : ''))
@@ -192,6 +193,7 @@ export default function ScanEngine(
   }
   
   function exit() {
+    window.removeEventListener('stockfish', listener, false)
     return scan.exit()
   }
 

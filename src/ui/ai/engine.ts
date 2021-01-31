@@ -52,8 +52,16 @@ export default class Engine {
   private level = 1
   private scan: Scan
   private isInit = false
+  private listener: (e: Event) => void
 
   constructor(readonly ctrl: AiRoundInterface, readonly variant: VariantKey) {
+    this.listener = (e: Event) => {
+      const line = (e as any).output
+      const bmMatch = line.match(/^done move=([0-9\-xX\s]+)/)
+      if (bmMatch) {
+        this.ctrl.onEngineMove(parsePV(this.searchFen, bmMatch[1], this.scan.variant === 'frisian' || this.scan.variant === 'frysk', this.uciCache)[0])
+      }
+    }
     this.scan = new Scan(variant)
   }
 
@@ -62,12 +70,7 @@ export default class Engine {
       if (!this.isInit) {
         await this.scan.start(parseVariant(this.scan.variant))
         this.isInit = true 
-        this.scan.onOutput(line => {
-          const bmMatch = line.match(/^done move=([0-9\-xX\s]+)/)
-          if (bmMatch) {
-            this.ctrl.onEngineMove(parsePV(this.searchFen, bmMatch[1], this.scan.variant === 'frisian' || this.scan.variant === 'frysk', this.uciCache)[0])
-          }
-        })
+        window.addEventListener('stockfish', this.listener, { passive: true })
         await this.scan.send('hub')
         await this.scan.send('init')
         await this.scan.setOption('threads', getNbCores())          
@@ -151,6 +154,7 @@ export default class Engine {
   }
 
   public async exit(): Promise<void> {
+    window.removeEventListener('stockfish', this.listener, false)
     return this.scan.exit()
   }
 

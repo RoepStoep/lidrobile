@@ -4,7 +4,6 @@ import { VariantKey } from './lidraughts/interfaces/variant'
 export interface ScanPlugin {
   getMaxMemory(): Promise<{ value: number }>
   start(options: { variant: string } ): Promise<void>
-  onOutput(callback: (v: { line: string }) => void): void
   cmd(options: { cmd: string }): Promise<void>
   exit(): Promise<void>
 }
@@ -20,25 +19,21 @@ export class Scan {
     this.variant = v
   }
 
-  public onOutput(callback: (line: string) => void): void {
-    this.plugin.onOutput(({ line }) => {
-      console.debug('[scan >>] ' + line)
-      callback(line)
-    })
-  }
-
   public async start(): Promise<{ engineName: string }> {
     return new Promise((resolve) => {
       let engineName = 'Stockfish'
-      this.plugin.onOutput(({ line }) => {
+      const listener = (e: Event) => {
+        const line = (e as any).output
         console.debug('[stockfish >>] ' + line)
         if (line.startsWith('id name ')) {
           engineName = line.substring('id name '.length)
         }
         if (line.startsWith('uciok')) {
+          window.removeEventListener('stockfish', listener, false)
           resolve({ engineName })
         }
-      })
+      }
+      window.addEventListener('stockfish', listener, { passive: true })
       this.plugin.start(this.variant)
       .then(() => this.send('uci'))
     })
