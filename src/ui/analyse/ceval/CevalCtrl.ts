@@ -1,6 +1,6 @@
 import settings from '../../../settings'
 import { Tree } from '../../shared/tree'
-import ScanEngine from './ScanEngine'
+import ScanClient from './ScanClient'
 import { Opts, Work, ICevalCtrl, Started } from './interfaces'
 import { povChances } from './winningChances'
 
@@ -14,7 +14,7 @@ export default function CevalCtrl(
   const minDepth = 6
   // const maxDepth = opts.variant === 'antidraughts' ? 11 : 22
 
-  const engine = ScanEngine(opts.variant, opts.cores, opts.hashSize)
+  const engine = new ScanClient(opts.variant, opts.cores, opts.hashSize)
 
   let started = false
   let isDeeper = false
@@ -184,7 +184,7 @@ export default function CevalCtrl(
       return !isDeeper && !opts.infinite && !engine.isSearching()
     },
     getEngineName(): string {
-      return engine.getName()
+      return engine.engineName
     },
   }
 }

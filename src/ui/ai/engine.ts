@@ -1,6 +1,6 @@
 import { Capacitor } from '@capacitor/core'
 import { AiRoundInterface } from '../shared/round'
-import { Scan, getNbCores, getMaxMemory, parsePV, parseVariant, scanFen } from '../../scan'
+import { ScanPlugin, getNbCores, getMaxMemory, parsePV, parseVariant, scanFen } from '../../scan'
 
 interface LevelToNumber {
   [index: number]: number
@@ -50,19 +50,20 @@ export default class Engine {
   private uciCache: any = {}
   private searchFen: string = ''
   private level = 1
-  private scan: Scan
+  private scan: ScanPlugin
   private isInit = false
   private listener: (e: Event) => void
 
   constructor(readonly ctrl: AiRoundInterface, readonly variant: VariantKey) {
     this.listener = (e: Event) => {
       const line = (e as any).output
+      console.debug('[scan >>] ' + line)
       const bmMatch = line.match(/^done move=([0-9\-xX\s]+)/)
       if (bmMatch) {
         this.ctrl.onEngineMove(parsePV(this.searchFen, bmMatch[1], this.scan.variant === 'frisian' || this.scan.variant === 'frysk', this.uciCache)[0])
       }
     }
-    this.scan = new Scan(variant)
+    this.scan = new ScanPlugin(variant)
   }
 
   public async init(): Promise<void> {

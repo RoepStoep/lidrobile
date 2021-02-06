@@ -1,21 +1,21 @@
 import { Plugins } from '@capacitor/core'
 import { VariantKey } from './lidraughts/interfaces/variant'
 
-export interface ScanPlugin {
+interface IScanPlugin {
   getMaxMemory(): Promise<{ value: number }>
   start(options: { variant: string } ): Promise<void>
   cmd(options: { cmd: string }): Promise<void>
   exit(): Promise<void>
 }
 
-const ScanPlugin = Plugins.Scan as ScanPlugin
+const CapacitorScanPlugin = Plugins.Scan as IScanPlugin
 
-export class Scan {
-  private plugin: ScanPlugin
+export class ScanPlugin {
+  private plugin: IScanPlugin
   private variant: VariantKey
 
   constructor(readonly v: VariantKey) {
-    this.plugin = ScanPlugin
+    this.plugin = CapacitorScanPlugin
     this.variant = v
   }
 
