@@ -79,6 +79,7 @@ export default class Engine {
         if (Capacitor.platform !== 'web') {
           await this.scan.setOption('hash', mem)
         }
+        await this.newGame()
       }
     } catch (e) {
       console.error(e)
@@ -86,7 +87,10 @@ export default class Engine {
   }
 
   public async newGame(): Promise<void> {
-    return this.scan.send('new-game')
+    // from UCI protocol spec, the client should always send isready after
+    // ucinewgame
+    await this.scan.send('new-game')
+    await this.scan.isReady()
   }
 
   public async setLevel(l: number): Promise<void> {

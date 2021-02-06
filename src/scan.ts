@@ -39,6 +39,20 @@ export class ScanPlugin {
     })
   }
 
+  public isReady(): Promise<void> {
+    return new Promise((resolve) => {
+      const listener = (e: Event) => {
+        const line = (e as any).output
+        if (line.startsWith('readyok')) {
+          window.removeEventListener('scan', listener, false)
+          resolve()
+        }
+      }
+      window.addEventListener('scan', listener, { passive: true })
+      this.send('isready')
+    })
+  }
+
   public send(text: string): Promise<void> {
     console.debug('[scan <<] ' + text)
     return this.plugin.cmd({ cmd: text })
