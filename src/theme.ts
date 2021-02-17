@@ -115,8 +115,8 @@ function createStylesheetRule(
   const css = theme === 'bg' ?
     `.view-container.transp.${key} > main { background-image: url(${dataUrls[0]}); }` :
     `:root { --board-background-64: url(${dataUrls[0]}); --board-background-100: url(${dataUrls[1]}); }\n` +
-    `.${key}.is64 > .cg-board { background-image: var(--board-background-64); }\n` +
-    `.${key}.is100 > .cg-board { background-image: var(--board-background-100); }\n` +
+    `.board-${key}.is64 > .cg-board { background-image: var(--board-background-64); }\n` +
+    `.board-${key}.is100 > .cg-board { background-image: var(--board-background-100); }\n` +
     `.game_menu_button.${key}::before { background-image: var(--board-background-64); background-size: 40px; }`
 
   styleEl.appendChild(document.createTextNode(css))

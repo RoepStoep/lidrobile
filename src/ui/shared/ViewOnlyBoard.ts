@@ -86,7 +86,7 @@ const ViewOnlyBoard: Mithril.Component<Attrs, State> = {
     const boardClass = [
       'display_board',
       attrs.customPieceTheme || this.pieceTheme,
-      this.boardTheme,
+      `board-${this.boardTheme}`,
       attrs.variant,
       'is' + docVariant.board.key
     ].join(' ')

@@ -100,7 +100,7 @@ function renderBoard(fen: string, orientation: Color, variant: VariantKey, board
   const board = (getVariant(variant) || getVariant('standard')).board
   const boardClass = [
     'display_board',
-    boardTheme,
+    `board-${boardTheme}`,
     'is' + board.key
   ].join(' ')
 
@@ -127,7 +127,7 @@ function emptyBoard(orientation: Color, boardTheme: string) {
   const board = getVariant('standard').board
   const boardClass = [
     'display_board',
-    boardTheme,
+    `board-${boardTheme}`,
     'is' + board.key
   ].join(' ')
 

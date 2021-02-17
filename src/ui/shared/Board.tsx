@@ -75,7 +75,7 @@ export default {
     const boardClass = [
       'display_board',
       'orientation-' + draughtsground.state.orientation,
-      this.boardTheme,
+      `board-${this.boardTheme}`,
       customPieceTheme || this.pieceTheme,
       variant,
       'is' + docVariant.board.key
