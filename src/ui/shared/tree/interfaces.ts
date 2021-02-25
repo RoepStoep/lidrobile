@@ -22,6 +22,10 @@ export interface ServerEval {
   cp?: number
   win?: number
   best?: Uci
+  fen: Fen
+  knodes: number
+  depth: number
+  pvs: PvData[]
 }
 
 export interface PvData {

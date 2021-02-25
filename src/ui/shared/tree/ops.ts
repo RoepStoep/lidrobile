@@ -193,7 +193,7 @@ export function mergeNodes(curNode: Tree.Node, newNode: Tree.Node, mergeChildren
 
 }
 
-export function reconstruct(parts: Array<Tree.Node>): Tree.Node {
+export function reconstruct(parts: ReadonlyArray<Tree.Node>): Tree.Node {
   const root = copyNode(parts[0], true), nb = parts.length;
   let node = root, i: number;
   root.id = '';
