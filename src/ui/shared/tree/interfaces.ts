@@ -98,6 +98,7 @@ export interface Opening {
 export interface Glyph {
   readonly name: string
   readonly symbol: string
+  readonly id: number
 }
 
 export type Clock = number
