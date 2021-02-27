@@ -338,12 +338,14 @@ export default class OnlineRound implements OnlineRoundInterface {
       move.u = orig + dest;
     }
     const sendBlur = this.getBlurAndReset()
+    const delay = this.data.game.speed === 'correspondence' ?
+      this.data.pref.animationDuration || 0 : 0
     if (this.data.pref.submitMove && !isPremove) {
       setTimeout(() => {
         router.backbutton.stack.push(this.cancelMove)
         this.vm.moveToSubmit = move
         redraw()
-      }, this.data.pref.animationDuration || 0)
+      }, delay)
     } else {
       this.actualSendMove(move, isPremove, sendBlur)
       if (this.data.game.speed === 'correspondence' && !hasNetwork()) {
