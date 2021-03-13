@@ -1,0 +1,35 @@
+# Contributing
+
+## Reporting bug
+
+Please report the bug you find on roepstoep/lidrobile/issues. Be sure to search
+in the existing issues before in order to avoid duplicates.
+
+Bug reports MUST contain:
+
+* phone hardware
+* phone operating system version
+* version of lidraughts mobile beta
+* steps to reproduce
+* description of the observed behavior
+* description of the expected behavior
+
+If you have an Android device you can use [remote debugging tools](https://developer.chrome.com/devtools/docs/remote-debugging).
+
+Sending Javascript errors with your bug report is extremely helpful.
+
+Please do not report mobile application bugs in lidraughts forum.
+
+## Pull requests
+
+Check the requirements and setup guide in the [readme](README.md).
+
+Mithril views should be written with the hyperscript function (imported as h),
+and not JSX. Current JSX views are here for legacy reasons.
+
+We use [eslint](https://eslint.org/) to enforce some coding conventions.
+
+Before sending a pull request, please ensure the following command run
+without error (it will run lint, tests, and compilation in release mode):
+
+    $ npm run build-stage
