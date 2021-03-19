@@ -12,7 +12,7 @@ import menu from './menu'
 import trainingSettings from './trainingSettings'
 import TrainingCtrl from './TrainingCtrl'
 
-export function renderHeader(ctrl: TrainingCtrl) {
+export function renderHeader(ctrl: TrainingCtrl): Mithril.Children {
   const maxPuzzles = settings.training.puzzleBufferLen
 
   return ctrl.vm.loading ?
@@ -32,7 +32,7 @@ export function renderHeader(ctrl: TrainingCtrl) {
   ]))
 }
 
-export function renderContent(ctrl: TrainingCtrl, key: string) {
+export function renderContent(ctrl: TrainingCtrl, key: string): Mithril.Vnode {
   const board = h(Board, {
     variant: ctrl.data.puzzle.variant.key,
     draughtsground: ctrl.draughtsground
@@ -49,7 +49,7 @@ export function renderContent(ctrl: TrainingCtrl, key: string) {
   ])
 }
 
-export function overlay(ctrl: TrainingCtrl) {
+export function overlay(ctrl: TrainingCtrl): Mithril.ChildArray {
   return [
     menu.view(ctrl.menu),
     trainingSettings.view(ctrl.settings)
