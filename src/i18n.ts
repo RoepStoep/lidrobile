@@ -353,7 +353,6 @@ const untranslated: StringMap = {
   mustSignInToJoin: 'You must sign in to join it.',
   clockPosition: 'Clock position',
   playerisInvitingYou: '%s is inviting you',
-  toATypeGame: 'To a %s game',
   unsupportedVariant: 'Variant %s is not supported in this version',
   notesSynchronizationHasFailed: 'Notes synchronization with Lidraughts has failed, please try later.',
   returnToHome: 'Return to home',
