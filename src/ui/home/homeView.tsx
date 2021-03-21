@@ -32,7 +32,7 @@ function offline(ctrl: HomeCtrl) {
     fen: puzzleData.puzzle.fen,
     variant: puzzleData.puzzle.variant.key,
     orientation: puzzleData.puzzle.color,
-    link: () => router.set('/training'),
+    link: () => router.goTo('/training'),
   } : null
 
   return (
@@ -40,8 +40,8 @@ function offline(ctrl: HomeCtrl) {
       <div className="home homeOffline">
         <section className="playOffline">
           <h2>{i18n('playOffline')}</h2>
-          <button className="fatButton" oncreate={helper.ontapY(() => router.set('/ai'))}>{i18n('playOfflineComputer')}</button>
-          <button className="fatButton" oncreate={helper.ontapY(() => router.set('/otb'))}>{i18n('playOnTheBoardOffline')}</button>
+          <button className="fatButton" oncreate={helper.ontapY(() => router.goTo('/ai'))}>{i18n('playOfflineComputer')}</button>
+          <button className="fatButton" oncreate={helper.ontapY(() => router.goTo('/otb'))}>{i18n('playOnTheBoardOffline')}</button>
         </section>
         { boardConf ?
         <section className="home__miniPuzzle">
@@ -264,7 +264,7 @@ function renderDailyPuzzle(ctrl: HomeCtrl) {
     variant: puzzle.variant.key,
     orientation: puzzle.color,
     lastMove: puzzle.uci,
-    link: () => router.set(`/training/${puzzle.id}?initFen=${puzzle.fen}&initColor=${puzzle.color}`),
+    link: () => router.goTo(`/training/${puzzle.id}?initFen=${puzzle.fen}&initColor=${puzzle.color}`),
     boardTitle: [
       h('span', i18n('puzzleOfTheDay')),
       h('br'),
@@ -310,7 +310,7 @@ function renderTimeline(ctrl: HomeCtrl) {
         { timeline.map(renderTimelineEntry)}
       </ul>
       <div className="more">
-        <button oncreate={helper.ontapY(() => router.set('/timeline'))}>
+        <button oncreate={helper.ontapY(() => router.goTo('/timeline'))}>
           {i18n('more')} »
         </button>
       </div>

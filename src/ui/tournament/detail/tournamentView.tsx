@@ -328,7 +328,7 @@ function tournamentFeaturedGame(ctrl: TournamentCtrl) {
           variant: data.variant,
           lastMove: featured.lastMove,
           orientation: featured.orientation,
-          link: () => router.set(`/tournament/${data.id}/game/${featured.id}?color=${featured.orientation}&goingBack=1`),
+          link: () => router.goTo(`/tournament/${data.id}/game/${featured.id}?color=${featured.orientation}&goingBack=1`),
           gameObj: featured,
         })}
       </div>
@@ -354,7 +354,7 @@ function renderPlace(data: PodiumPlace) {
   return (
     <div className={'place' + rank}>
       <div className="trophy"> </div>
-      <div className="username" oncreate={helper.ontap(() => router.set('/@/' + data.name))}>
+      <div className="username" oncreate={helper.ontap(() => router.goTo('/@/' + data.name))}>
         {data.name}
       </div>
       <div className="rating"> {data.rating} </div>

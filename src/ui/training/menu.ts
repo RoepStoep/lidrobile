@@ -134,8 +134,8 @@ function onRecentTap(e: TouchEvent) {
   const id = button && (button.dataset as DOMStringMap).id
   const variant = button && (button.dataset as DOMStringMap).variant
   if (id) {
-    if (variant) router.set(`/training/${id}/variant/${variant}`, true)
-    else router.set(`/training/${id}`, true)
+    if (variant) router.goTo(`/training/${id}/variant/${variant}`, true)
+    else router.goTo(`/training/${id}`, true)
   }
 }
 

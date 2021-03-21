@@ -163,13 +163,13 @@ export default class OtbRound implements OtbRoundInterface, PromotingInterface {
     .then(() => {
       if (setupFen) {
         this.vm.setupFen = undefined
-        router.replacePath('/otb')
+        router.replaceState(undefined, '/otb')
       }
     })
   }
 
   public goToAnalysis = () => {
-    router.set(`/analyse/offline/otb/${this.data.player.color}?ply=${this.replay.ply}&curFen=${this.replay.situation().fen}&variant=${this.data.game.variant.key}`)
+    router.goTo(`/analyse/offline/otb/${this.data.player.color}?ply=${this.replay.ply}&curFen=${this.replay.situation().fen}&variant=${this.data.game.variant.key}`)
   }
 
   public save = () => {

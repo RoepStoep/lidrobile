@@ -64,20 +64,20 @@ export default {
           switch (action.notification.data['lidraughts.type']) {
             case 'challengeAccept':
               challengesApi.refresh()
-              router.set(`/game/${action.notification.data['lidraughts.challengeId']}`)
+              router.goTo(`/game/${action.notification.data['lidraughts.challengeId']}`)
               break
             case 'challengeCreate':
-              router.set(`/game/${action.notification.data['lidraughts.challengeId']}`)
+              router.goTo(`/game/${action.notification.data['lidraughts.challengeId']}`)
               break
             case 'corresAlarm':
             case 'gameMove':
             case 'gameFinish':
             case 'gameTakebackOffer':
             case 'gameDrawOffer':
-              router.set(`/game/${action.notification.data['lidraughts.fullId']}`)
+              router.goTo(`/game/${action.notification.data['lidraughts.fullId']}`)
               break
             case 'newMessage':
-              router.set(`/inbox/${action.notification.data['lidraughts.threadId']}`)
+              router.goTo(`/inbox/${action.notification.data['lidraughts.threadId']}`)
               break
           }
         }

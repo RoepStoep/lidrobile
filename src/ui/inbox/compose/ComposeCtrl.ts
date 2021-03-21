@@ -37,7 +37,7 @@ export default function ComposeCtrl(userId: string): IComposeCtrl {
     xhr.newThread(recipient, subject, body)
     .then((data: ComposeResponse) => {
       if (data.ok) {
-        router.set('/inbox/' + data.id)
+        router.goTo('/inbox/' + data.id)
       }
       else {
         redraw()

@@ -125,7 +125,7 @@ function onTap (ctrl: ISearchCtrl, e: TouchEvent) {
         if (!isSupportedVariantKey(g.variant.key)) {
           Plugins.LiToast.show({ text: i18n('unsupportedVariant', g.variant.name), duration: 'short' })
         } else {
-          router.set(`/analyse/online/${id}`)
+          router.goTo(`/analyse/online/${id}`)
         }
       }
     }

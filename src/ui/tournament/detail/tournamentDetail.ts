@@ -68,7 +68,7 @@ export default {
     const tournament = this.ctrl.tournament
     if (tournament && !isSupportedVariantKey(tournament.variant)) {
       Plugins.LiToast.show({ text: i18n('unsupportedVariant', tournament.variant), duration: 'short' })
-      router.set('/')
+      router.goTo('/')
       return
     }
 

@@ -62,7 +62,7 @@ const TV: Mithril.Component<TVAttrs, State> = {
     if (this.round) {
       return roundView(this.round)
     } else if (this.emptyTV) {
-      return emptyTV(settings.tv.channel(), () => router.set('/tv', true))
+      return emptyTV(settings.tv.channel(), () => router.goTo('/tv', true))
     } else {
       return h(LoadingBoard)
     }

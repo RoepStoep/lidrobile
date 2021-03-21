@@ -229,9 +229,9 @@ export default class TrainingCtrl implements PromotingInterface {
   public goToAnalysis = (): void => {
     const puzzle = this.data.puzzle
     if (hasNetwork() && puzzle.gameId !== 'custom') {
-      router.set(`/analyse/online/${puzzle.gameId}/${puzzle.color}?ply=${puzzle.initialPly}&curFen=${puzzle.fen}&color=${puzzle.color}&variant=${puzzle.variant.key}}&fallback=1`)
+      router.goTo(`/analyse/online/${puzzle.gameId}/${puzzle.color}?ply=${puzzle.initialPly}&curFen=${puzzle.fen}&color=${puzzle.color}&variant=${puzzle.variant.key}}&fallback=1`)
     } else {
-      router.set(`/analyse/variant/${this.data.puzzle.variant.key}/fen/${encodeURIComponent(this.initialNode.fen)}?color=${puzzle.color}&goBack=1`)
+      router.goTo(`/analyse/variant/${this.data.puzzle.variant.key}/fen/${encodeURIComponent(this.initialNode.fen)}?color=${puzzle.color}&goBack=1`)
     }
   }
 
@@ -245,7 +245,7 @@ export default class TrainingCtrl implements PromotingInterface {
 
     this.initialData = cfg
 
-    router.assignState({ puzzleId: cfg.puzzle.id }, `/training/${cfg.puzzle.id}/variant/${cfg.puzzle.variant.key}`)
+    router.replaceState({ puzzleId: cfg.puzzle.id }, `/training/${cfg.puzzle.id}/variant/${cfg.puzzle.variant.key}`)
 
     this.vm = {
       mode: 'play',
