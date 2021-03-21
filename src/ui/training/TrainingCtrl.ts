@@ -245,7 +245,7 @@ export default class TrainingCtrl implements PromotingInterface {
 
     this.initialData = cfg
 
-    router.replaceState({ puzzleId: cfg.puzzle.id }, `/training/${cfg.puzzle.id}/variant/${cfg.puzzle.variant.key}`)
+    router.History.replaceState({ puzzleId: cfg.puzzle.id }, `/training/${cfg.puzzle.id}/variant/${cfg.puzzle.variant.key}`)
 
     this.vm = {
       mode: 'play',
