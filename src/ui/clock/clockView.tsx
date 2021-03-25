@@ -4,6 +4,7 @@ import clockSettings from './clockSettings'
 import { formatTime, isStageClock } from '../shared/clock/utils'
 
 import { IDraughtsClockCtrl } from './DraughtsClockCtrl'
+import { IStageClock, IDraughtsStageClockState } from '../shared/clock/interfaces'
 
 export function renderClockSettingsOverlay(ctrl: IDraughtsClockCtrl) {
   return [
@@ -61,6 +62,7 @@ export function clockBody(ctrl: IDraughtsClockCtrl) {
   return (
     <div className="clockContainer">
       <div className={whiteClockClass} oncreate={helper.ontouch(() => onClockTouch(ctrl, 'white'))}>
+        { isStageClock(clock) ? renderStage(clock, 'white') : null }
         { isStageClock(clock) ? renderMoves(clock.whiteMoves()) : null }
         <div className="clockTapAreaContent">
           <span className={whiteClockTimeClass}>
@@ -86,8 +88,20 @@ export function clockBody(ctrl: IDraughtsClockCtrl) {
             { '.' + Math.trunc(clock.blackTime() / 100 % 10) }
           </span>
         </div>
+        { isStageClock(clock) ? renderStage(clock, 'black') : null }
         { isStageClock(clock) ? renderMoves(clock.blackMoves()) : null }
       </div>
+    </div>
+  )
+}
+
+function renderStage(clock: IStageClock, color: Color) {
+  const clockState = (clock.getState() as IDraughtsStageClockState)
+  const currentStageIndex = (color === 'white' ? clockState.whiteStage : clockState.blackStage)
+
+  return (
+    <div className="clockStageInfo">
+      <span>Stage {currentStageIndex + 1}</span>
     </div>
   )
 }
