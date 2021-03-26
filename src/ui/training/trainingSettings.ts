@@ -73,8 +73,9 @@ export interface ISettingsCtrl {
         formWidgets.renderMultipleChoiceButton(
           'Puzzle variant',
           [
-            { label: 'Standard', value: 'standard' },
-            { label: 'Frisian', value: 'frisian' },
+            { label: 'Standard', value: 'standard', dataIcon: '8' },
+            { label: 'Frisian', value: 'frisian', dataIcon: '\'' },
+            { label: 'Russian', value: 'russian', dataIcon: '' },
           ],
           settings.training.variant,
           ctrl.settings.setVariant

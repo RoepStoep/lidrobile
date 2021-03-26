@@ -3,17 +3,19 @@ import settings from '../../settings'
 import { batchRequestAnimationFrame } from '../../utils/batchRAF'
 
 import TrainingCtrl from './TrainingCtrl'
+import getVariant from '../../lidraughts/variant'
 
 export default function makeConfig(
   ctrl: TrainingCtrl,
   userMove: (orig: Key, dest: Key) => void): cg.InitConfig {
 
   const pieceMoveConf = settings.game.pieceMove()
+  const board = ctrl.data.puzzle.variant.board || getVariant(ctrl.data.puzzle.variant.key).board
 
   return {
     batchRAF: batchRequestAnimationFrame,
     fen: ctrl.data.puzzle.fen,
-    boardSize: ctrl.data.puzzle.variant.board.size,
+    boardSize: board.size,
     orientation: ctrl.data.puzzle.color,
     coordinates: settings.game.coords(),
     turnColor: ctrl.node.ply % 2 === 0 ? 'white' : 'black',

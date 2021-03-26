@@ -324,8 +324,11 @@ export default class TrainingCtrl implements PromotingInterface {
     const node = this.node
     const color: Color = node.ply % 2 === 0 ? 'white' : 'black'
     const dests = draughtsFormat.readDests(node.dests)
+    const board = this.data.puzzle.variant.board || getVariant(this.data.puzzle.variant.key).board
     const config = {
       fen: node.fen,
+      boardSize: board.size,
+      variant: this.data.puzzle.variant.key,
       turnColor: color,
       orientation: this.data.puzzle.color,
       movableColor: this.gameOver() ? null : this.data.puzzle.color,

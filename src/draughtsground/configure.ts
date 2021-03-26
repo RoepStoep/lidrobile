@@ -54,7 +54,11 @@ export function setNewBoardState(d: State, config: cg.SetConfig): void {
 
   if (config.boardSize) {
     d.boardSize = config.boardSize
-  } 
+  }
+  if (config.variant) {
+    d.movable.variant = config.variant;
+    d.premovable.variant = config.variant;
+  }
   if (config.fen) {
     d.pieces = fen.read(config.fen, board.boardFields(d))
   }

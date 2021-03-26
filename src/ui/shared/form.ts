@@ -115,7 +115,7 @@ export default {
 
   renderMultipleChoiceButton<T>(
     label: string,
-    options: ReadonlyArray<{ label: string, value: T }>,
+    options: ReadonlyArray<{ label: string, value: T, dataIcon?: string }>,
     prop: StoredProp<T>,
     callback?: (v: T) => void,
     wrap: boolean = false
@@ -128,6 +128,7 @@ export default {
       }, options.map(o => {
         return h('span', {
           className: o.value === selected ? 'selected' : '',
+          'data-icon': o.dataIcon,
           oncreate: helper.ontap(() => {
             prop(o.value)
             if (callback) callback(o.value)

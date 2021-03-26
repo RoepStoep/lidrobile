@@ -31,7 +31,7 @@ export interface State {
   movable: {
     free: boolean // all moves are valid - board editor
     color: Color | 'both' | null // color that can move.
-    dests: DestsMap | null // valid moves. {"a2" ["a3" "a4"] "b1" ["a3" "c3"]}
+    dests: DestsMap | null // valid moves. {"02" ["08" "07"] "03" ["09" "08"]}
     captLen: number | null
     captureUci: string[] | null // possible multicaptures, when played by clicking to the final square (or first ambiguity)
     variant?: string // game variant, to determine motion rules
@@ -45,8 +45,8 @@ export interface State {
   premovable: {
     enabled: boolean // allow premoves for color that can not move
     showDests: boolean // whether to add the premove-dest class on squares
-    variant: string | null // whether to allow king castle premoves
-    current: KeyPair | null // keys of the current saved premove ["e2" "e4"]
+    variant: string | null // game variant, to determine valid premoves
+    current: KeyPair | null // keys of the current saved premove ["01" "07"]
     dests: Key[] | null // premove destinations for the current selection
     events: {
       set?: (orig: Key, dest: Key, metadata?: cg.SetPremoveMetadata) => void // called after the premove has been set
