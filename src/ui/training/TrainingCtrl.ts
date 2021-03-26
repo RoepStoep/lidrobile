@@ -18,6 +18,7 @@ import { PromotingInterface } from '../shared/round'
 
 import moveTest from './moveTest'
 import makeGround from './ground'
+import getVariant from '../../lidraughts/variant'
 import menu, { IMenuCtrl } from './menu'
 import * as xhr from './xhr'
 import { VM, Data, PimpedGame, Feedback } from './interfaces'
@@ -237,6 +238,11 @@ export default class TrainingCtrl implements PromotingInterface {
   // --
 
   private init(cfg: PuzzleData) {
+    if (cfg.puzzle.variant.key && !cfg.puzzle.variant.board) {
+      const variantData = getVariant(cfg.puzzle.variant.key);
+      cfg.puzzle.variant.board = variantData.board;
+    }
+
     this.initialData = cfg
 
     router.assignState({ puzzleId: cfg.puzzle.id }, `/training/${cfg.puzzle.id}/variant/${cfg.puzzle.variant.key}`)
