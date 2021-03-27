@@ -16,7 +16,7 @@ export default {
 
     function header() {
       return [
-        h('span', i18n('nbFriendsOnline', ''))
+        h('span', i18n('nbFriendsOnline', friendsApi.count()))
       ]
     }
 
