@@ -25,6 +25,32 @@
       color rgba(#b58863, 1)
     &.coord-odd
       color rgba(#f0d9b5, 1)
+.brown2.is100 > .cg-board
+  background-image url('../../images/board/svg/brown2_100.svg')
+.brown2.is64 > .cg-board
+  background-image url('../../images/board/svg/brown2_64.svg')
+.brown2.orientation-white
+  > .files > li-coord, fieldnumber
+    &.coord-even
+      color rgba(#744f2a, 1)
+    &.coord-odd
+      color rgba(#e7c88b, 1)
+  > .ranks > li-coord
+    &.coord-even
+      color rgba(#e7c88b, 1)
+    &.coord-odd
+      color rgba(#744f2a, 1)
+.brown2.orientation-black
+  > .files > li-coord
+    &.coord-even
+      color rgba(#e7c88b, 1)
+    &.coord-odd
+      color rgba(#744f2a, 1)
+  > .ranks > li-coord, fieldnumber
+    &.coord-even
+      color rgba(#744f2a, 1)
+    &.coord-odd
+      color rgba(#e7c88b, 1)
 .blue.is100 > .cg-board
   background-image url('../../images/board/svg/blue_100.svg')
 .blue.is64 > .cg-board
@@ -306,6 +332,32 @@
       color rgba(#727272, 1)
     &.coord-odd
       color rgba(#cecece, 1)
+.match.is100 > .cg-board
+  background-image url('../../images/board/svg/match_100.svg')
+.match.is64 > .cg-board
+  background-image url('../../images/board/svg/match_64.svg')
+.match.orientation-white
+  > .files > li-coord, fieldnumber
+    &.coord-even
+      color rgba(#b86c3d, 1)
+    &.coord-odd
+      color rgba(#edece4, 1)
+  > .ranks > li-coord
+    &.coord-even
+      color rgba(#edece4, 1)
+    &.coord-odd
+      color rgba(#b86c3d, 1)
+.match.orientation-black
+  > .files > li-coord
+    &.coord-even
+      color rgba(#edece4, 1)
+    &.coord-odd
+      color rgba(#b86c3d, 1)
+  > .ranks > li-coord, fieldnumber
+    &.coord-even
+      color rgba(#b86c3d, 1)
+    &.coord-odd
+      color rgba(#edece4, 1)
 
 .kingOfTheHill > .cg-board:before
   width: 25%;

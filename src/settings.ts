@@ -67,6 +67,7 @@ export default {
       background: store.prop('settings.bgTheme', 'dark'),
       availableBoardThemes: [
         ['boardThemeBrown', 'brown'],
+        ['boardThemeBrown2', 'brown2'],
         ['boardThemeBlue', 'blue'],
         ['boardThemeGreen', 'green'],
         ['boardThemeGrey', 'grey'],
@@ -77,7 +78,8 @@ export default {
         ['boardThemeMaple', 'maple'],
         ['boardThemeBlue2', 'blue3'],
         ['boardThemeCanvas', 'canvas'],
-        ['boardThemeMetal', 'metal']
+        ['boardThemeMetal', 'metal'],
+        ['boardThemeMatch', 'match']
       ],
       availablePieceThemes: [
         ['wide_crown', 'Standard'],
