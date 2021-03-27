@@ -75,7 +75,7 @@
     "cordova-plugin-vibration": "3.1.1",
     "cordova-plugin-webview-checker": "1.0.1",
     "cordova-plugin-whitelist": "1.3.4",
-    "cordova-plugin-x-socialsharing": "5.1.3",
+    "cordova-plugin-x-socialsharing": "6.0.3",
     "cordova-plugin-x-toast": "2.7.2",
     "cordova-universal-links-plugin": "git+https://github.com/veloce/cordova-universal-links-plugin.git#c494fe1",
     "core-js": "2.5.7",
@@ -85,6 +85,7 @@
     "d3-shape": "1.2.0",
     "d3-time": "1.0.7",
     "d3-time-format": "2.0.5",
+    "es6-promise-plugin": "4.2.2",
     "hammerjs": "2.0.8",
     "ionic-plugin-keyboard": "2.2.1",
     "localforage": "1.5.5",
@@ -136,7 +137,6 @@
       "cordova-plugin-appversion": {},
       "cordova-plugin-device": {},
       "cordova-plugin-insomnia": {},
-      "cordova-plugin-x-socialsharing": {},
       "cordova-plugin-file": {},
       "cordova-universal-links-plugin": {},
       "cordova-plugin-dialogs": {},
@@ -156,7 +156,11 @@
       "onesignal-cordova-plugin": {},
       "cordova-plugin-scan": {},
       "cordova-plugin-webview-checker": {},
-      "@ahovakimyan/cordova-plugin-wkwebviewxhrfix": {}
+      "@ahovakimyan/cordova-plugin-wkwebviewxhrfix": {},
+      "cordova-plugin-x-socialsharing": {
+        "PHOTO_LIBRARY_ADD_USAGE_DESCRIPTION": "This app requires photo library access to function properly.",
+        "PHOTO_LIBRARY_USAGE_DESCRIPTION": "This app requires photo library access to function properly."
+      }
     }
   },
   "jest": {
