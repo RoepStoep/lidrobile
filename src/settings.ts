@@ -83,12 +83,15 @@ export default {
       ],
       availablePieceThemes: [
         ['wide_crown', 'Standard'],
-        ['wide', 'Standard no crown' ],
-        ['narrow_edge', 'Narrow #1' ],
-        ['narrow', 'Narrow #2' ],
-        ['fabirovsky', 'Fabirovsky' ],
-        ['flat', 'Flat' ],
-        ['basic', 'Basic' ]
+        ['wide', 'Standard no crown'],
+        ['narrow_edge', 'Narrow #1'],
+        ['narrow', 'Narrow #2'],
+        ['fabirovsky', 'Fabirovsky'],
+        ['flat', 'Flat'],
+        ['ringed', 'Ringed'],
+        ['basic', 'Basic'],
+        ['frisianovsky', 'Frisianovsky'],
+        ['eightbit', '8-bit']
       ],
       board: store.prop('settings.theme.board', 'maple'),
       piece: store.prop('settings.theme.piece', 'wide_crown')
