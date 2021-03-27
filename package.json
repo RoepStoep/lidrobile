@@ -55,7 +55,7 @@
     "@ahovakimyan/cordova-plugin-wkwebviewxhrfix": "git+https://github.com/AraHovakimyan/cordova-plugin-wkwebviewxhrfix.git#5e287d1",
     "@types/d3": "4.5.0",
     "@types/hammerjs": "2.0.35",
-    "cordova-android": "8.0.0",
+    "cordova-android": "9.0.0",
     "cordova-ios": "6.2.0",
     "cordova-plugin-appversion": "1.0.0",
     "cordova-plugin-crosswalk-data-migration": "git+https://github.com/veloce/cordova-plugin-crosswalk-data-migration.git#225408d",

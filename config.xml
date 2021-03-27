@@ -42,9 +42,6 @@
         <splash density="port-xxhdpi" src="res/android/screens/drawable-xxhdpi/screen.png" />
         <splash density="port-xxxhdpi" src="res/android/screens/drawable-xxxhdpi/screen.png" />
     </platform>
-    <platform name="android">
-        <preference name="android-targetSdkVersion" value="29" />
-    </platform>
     <platform name="ios">
         <hook src="scripts/ios/modify_plist.js" type="after_prepare" />
         <preference name="Orientation" value="all" />
@@ -94,7 +91,7 @@
     <preference name="StatusBarOverlaysWebView" value="false" />
     <preference name="StatusBarBackgroundColor" value="#111111" />
     <preference name="BackgroundColor" value="0xFF000000" />
-    <preference name="android-minSdkVersion" value="21" />
+    <preference name="android-minSdkVersion" value="22" />
     <preference name="AndroidLaunchMode" value="singleInstance" />
     <preference name="DefaultVolumeStream" value="media" />
     <preference name="AppendUserAgent" value="Lidrobile/1.2.0" />
@@ -147,5 +144,5 @@
     <plugin name="cordova-plugin-scan" spec="https://github.com/RoepStoep/cordova-plugin-scan.git#48ecf95" />
     <plugin name="cordova-plugin-webview-checker" spec="1.0.1" />
     <engine name="ios" spec="6.2.0" />
-    <engine name="android" spec="8.0.0" />
+    <engine name="android" spec="9.0.0" />
 </widget>
