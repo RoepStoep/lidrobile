@@ -21,7 +21,8 @@ import HomeCtrl from './HomeCtrl'
 
 export function body(ctrl: HomeCtrl) {
   const playbanEndsAt = session.currentBan()
-
+  const isPlayban = playbanEndsAt && ((playbanEndsAt.valueOf() - Date.now()) / 1000) > 1
+  
   if (!hasNetwork()) {
     const puzzleData = ctrl.offlinePuzzle
     const boardConf = puzzleData ? {
@@ -53,20 +54,22 @@ export function body(ctrl: HomeCtrl) {
   return (
     <div className="native_scroller page">
       <div className="home">
-        {playbanEndsAt && ((playbanEndsAt.valueOf() - Date.now()) / 1000) > 1 ?
-          renderPlayban(playbanEndsAt) : renderLobby(ctrl)
-        }
+        { isPlayban ? renderPlayban(playbanEndsAt) : renderLobby(ctrl) }
         <div className="home_start">
-          <button className="buttonMetal"
-            oncreate={helper.ontapY(() => newGameForm.openRealTime('custom'))}
-          >
-            {i18n('createAGame')}
-          </button>
-          <button className="buttonMetal"
-            oncreate={helper.ontapY(() => challengeForm.open())}
-          >
-            {i18n('playWithAFriend')}
-          </button>
+          { isPlayban ? undefined : 
+            <button className="buttonMetal"
+              oncreate={helper.ontapY(() => newGameForm.openRealTime('custom'))}
+            >
+              {i18n('createAGame')}
+            </button>
+          }
+          { isPlayban ? undefined : 
+            <button className="buttonMetal"
+              oncreate={helper.ontapY(() => challengeForm.open())}
+            >
+              {i18n('playWithAFriend')}
+            </button>
+          }
           <button className="buttonMetal"
             oncreate={helper.ontapY(playMachineForm.open)}
           >
@@ -252,31 +255,30 @@ function renderTimeline(ctrl: HomeCtrl) {
 }
 
 function renderPlayban(endsAt: Date) {
-  const seconds = (endsAt.valueOf() - Date.now()) / 1000
   return (
     <div className="home-playbanInfo">
-      <h2>Sorry :(</h2>
-      <p>We had to time you out for a {seconds < 3600 ? 'little ' : ''}while.</p>
+      <h2>{i18n('sorry')}</h2>
+      <p>{i18n('weHadToTimeYouOutForAWhile')}</p>
       <br />
-      <p>The timeout expires <strong>{window.moment(endsAt).fromNow()}</strong>.</p>
-      <h2>Why?</h2>
+      <p>{h.trust(i18n('timeoutExpires', `<strong>${window.moment(endsAt).fromNow()}</strong>`))}</p>
+      <h2>{i18n('why')}</h2>
       <p>
-        We aim to provide a pleasant draughts experience for everyone.
-        To that effect, we must ensure that all players follow good practices.
-        When a potential problem is detected, we display this message.
+        {i18n('pleasantDraughtsExperience')}<br />
+        {i18n('goodPractice')}<br />
+        {i18n('potentialProblem')}
       </p>
-      <h2>How to avoid this?</h2>
+      <h2>{i18n('howToAvoidThis')}</h2>
       <ul>
-        <li>Play every game you start</li>
-        <li>Try to win (or at least draw) every game you play</li>
-        <li>Resign lost games (don't let the clock run down)</li>
+        <li>{i18n('playEveryGame')}</li>
+        <li>{i18n('tryToWin')}</li>
+        <li>{i18n('resignLostGames')}</li>
       </ul>
       <br />
       <br />
       <p>
-        We apologize for the temporary inconvenience,<br />
-        and wish you great games on lidraughts.org.<br />
-        Thank you for reading!
+        {i18n('temporaryInconvenience')}<br />
+        {i18n('wishYouGreatGames')}<br />
+        {i18n('thankYouForReading')}
       </p>
     </div>
   )
