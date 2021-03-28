@@ -54,7 +54,7 @@ export function body(ctrl: HomeCtrl) {
   return (
     <div className="native_scroller page">
       <div className="home">
-        { isPlayban ? renderPlayban(playbanEndsAt) : renderLobby(ctrl) }
+        { playbanEndsAt && isPlayban ? renderPlayban(playbanEndsAt) : renderLobby(ctrl) }
         <div className="home_start">
           { isPlayban ? undefined : 
             <button className="buttonMetal"

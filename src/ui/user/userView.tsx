@@ -120,14 +120,14 @@ function renderWebsiteLinks(ctrl: IUserCtrl, user: ProfileUser) {
           <a className="external_link"
             oncreate={helper.ontapY(() => xhr.openWebsiteAuthPage(`/account/profile`))}
           >
-            Edit profile
+            {i18n('editProfile')}
           </a>
         </p> :
         <p>
           <a className="external_link"
             oncreate={helper.ontapY(() => xhr.openWebsiteAuthPage(`/@/${user.id}`))}
           >
-            More on lichess.org
+            More on lidraughts.org
           </a>
         </p>
       }
