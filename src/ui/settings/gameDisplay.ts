@@ -38,6 +38,15 @@ function renderBody() {
       ),
       h('li.list_item',
         formWidgets.renderMultipleChoiceButton(
+          i18n('landscapeBoardSide'), [
+            { label: 'Left', value: 'left' },
+            { label: 'Right', value: 'right' },
+          ],
+          settings.game.landscapeBoardSide,
+        ),
+      ),
+      h('li.list_item',
+        formWidgets.renderMultipleChoiceButton(
           i18n('boardCoordinates'), [
             { label: i18n('no'), value: 0 },
             { label: i18n('insideTheBoard'), value: 1 },

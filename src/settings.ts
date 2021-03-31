@@ -117,6 +117,7 @@ export default {
     clockPosition: prop<'right' | 'left'>('game.inversedClockPos', 'right'),
     pieceMove: prop<'tap' | 'drag' | 'both'>('game.pieceMove', 'both'),
     moveList: prop<boolean>('game.moveList', true),
+    landscapeBoardSide: prop<'right' | 'left'>('game.landscapeBoardSide', 'left'),
   },
 
   analyse: {

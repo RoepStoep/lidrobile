@@ -360,5 +360,6 @@ const untranslated: StringMap = {
   localEvalCaution: 'Caution: intensive usage will drain battery.',
   incorrectThreefoldClaim: 'Incorrect threefold repetition claim.',
   vibrateOnGameEvents: 'Vibrate on game events',
+  landscapeBoardSide: 'Board screen side (in landscape mode)',
   offline: 'Offline'
 }
