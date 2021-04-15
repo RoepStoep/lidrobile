@@ -12,7 +12,6 @@ import * as draughts from '../../draughts'
 import * as draughtsFormat from '../../utils/draughtsFormat'
 import session from '../../session'
 import sound from '../../sound'
-import settings from '../../settings'
 import { PuzzleData } from '../../lidraughts/interfaces/training'
 import { PromotingInterface } from '../shared/round'
 
@@ -47,15 +46,12 @@ export default class TrainingCtrl implements PromotingInterface {
 
   vm!: VM
 
-  pieceTheme: string
-
   private tree!: TreeWrapper
   private initialData!: PuzzleData
 
   constructor(cfg: PuzzleData, database: Database) {
     this.menu = menu.controller(this)
     this.database = database
-    this.pieceTheme = settings.general.theme.piece()
 
     this.init(cfg)
 
