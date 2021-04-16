@@ -3,7 +3,7 @@ import router from '../../router'
 import * as utils from '../../utils'
 import countries from '../../utils/countries'
 import session from '../../session'
-import i18n from '../../i18n'
+import i18n, { i18nVdom } from '../../i18n'
 import spinner from '../../spinner'
 import { playerName } from '../../lidraughts/player'
 import { Player } from '../../lidraughts/interfaces/game'
@@ -87,7 +87,7 @@ function content(mini: any, player: Player, opponent: Player, score?: Score) {
       }
       { sessionUserId !== undefined && showYourScore ?
         <div className="score_wrapper">
-          Your score: <span className="score">{`${mini.crosstable.users[sessionUserId]} - ${mini.crosstable.users[user.id]}`}</span>
+          {i18nVdom('yourScore', <span className="score">{`${mini.crosstable.users[sessionUserId]} - ${mini.crosstable.users[user.id]}`}</span>)}
         </div> : null
       }
       { !showYourScore && oppUser && score && score.nbGames > 0 ?
