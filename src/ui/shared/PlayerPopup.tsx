@@ -7,7 +7,7 @@ import i18n, { i18nVdom } from '../../i18n'
 import spinner from '../../spinner'
 import { playerName } from '../../lidraughts/player'
 import { Player } from '../../lidraughts/interfaces/game'
-import { Score } from '../../lidraughts/interfaces/user'
+import { MiniUser, Score } from '../../lidraughts/interfaces/user'
 import * as helper from '../helper'
 
 import popupWidget from './popup'
@@ -38,7 +38,7 @@ export default {
   }
 } as Mithril.Component<Attrs>
 
-function content(mini: any, player: Player, opponent: Player, score?: Score) {
+function content(mini: MiniUser, player: Player, opponent: Player, score?: Score) {
   const user = player.user
   if (!mini || !user) {
     return (
@@ -87,7 +87,7 @@ function content(mini: any, player: Player, opponent: Player, score?: Score) {
       }
       { sessionUserId !== undefined && showYourScore ?
         <div className="score_wrapper">
-          {i18nVdom('yourScore', <span className="score">{`${mini.crosstable.users[sessionUserId]} - ${mini.crosstable.users[user.id]}`}</span>)}
+          {i18nVdom('yourScore', <span className="score">{`${mini.crosstable!.users[sessionUserId]} - ${mini.crosstable!.users[user.id]}`}</span>)}
         </div> : null
       }
       { !showYourScore && oppUser && score && score.nbGames > 0 ?

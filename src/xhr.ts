@@ -9,6 +9,7 @@ import session from './session'
 import { TimelineData, LobbyData, HookData, Pool, HumanSeekSetup, CorrespondenceSeek, ApiStatus } from './lidraughts/interfaces'
 import { ChallengeData, ChallengesData, Challenge } from './lidraughts/interfaces/challenge'
 import { OnlineGameData } from './lidraughts/interfaces/game'
+import { MiniUser } from './lidraughts/interfaces/user'
 
 interface GameSetup {
   variant: string
@@ -201,7 +202,7 @@ export function setServerLang(lang: string): Promise<void> {
   }
 }
 
-export function miniUser(userId: string) {
+export function miniUser(userId: string): Promise<MiniUser> {
   return fetchJSON(`/@/${userId}/mini`)
 }
 
