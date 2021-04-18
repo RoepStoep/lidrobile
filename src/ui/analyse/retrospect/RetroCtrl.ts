@@ -23,8 +23,8 @@ export interface IRetroCtrl {
   vm: VM
   isPlySolved(ply: number): boolean
   onJump(): void
-  jumpToNext(): void
-  skip(): void
+  jumpToCurrent(): void
+  nextMistake(): void
   viewSolution(): void
   hideComputerLine(node: Tree.Node): boolean
   showBadNode(): Tree.Node | undefined
@@ -70,7 +70,7 @@ export default function RetroCtrl(root: AnalyseCtrl): IRetroCtrl {
     return candidateNodes.find(n => !isPlySolved(n.ply))
   }
 
-  function jumpToNext(): void {
+  function jumpToCurrent(): void {
     vm.feedback = 'find'
     const node = findNextNode()
     if (!node) {
@@ -108,7 +108,7 @@ export default function RetroCtrl(root: AnalyseCtrl): IRetroCtrl {
           return fault.node.uci === uci
         })) {
           explorerCancelPlies.push(fault.node.ply)
-          setTimeout(jumpToNext, 100)
+          setTimeout(jumpToCurrent, 100)
         } else {
           cur.openingUcis = ucis
           vm.current = cur
@@ -161,7 +161,6 @@ export default function RetroCtrl(root: AnalyseCtrl): IRetroCtrl {
   }
 
   function onWin(): void {
-    solveCurrent()
     vm.feedback = 'win'
     redraw()
   }
@@ -181,16 +180,11 @@ export default function RetroCtrl(root: AnalyseCtrl): IRetroCtrl {
   function viewSolution() {
     vm.feedback = 'view'
     root.userJump(vm.current.solution.path)
-    solveCurrent()
   }
 
-  function skip() {
-    solveCurrent()
-    jumpToNext()
-  }
-
-  function solveCurrent() {
+  function nextMistake() {
     solvedPlies.push(vm.current.fault.node.ply)
+    jumpToCurrent()
   }
 
   function hideComputerLine(node: Tree.Node): boolean {
@@ -208,20 +202,20 @@ export default function RetroCtrl(root: AnalyseCtrl): IRetroCtrl {
   }
 
   function onMergeAnalysisData() {
-    if (isSolving() && !vm.current) jumpToNext()
+    if (isSolving() && !vm.current) jumpToCurrent()
   }
 
   function reset() {
     solvedPlies = []
-    jumpToNext()
+    jumpToCurrent()
   }
 
   return {
     vm,
     isPlySolved,
     onJump,
-    jumpToNext,
-    skip,
+    jumpToCurrent,
+    nextMistake,
     viewSolution,
     hideComputerLine,
     showBadNode,
