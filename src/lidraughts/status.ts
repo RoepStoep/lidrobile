@@ -32,6 +32,10 @@ function aborted(data: GameData | AnalyseData): boolean {
   return data.game.status.id === ids.aborted
 }
 
+function resigned(data: GameData | AnalyseData): boolean {
+  return data.game.status.id === ids.resign
+}
+
 function toLabel(status: string, winner: Color | undefined, variant: VariantKey) {
   switch (status) {
     case 'started':
@@ -78,5 +82,6 @@ export default {
   started,
   finished,
   aborted,
+  resigned,
   toLabel
 }
