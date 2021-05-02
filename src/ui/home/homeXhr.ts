@@ -1,14 +1,14 @@
 import { fetchJSON } from '../../http'
+import { Streamer } from '../../lidraughts/interfaces'
 import { DailyPuzzleData } from '../../lidraughts/interfaces'
-import { OnlineGameData } from '../../lidraughts/interfaces/game'
 import { TournamentListItem } from '../../lidraughts/interfaces/tournament'
 
 interface FeaturedTournamentData {
   featured: TournamentListItem[]
 }
 
-export function featured(feedback: boolean): Promise<OnlineGameData> {
-  return fetchJSON('/tv', undefined, feedback)
+export function featuredStreamers(): Promise<readonly Streamer[]> {
+  return fetchJSON('/api/streamer/featured', undefined)
 }
 
 export function dailyPuzzle(): Promise<DailyPuzzleData> {

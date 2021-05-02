@@ -2,10 +2,10 @@ import h from 'mithril/hyperscript'
 import router from '../../router'
 import { dropShadowHeader, backButton as renderBackbutton } from '../shared/common'
 import { hasNetwork, lidraughtsAssetSrc, gameIcon } from '../../utils'
+import { openWebsitePage } from '../../utils/browse'
 import { linkify } from '../../utils/html'
 import { perfTypes, provisionalDeviation } from '../../lidraughts/perfs'
 import { Perf } from '../../lidraughts/interfaces/user'
-import * as xhr from '../../xhr'
 import i18n, { plural, formatDate, formatDuration, fromNow } from '../../i18n'
 import countries from '../../utils/countries'
 import * as helper from '../helper'
@@ -118,14 +118,14 @@ function renderWebsiteLinks(ctrl: IUserCtrl, user: ProfileUser) {
       { ctrl.isMe() ?
         <p>
           <a className="external_link"
-            oncreate={helper.ontapY(() => xhr.openWebsiteAuthPage('/account/profile'))}
+            oncreate={helper.ontapY(() => openWebsitePage('/account/profile'))}
           >
             {i18n('editProfile')}
           </a>
         </p> :
         <p>
           <a className="external_link"
-            oncreate={helper.ontapY(() => xhr.openWebsiteAuthPage(`/@/${user.id}`))}
+            oncreate={helper.ontapY(() => openWebsitePage(`/@/${user.id}`))}
           >
             More on lidraughts.org
           </a>
@@ -134,7 +134,7 @@ function renderWebsiteLinks(ctrl: IUserCtrl, user: ProfileUser) {
       { user.patron ?
       <p>
         <a className="external_link"
-          oncreate={helper.ontapY(() => xhr.openWebsiteAuthPage('/patron'))}
+          oncreate={helper.ontapY(() => openWebsitePage('/patron'))}
         >
           Lidraughts Patron
         </a>
@@ -309,7 +309,7 @@ function renderActions(ctrl: IUserCtrl, user: ProfileUser) {
       }
       { session.isConnected() && !ctrl.isMe() ?
       <div className="list_item" data-icon="!"
-        oncreate={helper.ontapY(() => xhr.openWebsiteAuthPage(`/report?username=${user.username}`))}
+        oncreate={helper.ontapY(() => openWebsitePage(`/report?username=${user.username}`))}
       >
         {i18n('reportXToModerators', user.username)}
       </div> : null
