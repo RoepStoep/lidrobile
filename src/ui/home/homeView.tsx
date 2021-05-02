@@ -64,9 +64,12 @@ function online(ctrl: HomeCtrl) {
         renderPlayban(playbanEndsAt) : renderLobby(ctrl)
       }
       {renderStart(ctrl)}
-      {renderFeaturedStreamers(ctrl)}
-      {renderFeaturedTournaments(ctrl)}
-      {renderTimeline(ctrl)}
+      <div className="home__side">
+        {renderFeaturedStreamers(ctrl)}
+        {renderFeaturedTournaments(ctrl)}
+        {renderTimeline(ctrl)}
+      </div>
+      {renderFeaturedGame(ctrl)}
       {renderDailyPuzzle(ctrl)}
     </div>
   )
@@ -266,6 +269,31 @@ function renderFeaturedStreamers(ctrl: HomeCtrl) {
     return null
 }
 
+function renderFeaturedGame(ctrl: HomeCtrl) {
+  const featured = ctrl.featuredGame
+  const boardConf = featured ? {
+    fixed: false,
+    fen: featured.fen,
+    variant: featured.variant,
+    orientation: featured.orientation,
+    lastMove: featured.lastMove,
+    link: () => {
+      router.set('/tv?channel=best')
+    },
+    gameObj: featured,
+  } : {
+    fixed: false,
+    orientation: 'white' as Color,
+    fen: emptyFen,
+  }
+
+  return (
+    <section className="home__featured">
+      {h(MiniBoard, boardConf)}
+    </section>
+  )
+}
+
 function renderDailyPuzzle(ctrl: HomeCtrl) {
   const puzzleData = ctrl.dailyPuzzle
   const puzzle: any = puzzleData && (puzzleData.history ? puzzleData.history : puzzleData.puzzle)
@@ -281,11 +309,8 @@ function renderDailyPuzzle(ctrl: HomeCtrl) {
     orientation: puzzle.color,
     lastMove: puzzle.uci,
     link: () => router.set(`/training/${puzzle.id}?initFen=${puzzle.fen}&initColor=${puzzle.color}`),
-    boardTitle: [
-      h('span', i18n('puzzleOfTheDay')),
-      h('br'),
-      h('span', puzzle.color === 'white' ? i18n('whitePlays') : i18n('blackPlays')),
-    ]
+    topText: i18n('puzzleOfTheDay'),
+    bottomText: puzzle.color === 'white' ? i18n('whitePlays') : i18n('blackPlays'),
   } : {
     fixed: true,
     orientation: 'white' as Color,
