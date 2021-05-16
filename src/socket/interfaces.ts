@@ -1,17 +1,17 @@
-import { Friend } from '../lichess/friends'
+import { Friend } from '../lidraughts/friends'
 
-export interface LichessMessage<T> {
+export interface LidraughtsMessage<T> {
   t: string
   d?: T
 }
 
-export type LichessMessageAny = LichessMessage<unknown>
+export type LidraughtsMessageAny = LidraughtsMessage<unknown>
 
 interface Options {
   name: string
   debug?: boolean
   pingDelay?: number
-  sendOnOpen?: ReadonlyArray<LichessMessageAny>
+  sendOnOpen?: ReadonlyArray<LidraughtsMessageAny>
   registeredEvents: string[]
   isAuth?: boolean
 }
@@ -21,7 +21,7 @@ export interface SocketConfig {
   params?: StringMap
 }
 
-type MessageHandler<D, P extends LichessMessage<D>> = (data?: D, payload?: P) => void
+type MessageHandler<D, P extends LidraughtsMessage<D>> = (data?: D, payload?: P) => void
 
 type MessageHandlerGeneric = MessageHandler<any, any>
 
@@ -46,6 +46,7 @@ export interface SocketSetup {
   url: string
   version?: number
   opts: SocketConfig
+  keep?: boolean
 }
 
 export interface ConnectionSetup {
@@ -53,12 +54,12 @@ export interface ConnectionSetup {
   handlers: SocketHandlers
 }
 
-export interface FollowingEntersPayload extends LichessMessage<Friend> {
+export interface FollowingEntersPayload extends LidraughtsMessage<Friend> {
   playing: boolean
   patron: boolean
 }
 
-export interface FollowingOnlinePayload extends LichessMessage<string[]> {
+export interface FollowingOnlinePayload extends LidraughtsMessage<string[]> {
   playing: string[]
   patrons: string[]
 }
