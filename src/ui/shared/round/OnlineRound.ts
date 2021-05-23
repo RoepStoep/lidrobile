@@ -30,6 +30,7 @@ import CorresClockCtrl from './correspondenceClock/corresClockCtrl'
 import RoundSocket from './socket'
 import * as xhr from './roundXhr'
 import { OnlineRoundInterface } from './'
+import debounce from 'lodash-es/debounce'
 
 interface VM {
   ply: number
@@ -300,6 +301,7 @@ export default class OnlineRound implements OnlineRoundInterface {
       if (s.san.indexOf('x') !== -1) sound.throttledCapture()
       else sound.throttledMove()
     }
+    this.updateHref()
     return true
   }
 
@@ -713,6 +715,13 @@ export default class OnlineRound implements OnlineRoundInterface {
     }
     this.data = cfg
   }
+
+  private updateHref = debounce(() => {
+    router.setQueryParams({
+      ...router.getQueryParams(),
+      ply: String(this.vm.ply)
+    })
+  }, 200)
 
   private addStep(steps: GameStep[], newStep: GameStep): GameStep {
 
