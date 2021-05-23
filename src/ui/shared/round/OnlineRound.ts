@@ -518,10 +518,6 @@ export default class OnlineRound implements OnlineRoundInterface {
       this.transientMove.clear()
     }
 
-    if (playing && playedColor !== d.player.color) {
-      vibrate.quick()
-    }
-
     if (!this.replaying() && playedColor !== d.player.color &&
       (this.draughtsground.state.premovable.current || this.draughtsground.state.predroppable.current)) {
       setTimeout(() => {
@@ -690,6 +686,10 @@ export default class OnlineRound implements OnlineRoundInterface {
       sound.capture()
     } else {
       sound.move()
+    }
+
+    if (!this.data.player.spectator) {
+      vibrate.quick()
     }
   }
 
