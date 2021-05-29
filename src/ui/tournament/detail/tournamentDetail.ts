@@ -1,4 +1,4 @@
-import { Plugins } from '@capacitor/core'
+import { Toast } from '@capacitor/toast'
 import h from 'mithril/hyperscript'
 import socket from '../../../socket'
 import redraw from '../../../utils/redraw'
@@ -67,7 +67,7 @@ export default {
 
     const tournament = this.ctrl.tournament
     if (tournament && !isSupportedVariantKey(tournament.variant)) {
-      Plugins.LiToast.show({ text: i18n('unsupportedVariant', tournament.variant), duration: 'short' })
+      Toast.show({ text: i18n('unsupportedVariant', tournament.variant), position: 'center', duration: 'short' })
       router.set('/')
       return
     }

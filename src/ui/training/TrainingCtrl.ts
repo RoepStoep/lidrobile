@@ -1,4 +1,5 @@
 import { Plugins } from '@capacitor/core'
+import { Share } from '@capacitor/share'
 import debounce from 'lodash-es/debounce'
 import throttle from 'lodash-es/throttle'
 import Draughtsground from '../../draughtsground/Draughtsground'
@@ -220,7 +221,7 @@ export default class TrainingCtrl implements PromotingInterface {
   }
 
   public share = (): void => {
-    Plugins.LiShare.share({ url: `https://lidraughts.org/training/${this.data.puzzle.variant.key}/${this.data.puzzle.id}` })
+    Share.share({ url: `https://lidraughts.org/training/${this.data.puzzle.variant.key}/${this.data.puzzle.id}` })
   }
 
   public goToAnalysis = (): void => {

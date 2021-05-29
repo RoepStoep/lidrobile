@@ -1,3 +1,4 @@
+import { Toast } from '@capacitor/toast'
 import { Plugins, StatusBarStyle, FilesystemDirectory, FileReadResult } from '@capacitor/core'
 import settings from './settings'
 
@@ -93,7 +94,7 @@ export function loadImages(
 
 export function handleError(err: any) {
   console.error(err)
-  Plugins.LiToast.show({ text: 'Cannot load theme file', duration: 'long' })
+  Toast.show({ text: 'Cannot load theme file', duration: 'short' })
 }
 
 function createStylesheetRule(

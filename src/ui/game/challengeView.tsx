@@ -1,4 +1,6 @@
 import h from 'mithril/hyperscript'
+import { Share } from '@capacitor/share'
+import { Toast } from '@capacitor/toast'
 import { Plugins } from '@capacitor/core'
 import router from '../../router'
 import session from '../../session'
@@ -127,7 +129,7 @@ function awaitInvitePopup(ctrl: ChallengeCtrl, challenge: Challenge) {
           h('input.lidraughts_game_url', {
             oncreate: helper.ontap(function() {
               Plugins.Clipboard.write({url: publicUrl(challenge)})
-              Plugins.LiToast.show({ text: 'Copied to clipboard', duration: 'short'})
+              Toast.show({ text: 'Copied to clipboard', position: 'center', duration: 'short'})
             }),
             value: publicUrl(challenge),
             readonly: true
@@ -137,7 +139,7 @@ function awaitInvitePopup(ctrl: ChallengeCtrl, challenge: Challenge) {
         h('div.go_or_cancel.clearfix', [
           h('button.binary_choice[data-icon=E].withIcon', {
             oncreate: helper.ontap(function() {
-              Plugins.LiShare.share({ url: publicUrl(challenge) })
+              Share.share({ url: publicUrl(challenge) })
             })
           }, i18n('shareGameURL')),
           h('button.binary_choice[data-icon=L].withIcon', {
