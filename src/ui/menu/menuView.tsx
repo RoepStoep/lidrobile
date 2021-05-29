@@ -1,5 +1,6 @@
 import * as Mithril from 'mithril'
 import { Plugins } from '@capacitor/core'
+import { Toast } from '@capacitor/toast'
 import h from 'mithril/hyperscript'
 import * as utils from '../../utils'
 import socket from '../../socket'
@@ -238,7 +239,7 @@ function networkStatus(user?: Session) {
   const server = menu.mlat()
   const showToast = (e: Event) => {
     e.stopPropagation()
-    Plugins.LiToast.show({ text: pingHelp, duration: 'long', position: 'top' })
+    Toast.show({ text: pingHelp, duration: 'long', position: 'top' })
   }
   return (
     <div className="pingServer">

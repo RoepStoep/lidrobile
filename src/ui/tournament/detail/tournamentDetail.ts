@@ -1,4 +1,4 @@
-import { Plugins } from '@capacitor/core'
+import { Toast } from '@capacitor/toast'
 import * as Mithril from 'mithril'
 import h from 'mithril/hyperscript'
 import socket from '../../../socket'
@@ -70,7 +70,7 @@ export default {
     let header: Mithril.Children
 
     if (tournament && !isSupportedVariantKey(tournament.variant)) {
-      Plugins.LiToast.show({ text: i18n('unsupportedVariant', tournament.variant), duration: 'short' })
+      Toast.show({ text: i18n('unsupportedVariant', tournament.variant), position: 'center', duration: 'short' })
       router.set('/')
       return
     }

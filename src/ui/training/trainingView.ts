@@ -1,5 +1,5 @@
 import * as Mithril from 'mithril'
-import { Plugins } from '@capacitor/core'
+import { Toast } from '@capacitor/toast'
 import h from 'mithril/hyperscript'
 import i18n, { plural } from '../../i18n'
 import { gameIcon, hasNetwork } from '../../utils'
@@ -66,10 +66,10 @@ function renderActionsBar(ctrl: TrainingCtrl) {
       oncreate: helper.ontap(ctrl.settings.open)
     }),
     h('button.action_bar_button.training_action.fa.fa-share-alt', {
-      oncreate: helper.ontap(ctrl.share, () => Plugins.LiToast.show({ text: 'Share this puzzle', duration: 'short', position: 'bottom' }))
+      oncreate: helper.ontap(ctrl.share, () => Toast.show({ text: 'Share this puzzle', duration: 'short', position: 'bottom' }))
     }),
     h('button.action_bar_button.training_action[data-icon=A]', {
-      oncreate: helper.ontap(ctrl.goToAnalysis, () => Plugins.LiToast.show({ text: i18n('analysis'), duration: 'short', position: 'bottom' })),
+      oncreate: helper.ontap(ctrl.goToAnalysis, () => Toast.show({ text: i18n('analysis'), duration: 'short', position: 'bottom' })),
       disabled: ctrl.vm.mode !== 'view'
     }),
     h('button.action_bar_button.training_action.fa.fa-backward', {

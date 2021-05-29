@@ -1,4 +1,4 @@
-import { Plugins } from '@capacitor/core'
+import { Toast } from '@capacitor/toast'
 import * as Mithril from 'mithril'
 import debounce from 'lodash-es/debounce'
 import { handleXhrError } from '../../../utils'
@@ -175,7 +175,7 @@ export default function UserGamesCtrl(userId: string, filter?: string): IUserGam
     const g = scrollState.games.find(game => game.id === id)
     if (g) {
       if (!gameApi.isSupportedVariantKey(g.variant.key)) {
-        Plugins.LiToast.show({ text: i18n('unsupportedVariant', g.variant.name), duration: 'short' })
+        Toast.show({ text: i18n('unsupportedVariant', g.variant.name), position: 'center', duration: 'short' })
         return
       }
       const whiteUser = g.players.white.user

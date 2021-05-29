@@ -1,4 +1,5 @@
-import { Plugins } from '@capacitor/core'
+import { Toast } from '@capacitor/toast'
+import { Share } from '@capacitor/share'
 import h from 'mithril/hyperscript'
 import throttle from 'lodash-es/throttle'
 import { handleXhrError, hasNetwork } from '../../../../utils'
@@ -32,7 +33,7 @@ export default {
   shareLink(ctrl: OnlineRound) {
     return h('button', {
       oncreate: helper.ontap(() => {
-        Plugins.LiShare.share({ url: gameApi.publicUrl(ctrl.data) })
+        Share.share({ url: gameApi.publicUrl(ctrl.data) })
       })
     }, [i18n('shareGameURL')])
   },
@@ -43,7 +44,7 @@ export default {
           handleXhrError(err)
           throw err
         })
-        .then((pdn: string) => Plugins.LiShare.share({ text: pdn }))
+        .then((pdn: string) => Share.share({ text: pdn }))
     }
     return (
       <button oncreate={helper.ontap(handler)}>
@@ -326,7 +327,7 @@ export default {
       <button className="action_bar_button fa fa-pencil"
         oncreate={helper.ontap(
           () => ctrl.notes && ctrl.notes.open(),
-          () => Plugins.LiToast.show({ text: i18n('notes'), duration: 'short', position: 'bottom' })
+          () => Toast.show({ text: i18n('notes'), duration: 'short', position: 'bottom' })
         )} />
     )
   },

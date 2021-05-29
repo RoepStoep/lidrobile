@@ -1,4 +1,4 @@
-import { Plugins } from '@capacitor/core'
+import { Toast } from '@capacitor/toast'
 import i18n from '../../../i18n'
 import socket, { RedirectObj, LidraughtsMessageAny, MessageHandlers } from '../../../socket'
 import * as gameApi from '../../../lidraughts/game'
@@ -94,7 +94,7 @@ export default function(ctrl: OnlineRound, onFeatured?: () => void, onUserTVRedi
       ctrl.data.player.offeringRematch = by === ctrl.data.player.color
       const fromOp = ctrl.data.opponent.offeringRematch = by === ctrl.data.opponent.color
       if (fromOp) {
-        Plugins.LiToast.show({ text: i18n('yourOpponentWantsToPlayANewGameWithYou'), duration: 'short' })
+        Toast.show({ text: i18n('yourOpponentWantsToPlayANewGameWithYou'), position: 'top', duration: 'short' })
       }
       redraw()
     },
@@ -106,7 +106,7 @@ export default function(ctrl: OnlineRound, onFeatured?: () => void, onUserTVRedi
       ctrl.data.player.offeringDraw = by === ctrl.data.player.color
       const fromOp = ctrl.data.opponent.offeringDraw = by === ctrl.data.opponent.color
       if (fromOp) {
-        Plugins.LiToast.show({ text: i18n('yourOpponentOffersADraw'), duration: 'short' })
+        Toast.show({ text: i18n('yourOpponentOffersADraw'), position: 'top', duration: 'short' })
       }
       redraw()
     },

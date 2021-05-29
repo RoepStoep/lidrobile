@@ -1,4 +1,5 @@
 import { Plugins } from '@capacitor/core'
+import { Toast } from '@capacitor/toast'
 import * as Mithril from 'mithril'
 import router from '../../router'
 import storage from '../../storage'
@@ -105,7 +106,7 @@ function loadRound(
   data: OnlineGameData
 ): void {
   if (!gameApi.isSupportedVariant(data)) {
-    Plugins.LiToast.show({ text: i18n('unsupportedVariant', data.game.variant.name), duration: 'short' })
+    Toast.show({ text: i18n('unsupportedVariant', data.game.variant.name), position: 'center', duration: 'short' })
     router.set('/')
   }
   else {

@@ -1,4 +1,6 @@
 import { Plugins } from '@capacitor/core'
+import { Share } from '@capacitor/share'
+import { Toast } from '@capacitor/toast'
 import h from 'mithril/hyperscript'
 import m from 'mithril'
 import router from '../../../router'
@@ -62,7 +64,7 @@ export function renderFooter(ctrl: TournamentCtrl) {
         <span className="fa fa-question-circle" />
         FAQ
       </button>
-      <button key="shareButton" className="action_bar_button" oncreate={helper.ontap(() => Plugins.LiShare.share({ url: tUrl }))}>
+      <button key="shareButton" className="action_bar_button" oncreate={helper.ontap(() => Share.share({ url: tUrl }))}>
         <span className="fa fa-share-alt" />
         {i18n('share')}
       </button>

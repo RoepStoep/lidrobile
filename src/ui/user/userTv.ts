@@ -1,4 +1,4 @@
-import { Plugins } from '@capacitor/core'
+import { Toast } from '@capacitor/toast'
 import * as Mithril from 'mithril'
 import h from 'mithril/hyperscript'
 import router from '../../router'
@@ -31,7 +31,7 @@ const UserTv: Mithril.Component<Attrs, State> = {
     .then(data => {
       data.userTV = userId
       if (!gameApi.isSupportedVariant(data)) {
-        Plugins.LiToast.show({ text: i18n('unsupportedVariant', data.game.variant.name), duration: 'short' })
+        Toast.show({ text: i18n('unsupportedVariant', data.game.variant.name), position: 'center', duration: 'short' })
         router.set('/')
       } else {
         this.round = new OnlineRound(false, data.game.id, data, false, undefined, undefined, userId, onRedirect)

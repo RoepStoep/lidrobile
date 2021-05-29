@@ -1,3 +1,4 @@
+import { Toast } from '@capacitor/toast'
 import { Plugins } from '@capacitor/core'
 import throttle from 'lodash-es/throttle'
 import redraw from './utils/redraw'
@@ -121,7 +122,7 @@ function myTurnGames() {
 }
 
 function showSavedPrefToast(data: string): string {
-  Plugins.LiToast.show({ text: '✓ Your preferences have been saved on lidraughts server.', duration: 'short' })
+  Toast.show({ text: '✓ Your preferences have been saved on lidraughts server.', position: 'center', duration: 'short' })
   return data
 }
 
@@ -321,7 +322,7 @@ function refresh(): Promise<void> {
       session = undefined
       onLogout()
       redraw()
-      Plugins.LiToast.show({ text: i18n('signedOut'), duration: 'short' })
+      Toast.show({ text: i18n('signedOut'), position: 'center', duration: 'short' })
     }
   })
 }

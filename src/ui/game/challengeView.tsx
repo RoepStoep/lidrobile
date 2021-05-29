@@ -1,6 +1,6 @@
 import h from 'mithril/hyperscript'
 import * as Mithril from 'mithril'
-import { Plugins } from '@capacitor/core'
+import { Share } from '@capacitor/share'
 import router from '../../router'
 import session from '../../session'
 import loginModal from '../loginModal'
@@ -129,7 +129,7 @@ function awaitInvitePopup(ctrl: ChallengeCtrl, challenge: Challenge) {
         h('div.go_or_cancel.clearfix', [
           h('button.binary_choice[data-icon=E].withIcon', {
             oncreate: helper.ontap(function() {
-              Plugins.LiShare.share({ url: publicUrl(challenge) })
+              Share.share({ url: publicUrl(challenge) })
             })
           }, i18n('shareGameURL')),
           h('button.binary_choice[data-icon=L].withIcon', {

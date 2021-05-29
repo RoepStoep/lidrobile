@@ -1,5 +1,6 @@
 import Stream from 'mithril/stream'
-import { Plugins, AppState, PluginListenerHandle } from '@capacitor/core'
+import { App, AppState } from '@capacitor/app'
+import { Plugins, PluginListenerHandle } from '@capacitor/core'
 import router from '../../router'
 import settings from '../../settings'
 import clockSettings from './clockSettings'
@@ -58,7 +59,7 @@ export default function DraughtsClockCtrl(): IDraughtsClockCtrl {
     window.AndroidFullScreen.immersiveMode()
   }
 
-  const appStateListener = Plugins.App.addListener('appStateChange', (state: AppState) => {
+  const appStateListener = App.addListener('appStateChange', (state: AppState) => {
     if (state.isActive) hideStatusBar()
   })
 

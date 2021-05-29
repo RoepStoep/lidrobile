@@ -1,4 +1,4 @@
-import { Plugins } from '@capacitor/core'
+import { Toast } from '@capacitor/toast'
 import i18n from '../../../i18n'
 import * as draughts from '../../../draughts'
 import { countGhosts } from '../../../draughtsground/fen'
@@ -110,7 +110,7 @@ export default class Replay {
       if (resp.threefoldRepetition) {
         this.onThreefoldRepetition(resp.status)
       } else {
-        Plugins.LiToast.show({ text: i18n('incorrectThreefoldClaim'), duration: 'short' })
+        Toast.show({ text: i18n('incorrectThreefoldClaim'), position: 'center', duration: 'short' })
       }
     })
     .catch(console.error.bind(console))

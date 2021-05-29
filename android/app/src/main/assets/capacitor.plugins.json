@@ -1,0 +1,30 @@
+[
+	{
+		"pkg": "@capacitor-community/keep-awake",
+		"classpath": "com.getcapacitor.community.keepawake.KeepAwake"
+	},
+	{
+		"pkg": "@capacitor/app",
+		"classpath": "com.capacitorjs.plugins.app.AppPlugin"
+	},
+	{
+		"pkg": "@capacitor/keyboard",
+		"classpath": "com.capacitorjs.plugins.keyboard.KeyboardPlugin"
+	},
+	{
+		"pkg": "@capacitor/share",
+		"classpath": "com.capacitorjs.plugins.share.SharePlugin"
+	},
+	{
+		"pkg": "@capacitor/toast",
+		"classpath": "com.capacitorjs.plugins.toast.ToastPlugin"
+	},
+	{
+		"pkg": "capacitor-sound-effect",
+		"classpath": "org.lichess.plugin.SoundEffect"
+	},
+	{
+		"pkg": "capacitor-cordova-plugin-scan",
+		"classpath": "org.lidraughts.scan.CordovaPluginScan"
+	}
+]

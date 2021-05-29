@@ -1,5 +1,5 @@
 import * as Mithril from 'mithril'
-import { Plugins } from '@capacitor/core'
+import { App } from '@capacitor/app'
 import Rlite from 'rlite-router'
 import render from 'mithril/render'
 import Vnode from 'mithril/render/vnode'
@@ -133,7 +133,7 @@ const backbutton = (() => {
         backHistory()
       }
     } else {
-      Plugins.App.exitApp()
+      App.exitApp()
     }
   }
 

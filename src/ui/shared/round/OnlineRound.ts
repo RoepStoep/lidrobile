@@ -1,5 +1,8 @@
 import * as Mithril from 'mithril'
-import { Capacitor, Plugins, AppState, PluginListenerHandle } from '@capacitor/core'
+import { App, AppState } from '@capacitor/app'
+import { Toast } from '@capacitor/toast'
+import { Capacitor, PluginListenerHandle } from '@capacitor/core'
+import Badge from './badge'
 import throttle from 'lodash-es/throttle'
 import Draughtsground from '../../../draughtsground/Draughtsground'
 import * as cg from '../../../draughtsground/interfaces'
@@ -179,7 +182,7 @@ export default class OnlineRound implements OnlineRoundInterface {
     this.makeCorrespondenceClock()
     if (this.correspondenceClock) this.clockIntervId = setInterval(this.correspondenceClockTick, 6000)
 
-    this.appStateListener = Plugins.App.addListener('appStateChange', (state: AppState) => {
+    this.appStateListener = App.addListener('appStateChange', (state: AppState) => {
       if (state.isActive) this.onResume()
     })
 
@@ -361,7 +364,7 @@ export default class OnlineRound implements OnlineRoundInterface {
     } else {
       this.socketSendMoveOrDrop(move, isPremove, sendBlur)
       if (this.data.game.speed === 'correspondence' && !hasNetwork()) {
-        Plugins.LiToast.show({ text: 'You need to be connected to Internet to send your move.', duration: 'short' })
+        Toast.show({ text: 'You need to be connected to Internet to send your move.', position: 'bottom', duration: 'short' })
       }
     }
   }
@@ -406,7 +409,7 @@ export default class OnlineRound implements OnlineRoundInterface {
         this.socketSendMoveOrDrop(this.vm.dropToSubmit)
       }
       if (this.data.game.speed === 'correspondence' && !hasNetwork()) {
-        Plugins.LiToast.show({ text: 'You need to be connected to Internet to send your move.', duration: 'short' })
+        Toast.show({ text: 'You need to be connected to Internet to send your move.', position: 'bottom', duration: 'short' })
       }
       this.vm.moveToSubmit = null
       this.vm.dropToSubmit = null
@@ -541,7 +544,7 @@ export default class OnlineRound implements OnlineRoundInterface {
       session.refresh()
       .then(() => {
         if (Capacitor.platform === 'ios') {
-          Plugins.Badge.setNumber({ badge: session.myTurnGames().length })
+          Badge.setNumber({ badge: session.myTurnGames().length })
         }
       })
     }
@@ -598,7 +601,7 @@ export default class OnlineRound implements OnlineRoundInterface {
     if (!this.data.player.spectator) {
       session.backgroundRefresh()
       sleepUtils.allowSleepAgain()
-      Plugins.LiToast.show({ text: this.gameStatus(), duration: 'short' })
+      Toast.show({ text: this.gameStatus(), position: 'center', duration: 'short' })
     }
     this.score === undefined
   }

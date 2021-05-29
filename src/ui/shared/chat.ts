@@ -1,4 +1,5 @@
 import * as Mithril from 'mithril'
+import { Keyboard } from '@capacitor/keyboard'
 import { Plugins } from '@capacitor/core'
 import h from 'mithril/hyperscript'
 import * as helper from '../helper'
@@ -44,7 +45,7 @@ export class Chat {
   }
 
   public close = (fromBB?: string) => {
-    Plugins.Keyboard.hide()
+    Keyboard.hide()
     if (fromBB !== 'backbutton' && this.showing) router.backbutton.stack.pop()
     this.showing = false
     this.nbUnread = 0
