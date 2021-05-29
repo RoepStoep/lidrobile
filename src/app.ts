@@ -1,6 +1,8 @@
-import { Capacitor, Plugins, DeviceInfo, NetworkStatus } from '@capacitor/core'
+import { Capacitor } from '@capacitor/core'
+import { Network } from '@capacitor/network'
 import { Keyboard } from '@capacitor/keyboard'
-import { App, AppState } from '@capacitor/app'
+import { App, AppState, AppInfo } from '@capacitor/app'
+import { DeviceInfo, DeviceId } from '@capacitor/device'
 import debounce from 'lodash-es/debounce'
 import { hasNetwork } from './utils'
 import redraw from './utils/redraw'
@@ -21,12 +23,17 @@ let firstConnection = true
 const requestIdleCallback: (c: () => void) => void =
   window.requestIdleCallback || window.setTimeout
 
-export default function appInit(info: DeviceInfo, cpuCores: number) {
+export default function appInit(
+  appInfo: AppInfo,
+  deviceInfo: DeviceInfo,
+  deviceId: DeviceId,
+  cpuCores: number
+) {
 
   window.deviceInfo = {
-    platform: info.platform,
-    uuid: info.uuid,
-    appVersion: info.appVersion,
+    platform: deviceInfo.platform,
+    uuid: deviceId.uuid,
+    appVersion: appInfo.version,
     cpuCores,
   }
 
@@ -37,7 +44,7 @@ export default function appInit(info: DeviceInfo, cpuCores: number) {
   requestIdleCallback(() => {
     // cache viewport dims
     helper.viewportDim()
-    sound.load(info)
+    sound.load(deviceInfo)
   })
 
   // pull session data once (to log in user automatically thanks to cookie)
@@ -64,7 +71,7 @@ export default function appInit(info: DeviceInfo, cpuCores: number) {
     }
   })
 
-  Plugins.Network.addListener('networkStatusChange', (s: NetworkStatus) => {
+  Network.addListener('networkStatusChange', s => {
     if (s.connected) {
       onOnline()
     }

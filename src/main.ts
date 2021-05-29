@@ -1,6 +1,7 @@
 /// <reference path="dts/index.d.ts" />
 import { Capacitor, Plugins } from '@capacitor/core'
-
+import { App } from '@capacitor/app'
+import { Device } from '@capacitor/app'
 import appInit from './app'
 import { init as settingsInit } from './settings'
 import { init as i18nInit } from './i18n'
@@ -22,10 +23,12 @@ settingsInit()
 .then(themeInit)
 .then(i18nInit)
 .then(() => Promise.all([
-  Plugins.Device.getInfo(),
-  Capacitor.platform === 'ios' ?
+  App.getInfo(),
+  Device.getInfo(),
+  Device.getId(),
+  Capacitor.getPlatform() === 'ios' ?
     Plugins.CPUInfo.nbCores().then((r: { value: number }) => r.value) :
     Promise.resolve((<XNavigator>navigator).hardwareConcurrency || 1)
 ]))
-.then(([i, c]) => appInit(i, c))
+.then(([ai, di, did, c]) => appInit(ai, di, did, c))
 .then(() => Plugins.SplashScreen.hide())
