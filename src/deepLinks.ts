@@ -1,5 +1,5 @@
 import { Toast } from '@capacitor/toast'
-import { Plugins } from '@capacitor/core'
+import { App } from '@capacitor/app'
 import Rlite from 'rlite-router'
 import router from './router'
 import i18n from './i18n'
@@ -16,7 +16,7 @@ function fenFromParams(params: any): string {
 
 export default {
   init() {
-    Plugins.App.addListener('appUrlOpen', ({ url }) => {
+    App.addListener('appUrlOpen', ({ url }) => {
       setTimeout(() => {
         const path = new URL(url).pathname
         const matched = links.run(path)
