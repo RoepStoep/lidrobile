@@ -7,6 +7,7 @@ import {
 } from '@capacitor/core'
 import { fetchText } from './http'
 import challengesApi from './lidraughts/challenges'
+import Badge from './badge'
 import router from './router'
 import session from './session'
 import settings from './settings'
@@ -49,7 +50,7 @@ export default {
               session.refresh()
               .then(() => {
                 if (Capacitor.platform === 'ios') {
-                  Plugins.Badge.setNumber({ badge: session.myTurnGames().length })
+                  Badge.setNumber({ badge: session.myTurnGames().length })
                 }
               })
               break

@@ -1,4 +1,5 @@
 import * as Mithril from 'mithril'
+import { Dialog } from '@capacitor/dialog'
 import { App } from '@capacitor/app'
 import Rlite from 'rlite-router'
 import render from 'mithril/render'
@@ -121,7 +122,7 @@ const backbutton = (() => {
       // if playing a game as anon ask for confirmation because there is no way
       // back!
       if (/^\/game\/[a-zA-Z0-9]{12}/.test(get()) && !session.isConnected()) {
-        Plugins.Modals.confirm({
+        Dialog.confirm({
           title: 'Confirmation',
           message: 'Do you really want to leave the game? You can\'t go back to it after.',
         }).then(({ value }) => {
