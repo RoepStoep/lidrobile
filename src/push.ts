@@ -1,10 +1,9 @@
 import {
-  Capacitor,
-  Plugins,
-  PushNotification,
-  PushNotificationToken,
-  PushNotificationActionPerformed
-} from '@capacitor/core'
+  PushNotifications,
+  PushNotificationSchema,
+  Token,
+  ActionPerformed
+} from '@capacitor/push-notifications'
 import { fetchText } from './http'
 import challengesApi from './lidraughts/challenges'
 import Badge from './badge'
@@ -14,12 +13,10 @@ import settings from './settings'
 import { handleXhrError } from './utils'
 import { isForeground } from './utils/appMode'
 
-const { PushNotifications } = Plugins
-
 export default {
   init() {
     PushNotifications.addListener('registration',
-      ({ value }: PushNotificationToken) => {
+      ({ value }: Token) => {
         console.debug('Push registration success, FCM token: ' + value)
 
         fetchText(`/mobile/register/firebase/${value}`, {
@@ -36,7 +33,7 @@ export default {
     )
 
     PushNotifications.addListener('pushNotificationReceived',
-      (notification: PushNotification) => {
+      (notification: PushNotificationSchema) => {
         if (isForeground()) {
           switch (notification.data['lidraughts.type']) {
             case 'corresAlarm':
@@ -60,7 +57,7 @@ export default {
     )
 
     PushNotifications.addListener('pushNotificationActionPerformed',
-      (action: PushNotificationActionPerformed) => {
+      (action: ActionPerformed) => {
         if (action.actionId === 'tap') {
           switch (action.notification.data['lidraughts.type']) {
             case 'challengeAccept':
@@ -86,15 +83,19 @@ export default {
     )
   },
 
-  register(): Promise<void> {
-    if (settings.general.notifications.allow()) {
-      PushNotifications.requestPermission().then(result => {
-        if (result.granted) {
-          return PushNotifications.register()
-        } else {
+  async register(): Promise<void> {
+    if (settings.general.notifications.enable()) {
+      const status = await PushNotifications.checkPermissions()
+      switch (status.receive) {
+        case 'denied':
           return Promise.reject('Permission to use push denied')
-        }
-      })
+        case 'prompt':
+        case 'prompt-with-rationale':
+          const r = await PushNotifications.requestPermissions()
+          if (r.receive === 'granted') return PushNotifications.register()
+          else Promise.reject('Permission to use push denied')
+        case 'granted': return PushNotifications.register()
+      }
     }
 
     return Promise.resolve()

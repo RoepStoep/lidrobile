@@ -1,7 +1,6 @@
 import h from 'mithril/hyperscript'
 import Stream from 'mithril/stream'
 import { Toast } from '@capacitor/toast'
-import { Plugins } from '@capacitor/core'
 import i18n from '../../i18n'
 import router from '../../router'
 import { validateFen, positionLooksLegit } from '../../utils/fen'

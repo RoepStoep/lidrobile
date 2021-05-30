@@ -1,7 +1,9 @@
 /// <reference path="dts/index.d.ts" />
-import { Capacitor, Plugins } from '@capacitor/core'
+import { Capacitor, registerPlugin, Plugins } from '@capacitor/core'
 import { App } from '@capacitor/app'
-import { Device } from '@capacitor/app'
+import { Device } from '@capacitor/device'
+import { SplashScreen } from '@capacitor/splash-screen'
+
 import appInit from './app'
 import { init as settingsInit } from './settings'
 import { init as i18nInit } from './i18n'
@@ -13,6 +15,11 @@ import deepLinks from './deepLinks'
 interface XNavigator extends Navigator {
   hardwareConcurrency: number
 }
+
+interface CPUInfoPlugin {
+  nbCores(): Promise<{ value: number }>
+}
+const CPUInfo = registerPlugin<CPUInfoPlugin>('CPUInfo')
 
 settingsInit()
 .then(() => {
@@ -27,8 +34,8 @@ settingsInit()
   Device.getInfo(),
   Device.getId(),
   Capacitor.getPlatform() === 'ios' ?
-    Plugins.CPUInfo.nbCores().then((r: { value: number }) => r.value) :
+    CPUInfo.nbCores().then((r: { value: number }) => r.value).catch(() => 1) :
     Promise.resolve((<XNavigator>navigator).hardwareConcurrency || 1)
 ]))
 .then(([ai, di, did, c]) => appInit(ai, di, did, c))
-.then(() => Plugins.SplashScreen.hide())
+.then(() => SplashScreen.hide())

@@ -1,6 +1,6 @@
 import * as Mithril from 'mithril'
-import { Toast } from '@capacitor/toast'
 import h from 'mithril/hyperscript'
+import { Toast } from '@capacitor/toast'
 import i18n, { plural } from '../../i18n'
 import { gameIcon, hasNetwork } from '../../utils'
 import session from '../../session'

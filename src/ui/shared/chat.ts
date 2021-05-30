@@ -1,6 +1,5 @@
 import * as Mithril from 'mithril'
 import { Keyboard } from '@capacitor/keyboard'
-import { Plugins } from '@capacitor/core'
 import h from 'mithril/hyperscript'
 import * as helper from '../helper'
 import redraw from '../../utils/redraw'
