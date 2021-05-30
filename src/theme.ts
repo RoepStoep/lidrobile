@@ -1,8 +1,8 @@
 import { Toast } from '@capacitor/toast'
-import { Plugins, StatusBarStyle, FilesystemDirectory, FileReadResult } from '@capacitor/core'
+import { Filesystem, Directory, ReadFileResult } from '@capacitor/filesystem'
+import { StatusBar, Style as StatusBarStyle } from '@capacitor/status-bar'
 import settings from './settings'
 
-const { Filesystem } = Plugins
 const baseUrl = 'https://roepstoep.github.io/lidrobile-themes'
 
 let styleEl: HTMLStyleElement
@@ -47,11 +47,11 @@ export function init() {
   }
 }
 
-function getLocalFiles(theme: Theme, filenames: string[]): Promise<FileReadResult[]> {
+function getLocalFiles(theme: Theme, filenames: string[]): Promise<ReadFileResult[]> {
   return Promise.all(filenames.map(
     (filename) => Filesystem.readFile({
       path: theme + '-' + filename,
-      directory: FilesystemDirectory.Data
+      directory: Directory.Data
     })
   ))
 }
@@ -59,7 +59,7 @@ function getLocalFiles(theme: Theme, filenames: string[]): Promise<FileReadResul
 export function enumLocalDir(theme: Theme): Promise<readonly string[]> {
   return Filesystem.readdir({
     path: '',
-    directory: FilesystemDirectory.Data
+    directory: Directory.Data
   }).then(({ files }) => files.filter(f => f.startsWith(theme)))
 }
 
@@ -101,7 +101,7 @@ function createStylesheetRule(
   theme: Theme,
   key: string,
   filenames: string[],
-  files: FileReadResult[]
+  files: ReadFileResult[]
 ): void {
   if (!styleEl) {
     styleEl = document.createElement('style')
@@ -157,7 +157,7 @@ function download(
               Filesystem.writeFile({
                 path: theme + '-' + fileName,
                 data: base64data,
-                directory: FilesystemDirectory.Data,
+                directory: Directory.Data,
               })
               .then(() => resolve())
             }
@@ -174,14 +174,14 @@ function download(
 
 export function setStatusBarStyle(bgTheme: string): Promise<void> {
   return Promise.all([
-    Plugins.StatusBar.setBackgroundColor({
+    StatusBar.setBackgroundColor({
       color: bgTheme === 'light' ? '#edebe9' :
         bgTheme === 'dark' ? '#161512' : '#000000'
     }),
-    Plugins.StatusBar.setStyle({
+    StatusBar.setStyle({
       style: bgTheme === 'light' ? StatusBarStyle.Light : StatusBarStyle.Dark
     }),
-    // Plugins.StatusBar.setOverlaysWebView({
+    // StatusBar.setOverlaysWebView({
     //   overlay: isTransparent(bgTheme)
     // }),
   ]).then(() => { /* noop */ })

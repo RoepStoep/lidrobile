@@ -1,7 +1,8 @@
 /// <reference path="dts/index.d.ts" />
-import { Capacitor, Plugins } from '@capacitor/core'
+import { Capacitor, registerPlugin, Plugins } from '@capacitor/core'
 import { App } from '@capacitor/app'
-import { Device } from '@capacitor/app'
+import { Device } from '@capacitor/device'
+import { SplashScreen } from '@capacitor/splash-screen'
 import './webPlugins'
 
 import appInit from './app'
@@ -17,13 +18,18 @@ interface XNavigator extends Navigator {
   hardwareConcurrency: number
 }
 
+interface CPUInfoPlugin {
+  nbCores(): Promise<{ value: number }>
+}
+const CPUInfo = registerPlugin<CPUInfoPlugin>('CPUInfo')
+
 settingsInit()
 .then(() => Promise.all([
   App.getInfo(),
   Device.getInfo(),
   Device.getId(),
   Capacitor.getPlatform() === 'ios' ?
-    Plugins.CPUInfo.nbCores().then((r: { value: number }) => r.value).catch(() => 1) :
+    CPUInfo.nbCores().then((r: { value: number }) => r.value).catch(() => 1) :
     Promise.resolve((<XNavigator>navigator).hardwareConcurrency || 1),
   Plugins.Scan.getMaxMemory().then((r: { value: number }) => r.value).catch(() => 16),
 ]))
@@ -38,6 +44,6 @@ settingsInit()
 .then(() => processWindowLocation())
 .then(() => {
   setTimeout(() => {
-    Plugins.SplashScreen.hide()
+    SplashScreen.hide()
   }, 500)
 })

@@ -1,6 +1,6 @@
 import { App, AppState } from '@capacitor/app'
 import { Toast } from '@capacitor/toast'
-import { Capacitor, Plugins, PluginListenerHandle } from '@capacitor/core'
+import { Capacitor, PluginListenerHandle } from '@capacitor/core'
 import Badge from '~/badge'
 import Draughtsground from '../../../draughtsground/Draughtsground'
 import * as cg from '../../../draughtsground/interfaces'
