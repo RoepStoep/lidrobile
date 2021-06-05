@@ -4,7 +4,7 @@ import socket from '../../socket'
 import { openExternalBrowser } from '../../utils/browse'
 import { emptyFen } from '../../utils/fen'
 import { hasNetwork } from '../../utils'
-import i18n, { plural, formatNumber, fromNow } from '../../i18n'
+import i18n, { plural, formatNumber, distanceToNowStrict } from '../../i18n'
 import session from '../../session'
 import { PongMessage, CorrespondenceSeek } from '../../lidraughts/interfaces'
 import spinner from '../../spinner'
@@ -56,7 +56,8 @@ function offline(ctrl: HomeCtrl) {
 }
 
 function online(ctrl: HomeCtrl) {
-  const playbanEndsAt = session.currentBan()
+  const playban = session.get()?.playban
+  const playbanEndsAt = playban && new Date(playban.date + playban.mins * 60000)
 
   return (
     <div className="home">
@@ -366,7 +367,7 @@ function renderPlayban(endsAt: Date) {
       <h2>{i18n('sorry')}</h2>
       <p>{i18n('weHadToTimeYouOutForAWhile')}</p>
       <br />
-      <p>{h.trust(i18n('timeoutExpires', `<strong>${fromNow(endsAt)}</strong>`))}</p>
+      <p>{h.trust(i18n('timeoutExpires', `<strong>${distanceToNowStrict(endsAt)}</strong>`))}</p>
       <h2>{i18n('why')}</h2>
       <p>
         {i18n('pleasantDraughtsExperience')}<br />
@@ -379,7 +380,6 @@ function renderPlayban(endsAt: Date) {
         <li>{i18n('tryToWin')}</li>
         <li>{i18n('resignLostGames')}</li>
       </ul>
-      <br />
       <br />
       <p>
         {i18n('temporaryInconvenience')}<br />
