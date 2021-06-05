@@ -27,7 +27,7 @@ const worker = new Worker('socketWorker.js')
 let connectedWS = false
 let currentMoveLatency = 0
 let currentPingInterval = 2000
-let rememberedSetups: Array<ConnectionSetup> = []
+let currentSetup: ConnectionSetup
 
 const defaultHandlers: MessageHandlers = {
   following_onlines: handleFollowingOnline,
@@ -109,9 +109,7 @@ function setupConnection(setup: SocketSetup, socketHandlers: SocketHandlers) {
         break
     }
   }
-  // remember last 2 connection setup, to be able to restore the previous one
-  rememberedSetups.push({ setup, handlers: socketHandlers })
-  if (rememberedSetups.length > 2) rememberedSetups.shift()
+  currentSetup = { setup, handlers: socketHandlers }
   tellWorker(worker, 'create', setup)
 }
 
@@ -416,9 +414,8 @@ function onDisconnected() {
 
 // reconnect current socket giving a chance to refresh sessionId
 function reconnectCurrent(): void {
-  if (rememberedSetups.length >= 1) {
-    const s = rememberedSetups[rememberedSetups.length - 1]
-    setupConnection(s.setup, s.handlers)
+  if (currentSetup) {
+    setupConnection(currentSetup.setup, currentSetup.handlers)
   } else {
     tellWorker(worker, 'connect')
   }
@@ -450,22 +447,6 @@ export default {
     tellWorker(worker, 'connect')
   },
   reconnectCurrent,
-  // used only when user cancels a seek from lobby popup
-  // if by chance we don't have a previous connection, just close
-  restorePrevious(): void {
-    if (rememberedSetups.length === 2) {
-      const connSetup = rememberedSetups.shift()
-      rememberedSetups = []
-      // safeguard to just be sure to not reopen a seeking lobby socket connection
-      if (connSetup && connSetup.setup.opts.options.name !== SEEKING_SOCKET_NAME) {
-        setupConnection(connSetup.setup, connSetup.handlers)
-      } else {
-        tellWorker(worker, 'destroy')
-      }
-    } else {
-      tellWorker(worker, 'destroy')
-    }
-  },
   disconnect(): void {
     tellWorker(worker, 'disconnect')
   },
