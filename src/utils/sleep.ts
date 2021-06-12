@@ -1,4 +1,4 @@
-import { Plugins } from '@capacitor/core'
+import { KeepAwake } from '@capacitor-community/keep-awake'
 
 const IDLE_TIMER_DELAY = 15 * 60 * 1000
 const SLEEP_DELAY = 45 * 60 * 1000
@@ -6,8 +6,8 @@ const SLEEP_DELAY = 45 * 60 * 1000
 let sleepAgainTimeoutId: number
 let cancelTimer: (() => void) | undefined
 
-export function keepAwake() {
-  Plugins.KeepAwake.keepAwake()
+export function keepAwake(): void {
+  KeepAwake.keepAwake()
   if (cancelTimer !== undefined) {
     cancelTimer()
   }
@@ -15,7 +15,7 @@ export function keepAwake() {
     IDLE_TIMER_DELAY,
     () => {
       sleepAgainTimeoutId = setTimeout(() => {
-        Plugins.KeepAwake.allowSleep()
+        KeepAwake.allowSleep()
       }, SLEEP_DELAY)
     },
     () => {
@@ -29,7 +29,7 @@ export function allowSleepAgain() {
     cancelTimer()
     cancelTimer = undefined
   }
-  Plugins.KeepAwake.allowSleep()
+  KeepAwake.allowSleep()
 }
 
 function idleTimer(delay: number, onIdle: () => void, onWakeUp: () => void): () => void {

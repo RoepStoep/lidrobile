@@ -1,5 +1,5 @@
 /// <reference path="dts/index.d.ts" />
-import { Capacitor, registerPlugin, Plugins } from '@capacitor/core'
+import { Capacitor, registerPlugin } from '@capacitor/core'
 import { App } from '@capacitor/app'
 import { Device } from '@capacitor/device'
 import { SplashScreen } from '@capacitor/splash-screen'

@@ -1,3 +1,4 @@
+import { Browser } from '@capacitor/browser'
 import { Dialog } from '@capacitor/dialog'
 import globalConfig from './config'
 import { fetchJSON, fetchText } from './http'
@@ -240,10 +241,10 @@ export function openWebsiteAuthPage(path: string) {
   if (session.isConnected() && !session.isKidMode()) {
     createToken()
     .then((data: {url: string}) => {
-      Plugins.Browser.open({ url: data.url + `?referrer=${encodeURIComponent(path)}` })
+      Browser.open({ url: data.url + `?referrer=${encodeURIComponent(path)}` })
     })
     .catch(() => {
-      Plugins.Browser.open({ url: anonUrl })
+      Browser.open({ url: anonUrl })
     })
   } else {
     window.open(anonUrl, '_blank')

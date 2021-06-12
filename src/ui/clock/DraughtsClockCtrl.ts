@@ -1,6 +1,7 @@
 import Stream from 'mithril/stream'
 import { App, AppState } from '@capacitor/app'
-import { Plugins, PluginListenerHandle } from '@capacitor/core'
+import { StatusBar } from '@capacitor/status-bar'
+import { PluginListenerHandle } from '@capacitor/core'
 import router from '../../router'
 import settings from '../../settings'
 import clockSettings from './clockSettings'
@@ -50,7 +51,7 @@ export default function DraughtsClockCtrl(): IDraughtsClockCtrl {
   }
 
   function hideStatusBar() {
-    Plugins.StatusBar.hide()
+    StatusBar.hide()
   }
 
   hideStatusBar()
