@@ -1,41 +1,7 @@
-import { Capacitor, WebPlugin, registerWebPlugin } from '@capacitor/core'
 import { Plugins } from '@capacitor/core'
 import { DeviceInfo } from '@capacitor/device'
 import settings from './settings'
 import throttle from 'lodash-es/throttle'
-
-// custom web plugin registration done here for now
-// because importing code from node_modules causes capacitor runtime code to
-// be included twice
-if (Capacitor.platform === 'web') {
-  class SoundEffectWeb extends WebPlugin {
-
-    private audioMap: { [id: string]: HTMLAudioElement | undefined } = {}
-
-    constructor() {
-      super({
-        name: 'SoundEffect',
-        platforms: ['web']
-      })
-    }
-
-    async loadSound({ id, path }: { id: string, path: string }): Promise<void> {
-      const audio = new Audio()
-      audio.setAttribute('src', path)
-      audio.load()
-      this.audioMap[id] = audio
-    }
-
-    async play({ id }: { id: string }): Promise<void> {
-      const audio = this.audioMap[id]
-      if (audio) audio.play()
-    }
-  }
-
-  const SoundEffect = new SoundEffectWeb()
-
-  registerWebPlugin(SoundEffect)
-}
 
 let shouldPlay: boolean
 
