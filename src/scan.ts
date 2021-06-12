@@ -1,4 +1,5 @@
 import { Plugins } from '@capacitor/core'
+import { Scan } from 'capacitor-scan'
 import { VariantKey } from './lidraughts/interfaces/variant'
 
 interface IScanPlugin {
@@ -8,14 +9,12 @@ interface IScanPlugin {
   exit(): Promise<void>
 }
 
-const CapacitorScanPlugin = Plugins.Scan as IScanPlugin
-
 export class ScanPlugin {
   private plugin: IScanPlugin
   public variant: VariantKey
 
   constructor(readonly v: VariantKey) {
-    this.plugin = CapacitorScanPlugin
+    this.plugin = Scan
     this.variant = v
   }
 
