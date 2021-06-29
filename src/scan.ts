@@ -225,8 +225,8 @@ export function parsePV(fen: string, pv: string, frisian: boolean, uciCache: any
   })
 }
 
-export function getMaxMemory(): number {
-  return window.deviceInfo.scanMaxMemory
+export async function getMaxMemory(): Promise<number> {
+  return Promise.resolve(window.deviceInfo.scanMaxMemory)
 }
 
 export function getNbCores(): number {
