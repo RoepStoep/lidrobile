@@ -72,8 +72,6 @@ export default class OnlineRound implements OnlineRoundInterface {
   private clockIntervId!: number
   private blur: boolean
 
-  private readonly playableOnInit: boolean
-
   private transientMove: TransientMove
   private appStateListener: PluginListenerHandle
 
@@ -92,8 +90,6 @@ export default class OnlineRound implements OnlineRoundInterface {
 
     this.zenModeEnabled = settings.game.zenMode()
     this.blur = false
-
-    this.playableOnInit = gameApi.isPlayerPlaying(this.data)
 
     this.vm = {
       ply: this.lastPly(),
@@ -190,7 +186,7 @@ export default class OnlineRound implements OnlineRoundInterface {
 
   public goToAnalysis = () => {
     const d = this.data
-    router.set(`/analyse/online/${d.game.id}/${boardOrientation(d)}?ply=${this.vm.ply}&curFen=${d.game.fen}&variant=${d.game.variant.key}`, !this.playableOnInit)
+    router.set(`/analyse/online/${d.game.id}/${boardOrientation(d)}?ply=${this.vm.ply}&curFen=${d.game.fen}&variant=${d.game.variant.key}`)
   }
 
   public openUserPopup = (position: string, userId: string) => {
