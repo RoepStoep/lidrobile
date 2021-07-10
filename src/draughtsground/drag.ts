@@ -182,7 +182,7 @@ export function end(ctrl: Draughtsground, e: TouchEvent) {
   // board editor mode: delete any piece dropped off the board
   else if (cur.started && draggable.deleteOnDropOff) {
     delete state.pieces[cur.orig]
-    setTimeout(() => (state.events.change || util.noop)(), 0)
+    setTimeout(state.events.change || util.noop, 0)
   }
   // crazy invalid drop (no dest): delete the piece
   else if (cur.newPiece) {
