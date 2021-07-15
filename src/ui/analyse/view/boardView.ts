@@ -26,9 +26,10 @@ export default function renderBoard(ctrl: AnalyseCtrl) {
   ])
 }
 
-export function playerBar(ctrl: AnalyseCtrl, color: Color) {
+export function playerBar(ctrl: AnalyseCtrl, color: Color): Mithril.Child {
   const pName = ctrl.playerName(color)
-  if (ctrl.synthetic && (pName === 'Anonymous' || pName === i18n('anonymous'))) return null
+  const isAnonymous = pName === 'Anonymous' || pName === i18n('anonymous')
+  if (ctrl.synthetic && isAnonymous) return null
 
   const study = ctrl.study && ctrl.study.data
   let title, elo, result: string | undefined
@@ -48,7 +49,7 @@ export function playerBar(ctrl: AnalyseCtrl, color: Color) {
   return h('div.analyse-player_bar', {
     className: ctrl.settings.s.smallBoard ? 'halfsize' : ''
   }, [
-    h('div.info', [
+    h('div.info', isAnonymous ? null : [
       result ? h('span.result', result) : null,
       h('span.name', (title ? title + ' ' : '') + pName + (elo ? ` (${elo})` : '')),
     ]),
