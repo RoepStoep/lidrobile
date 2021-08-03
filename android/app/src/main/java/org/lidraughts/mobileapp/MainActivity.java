@@ -14,7 +14,6 @@ import android.webkit.WebView;
 
 import com.capacitorjs.plugins.dialog.Dialog;
 import com.getcapacitor.BridgeActivity;
-import com.getcapacitor.community.keepawake.KeepAwake;
 
 import org.lidraughts.mobileapp.scan.Scan;
 
@@ -31,7 +30,6 @@ public class MainActivity extends BridgeActivity {
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
 
-    registerPlugin(KeepAwake.class);
     registerPlugin(Scan.class);
 
     this.versionUpdateActions();
