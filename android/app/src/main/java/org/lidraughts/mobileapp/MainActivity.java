@@ -14,7 +14,6 @@ import android.webkit.WebView;
 
 import com.capacitorjs.plugins.dialog.Dialog;
 import com.getcapacitor.BridgeActivity;
-import com.getcapacitor.community.keepawake.KeepAwake;
 
 import java.io.File;
 import java.lang.reflect.Method;
@@ -28,8 +27,6 @@ public class MainActivity extends BridgeActivity {
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-
-    registerPlugin(KeepAwake.class);
 
     this.versionUpdateActions();
 
