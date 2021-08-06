@@ -11,6 +11,7 @@ import { init as themeInit } from './theme'
 import routes from './routes'
 import push from './push'
 import deepLinks from './deepLinks'
+import globalConfig from './config'
 
 interface XNavigator extends Navigator {
   hardwareConcurrency: number
@@ -30,7 +31,7 @@ settingsInit()
 .then(themeInit)
 .then(i18nInit)
 .then(() => Promise.all([
-  App.getInfo(),
+  App.getInfo().catch(() => ({ version: globalConfig.packageVersion })),
   Device.getInfo(),
   Device.getId(),
   Capacitor.getPlatform() === 'ios' ?

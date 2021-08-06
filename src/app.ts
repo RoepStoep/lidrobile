@@ -24,7 +24,7 @@ const requestIdleCallback: (c: () => void) => void =
   window.requestIdleCallback || window.setTimeout
 
 export default function appInit(
-  appInfo: AppInfo,
+  appInfo: Pick<AppInfo, 'version'>,
   deviceInfo: DeviceInfo,
   deviceId: DeviceId,
   cpuCores: number
