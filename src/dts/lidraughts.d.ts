@@ -50,6 +50,7 @@ interface LidraughtsOptions {
   apiEndPoint: string
   socketEndPoint: string
   mode: string
+  packageVersion: string
 }
 
 type RequestIdleCallbackHandle = any

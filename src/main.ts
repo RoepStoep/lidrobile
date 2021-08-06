@@ -1,5 +1,5 @@
 /// <reference path="dts/index.d.ts" />
-import { Capacitor, registerPlugin, Plugins } from '@capacitor/core'
+import { Capacitor, registerPlugin } from '@capacitor/core'
 import { App } from '@capacitor/app'
 import { Device } from '@capacitor/device'
 import { SplashScreen } from '@capacitor/splash-screen'
@@ -12,6 +12,7 @@ import routes from './routes'
 import { processWindowLocation } from './router'
 import push from './push'
 import deepLinks from './deepLinks'
+import globalConfig from './config'
 
 interface XNavigator extends Navigator {
   hardwareConcurrency: number
@@ -24,13 +25,15 @@ const CPUInfo = registerPlugin<CPUInfoPlugin>('CPUInfo')
 
 settingsInit()
 .then(() => Promise.all([
-  App.getInfo(),
+  App.getInfo().catch(() => ({ version: globalConfig.packageVersion })),
   Device.getInfo(),
   Device.getId(),
   Capacitor.getPlatform() === 'ios' ?
     CPUInfo.nbCores().then((r: { value: number }) => r.value).catch(() => 1) :
     Promise.resolve((<XNavigator>navigator).hardwareConcurrency || 1),
-  Plugins.Scan.getMaxMemory().then((r: { value: number }) => r.value).catch(() => 16),
+  // TODO migrate
+  // Plugins.Scan.getMaxMemory().then((r: { value: number }) => r.value).catch(() => 16),
+  Promise.resolve(16)
 ]))
 .then(([ai, di, did, c, m]) => appInit(ai, di, did, c, m))
 .then(() => {
