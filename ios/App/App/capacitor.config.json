@@ -2,11 +2,15 @@
 	"appId": "org.lidraughts.mobileapp",
 	"appName": "lidraughts",
 	"bundledWebRuntime": false,
-	"npmClient": "npm",
 	"webDir": "www",
 	"backgroundColor": "ff000000",
 	"appendUserAgent": "Lidrobile/7.0.5",
 	"plugins": {
+		"SplashScreen": {
+			"androidSplashResourceName": "launch_splash",
+			"launchAutoHide": false,
+			"useDialog": false
+		},
 		"PushNotifications": {
 			"presentationOptions": [
 				"sound",
