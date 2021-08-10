@@ -3,7 +3,7 @@
 
 Lidraughts mobile is the lidraughts.org official application, forked from [Lichess mobile](https://github.com/veloce/lichobile). It is written
 in [TypeScript](http://www.typescriptlang.org/), with a bit of Kotlin and Swift.
-It is a web application that access native SDK thanks to [Ionic capacitor](https://capacitor.ionicframework.com/).
+It is a web application that accesses the native SDK, thanks to [Ionic capacitor](https://capacitor.ionicframework.com/).
 The rendering library is [mithril.js](http://mithril.js.org/).
 It talks to a native [Scan 3.1](https://github.com/rhalbersma/scan) engine, through a
 [cordova plugin](https://github.com/RoepStoep/cordova-plugin-scan).
