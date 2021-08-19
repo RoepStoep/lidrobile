@@ -68,12 +68,10 @@ function renderWarnings(user: ProfileUser) {
   )
 }
 
-function renderProfile(user: ProfileUser) {
+function renderProfile(user: ProfileUser): Mithril.Child {
   if (user.profile) {
-    let fullname = ''
-    if (user.profile.firstName) fullname += user.profile.firstName
-    if (user.profile.lastName) fullname += (user.profile.firstName ? ' ' : '') + user.profile.lastName
-    const country = countries[user.profile.country]
+    const fullname = [user.profile.firstName, user.profile.lastName].filter(x => x != null).join(' ')
+    const country = user.profile.country != null ? countries[user.profile.country] : null
     const location = user.profile.location
     const memberSince = i18n('memberSince') + ' ' + formatDate(new Date(user.createdAt))
 
@@ -82,21 +80,21 @@ function renderProfile(user: ProfileUser) {
         {fullname ?
         <h3 className="fullname">{fullname}</h3> : null
         }
-        {user.profile.bio ?
+        {user.profile.bio != null ?
         <p className="profileBio">{h.trust(linkify(user.profile.bio))}</p> : null
         }
         <div>
-          { user.profile.fmjdRating ?
+          { user.profile.fmjdRating != null ?
             <p>FMJD rating: <strong>{user.profile.fmjdRating}</strong></p> : null
           }
-          { user.profile.kndbRating ?
+          { user.profile.kndbRating != null ?
             <p>KNDB rating: <strong>{user.profile.kndbRating}</strong></p> : null
           }
           <p className="location">
             {location}
-            {country && hasNetwork() ?
+            {country != null && hasNetwork() ?
             <span className="country">
-              {location ? ',' : ''} <img className="flag" src={lidraughtsAssetSrc('images/flags/' + user.profile.country + '.png')} />
+              {location != null ? ',' : ''} <img className="flag" src={lidraughtsAssetSrc(`images/flags/${user.profile.country}.png`)} />
               {country}
             </span> : null
             }
@@ -107,7 +105,7 @@ function renderProfile(user: ProfileUser) {
           }
         </div>
       </section>
-    )
+    ) as Mithril.Child
   } else
     return null
 }
