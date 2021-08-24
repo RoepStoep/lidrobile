@@ -298,13 +298,18 @@ function renderNavButton(icon: string, isEnabled: boolean, action: () => void) {
 function renderPlayerEntry(userName: string, player: StandingPlayer, i: number, teamColor?: number, teamName?: string) {
   const evenOrOdd = i % 2 === 0 ? 'even' : 'odd'
   const isMe = player.name === userName
-  const ttc = teamColor ? teamColor : 0
+  const ttc = teamColor ?? 0
+  const isBot = player.title === 'BOT'
+  const title64 = player.title && player.title.endsWith('-64')
 
   return (
     <li key={player.name} data-player={player.name} className={`list_item tournament-list-item ${evenOrOdd}` + (isMe ? ' tournament-me' : '')} >
       <div className="tournamentIdentity">
         <span className="flagRank" data-icon={player.withdraw ? 'b' : ''}> {player.withdraw ? '' : (player.rank + '.')} &thinsp; </span>
-        <span className="playerName"> {player.name + ' (' + player.rating + (player.provisional ? '?' : '') + ')'}</span>
+        <span className="playerName">
+          {player.title ? <span className={'userTitle' + (isBot ? ' bot' : (title64 ? ' title64' : ''))}>{title64 ? player.title.slice(0, player.title.length - 3) : player.title}&nbsp;</span> : null}
+          {player.name + ' (' + player.rating + (player.provisional ? '?' : '') + ')'}
+        </span>
         <span className={'playerTeam ttc-' + ttc}> {teamName ? teamName : '' } </span>
       </div>
       <div className={'tournamentPoints ' + (player.sheet.fire ? 'on-fire' : 'off-fire')} data-icon="Q">

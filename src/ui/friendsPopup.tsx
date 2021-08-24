@@ -79,7 +79,7 @@ function renderFriend(friend: Friend) {
         }
         <span>
           {friend.title ?
-            <span className={'userTitle' + (isBot ? ' bot' : (title64 ? ' title64' : '')) }>{title64 ? friend.title.slice(0, friend.title.length - 3) : friend.title} </span> :
+            <span className={'userTitle' + (isBot ? ' bot' : (title64 ? ' title64' : ''))}>{title64 ? friend.title.slice(0, friend.title.length - 3) : friend.title}&nbsp;</span> :
             null
           }
           {friend.name}

@@ -102,6 +102,7 @@ export interface StandingPlayer {
   readonly score: number
   readonly sheet: Sheet
   readonly team?: string
+  readonly title?: string
   readonly withdraw?: boolean
 }
 
