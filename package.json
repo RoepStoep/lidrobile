@@ -73,7 +73,7 @@
         "@types/lodash-es": "4.17.3",
         "@types/mithril": "2.0.0",
         "capacitor-cordova-plugin-scan": "git+https://github.com/RoepStoep/cordova-plugin-scan.git#capacitor",
-        "capacitor-sound-effect": "1.0.1",
+        "capacitor-sound-effect": "git+https://github.com/veloce/capacitor-sound-effect.git#main",
         "capacitor-stockfish": "git+https://github.com/veloce/capacitor-stockfish.git#capacitor3",
         "d3-axis": "1.0.8",
         "d3-scale": "1.0.6",
