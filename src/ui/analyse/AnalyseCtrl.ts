@@ -1,7 +1,7 @@
 import { Plugins } from '@capacitor/core'
 import debounce from 'lodash-es/debounce'
 import router from '../../router'
-import { formatDateTime } from '../../i18n'
+import i18n, { formatDateTime } from '../../i18n'
 import Draughtsground from '../../draughtsground/Draughtsground'
 import * as cg from '../../draughtsground/interfaces'
 import * as draughts from '../../draughts'
@@ -41,7 +41,7 @@ import { Source } from './interfaces'
 import * as tabs from './tabs'
 import StudyCtrl from './study/StudyCtrl'
 import ForecastCtrl from './forecast/ForecastCtrl'
-import i18n from '../../i18n'
+import { positionLooksLegit } from '~/utils/fen'
 
 export default class AnalyseCtrl {
 
@@ -131,6 +131,10 @@ export default class AnalyseCtrl {
       }
 
       if (study && !(study.chapter.features.computer || study.chapter.practice)) {
+        return false
+      }
+
+      if (!positionLooksLegit(this.data.game.fen, getVariant(this.data.game.variant.key).board.size)) {
         return false
       }
 
