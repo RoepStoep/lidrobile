@@ -7,38 +7,6 @@ PODS:
     - Capacitor
   - CapacitorClipboard (1.0.2):
     - Capacitor
-  - CapacitorCommunityKeepAwake (2.1.0):
-    - Capacitor
-  - CapacitorCordova (3.2.0)
-  - CapacitorDevice (1.0.2):
-    - Capacitor
-  - CapacitorDialog (1.0.2):
-    - Capacitor
-  - CapacitorFilesystem (1.0.2):
-    - Capacitor
-  - CapacitorHaptics (1.0.2):
-    - Capacitor
-  - CapacitorKeyboard (1.0.2):
-    - Capacitor
-  - CapacitorNetwork (1.0.2):
-    - Capacitor
-    - ReachabilitySwift (~> 5.0)
-  - CapacitorPushNotifications (1.0.3):
-    - Capacitor
-  - CapacitorShare (1.0.3):
-    - Capacitor
-  - CapacitorSoundEffect (2.0.0):
-    - Capacitor
-  - CapacitorSplashScreen (1.1.0):
-    - Capacitor
-  - CapacitorStatusBar (1.0.2):
-    - Capacitor
-  - CapacitorStorage (1.0.3):
-    - Capacitor
-  - CapacitorToast (1.0.2):
-    - Capacitor
-  - CordovaPlugins (2.4.3):
-    - CapacitorCordova
   - Firebase/CoreOnly (7.7.0):
     - FirebaseCore (= 7.7.0)
   - Firebase/Messaging (7.7.0):
@@ -177,27 +145,11 @@ EXTERNAL SOURCES:
     :path: "../capacitor-cordova-ios-plugins"
 
 SPEC CHECKSUMS:
-  Capacitor: 97ac74f937eb9cd098b067c48f2e00de62c8b3c9
-  CapacitorApp: 4a7a55cb30ac30af4e4801d4d6e51f4d03aa75e6
-  CapacitorBrowser: 78dca7e45adb2f3c8239c44095aeed7582bf0923
-  CapacitorClipboard: d8444615cb87293d7a2a2c310df5cf48b05c3620
-  CapacitorCommunityKeepAwake: da57047d09e2e02b86e1f81b5d0f83445ace5c77
-  CapacitorCordova: 643fc644c43204cf1a344b19ef0423beae5ae9ff
-  CapacitorDevice: 4d1a1f44e9f7ee126aa809b89c86c107a13bf898
-  CapacitorDialog: 410d570ad02845665836d60606802244fbbbd8ba
-  CapacitorFilesystem: a8f258902f03ee602148ad2428e1bad147b8d164
-  CapacitorHaptics: 2ba8b0f0fd40d5590baa756cd2c91a3d082106f8
-  CapacitorKeyboard: 25f67ec7f6c3ae9a956af8bb6ea0bade18257005
-  CapacitorNetwork: a85f117d3ea0d37864c91adbe0afecb664e7bae7
-  CapacitorPushNotifications: 4dbd874ad07c3146bc0195a622f679bd35fd0350
-  CapacitorShare: c600e0be9c94e63b15e4009e53f1036dd065a8f2
-  CapacitorSoundEffect: 00695e533a1aeeff6a958b9aa3539df8c6cab133
-  CapacitorSplashScreen: 25fbdbaa5982dfdbfcb2dcbf3757c638a56ebaa9
-  CapacitorStatusBar: 5f78c4275b059bf5c0bcf059d9fafc4f1b620d5b
-  CapacitorStockfishVariants: fdf0d12d68e4dbae18453b73f507ee8595fe7bb9
-  CapacitorStorage: 6854d59dd96ed64e75b46c4b7093d29fc9e83814
-  CapacitorToast: 75dc6e65832b6d318558f4e8bbb3cc369cff09db
-  CordovaPlugins: 050a0344e9aa9996d7e5858294d4626d1c94ed97
+  Capacitor: 0f131577d41c082931f00cc080e2289d503465c8
+  CapacitorCommunityKeepAwake: b2ee229bb1de59c7fdb2e1151720ea75b2725092
+  CapacitorCordova: 3375b39b5ebca770ac7869f85e4dea32a642c9e0
+  CapacitorSoundEffect: 31a36e64d0220c6d0e1621a61744b5d8c1e7738d
+  CapacitorStockfishVariants: f3d3172776e26b73ecfeb6b72d234be92aaf30e0
   Firebase: cd2ab85eec8170dc260186159f21072ecb679ad5
   FirebaseCore: ac35d680a0bf32319a59966a1478e0741536b97b
   FirebaseCoreDiagnostics: 179bf3831213451c8addd036aca7fcf5492ec154
