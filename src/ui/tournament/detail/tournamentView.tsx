@@ -295,7 +295,7 @@ function renderNavButton(icon: string, isEnabled: boolean, action: () => void) {
   })
 }
 
-function renderPlayerTitle(player: {title?: string}): Mithril.Child {
+export function renderPlayerTitle(player: {title?: string}): Mithril.Child {
   if (player.title == null) {
     return null
   }
@@ -306,7 +306,7 @@ function renderPlayerTitle(player: {title?: string}): Mithril.Child {
   return h(`span.${titleClass}`, [title64 ? player.title.slice(0, player.title.length - 3) : player.title, h.trust('&nbsp;')])
 }
 
-function renderPlayerEntry(userName: string, player: StandingPlayer, i: number, teamColor?: number, teamName?: string) {
+function renderPlayerEntry(userName: string, player: StandingPlayer, i: number, teamColor?: number, teamName?: string): Mithril.Child {
   const evenOrOdd = i % 2 === 0 ? 'even' : 'odd'
   const isMe = player.name === userName
   const ttc = teamColor ?? 0
@@ -325,7 +325,7 @@ function renderPlayerEntry(userName: string, player: StandingPlayer, i: number, 
         {player.score}
       </div>
     </li>
-  ) as Mithril.Child
+  )
 }
 
 function tournamentFeaturedGame(ctrl: TournamentCtrl) {
