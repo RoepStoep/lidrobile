@@ -2,9 +2,9 @@ import { select } from 'd3-selection'
 import { axisLeft } from 'd3-axis'
 import { scaleLinear } from 'd3-scale'
 import { area as d3Area } from 'd3-shape'
-import i18n from '../../../i18n'
 
-import { AnalyseData } from '../../../lidraughts/interfaces/analyse'
+import { AnalyseData, GameStage } from '../../../lidraughts/interfaces/analyse'
+import i18n from '~/i18n'
 
 interface Point {
   ply: number
@@ -37,7 +37,7 @@ export default function drawMoveTimesChart(
 
   const { max, series } = makeSerieData(aData, moveCentis)
 
-  function addDivisionLine(xPos: number, name: string) {
+  function addDivisionLine(xPos: number, name: GameStage) {
     g.append('line')
     .attr('class', 'division ' + name)
     .attr('x1', xPos)
@@ -50,7 +50,7 @@ export default function drawMoveTimesChart(
     .attr('transform', 'rotate(90)')
     .attr('y', -xPos)
     .attr('dy', '-0.4em')
-    .text(name)
+    .text(i18n(name))
   }
 
   function setCurrentPly(ply: number | null) {
@@ -125,10 +125,10 @@ export default function drawMoveTimesChart(
 
   if (division && (division.middle || division.end)) {
     if (division.middle) {
-      addDivisionLine(x(division.middle), i18n('middlegame'))
+      addDivisionLine(x(division.middle), 'middlegame')
     }
     if (division.end) {
-      addDivisionLine(x(division.end), i18n('endgame'))
+      addDivisionLine(x(division.end), 'endgame')
     }
   }
 
