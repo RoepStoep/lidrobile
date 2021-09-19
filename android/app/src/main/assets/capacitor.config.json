@@ -3,8 +3,8 @@
 	"appName": "lidraughts",
 	"bundledWebRuntime": false,
 	"webDir": "www",
-	"backgroundColor": "ff000000",
-	"appendUserAgent": "Lidrobile/7.0.5",
+	"backgroundColor": "000000ff",
+	"appendUserAgent": "Lichobile/7.12.0",
 	"plugins": {
 		"SplashScreen": {
 			"androidSplashResourceName": "launch_splash",
