@@ -1,6 +1,3 @@
-import { App, AppState } from '@capacitor/app'
-import { StatusBar } from '@capacitor/status-bar'
-import { PluginListenerHandle } from '@capacitor/core'
 import { prop, Prop } from '~/utils'
 import router from '../../router'
 import settings from '../../settings'
@@ -10,7 +7,6 @@ import clockSet from '../shared/clock/clockSet'
 import { ClockType, IDraughtsClock } from '../shared/clock/interfaces'
 
 export interface IDraughtsClockCtrl {
-  hideStatusBar: () => void
   startStop: () => void
   clockSettingsCtrl: any
   clockObj: Prop<IDraughtsClock>
@@ -18,7 +14,6 @@ export interface IDraughtsClockCtrl {
   goHome: () => void
   clockTap: (side: 'white' | 'black') => void
   clockType: Prop<ClockType>
-  appStateListener: PluginListenerHandle
 }
 
 function noop() { /* noop */ }
@@ -50,20 +45,7 @@ export default function DraughtsClockCtrl(): IDraughtsClockCtrl {
     }
   }
 
-  function hideStatusBar() {
-    StatusBar.hide()
-  }
-
-  hideStatusBar()
-
-  const appStateListener = App.addListener('appStateChange', (state: AppState) => {
-    if (state.isActive) hideStatusBar()
-  })
-
-  window.addEventListener('resize', hideStatusBar)
-
   return {
-    hideStatusBar,
     startStop,
     clockSettingsCtrl,
     clockObj,
@@ -71,6 +53,5 @@ export default function DraughtsClockCtrl(): IDraughtsClockCtrl {
     goHome,
     clockTap,
     clockType,
-    appStateListener
   }
 }

@@ -15,10 +15,10 @@ import android.webkit.WebView;
 import com.capacitorjs.plugins.dialog.Dialog;
 import com.getcapacitor.BridgeActivity;
 
-import org.lidraughts.mobileapp.scan.Scan;
-
 import java.io.File;
 import java.lang.reflect.Method;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.regex.Pattern;
 
 public class MainActivity extends BridgeActivity {
@@ -30,7 +30,7 @@ public class MainActivity extends BridgeActivity {
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
 
-    registerPlugin(Scan.class);
+    registerPlugin(FullScreenPlugin.class);
 
     this.versionUpdateActions();
 
