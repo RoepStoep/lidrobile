@@ -1,20 +1,17 @@
-import { Plugins } from '@capacitor/core'
-import { Scan } from 'capacitor-scan'
+import { Capacitor, registerPlugin } from '@capacitor/core'
+import { Scan, ScanPlugin as IScanPlugin } from 'capacitor-scan'
 import { VariantKey } from './lidraughts/interfaces/variant'
 
-interface IScanPlugin {
-  getMaxMemory(): Promise<{ value: number }>
-  start(options: { variant: string } ): Promise<void>
-  cmd(options: { cmd: string }): Promise<void>
-  exit(): Promise<void>
-}
+const ScanWeb = registerPlugin<IScanPlugin>('Scan', {
+  web: () => import('./stockfishVariantsWeb').then(m => new m.StockfishVariantsWeb()),
+})
 
 export class ScanPlugin {
   private plugin: IScanPlugin
   public variant: VariantKey
 
   constructor(readonly v: VariantKey) {
-    this.plugin = Scan
+    this.plugin = Capacitor.getPlatform() !== 'web' ? Scan : ScanWeb
     this.variant = v
   }
 
