@@ -113,6 +113,7 @@ export default {
     coordSystem: prop<number>('coordSystem', 0),
     magnified: prop<boolean>('pieceMagnified', true),
     zenMode: prop<boolean>('zenMode', false),
+    blindfoldDraughts: prop<boolean>('blindfoldDraughts', false),
     kingMoves: prop<boolean>('kingMoves', true),
     draughtsResult: prop<boolean>('draughtsResult', true),
     clockPosition: prop<'right' | 'left'>('game.inversedClockPos', 'right'),

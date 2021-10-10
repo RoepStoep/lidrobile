@@ -18,6 +18,7 @@ export default function view(ctrl: EditorCtrl) {
   const board = h(Board, {
     variant: ctrl.data.game.variant.key(),
     draughtsground: ctrl.draughtsground,
+    wrapperClasses: 'editor-board',
   })
 
   return layout.board(
