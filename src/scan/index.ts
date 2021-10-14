@@ -1,9 +1,9 @@
-import { Capacitor, registerPlugin } from '@capacitor/core'
-import { Scan, ScanPlugin as IScanPlugin } from 'capacitor-scan'
-import { VariantKey } from './lidraughts/interfaces/variant'
+import { registerPlugin } from '@capacitor/core'
+import { ScanPlugin as IScanPlugin } from 'capacitor-scan'
+import { VariantKey } from '../lidraughts/interfaces/variant'
 
-const ScanWeb = registerPlugin<IScanPlugin>('Scan', {
-  web: () => import('./stockfishVariantsWeb').then(m => new m.StockfishVariantsWeb()),
+export const Scan = registerPlugin<IScanPlugin>('Scan', {
+  web: () => import('./ScanWeb').then(m => new m.ScanWeb()),
 })
 
 export class ScanPlugin {
@@ -11,7 +11,7 @@ export class ScanPlugin {
   public variant: VariantKey
 
   constructor(readonly v: VariantKey) {
-    this.plugin = Capacitor.getPlatform() !== 'web' ? Scan : ScanWeb
+    this.plugin = Scan
     this.variant = v
   }
 

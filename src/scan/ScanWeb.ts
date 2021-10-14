@@ -1,12 +1,12 @@
-import { StockfishPlugin } from 'capacitor-stockfish-variants/dist/esm/definitions'
+import { ScanPlugin } from 'capacitor-scan/dist/esm/definitions'
 import { WebPlugin } from '@capacitor/core'
 
-export class StockfishVariantsWeb extends WebPlugin implements StockfishPlugin {
+export class ScanWeb extends WebPlugin implements ScanPlugin {
   private worker?: Worker
 
   constructor() {
     super({
-      name: 'StockfishVariants',
+      name: 'Scan',
       platforms: ['web']
     })
   }
@@ -20,10 +20,10 @@ export class StockfishVariantsWeb extends WebPlugin implements StockfishPlugin {
       if (this.worker) {
         setTimeout(resolve, 1)
       } else {
-        this.worker = new Worker('../stockfish.js')
+        this.worker = new Worker('../scan.js')
         this.worker.onmessage = msg => {
 
-          const ev: any = new Event('stockfish')
+          const ev: any = new Event('scan')
           ev['output'] = msg.data
           window.dispatchEvent(ev)
         }
