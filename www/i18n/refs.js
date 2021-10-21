@@ -1,4 +1,5 @@
 export default [
+  "en-GB",
   "be-BY",
   "cs-CZ",
   "de-DE",

@@ -825,6 +825,8 @@ export default {
   "thankYouForReading": "Cảm ơn bạn vì đã đọc!",
   "lifetimeScore": "Tổng điểm đối đầu",
   "currentMatchScore": "Tỷ số của lần đối đầu hiện tại",
+  "playInTournaments": "Chơi trong các giải đấu",
+  "learnFromStudies": "Học từ nghiên cứu",
   "winInXHalfMoves:other": "Thắng trong %s nước đi",
   "drawInXHalfMoves:other": "Hòa trong %s nước",
   "nbPlayers:other": "%s người chơi",
