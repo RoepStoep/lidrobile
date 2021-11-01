@@ -33,8 +33,9 @@ settingsInit()
     CPUInfo.nbCores().then((r: { value: number }) => r.value).catch(() => 1) :
     Promise.resolve((<XNavigator>navigator).hardwareConcurrency || 1),
   Scan.getMaxMemory().then((r: { value: number }) => r.value).catch(() => 16),
+  Scan.getCPUArch().then((r: { value: string }) => r.value).catch(() => 'x86'),
 ]))
-.then(([ai, di, did, c, m]) => appInit(ai, di, did, c, m))
+.then(([ai, di, did, c, m, cpu]) => appInit(ai, di, did, c, m, cpu))
 .then(() => {
   routes.init()
   deepLinks.init()

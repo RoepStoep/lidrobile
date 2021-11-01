@@ -26,11 +26,14 @@ export default function appInit(
   deviceInfo: DeviceInfo,
   deviceId: DeviceId,
   cpuCores: number,
-  sfMaxMem: number
+  sfMaxMem: number,
+  cpuArch: string,
 ): void {
   if (settings.analyse.cevalHashSize() === 0) {
     settings.analyse.cevalHashSize(sfMaxMem)
   }
+
+  window.lidraughts.cpuArch = cpuArch
 
   window.deviceInfo = {
     platform: deviceInfo.platform,

@@ -51,6 +51,7 @@ interface LidraughtsOptions {
   socketEndPoint: string
   mode: string
   packageVersion: string
+  cpuArch: string
 }
 
 type RequestIdleCallbackHandle = any
