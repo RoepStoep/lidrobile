@@ -54,7 +54,7 @@ export default class ScanClient {
       await this.scan.send('hub')
       await this.scan.setOption('bb-size', '0')
       await this.scan.setOption('threads', this.threads)
-      if (Capacitor.platform !== 'web') {
+      if (Capacitor.getPlatform() !== 'web') {
         await this.scan.setOption('hash', this.hash)
       }
     } catch (err: unknown) {
