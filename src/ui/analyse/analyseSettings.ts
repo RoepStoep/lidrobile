@@ -92,7 +92,7 @@ export default {
       },
       cevalToggleInfinite() {
         root.ceval.toggleInfinite()
-      }
+      },
     }
   },
 

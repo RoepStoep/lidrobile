@@ -11,7 +11,7 @@ export class ScanPlugin {
   public variant: VariantKey
 
   constructor(readonly v: VariantKey) {
-    // Capacitor.getPlatform() === 'android' && window.lidraughts.cpuArch === 'arm64-v8a' ? Stockfish : StockfishVariants
+    // lichobile: canUseNNUE() && settings.analyse.cevalUseNNUE()  ? Stockfish : StockfishVariants
     this.plugin = Scan
     this.variant = v
   }

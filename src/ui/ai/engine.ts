@@ -76,7 +76,7 @@ export default class Engine {
         await this.scan.send('init')
         await this.scan.setOption('threads', getNbCores())          
         const mem = await getMaxMemory()
-        if (Capacitor.platform !== 'web') {
+        if (Capacitor.getPlatform() !== 'web') {
           await this.scan.setOption('hash', mem)
         }
         await this.newGame()
