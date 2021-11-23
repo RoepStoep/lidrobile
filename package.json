@@ -76,7 +76,7 @@
         "@types/d3": "4.5.0",
         "@types/lodash-es": "4.17.3",
         "capacitor-sound-effect": "2.0.1",
-        "capacitor-stockfish": "3.0.1",
+        "capacitor-stockfish": "3.0.2",
         "capacitor-stockfish-variants": "1.0.1",
         "d3-axis": "1.0.8",
         "d3-scale": "1.0.6",
@@ -107,6 +107,5 @@
         "watch": "node scripts/inject-conf && concurrently \"npm:compile-watch\" \"rollup -w -c\" \"npm:styles-watch\"",
         "prebuild": "npm run clean && npm run compile",
         "build": "node scripts/inject-conf && concurrently \"npm:compile-date-locales\" \"npm:styles\" \"rollup -c\" && npx cap copy",
-        "run-android": "npm run build && cd android && ./gradlew installDebug"
     }
 }

@@ -18,7 +18,7 @@ import playerInfo from './playerInfo'
 import teamInfo from './teamInfo'
 import joinForm from './joinForm'
 import TournamentCtrl from './TournamentCtrl'
-import { previouslyJoined } from '~/lichess/tournament'
+import { previouslyJoined } from '~/lidraughts/tournament'
 
 export function renderOverlay(ctrl: TournamentCtrl): Mithril.ChildArray {
   return [
