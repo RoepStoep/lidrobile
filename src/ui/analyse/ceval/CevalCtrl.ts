@@ -77,6 +77,13 @@ export default class CevalCtrl {
     }
   }
 
+  // Useful if/when options change while analysis is running.
+  public restart(): void {
+    if (this.lastStarted) {
+      void this.start(this.lastStarted.path, this.lastStarted.nodes, false, false)
+    }
+  }
+
   public isInit(): boolean {
     return this.initialized
   }
@@ -115,6 +122,7 @@ export default class CevalCtrl {
 
   public setMultiPv(pv: number): void {
     this.opts.multiPv = pv
+    this.restart()
   }
 
   public getMultiPv(): number {
@@ -123,6 +131,7 @@ export default class CevalCtrl {
 
   public toggleInfinite = (): void => {
     this.opts.infinite = !this.opts.infinite
+    this.restart()
   }
 
   public goDeeper = (): void => {
