@@ -31,6 +31,12 @@ export function playerBar(ctrl: AnalyseCtrl, color: Color): Mithril.Child {
   const isAnonymous = pName === 'Anonymous' || pName === i18n('anonymous')
   if (ctrl.synthetic && isAnonymous) return null
 
+  // Assumes studies without player info do not have clock info
+  if ((ctrl.study && isAnonymous) || (!ctrl.study && ctrl.synthetic)) {
+    return null
+  }
+
+
   const study = ctrl.study && ctrl.study.data
   let title, elo, result: string | undefined
   if (study) {
@@ -49,7 +55,7 @@ export function playerBar(ctrl: AnalyseCtrl, color: Color): Mithril.Child {
   return h('div.analyse-player_bar', {
     className: ctrl.settings.s.smallBoard ? 'halfsize' : ''
   }, [
-    h('div.info', isAnonymous ? null : [
+    h('div.info', isAnonymous ? h.trust('&nbsp') : [
       result ? h('span.result', result) : null,
       h('span.name', (title ? title + ' ' : '') + pName + (elo ? ` (${elo})` : '')),
     ]),
