@@ -23,11 +23,10 @@ export function renderInlineReplay(ctrl: OnlineRound) {
     return null
   }
 
-  if (ctrl.isZen()) {
-    return h('div.replay_inline.hidden')
-  }
-  
   return h('div.replay_inline', {
+    className: helper.classSet({
+      hidden: ctrl.isZen(),
+    }),
     oncreate: (vnode: Mithril.VnodeDOM) => {
       setTimeout(() => autoScrollInline(vnode.dom as HTMLElement), 100)
       helper.ontapX((e: Event) => onReplayTap(ctrl, e), undefined, getMoveEl)(vnode)
