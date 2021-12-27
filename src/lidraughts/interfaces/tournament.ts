@@ -52,7 +52,6 @@ export interface TournamentClock {
 
 interface TournamentMe {
   rank: number
-  readonly username: string
   readonly withdraw: boolean
 }
 
