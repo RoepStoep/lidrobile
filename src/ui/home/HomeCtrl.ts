@@ -12,7 +12,7 @@ import { timeline as timelineXhr, seeks as corresSeeksXhr, lobby as lobbyXhr, fe
 import { hasNetwork, noop } from '../../utils'
 import { fromNow } from '../../i18n'
 import { isForeground } from '../../utils/appMode'
-import { Streamer, PongMessage, TimelineEntry, DailyPuzzleData, CorrespondenceSeek, FeaturedGame2, FeaturedPlayer } from '../../lidraughts/interfaces'
+import { Streamer, PongMessage, TimelineEntry, DailyPuzzleData, CorrespondenceSeek, FeaturedGame2, FeaturedPlayer, TimelineData } from '../../lidraughts/interfaces'
 import { Player } from '../../lidraughts/interfaces/game'
 import { TournamentListItem } from '../../lidraughts/interfaces/tournament'
 import { PuzzleData } from '../../lidraughts/interfaces/training'
@@ -48,7 +48,7 @@ export default class HomeCtrl {
   public featuredGame?: FeaturedGame2
   public featuredTournaments?: readonly TournamentListItem[]
   public featuredStreamers?: readonly Streamer[]
-  public timeline?: readonly TimelineEntry[]
+  public timelineData?: TimelineData
   public offlinePuzzle?: PuzzleData | undefined
 
   private networkListener: PluginListenerHandle
@@ -137,34 +137,37 @@ export default class HomeCtrl {
         featuredTournamentsXhr(),
         session.refresh().then(() => session.isKidMode() ? Promise.resolve([]) : featuredStreamersXhr()),
       ])
-      .then(results => {
-        const [fTour, fStreamers] = results
-        this.featuredTournaments = fTour.featured
-        this.featuredStreamers = fStreamers
-        redraw()
-      })
-      .catch(noop)
+        .then(results => {
+          const [fTour, fStreamers] = results
+          this.featuredTournaments = fTour.featured
+          this.featuredStreamers = fStreamers
+          redraw()
+        })
+        .catch(noop)
 
       dailyPuzzleXhr()
-      .then(daily => {
-        this.dailyPuzzle = daily
-        redraw()
-      })
+        .then(daily => {
+          this.dailyPuzzle = daily
+          redraw()
+        })
 
       timelineXhr()
-      .then((timeline) => {
-        this.timeline = timeline.entries
-        .filter((o: TimelineEntry) => supportedTimelineTypes.indexOf(o.type) !== -1)
-        .slice(0, 15)
-        .map(o => {
-          o.fromNow = fromNow(new Date(o.date))
-          return o
+        .then((timeline) => {
+          this.timelineData = {
+            users: timeline.users,
+            entries: timeline.entries
+              .filter((o: TimelineEntry) => supportedTimelineTypes.indexOf(o.type) !== -1)
+              .slice(0, 15)
+              .map(o => {
+                o.fromNow = fromNow(new Date(o.date))
+                return o
+              })
+          }
+          redraw()
         })
-        redraw()
-      })
-      .catch(() => {
-        this.timeline = []
-      })
+        .catch(() => {
+          this.timelineData = {entries: [], users: {}}
+        })
     }
   }
 
@@ -195,8 +198,8 @@ export default class HomeCtrl {
     const el = document.getElementById(seekId)
     if (el) {
       Zanimo(el, 'opacity', '0', 300, 'ease-out')
-      .then(() => this.socketSend('cancelSeek', seekId))
-      .catch(console.log.bind(console))
+        .then(() => this.socketSend('cancelSeek', seekId))
+        .catch(console.log.bind(console))
     }
   }
 
@@ -207,20 +210,20 @@ export default class HomeCtrl {
   private reloadCorresPool = () => {
     if (this.selectedTab === 1) {
       corresSeeksXhr(false)
-      .then(d => {
-        this.corresPool = fixSeeks(d)
-          .filter(s => settings.game.supportedVariants.includes(s.variant.key))
-          .sort((a, b) => a.rating > b.rating ? -1 : 1)
-        this.redrawIfNotScrolling()
-      })
+        .then(d => {
+          this.corresPool = fixSeeks(d)
+            .filter(s => settings.game.supportedVariants.includes(s.variant.key))
+            .sort((a, b) => a.rating > b.rating ? -1 : 1)
+          this.redrawIfNotScrolling()
+        })
     }
   }
 
   private getFeatured = throttle(() => {
     featuredGameXhr('best', false)
-    .then((data) => {
-      const opp = playerToFeatured(data.opponent)
-      const player = playerToFeatured(data.player)
+      .then((data) => {
+        const opp = playerToFeatured(data.opponent)
+        const player = playerToFeatured(data.player)
 
       this.featuredGame = {
         c: data.clock ? {
@@ -236,10 +239,10 @@ export default class HomeCtrl {
         white: data.game.player === 'white' ? player : opp,
       }
 
-      this.socketSend('startWatching', data.game.id)
+        this.socketSend('startWatching', data.game.id)
 
-      this.redrawIfNotScrolling()
-    })
+        this.redrawIfNotScrolling()
+      })
   }, 1000)
 }
 
@@ -256,13 +259,13 @@ function fixSeeks(seeks: CorrespondenceSeek[]): CorrespondenceSeek[] {
   })
   return [
     ...seeks
-    .map(s => {
-      const username = seekUserId(s) === userId ? s.id : s.username
-      const key = username + s.mode + s.perf.key + s.days + s.color
-      return [s, key]
-    })
-    .filter(([_, key], i, a) => a.map(e => e[1]).indexOf(key) === i)
-    .map(([s]) => s)
+      .map(s => {
+        const username = seekUserId(s) === userId ? s.id : s.username
+        const key = username + s.mode + s.perf.key + s.days + s.color
+        return [s, key]
+      })
+      .filter(([_, key], i, a) => a.map(e => e[1]).indexOf(key) === i)
+      .map(([s]) => s)
   ] as CorrespondenceSeek[]
 }
 

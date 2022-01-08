@@ -328,9 +328,9 @@ function renderDailyPuzzle(ctrl: HomeCtrl) {
 }
 
 function renderTimeline(ctrl: HomeCtrl) {
-  const timeline = ctrl.timeline
+  const timelineData = ctrl.timelineData
 
-  if (timeline === undefined) {
+  if (timelineData === undefined) {
     return (
       <section className="home__timeline loading">
         {spinner.getVdom('monochrome')}
@@ -338,7 +338,7 @@ function renderTimeline(ctrl: HomeCtrl) {
     )
   }
 
-  if (timeline.length === 0) {
+  if (timelineData.entries.length === 0) {
     return (
       <section className="home__timeline">
       </section>
@@ -350,7 +350,7 @@ function renderTimeline(ctrl: HomeCtrl) {
       <ul
         oncreate={helper.ontapY(timelineOnTap, undefined, helper.getLI)}
       >
-        { timeline.map(renderTimelineEntry)}
+        { timelineData.entries.map(entry => renderTimelineEntry(entry, timelineData.users))}
       </ul>
       <div className="more">
         <button oncreate={helper.ontapY(() => router.set('/timeline'))}>
