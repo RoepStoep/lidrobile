@@ -87,4 +87,4 @@ More information available [here](https://capacitorjs.com/docs/ios).
 
 ## Advanced setup
 
-See the [wiki](https://github.com/veloce/lichobile/wiki/Setting-a-lichess-dev-server-for-the-app).
+See the [wiki](https://github.com/veloce/lichobile/wiki/Setting-up-the-app-using-a-local-setup-of-lichess).
