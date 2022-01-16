@@ -17,8 +17,6 @@ import CloseSlideHandler from '../shared/sideMenu/CloseSlideHandler'
 
 import * as menu from '.'
 
-const pingHelp = `PING: ${i18n('networkLagBetweenYouAndLidraughts')}; SERVER: ${i18n('timeToProcessAMoveOnLidraughtsServer')}`
-
 export default {
   onbeforeupdate() {
     return menu.mainMenuCtrl.isOpen
@@ -237,6 +235,7 @@ function renderLinks(user?: Session) {
 function networkStatus(user?: Session) {
   const ping = menu.ping()
   const server = menu.mlat()
+  const pingHelp = `PING: ${i18n('networkLagBetweenYouAndLidraughts')}; SERVER: ${i18n('timeToProcessAMoveOnLidraughtsServer')}`
   const showToast = (e: Event) => {
     e.stopPropagation()
     Toast.show({ text: pingHelp, duration: 'long', position: 'top' })
