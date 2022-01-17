@@ -108,7 +108,6 @@ export interface StandingPlayer {
 
 interface Sheet {
   readonly fire: boolean
-  readonly total: number
 }
 
 export interface Verdicts {
