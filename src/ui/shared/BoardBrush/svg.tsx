@@ -81,16 +81,13 @@ export function piece(theme: string, pos: BoardPos, piece: Piece, bounds: Client
   const size = bounds.width / 10
   const name = piece.color[0] + piece.role[0].toUpperCase()
   const href = `images/pieces/${theme}/${name}.svg`
-  return {
-    tag: 'image',
-    attrs: {
-      x: o[0] - size / 2,
-      y: o[1] - size / 2,
-      width: size,
-      height: size,
-      'xlink:href': href,
-    }
-  }
+  return h('image', {
+    x: o[0] - size / 2,
+    y: o[1] - size / 2,
+    width: size,
+    height: size,
+    'xlink:href': href,
+  })
 }
 
 export function defs(brushes: Brush[]) {
