@@ -352,8 +352,6 @@ function renderAntagonistInfo(ctrl: OnlineRound, player: Player, material: Mater
 
   const checksNb = getChecksCount(ctrl, player.color)
 
-  const runningColor = ctrl.isClockRunning() ? ctrl.data.game.player : undefined
-
   const tournamentRank = ctrl.data.tournament && ctrl.data.tournament.ranks ?
     '#' + ctrl.data.tournament.ranks[player.color] + ' ' : null
 
@@ -399,7 +397,6 @@ function renderAntagonistInfo(ctrl: OnlineRound, player: Player, material: Mater
           ctrl: ctrl.clock,
           color: player.color,
           isBerserk,
-          runningColor
         }) :
         isCrazy && ctrl.correspondenceClock ?
           renderCorrespondenceClock(
@@ -416,7 +413,6 @@ function renderPlayTable(
   material: Material,
   position: Position,
 ) {
-  const runningColor = ctrl.isClockRunning() ? ctrl.data.game.player : undefined
   const isCrazy = false
 
   const classN = helper.classSet({
@@ -434,7 +430,6 @@ function renderPlayTable(
           ctrl: ctrl.clock,
           color: player.color,
           isBerserk: ctrl.vm.goneBerserk[player.color],
-          runningColor
         }) :
         !isCrazy && ctrl.correspondenceClock ?
           renderCorrespondenceClock(
