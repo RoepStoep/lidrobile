@@ -84,6 +84,7 @@ export default class AnalyseCtrl {
   cgConfig?: cg.SetConfig
   analysisProgress = false
   retroGlowing = false
+  showThreat = false
   formattedDate?: string
 
   private _currentTabIndex = 0
@@ -329,7 +330,7 @@ export default class AnalyseCtrl {
         const path = ghostEnd ? this.path.slice(2) : this.path
         const nodeList = ghostEnd ? this.nodeList.slice(1) : this.nodeList
         const forceMaxLv = !!this.retro || !!this.practice
-        this.ceval.start(path, nodeList, forceMaxLv, false)
+        this.ceval.start(this.showThreat, path, nodeList, forceMaxLv, false)
         this.evalCache.fetch(path, forceMaxLv ? 1 : this.ceval.getMultiPv())
       } else this.stopCevalImmediately()
     }
@@ -369,6 +370,12 @@ export default class AnalyseCtrl {
       this.practice = makePractice(this, () => {
         return 18
       })
+    }
+  }
+
+  toggleShowThreat = (): void => {
+    if (this.ceval.allowed) {
+      this.showThreat = true
     }
   }
 

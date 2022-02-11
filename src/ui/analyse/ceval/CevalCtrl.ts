@@ -34,7 +34,7 @@ export default class CevalCtrl {
     })
   }
 
-  public async start(path: Tree.Path, nodes: Tree.Node[], forceMaxLevel: boolean, deeper: boolean): Promise<void> {
+  public async start(threatMode: boolean, path: Tree.Path, nodes: Tree.Node[], forceMaxLevel: boolean, deeper: boolean): Promise<void> {
     if (!this.enabled()) {
       return
     }
@@ -52,7 +52,7 @@ export default class CevalCtrl {
       path,
       ply: step.ply,
       multiPv: 1, // forceMaxLevel ? 1 : this.opts.multiPv,
-      threatMode: false,
+      threatMode,
       emit: (ev?: Tree.ClientEval) => {
         if (this.enabled()) this.onEmit(work, ev)
       }
@@ -70,6 +70,7 @@ export default class CevalCtrl {
     await this.engine.start(work)
     this.started = true
     this.lastStarted = {
+      threatMode,
       path,
       nodes,
     }
@@ -79,7 +80,7 @@ export default class CevalCtrl {
   private restart = async (): Promise<void> => {
     if (this.lastStarted) {
       await this.engine.stop()
-      await this.start(this.lastStarted.path, this.lastStarted.nodes, false, false)
+      await this.start(this.lastStarted.threatMode, this.lastStarted.path, this.lastStarted.nodes, false, false)
     }
   }
 
@@ -148,7 +149,7 @@ export default class CevalCtrl {
 
   public goDeeper = (): void => {
     if (this.lastStarted) {
-      this.start(this.lastStarted.path, this.lastStarted.nodes, false, true)
+      this.start(this.lastStarted.threatMode, this.lastStarted.path, this.lastStarted.nodes, false, true)
     }
   }
 
