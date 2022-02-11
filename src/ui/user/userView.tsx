@@ -262,6 +262,7 @@ function renderActions(ctrl: IUserCtrl, user: ProfileUser) {
       <div className="list_item nav"
         oncreate={helper.ontapY(ctrl.followers)}
       >
+        <span className="fa fa-users" />
         {plural('nbFollowers', user.nbFollowers)}
       </div>
       { !ctrl.isMe() ? <div className="list_item nav" data-icon="1"
