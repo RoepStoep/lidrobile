@@ -11,13 +11,13 @@ export default class CevalCtrl {
   private initialized = false
   private engine: ScanClient
   private started = false
-  private isDeeper = false
+  public isDeeper = false
   private lastStarted: Started | undefined = undefined
   private isEnabled: boolean
 
   constructor(
     readonly opts: Opts,
-    readonly emit: (path: string, ev?: Tree.ClientEval) => void,
+    readonly emit: (path: string, ev?: Tree.ClientEval, isThreat?: boolean) => void,
   ) {
     this.allowed = opts.allowed
     this.isEnabled = settings.analyse.enableCeval()
@@ -44,10 +44,10 @@ export default class CevalCtrl {
     if (step.ceval && step.ceval.depth >= maxDepth) {
       return
     }
-    const work = {
+    const work: Work = {
       initialFen: nodes[0].fen,
       currentFen: step.fen,
-      moves: new Array<string>(),
+      moves: [],
       maxDepth: forceMaxLevel ? settings.analyse.cevalMaxDepth() : this.effectiveMaxDepth(deeper),
       path,
       ply: step.ply,
@@ -58,13 +58,20 @@ export default class CevalCtrl {
       }
     }
 
-    // send moves after last capture
-    for (let i = 1; i < nodes.length; i++) {
-      const s = nodes[i]
-      if (s.san!.indexOf('x') !== -1) {
-        work.moves = []
-        work.initialFen = s.fen
-      } else work.moves.push(shortUci(s))
+    if (threatMode) {
+      const c = step.ply % 2 === 1 ? 'W' : 'B'
+      const fen = c + step.fen.slice(1)
+      work.currentFen = fen
+      work.initialFen = fen
+    } else {
+      // send fen after latest capture and the following moves
+      for (let i = 1; i < nodes.length; i++) {
+        const s = nodes[i]
+        if (s.san!.indexOf('x') !== -1) {
+          work.moves = []
+          work.initialFen = s.fen
+        } else work.moves.push(shortUci(s))
+      }
     }
 
     await this.engine.start(work)
@@ -168,7 +175,7 @@ export default class CevalCtrl {
   private onEmit = (work: Work, ev?: Tree.ClientEval) => {
     if (ev) sortPvsInPlace(ev.pvs, (work.ply % 2 === 0) ? 'white' : 'black')
     if (ev) npsRecorder(ev)
-    this.emit(work.path, ev)
+    this.emit(work.path, ev, work.threatMode)
   }
 }
 

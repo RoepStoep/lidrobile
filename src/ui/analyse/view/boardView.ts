@@ -69,8 +69,10 @@ function computeShapes(ctrl: AnalyseCtrl): readonly Shape[] {
   const player = ctrl.data.game.player
   const ceval = ctrl.node && ctrl.node.ceval
   const rEval = ctrl.node && ctrl.node.eval
+  const threat = ctrl.node && ctrl.node.threat
   let curBestShapes: readonly Shape[] = []
   let pastBestShape: readonly Shape[] = []
+  let threatShape: readonly Shape[] = []
 
   if (ctrl.practice) {
     const hint = ctrl.practice.hinting()
@@ -115,12 +117,16 @@ function computeShapes(ctrl: AnalyseCtrl): readonly Shape[] {
     }
   }
 
+  if (!ctrl.retro && !ctrl.practice && ctrl.showThreat && threat) {
+    threatShape = makeShapesFromUci(threat.pvs[0].moves[0], 'paleRed')
+  }
+
   const badNode = ctrl.retro && ctrl.retro.showBadNode()
   const badMoveShape: Shape[] = badNode && badNode.uci ?
-    makeShapesFromUci(badNode.uci, 'paleRed') : []
+    makeShapesFromUci(badNode.uci, 'paleRed2') : []
 
   return [
-    ...pastBestShape, ...curBestShapes, ...badMoveShape
+    ...pastBestShape, ...curBestShapes, ...threatShape, ...badMoveShape
   ]
 }
 
