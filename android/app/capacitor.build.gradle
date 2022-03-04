@@ -26,6 +26,7 @@ dependencies {
     implementation project(':capacitor-storage')
     implementation project(':capacitor-toast')
     implementation project(':capacitor-scan')
+    implementation project(':robingenz-capacitor-android-dark-mode-support')
     implementation project(':capacitor-sound-effect')
 
 }

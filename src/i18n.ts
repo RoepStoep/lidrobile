@@ -452,5 +452,6 @@ const untranslated: StringMap = {
   incorrectThreefoldClaim: 'Incorrect threefold repetition claim.',
   vibrateOnGameEvents: 'Vibrate on game events',
   landscapeBoardSide: 'Board screen side (in landscape mode)',
-  offline: 'Offline'
+  offline: 'Offline',
+  bgThemeSyncWithSystem: 'Sync with system'
 }

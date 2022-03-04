@@ -68,6 +68,10 @@
 		"classpath": "org.lidraughts.mobileapp.scan.Scan"
 	},
 	{
+		"pkg": "@robingenz/capacitor-android-dark-mode-support",
+		"classpath": "dev.robingenz.capacitor.androiddarkmodesupport.AndroidDarkModeSupportPlugin"
+	},
+	{
 		"pkg": "capacitor-sound-effect",
 		"classpath": "org.lichess.plugin.SoundEffectPlugin"
 	}
