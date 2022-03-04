@@ -72,6 +72,7 @@ interface Window {
   }
   deviceInfo: {
     platform: 'ios' | 'android' | 'electron' | 'web'
+    osVersion: string
     uuid: string
     appVersion: string
     cpuCores: number
