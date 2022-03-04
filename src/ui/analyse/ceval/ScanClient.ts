@@ -19,6 +19,7 @@ export default class ScanClient {
   private work?: Work
   private curEval?: Tree.ClientEval
   private uciCache: any = {}
+  private expectedPvs = 1
 
   // after a 'go' command, scan will be continue to emit until the 'done'
   // message, reached by depth or after a 'stop' command
@@ -121,6 +122,7 @@ export default class ScanClient {
     if (work) {
       this.work = work
       this.curEval = undefined
+      this.expectedPvs = 1
       this.stopped = false
       this.startQueue = []
       this.ready = defer()
@@ -169,6 +171,9 @@ export default class ScanClient {
       win = Math.round((ply + ply % 2) / 2)
     }
 
+    // Track max pv index to determine when pv prints are done.
+    if (this.expectedPvs < multiPv) this.expectedPvs = multiPv
+
     const pivot = this.work.threatMode ? 0 : 1
     if (this.work.ply % 2 === pivot) {
       if (win) win = -win
@@ -182,36 +187,26 @@ export default class ScanClient {
       depth,
     }
 
-    const knps = nodes / elapsedMs
-
-    if (this.curEval === undefined) {
+    if (multiPv === 1) {
       this.curEval = {
         fen: this.work.currentFen,
         maxDepth: this.work.maxDepth,
         depth,
-        knps,
+        knps: nodes / elapsedMs,
         nodes,
         cp: pvData.cp,
         win: pvData.win,
         pvs: [pvData],
         millis: elapsedMs
       }
-    } else {
-      this.curEval.depth = depth
-      this.curEval.knps = knps
-      this.curEval.nodes = nodes
-      this.curEval.cp = pvData.cp
-      this.curEval.win = pvData.win
-      this.curEval.millis = elapsedMs
-      const multiPvIdx = multiPv - 1
-      if (this.curEval.pvs.length > multiPvIdx) {
-        this.curEval.pvs[multiPvIdx] = pvData
-      } else {
-        this.curEval.pvs.push(pvData)
-      }
+    } else if (this.curEval) {
+      this.curEval.pvs.push(pvData)
+      this.curEval.depth = Math.min(this.curEval.depth, depth)
     }
 
-    this.work.emit(this.curEval)
+    if (multiPv === this.expectedPvs && this.curEval) {
+      this.work.emit(this.curEval)
+    }
   }
 
   private listener = (e: Event) => {
