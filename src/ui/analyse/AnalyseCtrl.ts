@@ -670,7 +670,7 @@ export default class AnalyseCtrl {
         if (node.fen !== ev.fen && !isThreat) return
 
         if (isThreat) {
-          const threat = ev as Tree.ClientEval
+          const threat = ev 
           if (!node.threat || util.isEvalBetter(threat, node.threat) || node.threat?.maxDepth! < threat.maxDepth!) {
             node.threat = threat
           } else if (ev.knps) {

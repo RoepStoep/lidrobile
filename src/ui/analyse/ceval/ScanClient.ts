@@ -151,7 +151,7 @@ export default class ScanClient {
     }
     if (this.stopped || this.work === undefined) return
 
-    const matches = text.match(EVAL_REGEX)
+    const matches = EVAL_REGEX.exec(text)
     if (!matches) return
 
     const depth = parseInt(matches[1]),

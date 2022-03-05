@@ -75,7 +75,7 @@ export default class AiRound implements AiRoundInterface, PromotingInterface {
 
       redraw()
     } else {
-      const currentVariant = <VariantKey>settings.ai.variant()
+      const currentVariant = settings.ai.variant()
       if (saved) {
         try {
           this.init(saved.data, saved.situations, saved.ply)
@@ -392,5 +392,5 @@ function getColorFromSettings(): Color {
       color = 'black'
   }
 
-  return <Color>color
+  return color
 }

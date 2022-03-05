@@ -159,9 +159,9 @@ export default {
 
       return layout.board(
         header(title, backButton),
-        renderContent(this.ctrl!, isPortrait),
+        renderContent(this.ctrl, isPortrait),
         undefined,
-        overlay(this.ctrl!)
+        overlay(this.ctrl)
       )
     } else {
       return loadingScreen(isPortrait, vnode.attrs.color, toggleCoordinates(vnode.attrs.curFen, false), vnode.attrs.variant)
