@@ -242,9 +242,10 @@ function renderContent(ctrl: OnlineRound, isPortrait: boolean) {
   const vd = helper.viewportDim()
 
   const material = ctrl.draughtsground.getMaterialDiff()
+  const flip = !ctrl.data.tv && ctrl.vm.flip
 
-  const player = renderPlayTable(ctrl, ctrl.data.player, material[ctrl.data.player.color], 'player')
-  const opponent = renderPlayTable(ctrl, ctrl.data.opponent, material[ctrl.data.opponent.color], 'opponent')
+  const player = renderPlayTable(ctrl, ctrl.data.player, material[ctrl.data.player.color], 'player', flip)
+  const opponent = renderPlayTable(ctrl, ctrl.data.opponent, material[ctrl.data.opponent.color], 'opponent', flip)
 
   const playable = gameApi.playable(ctrl.data)
   const myTurn = gameApi.isPlayerTurn(ctrl.data)
@@ -256,8 +257,6 @@ function renderContent(ctrl: OnlineRound, isPortrait: boolean) {
     !myTurn ? renderExpiration(ctrl, 'opponent', myTurn) : null,
     myTurn ? renderExpiration(ctrl, 'player', myTurn) : null,
   ] : [])
-
-  const flip = !ctrl.data.tv && ctrl.vm.flip
 
   if (isPortrait) {
     return [
@@ -344,7 +343,14 @@ function renderPlayerName(player: Player) {
   return 'Anonymous'
 }
 
-function renderAntagonistInfo(ctrl: OnlineRound, player: Player, material: Material, position: Position, isCrazy: boolean) {
+function renderPlayer(
+  ctrl: OnlineRound,
+  player: Player,
+  material: Material,
+  flipped: boolean,
+  position: Position,
+  isCrazy: boolean
+) {
   const user = player.user
   const playerName = renderPlayerName(player)
   const togglePopup = user ? () => ctrl.openUserPopup(position, user.id) : utils.noop
@@ -395,11 +401,13 @@ function renderAntagonistInfo(ctrl: OnlineRound, player: Player, material: Mater
       </div> : null
       }
       {isCrazy && ctrl.clock ?
-        h(Clock, {
+        // must reset clock with a single-child keyed fragment when flipped
+        [h(Clock, {
+          key: flipped.toString(),
           ctrl: ctrl.clock,
           color: player.color,
           isBerserk,
-        }) :
+        })] :
         isCrazy && ctrl.correspondenceClock ?
           renderCorrespondenceClock(
             ctrl.correspondenceClock, player.color, ctrl.data.game.player
@@ -414,6 +422,7 @@ function renderPlayTable(
   player: Player,
   material: Material,
   position: Position,
+  flipped: boolean,
 ) {
   const isCrazy = false
 
@@ -425,13 +434,15 @@ function renderPlayTable(
 
   return (
     <section className={classN + ' ' + position}>
-      {renderAntagonistInfo(ctrl, player, material, position, isCrazy)}
+      {renderPlayer(ctrl, player, material, flipped, position, isCrazy)}
       { !isCrazy && ctrl.clock ?
-        h(Clock, {
+        // must reset clock with a single-child keyed fragment when flipped
+        [h(Clock, {
+          key: flipped.toString(),
           ctrl: ctrl.clock,
           color: player.color,
           isBerserk: ctrl.vm.goneBerserk[player.color],
-        }) :
+        })] :
         !isCrazy && ctrl.correspondenceClock ?
           renderCorrespondenceClock(
             ctrl.correspondenceClock, player.color, ctrl.data.game.player
