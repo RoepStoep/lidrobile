@@ -39,7 +39,7 @@ export default class OtbRound implements OtbRoundInterface, PromotingInterface {
   public newGameMenu: NewOtbGameCtrl
   public importGamePopup: ImportGameController
   public draughtsground!: Draughtsground
-  public replay!: Replay
+  public replay?: Replay
   public vm: OtbVM
   public clock?: IDraughtsClock
   public moveList: boolean
@@ -67,7 +67,7 @@ export default class OtbRound implements OtbRoundInterface, PromotingInterface {
     this.moveList = !!settings.game.moveList()
 
     if (setupFen) {
-      this.newGameMenu.open()
+      this.newGameMenu.isOpen(true)
 
       if (setupVariant) {
         settings.otb.variant(setupVariant)
@@ -171,15 +171,19 @@ export default class OtbRound implements OtbRoundInterface, PromotingInterface {
   }
 
   public goToAnalysis = () => {
-    router.set(`/analyse/offline/otb/${this.data.player.color}?ply=${this.replay.ply}&curFen=${this.replay.situation().fen}&variant=${this.data.game.variant.key}`)
+    if (this.replay) {
+      router.set(`/analyse/offline/otb/${this.data.player.color}?ply=${this.replay.ply}&curFen=${this.replay.situation().fen}&variant=${this.data.game.variant.key}`)
+    }
   }
 
   public save = () => {
-    setCurrentOTBGame({
-      data: this.data,
-      situations: this.replay.situations,
-      ply: this.replay.ply
-    })
+    if (this.replay) {
+      setCurrentOTBGame({
+        data: this.data,
+        situations: this.replay.situations,
+        ply: this.replay.ply
+      })
+    }
   }
 
   public saveClock = () => {
@@ -201,14 +205,14 @@ export default class OtbRound implements OtbRoundInterface, PromotingInterface {
   }
 
   public sharePDN = () => {
-    this.replay.pdn('White', 'Black')
+    this.replay?.pdn('White', 'Black')
     .then((data: draughts.PdnDumpResponse) =>
       Share.share({ text: data.pdn })
     )
   }
 
   private userMove = (orig: Key, dest: Key) => {
-    this.replay.addMove(orig, dest)
+    this.replay?.addMove(orig, dest)
   }
 
   private onMove = (_: Key, __: Key, capturedPiece?: Piece) => {
@@ -276,27 +280,27 @@ export default class OtbRound implements OtbRoundInterface, PromotingInterface {
   }
 
   public player = () => {
-    return this.replay.situation().player
+    return this.replay?.situation().player || 'white'
   }
 
   public jump = (ply: number): false => {
     this.draughtsground.cancelMove()
-    if (ply < 0 || ply >= this.replay.situations.length) return false
-    this.replay.ply = ply
-    this.apply(this.replay.situation())
+    if (ply < 0 || ply >= this.replay!.situations.length) return false
+    this.replay!.ply = ply
+    this.apply(this.replay!.situation())
     return false
   }
 
-  public jumpNext = () => this.jump(this.replay.ply + 1)
-  public jumpPrev = () => this.jump(this.replay.ply - 1)
+  public jumpNext = () => this.jump(this.replay!.ply + 1)
+  public jumpPrev = () => this.jump(this.replay!.ply - 1)
   public jumpFirst = () => this.jump(this.firstPly())
   public jumpLast = () => this.jump(this.lastPly())
 
   public firstPly = () => 0
-  public lastPly = () => this.replay.situations.length - 1
+  public lastPly = () => this.replay!.situations.length - 1
 
   public replaying = () => {
-    return this.replay.ply !== this.lastPly()
+    return this.replay!.ply !== this.lastPly()
   }
 
   public canDrop = () => true

@@ -19,7 +19,6 @@ export function renderAntagonist(
   otbFlip?: boolean,
   clock?: IDraughtsClock,
 ) {
-  const isCrazy = false
   const antagonist = position === 'player' ? ctrl.data.player : ctrl.data.opponent
   const antagonistColor = antagonist.color
 
@@ -27,22 +26,19 @@ export function renderAntagonist(
     'playTable',
     'offline',
     position,
-    isCrazy ? 'crazy' : '',
     otbFlip !== undefined ? otbFlip ? 'mode_flip' : 'mode_facing' : '',
     ctrl.draughtsground.state.turnColor === ctrl.data.player.color ? 'player_turn' : 'opponent_turn',
   ].join(' ')
 
   return (
     <section id={position + '_info'} className={className}>
-      <div className={'antagonistInfos offline' + (isCrazy ? ' crazy' : '')}>
+      <div className={'antagonistInfos offline'}>
         <div className="antagonistUser">
           {content}
-          {isCrazy && clock ? renderClock(clock, antagonistColor) : ''}
         </div>
-        { !isCrazy ? <div className="ratingAndMaterial">
+        <div className="ratingAndMaterial">
           {renderMaterial(material)}
-        </div> : null
-        }
+        </div>
       </div>
       {clock ? renderClock(clock, antagonistColor) : null}
     </section>
@@ -123,13 +119,13 @@ export function renderReplay(ctrl: OfflineRoundInterface) {
       helper.ontapY((e: Event) => onReplayTap(ctrl, e), undefined, getMoveEl)(vnode)
     },
     onupdate: (vnode: Mithril.VnodeDOM<any, any>) => autoScroll(vnode.dom as HTMLElement),
-  }, renderMoves(ctrl.replay))
+  }, renderMoves(ctrl.replay)) : null
 }
 
 
 export function renderInlineReplay(ctrl: OfflineRoundInterface) {
 
-  if (!ctrl.moveList) {
+  if (!ctrl.replay || !ctrl.moveList) {
     return null
   }
 
@@ -144,21 +140,21 @@ export function renderInlineReplay(ctrl: OfflineRoundInterface) {
 
 
 export function renderBackwardButton(ctrl: OfflineRoundInterface) {
-  return h('button.action_bar_button.fa.fa-chevron-left', {
+  return ctrl.replay ? h('button.action_bar_button.fa.fa-chevron-left', {
     oncreate: helper.ontap(ctrl.jumpPrev, ctrl.jumpFirst),
     className: helper.classSet({
       disabled: !(ctrl.replay.ply > ctrl.firstPly())
     })
-  })
+  }) : null
 }
 
 export function renderForwardButton(ctrl: OfflineRoundInterface) {
-  return h('button.action_bar_button.fa.fa-chevron-right', {
+  return ctrl.replay ? h('button.action_bar_button.fa.fa-chevron-right', {
     oncreate: helper.ontap(ctrl.jumpNext, ctrl.jumpLast),
     className: helper.classSet({
       disabled: !(ctrl.replay.ply < ctrl.lastPly())
     })
-  })
+  }) : null
 }
 
 function renderMoves(replay: Replay) {
