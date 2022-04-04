@@ -12,7 +12,6 @@ export interface DropRequest {
 export interface MoveOrDrop {
   readonly fen: string
   readonly threefold: boolean
-  readonly check: boolean
   readonly ply: number
   readonly wDraw: boolean
   readonly bDraw: boolean

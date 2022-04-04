@@ -420,7 +420,7 @@ export default class OnlineRound implements OnlineRoundInterface {
         this.vm.submitFeedback = undefined
         if (playing) {
           sound.confirmation()
-          vibrate.quick()
+          vibrate.tap()
         }
         redraw()
       }, feebackDuration)
@@ -446,11 +446,11 @@ export default class OnlineRound implements OnlineRoundInterface {
     const bDraw = black.offeringDraw
     if (!wDraw && o.wDraw) {
       sound.dong()
-      vibrate.quick()
+      vibrate.warn()
     }
     if (!bDraw && o.bDraw) {
       sound.dong()
-      vibrate.quick()
+      vibrate.warn()
     }
     white.offeringDraw = o.wDraw
     black.offeringDraw = o.bDraw
@@ -597,7 +597,11 @@ export default class OnlineRound implements OnlineRoundInterface {
 
     if (d.game.turns > 1) {
       sound.dong()
-      vibrate.quick()
+      if (d.player.color === d.game.winner) {
+        vibrate.good()
+      } else {
+        vibrate.bad()
+      }
     }
     if (!this.data.player.spectator) {
       session.backgroundRefresh()
@@ -692,12 +696,14 @@ export default class OnlineRound implements OnlineRoundInterface {
   private onMove = (_: Key, __: Key, capturedPiece?: Piece) => {
     if (capturedPiece) {
       sound.capture()
+      if (!this.data.player.spectator) {
+        vibrate.heavy()
+      }
     } else {
       sound.move()
-    }
-
-    if (!this.data.player.spectator) {
-      vibrate.quick()
+      if (!this.data.player.spectator) {
+        vibrate.tap()
+      }
     }
   }
 
