@@ -106,6 +106,7 @@
         "prewatch": "npm run compile",
         "watch": "node scripts/inject-conf && concurrently \"npm:compile-watch\" \"rollup -w -c\" \"npm:styles-watch\"",
         "prebuild": "npm run clean && npm run compile",
-        "build": "node scripts/inject-conf && concurrently \"npm:compile-date-locales\" \"npm:styles\" \"rollup -c\" && npx cap copy"
+        "build": "node scripts/inject-conf && concurrently \"npm:compile-date-locales\" \"npm:styles\" \"rollup -c\" && npx cap copy",
+        "patch-nonfree": "node ./scripts/patch-nonfree"
     }
 }
