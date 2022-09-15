@@ -80,7 +80,7 @@ export interface ISettingsCtrl {
           ctrl.settings.setVariant
         )
       ]),
-      h('button.fa.fa-refresh', {
+      h('button.fa.fa-random', {
         disabled: !(hasNetwork() && session.isConnected()),
         oncreate: helper.ontap(ctrl.resync)
       }, 'Sync and refresh saved puzzles')
