@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-  package="org.lichess.mobileapp"
+  package="org.lidraughts.mobileapp"
   android:versionCode="7000050"
   android:versionName="7.0.5"
   android:installLocation="auto">
@@ -20,11 +20,11 @@
         <meta-data android:name="firebase_analytics_collection_deactivated" android:value="true" />
         <meta-data android:name="google_analytics_adid_collection_enabled" android:value="false" />
         <meta-data android:name="google_analytics_ssaid_collection_enabled" android:value="false" />
-        <meta-data android:name="com.google.firebase.messaging.default_notification_icon" android:resource="@drawable/ic_stat_lichess" />
+        <meta-data android:name="com.google.firebase.messaging.default_notification_icon" android:resource="@drawable/ic_stat_lidraughts" />
 
         <activity
             android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale"
-            android:name="org.lichess.mobileapp.MainActivity"
+            android:name="org.lidraughts.mobileapp.MainActivity"
             android:label="@string/title_activity_main"
             android:theme="@style/AppTheme.NoActionBarLaunch">
 
@@ -38,46 +38,46 @@
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
                 <data
-                  android:host="lichess.org" android:scheme="https"
+                  android:host="lidraughts.org" android:scheme="https"
                   android:pathPattern="/........" />
                 <data
-                  android:host="lichess.org" android:scheme="https"
+                  android:host="lidraughts.org" android:scheme="https"
                   android:pathPattern="/......../black" />
                 <data
-                  android:host="lichess.org" android:scheme="https"
+                  android:host="lidraughts.org" android:scheme="https"
                   android:pathPattern="/......../white" />
                 <data
-                  android:host="lichess.org" android:scheme="https"
+                  android:host="lidraughts.org" android:scheme="https"
                   android:pathPrefix="/analysis" />
                 <data
-                  android:host="lichess.org" android:scheme="https"
+                  android:host="lidraughts.org" android:scheme="https"
                   android:pathPrefix="/editor" />
                 <data
-                  android:host="lichess.org" android:scheme="https"
+                  android:host="lidraughts.org" android:scheme="https"
                   android:pathPrefix="/challenge" />
                 <data
-                  android:host="lichess.org" android:scheme="https"
+                  android:host="lidraughts.org" android:scheme="https"
                   android:pathPrefix="/inbox" />
                 <data
-                  android:host="lichess.org" android:scheme="https"
+                  android:host="lidraughts.org" android:scheme="https"
                   android:pathPrefix="/@" />
                 <data
-                  android:host="lichess.org" android:scheme="https"
+                  android:host="lidraughts.org" android:scheme="https"
                   android:pathPrefix="/player" />
                 <data
-                  android:host="lichess.org" android:scheme="https"
+                  android:host="lidraughts.org" android:scheme="https"
                   android:pathPrefix="/tournament" />
                 <data
-                  android:host="lichess.org" android:scheme="https"
+                  android:host="lidraughts.org" android:scheme="https"
                   android:pathPrefix="/training" />
                 <data
-                  android:host="lichess.org" android:scheme="https"
+                  android:host="lidraughts.org" android:scheme="https"
                   android:pathPrefix="/tv" />
                 <data
-                  android:host="lichess.org" android:scheme="https"
+                  android:host="lidraughts.org" android:scheme="https"
                   android:pathPrefix="/signup/confirm" />
                 <data
-                  android:host="lichess.org" android:scheme="https"
+                  android:host="lidraughts.org" android:scheme="https"
                   android:pathPrefix="/study" />
             </intent-filter>
 

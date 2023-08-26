@@ -145,6 +145,7 @@ export interface FeaturedGame {
   correspondence?: any // yolo
   color: Color
   fen: string
+  variant: VariantKey,
   id: string
   lastMove?: string
   white: FeaturedPlayer

@@ -10,12 +10,11 @@ import layout from '../layout'
 import continuePopup from '../shared/continuePopup'
 import pasteFenPopup from './pasteFenPopup'
 import EditorCtrl from './EditorCtrl'
-import menu, { renderSelectColorPosition, renderCastlingOptions } from './menu'
+import menu from './menu'
 
 export default function view(ctrl: EditorCtrl) {
   const color = ctrl.draughtsground.state.orientation
   const opposite = color === 'white' ? 'black' : 'white'
-  const isPortrait = helper.isPortrait()
 
   const board = h(Board, {
     variant: ctrl.data.game.variant.key(),
@@ -35,11 +34,7 @@ export default function view(ctrl: EditorCtrl) {
           h('div.editor-piecesDrawer', [
             sparePieces(opposite, color, 'left'),
             sparePieces(color, color, 'right')
-          ]),
-          !isPortrait && helper.isTablet() ? h('div.editor-menu', [
-            renderSelectColorPosition(ctrl),
-            renderCastlingOptions(ctrl)
-          ]) : null
+          ])
         ]),
         renderActionsBar(ctrl)
       ])

@@ -3,7 +3,6 @@ import router from '../../router'
 import i18n, { plural } from '../../i18n'
 import * as helper from '../helper'
 import { closeIcon } from '../shared/icons'
-import i18n from '../../i18n'
 import TournamentCtrl from './detail/TournamentCtrl'
 
 export interface FaqCtrl {

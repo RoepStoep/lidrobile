@@ -1,3 +1,4 @@
+import * as Mithril from 'mithril'
 import h from 'mithril/hyperscript'
 import { san2alg } from '../../../utils/draughtsFormat'
 import { Tree } from '../../shared/tree'

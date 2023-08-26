@@ -4,7 +4,7 @@
 
 # added on top of template
 app/google-services.json
-org.lichess.keystore
+org.lidraughts.keystore
 keystore.properties
 
 # Using Android gitignore template: https://github.com/github/gitignore/blob/master/Android.gitignore

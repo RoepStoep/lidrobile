@@ -3,7 +3,7 @@
   <access origin="*" />
   
   <feature name="CordovaPluginStockfish">
-    <param name="android-package" value="org.lichess.stockfish.CordovaPluginStockfish"/>
+    <param name="android-package" value="org.lidraughts.stockfish.CordovaPluginStockfish"/>
   </feature>
 
   <feature name="AndroidFullScreen">

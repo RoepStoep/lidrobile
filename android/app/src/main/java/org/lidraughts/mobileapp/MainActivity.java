@@ -1,4 +1,4 @@
-package org.lichess.mobileapp;
+package org.lidraughts.mobileapp;
 
 import android.content.Context;
 import android.content.Intent;
@@ -17,8 +17,8 @@ import com.getcapacitor.BridgeActivity;
 import com.getcapacitor.Dialogs;
 import com.getcapacitor.Plugin;
 
-import org.lichess.plugin.SoundEffect;
-import org.lichess.mobileapp.BuildConfig;
+import org.lidraughts.plugin.SoundEffect;
+import org.lidraughts.mobileapp.BuildConfig;
 
 import java.io.File;
 import java.lang.reflect.Method;
@@ -27,7 +27,7 @@ import java.util.regex.Pattern;
 
 public class MainActivity extends BridgeActivity {
 
-  private static String LOGTAG = "LichessActivity";
+  private static String LOGTAG = "LidraughtsActivity";
 
   @Override
   public void onCreate(Bundle savedInstanceState) {
@@ -57,9 +57,9 @@ public class MainActivity extends BridgeActivity {
           } catch (final PackageManager.NameNotFoundException e) {
             appName = "WebView";
           }
-          String message = "lichess needs a recent version of the rendering engine which is provided by" +
+          String message = "lidraughts needs a recent version of the rendering engine which is provided by" +
                   " the '" + appName   + "' application. The version you're using is too old ("
-                  + pInfo.versionName + "). Please update it or lichess will not work.";
+                  + pInfo.versionName + "). Please update it or lidraughts will not work.";
           Dialogs.confirm(this, message, title, "OK", "Cancel", new Dialogs.OnResultListener() {
             @Override
             public void onResult(boolean value, boolean didCancel, String inputValue) {

@@ -1,7 +1,7 @@
 [lidraughts.org/mobile](https://lidraughts.org/mobile)
 --------------------
 
-Lidraughts mobile is th lidraughts.org official application, forked from [Lichess mobile](https://github.com/veloce/lichobile). It is written
+Lidraughts mobile is the lidraughts.org official application, forked from [Lichess mobile](https://github.com/veloce/lichobile). It is written
 in [TypeScript](http://www.typescriptlang.org/), with a bit of Kotlin and Swift.
 It is a web application that access native SDK thanks to [Ionic capacitor](https://capacitor.ionicframework.com/).
 The rendering library is [mithril.js](http://mithril.js.org/).
@@ -12,7 +12,7 @@ Multi-variant draughts library is brought by [a JavaScript version of scaladraug
 ## Required dependencies
 
 * [node](http://nodejs.org) latest LTS version
-* [ionic capacitor dependencies](https://capacitor.ionicframework.com/docs/getting-started/dependencies)
+* [ionic capacitor dependencies](https://capacitorjs.com/docs/getting-started/environment-setup)
 
 **Android:**
 

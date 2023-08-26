@@ -1,6 +1,6 @@
 // Zanimo.js - Promise based CSS3 transitions
 // (c) 2011-2014 Paul Panserrieu
-// modified here for lichobile
+// modified here for lidrobile
 
 const transition = 'transition', transitionend = 'transitionend',
 

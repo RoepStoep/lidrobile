@@ -1,11 +1,11 @@
 {
-  "name": "lichess.org",
-  "short_name": "lichess.org",
+  "name": "lidraughts.org",
+  "short_name": "lidraughts.org",
   "start_url": ".",
   "display": "standalone",
   "background_color": "#000000",
   "theme_color": "#161512",
-  "description": "The (really) free, no-ads, open source chess server.",
+  "description": "The (really) free, no-ads, open source draughts server.",
   "icons": [
     {
       "src": "favicon.32.png",

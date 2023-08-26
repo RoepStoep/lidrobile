@@ -4,7 +4,6 @@ import i18n from '../../../i18n'
 import router from '../../../router'
 import * as helper from '../../helper'
 import settings from '../../../settings'
-import i18n from '../../../i18n'
 import { OnlineGameData } from '../../../lidraughts/interfaces/game'
 import { ExplorerData, Game, Move, Player } from './interfaces'
 import AnalyseCtrl from '../AnalyseCtrl'
@@ -164,7 +163,7 @@ function showMoveTable(ctrl: AnalyseCtrl, moves: Array<Move>) {
           <th className="explorerMove-result">{i18n('whiteDrawBlack')}</th>
         </tr>
       </thead>
-      <tbody className={pieceNotation ? 'displayPieces' : ''}>
+      <tbody>
         { moves.map(move => {
           return (
             <tr key={move.uci} data-uci={move.uci}>

@@ -12,6 +12,7 @@ import { fromNow } from '../../i18n'
 import { isForeground } from '../../utils/appMode'
 import { PongMessage, TimelineEntry, DailyPuzzleData, CorrespondenceSeek, FeaturedGame, FeaturedPlayer } from '../../lidraughts/interfaces'
 import { TournamentListItem } from '../../lidraughts/interfaces/tournament'
+import { Player } from '../../lidraughts/interfaces/game'
 import { PuzzleData } from '../../lidraughts/interfaces/training'
 import session from '../../session'
 import { supportedTypes as supportedTimelineTypes } from '../timeline'
@@ -198,6 +199,7 @@ export default class HomeCtrl {
         black: data.game.player === 'white' ? opp : player,
         color: data.orientation,
         fen: data.game.fen,
+        variant: data.game.variant.key,
         id: data.game.id,
         lastMove: data.game.lastMove,
         white: data.game.player === 'white' ? player : opp,

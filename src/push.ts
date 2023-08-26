@@ -6,7 +6,7 @@ import {
   PushNotificationActionPerformed
 } from '@capacitor/core'
 import { fetchText } from './http'
-import challengesApi from './lichess/challenges'
+import challengesApi from './lidraughts/challenges'
 import router from './router'
 import session from './session'
 import settings from './settings'
@@ -37,7 +37,7 @@ export default {
     PushNotifications.addListener('pushNotificationReceived',
       (notification: PushNotification) => {
         if (isForeground()) {
-          switch (notification.data['lichess.type']) {
+          switch (notification.data['lidraughts.type']) {
             case 'corresAlarm':
             case 'gameTakebackOffer':
             case 'gameDrawOffer':
@@ -61,23 +61,23 @@ export default {
     PushNotifications.addListener('pushNotificationActionPerformed',
       (action: PushNotificationActionPerformed) => {
         if (action.actionId === 'tap') {
-          switch (action.notification.data['lichess.type']) {
+          switch (action.notification.data['lidraughts.type']) {
             case 'challengeAccept':
               challengesApi.refresh()
-              router.set(`/game/${action.notification.data['lichess.challengeId']}`)
+              router.set(`/game/${action.notification.data['lidraughts.challengeId']}`)
               break
             case 'challengeCreate':
-              router.set(`/challenge/${action.notification.data['lichess.challengeId']}`)
+              router.set(`/challenge/${action.notification.data['lidraughts.challengeId']}`)
               break
             case 'corresAlarm':
             case 'gameMove':
             case 'gameFinish':
             case 'gameTakebackOffer':
             case 'gameDrawOffer':
-              router.set(`/game/${action.notification.data['lichess.fullId']}`)
+              router.set(`/game/${action.notification.data['lidraughts.fullId']}`)
               break
             case 'newMessage':
-              router.set(`/inbox/${action.notification.data['lichess.threadId']}`)
+              router.set(`/inbox/${action.notification.data['lidraughts.threadId']}`)
               break
           }
         }

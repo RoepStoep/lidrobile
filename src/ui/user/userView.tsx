@@ -11,7 +11,7 @@ import i18n, { plural, formatDate, formatDuration, fromNow } from '../../i18n'
 import countries from '../../utils/countries'
 import * as helper from '../helper'
 import session from '../../session'
-import { IUserCtrl, ProfileUser, isFullUser } from './UserCtrl'
+import { IUserCtrl, ProfileUser, isSessionUser, isFullUser } from './UserCtrl'
 
 export function header(user: ProfileUser, ctrl: IUserCtrl) {
   const title = userTitle(user.online!!, user.patron!!, user.username, user.title)
@@ -146,9 +146,8 @@ function renderWebsiteLinks(ctrl: IUserCtrl, user: ProfileUser) {
 }
 
 function renderStats(user: ProfileUser) {
+  let totalPlayTime: string | null = null
   let tvTime: string | null = null
-
-  const totalPlayTime = user.playTime ? i18n('tpTimeSpentPlaying', formatDuration(user.playTime.total)) : null
 
   if (isFullUser(user)) {
     totalPlayTime = user.playTime ? i18n('tpTimeSpentPlaying', formatDuration(user.playTime.total)) : null

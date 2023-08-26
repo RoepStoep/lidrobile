@@ -60,7 +60,7 @@ export default class EditorCtrl {
       editor: this.readFen(initFen),
       game: {
         variant: {
-          key: stream(variant || 'standard')
+          key: Stream(variant || 'standard')
         }
       }
     }

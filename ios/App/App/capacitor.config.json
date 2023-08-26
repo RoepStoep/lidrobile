@@ -1,11 +1,11 @@
 {
-  "appId": "org.lichess.mobileapp",
-  "appName": "lichess",
+  "appId": "org.lidraughts.mobileapp",
+  "appName": "lidraughts",
   "bundledWebRuntime": false,
   "npmClient": "npm",
   "webDir": "www",
   "backgroundColor": "ff000000",
-  "appendUserAgent": "Lichobile/7.0.5",
+  "appendUserAgent": "Lidrobile/7.0.5",
   "plugins": {
     "PushNotifications": {
       "presentationOptions": ["sound", "alert"]

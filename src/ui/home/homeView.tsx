@@ -247,6 +247,7 @@ function renderFeatured(ctrl: HomeCtrl) {
   const boardConf = featured ? {
     fixed: false,
     fen: featured.fen,
+    variant: featured.variant,
     orientation: featured.color,
     lastMove: featured.lastMove,
     link: () => {
@@ -257,6 +258,7 @@ function renderFeatured(ctrl: HomeCtrl) {
     fixed: false,
     orientation: 'white' as Color,
     fen: emptyFen,
+    variant: 'standard' as VariantKey
   }
 
   return (

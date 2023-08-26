@@ -1,4 +1,4 @@
-package org.lichess.mobileapp;
+package org.lidraughts.mobileapp;
 
 import android.view.Gravity;
 import com.getcapacitor.NativePlugin;
