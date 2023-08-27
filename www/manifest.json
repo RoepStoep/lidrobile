@@ -3,7 +3,7 @@
   "short_name": "lidraughts.org",
   "start_url": ".",
   "display": "standalone",
-  "background_color": "#000000",
+  "background_color": "#161512",
   "theme_color": "#161512",
   "description": "The (really) free, no-ads, open source draughts server.",
   "icons": [
