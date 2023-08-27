@@ -24,7 +24,7 @@ function downloadTranslationsTo(zipFile: WriteStream) {
 function unzipTranslations(zipFilePath: string) {
   console.log(colors.blue('Unzipping translations...'));
   return new Promise((resolve, reject) => {
-      exec(`unzip -o ${zipFilePath} -d ${baseDir}`, (err, stdout, stderr) => {
+      exec(`unzip -o ${zipFilePath} -d ${baseDir}/dest`, (err, stdout, stderr) => {
       if (err) {
         return reject('Unzip failed.');
       }
@@ -35,7 +35,7 @@ function unzipTranslations(zipFilePath: string) {
 
 function loadTranslations(dir: string, locale: string) {
   return parseStringPromise(
-    readFileSync(`${baseDir}/master/translation/dest/${dir}/${locale}.xml`)
+    readFileSync(`${baseDir}/dest/${locale}/${dir}.xml`)
   );
 }
 
@@ -70,6 +70,48 @@ function writeTranslations(where: string, data: object) {
   writeFileSync(where, 'export default ' + JSON.stringify(data, null, 2));
 }
 
+function langToLocale(lang: string): string {
+  switch (lang) {
+    case 'be':
+      return 'be-BY';
+    case 'cs':
+      return 'cs-CZ';
+    case 'de':
+      return 'de-DE';
+    case 'el':
+      return 'el-GR';
+    case 'fr':
+      return 'fr-FR';
+    case 'it':
+      return 'it-IT';
+    case 'ja':
+      return 'ja-JP';
+    case 'lt':
+      return 'lt-LT';
+    case 'lv':
+      return 'lv-LV';
+    case 'mn':
+      return 'mn-MN';
+    case 'nl':
+      return 'nl-NL';
+    case 'pl':
+      return 'pl-PL';
+    case 'ru':
+      return 'ru-RU';
+    case 'tr':
+      return 'tr-TR';
+    case 'uk':
+      return 'uk-UA';
+    case 'vi':
+      return 'vi-VN';
+    default:
+      if (!lang.includes('-')) {
+        colors.yellow(`No locale mapping for ${lang}`)
+      }
+      return lang;
+  }
+}
+
 async function main(args: string[]) {
   mkdirSync(`${baseDir}`, {recursive: true});
 
@@ -80,7 +122,7 @@ async function main(args: string[]) {
 
     await unzipTranslations(`${baseDir}/out.zip`);
 
-    const locales = readdirSync(`${baseDir}/master/translation/dest/site`)
+    const locales = readdirSync(`${baseDir}/dest`)
     .map(fn => fn.split('.')[0])
 
     // Load XML
@@ -88,18 +130,19 @@ async function main(args: string[]) {
     const studyLocaleXml = {};
     const arenaLocaleXml = {};
     for (const idx in locales) {
-      const locale = locales[idx];
+      const lang = locales[idx];
+      const locale = langToLocale(lang);
       console.log(colors.blue(`Loading translations for ${colors.bold(locale)}...`));
-      siteLocaleXml[locale] = await loadTranslations('site', locale);
+      siteLocaleXml[locale] = await loadTranslations('site', lang);
       try {
-        studyLocaleXml[locale] = await loadTranslations('study', locale);
+        studyLocaleXml[locale] = await loadTranslations('study', lang);
       } catch (_) {
-        console.warn(colors.yellow(`Could not load study translations for locale: ${locale}`));
+        console.warn(colors.yellow(`Could not load study translations for locale: ${lang}`));
       }
       try {
-        arenaLocaleXml[locale] = await loadTranslations('arena', locale);
+        arenaLocaleXml[locale] = await loadTranslations('arena', lang);
       } catch (_) {
-        console.warn(colors.yellow(`Could not load arena translations for locale: ${locale}`));
+        console.warn(colors.yellow(`Could not load arena translations for locale: ${lang}`));
       }
     }
 

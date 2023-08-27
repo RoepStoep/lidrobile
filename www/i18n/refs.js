@@ -9,6 +9,7 @@ export default [
   "fy-NL",
   "it-IT",
   "ja-JP",
+  "lt-LT",
   "lv-LV",
   "mn-MN",
   "nl-NL",
@@ -18,5 +19,6 @@ export default [
   "ru-RU",
   "tr-TR",
   "uk-UA",
-  "zh-CN",
+  "vi-VN",
+  "zh-CN"
 ]
