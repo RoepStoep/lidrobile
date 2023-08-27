@@ -14,37 +14,37 @@
     window.plugins.insomnia.keepAwake = noop;
   }
 
-  if (!window.Stockfish) {
-    var stockfishWorker;
-    window.Stockfish = {
+  if (!window.Scan) {
+    var scanWorker;
+    window.Scan = {
       init: function() {
         return new Promise(function(resolve) {
-          if (stockfishWorker) {
+          if (scanWorker) {
             setTimeout(resolve);
           } else {
-            stockfishWorker = new Worker('../stockfish.js');
+            scanWorker = new Worker('../scan.js');
             setTimeout(resolve, 10);
           }
         });
       },
       cmd: function(cmd) {
         return new Promise(function(resolve) {
-          if (stockfishWorker) stockfishWorker.postMessage(cmd);
+          if (scanWorker) scanWorker.postMessage(cmd);
           setTimeout(resolve, 1);
         });
       },
       output: function(callback) {
-        if (stockfishWorker) {
-          stockfishWorker.onmessage = msg => {
+        if (scanWorker) {
+          scanWorker.onmessage = msg => {
             callback(msg.data);
           };
         }
       },
       exit: function() {
         return new Promise(function(resolve) {
-          if (stockfishWorker) {
-            stockfishWorker.terminate();
-            stockfishWorker = null;
+          if (scanWorker) {
+            scanWorker.terminate();
+            scanWorker = null;
           }
           setTimeout(resolve, 1);
         });

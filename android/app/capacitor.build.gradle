@@ -12,7 +12,7 @@ dependencies {
     implementation project(':capacitor-sound-effect')
 
 }
-apply from: "../../node_modules/capacitor-cordova-plugin-stockfish/build-extras-stockfish.gradle"
+apply from: "../../node_modules/capacitor-cordova-plugin-scan/build-extras-scan.gradle"
 
 if (hasProperty('postBuildExtras')) {
   postBuildExtras()
