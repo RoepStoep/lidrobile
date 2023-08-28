@@ -1,5 +1,5 @@
 import { fetchJSON } from '../../http'
-import { Team, TeamResults, TeamJoinLeaveResponse } from '../../lichess/interfaces/teams'
+import { Team, TeamResults, TeamJoinLeaveResponse } from '../../lidraughts/interfaces/teams'
 
 export function getTeam(id: string): Promise<Team> {
   return fetchJSON('/api/team/' + id)

@@ -1,7 +1,7 @@
 import redraw from '../../utils/redraw'
 import throttle from 'lodash-es/throttle'
 import router from '../../router'
-import { Team, TeamResults } from '../../lichess/interfaces/teams'
+import { Team, TeamResults } from '../../lidraughts/interfaces/teams'
 import * as utils from '../../utils'
 import * as xhr from './teamsXhr'
 import session from '../../session'

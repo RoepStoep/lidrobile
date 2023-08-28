@@ -1,7 +1,7 @@
 import h from 'mithril/hyperscript'
 import { dropShadowHeader as headerWidget, backButton} from '../../shared/common'
 import i18n from '../../../i18n'
-import { Leader } from '../../../lichess/interfaces/teams'
+import { Leader } from '../../../lidraughts/interfaces/teams'
 import TeamsCtrl from './TeamCtrl'
 
 export function header(ctrl: TeamsCtrl) {

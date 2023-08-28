@@ -1,5 +1,5 @@
 import redraw from '../../../utils/redraw'
-import { Team, TeamJoinLeaveResponse } from '../../../lichess/interfaces/teams'
+import { Team, TeamJoinLeaveResponse } from '../../../lidraughts/interfaces/teams'
 import * as utils from '../../../utils'
 import * as xhr from '../teamsXhr'
 import { Plugins } from '@capacitor/core'
