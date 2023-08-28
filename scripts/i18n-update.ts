@@ -140,7 +140,7 @@ async function main(args: string[]) {
 
     // load and flatten translations in one object
     const everything = {}
-    for (const section of ['site', 'study', 'arena']) {
+    for (const section of ['site', 'study', 'arena', 'team']) {
       const xml = await loadXml(locales, section)
       for (const lang in xml) {
         const locale = langToLocale(lang);

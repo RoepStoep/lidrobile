@@ -29,5 +29,5 @@ export interface Leader {
   readonly id: string
   readonly name: string
   readonly patron?: boolean
-  readonly title?: boolean
+  readonly title?: string
 }

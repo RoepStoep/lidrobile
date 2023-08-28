@@ -429,5 +429,10 @@ export default {
   "playedXTimes:one": "%s kear spile",
   "playedXTimes:other": "%s kear spile",
   "availableInNbLanguages:one": "Beskikber yn %s tale!",
-  "availableInNbLanguages:other": "Beskikber yn %s tale!"
+  "availableInNbLanguages:other": "Beskikber yn %s tale!",
+  "teams": "Teams",
+  "newTeam": "Nij team",
+  "noTeamFound": "Gjin team fûn",
+  "joinTeam": "Mei team meidwaan",
+  "quitTeam": "Team ferlette"
 }
