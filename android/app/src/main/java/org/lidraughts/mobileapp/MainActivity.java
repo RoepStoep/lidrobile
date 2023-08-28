@@ -17,7 +17,7 @@ import com.getcapacitor.BridgeActivity;
 import com.getcapacitor.Dialogs;
 import com.getcapacitor.Plugin;
 
-import org.lidraughts.plugin.SoundEffect;
+import org.lichess.plugin.SoundEffect;
 import org.lidraughts.mobileapp.BuildConfig;
 
 import java.io.File;
