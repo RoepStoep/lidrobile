@@ -63,7 +63,7 @@ export default {
             h('div.field', [
               h('input#token[type=number]', {
                 className: formError !== 'MissingTotpToken' ? 'form-error' : '',
-                placeholder: 'Authentication code',
+                placeholder: i18n('authenticationCode'),
                 pattern: '\d{6}',
                 required: true
               }),

@@ -1160,5 +1160,17 @@ export default {
   "teamLeaders:one": "Teamleider",
   "teamLeaders:other": "Teamleiders",
   "xJoinRequests:one": "%s verzoek tot lidmaatschap",
-  "xJoinRequests:other": "%s verzoeken tot lidmaatschap"
+  "xJoinRequests:other": "%s verzoeken tot lidmaatschap",
+  "twoFactorAuth": "Tweestapsverificatie",
+  "twoFactorHelp": "Tweestapsverificatie voegt een extra beveiligingslaag toe aan je account.",
+  "twoFactorApp": "Download een app voor tweestapsverificatie, bijvoorbeeld Google Authenticator voor %1$s of %2$s.",
+  "scanTheCode": "Scan de QR-code met de app.",
+  "enterPassword": "Voer je wachtwoord in en de verificatiecode die door de app wordt gegenereerd om de installatie te voltooien. Je zal iedere keer als je inlogt een verificatiecode nodig hebben.",
+  "authenticationCode": "Verificatiecode",
+  "ifYouLoseAccess": "Belangrijk: Als je geen toegang meer hebt tot je tweestapsverificatiecodes, kan je een wachtwoord reset per e-mail uitvoeren.",
+  "enableTwoFactor": "Schakel tweestapsverificatie in",
+  "disableTwoFactor": "Schakel tweestapsverificatie uit",
+  "twoFactorEnabled": "Tweestapsverificatie ingeschakeld",
+  "twoFactorDisable": "Je hebt je wachtwoord en een verificatiecode van je authenticatie-app nodig om tweestapsverificatie uit te schakelen.\nAls je geen toegang meer hebt tot je verificatiecodes, kan je ook een wachtwoord reset per e-mail uitvoeren.",
+  "openTwoFactorApp": "Voer de verificatiecode van je authenticatie-app in om je identiteit te verifiëren."
 }

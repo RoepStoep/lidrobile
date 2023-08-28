@@ -891,5 +891,15 @@ export default {
   "usersWhoCanManageThisTeam": "チームを管理できるユーザー",
   "leadersChat": "リーダー・チャット",
   "teamLeaders:other": "チームリーダー",
-  "xJoinRequests:other": "%s の加入申請"
+  "xJoinRequests:other": "%s の加入申請",
+  "twoFactorAuth": "2 要素認証",
+  "twoFactorHelp": "2 要素認証はアカウントのセキュリティを高めます。",
+  "twoFactorApp": "2 要素認証のためのアプリ（たとえば%1$s、%2$s 用の Google Authenticator）を手に入れてください。",
+  "scanTheCode": "そのアプリで QR コードをスキャンします。",
+  "enterPassword": "パスワードと、アプリが生成した認証コードを入力すれば準備完了です。認証コードはログインするたびに必要になります。",
+  "authenticationCode": "認証コード",
+  "enableTwoFactor": "2 要素認証を有効にする",
+  "disableTwoFactor": "2 要素認証を無効にする",
+  "twoFactorEnabled": "2 要素認証を有効にしました。",
+  "openTwoFactorApp": "デバイスで 2 要素認証アプリを開き、認証コードを表示して確認してださい。"
 }
