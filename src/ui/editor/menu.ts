@@ -101,7 +101,7 @@ export function renderPositionSettings(ctrl: EditorCtrl) {
             oldInitialFen = getInitialFen(oldVariant.key),
             isInitial = fenCompare(ctrl.computeFen(false), oldInitialFen)
           ctrl.data.game.variant.key((e.target as HTMLInputElement).value as VariantKey)
-          ctrl.updateHref()
+          ctrl.updatePosition()
           const newVariant = ctrl.getVariant(),
             newBoardSize = newVariant.board.size,
             newInitialFen = getInitialFen(newVariant.key)

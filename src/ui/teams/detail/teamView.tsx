@@ -38,7 +38,7 @@ function userStatus(leader: Leader) {
   const title = leader.title ? h('span.userTitle', [(leader.title.endsWith('-64') ? leader.title.slice(0, leader.title.length - 3) : leader.title) + ' ']) : null
   
   return h('div.user', [
-    h('span', [i18n('teamLeaders', 1) + ': ']),
+    h('span', [plural('teamLeaders', 1) + ': ']),
     patron,
     title,
     leader.name
