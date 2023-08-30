@@ -957,8 +957,6 @@ export default {
   "nbImportedGames:other": "%s importierte Partien",
   "nbFriendsOnline:one": "%s Freund online",
   "nbFriendsOnline:other": "%s Freunde online",
-  "nbFollowers:one": "%s Follower",
-  "nbFollowers:other": "%s Follower",
   "nbFollowing:one": "%s folgend",
   "nbFollowing:other": "%s folgend",
   "lessThanNbMinutes:one": "Weniger als %s Minute",

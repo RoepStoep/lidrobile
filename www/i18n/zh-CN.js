@@ -1112,7 +1112,7 @@ export default {
   "usersWhoCanManageThisTeam": "可以管理此团队的用户",
   "leadersChat": "领队聊天",
   "enableMembersChat": "启用聊天框 (仅供成员使用)",
-  "teamLeaders:other": "领队",
+  "teamLeaders:other": "队长",
   "xJoinRequests:other": "%s 件加入请求",
   "twoFactorAuth": "两步认证",
   "twoFactorHelp": "双重认证能增加您的账号的安全性。",
