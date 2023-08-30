@@ -16,7 +16,7 @@ def capacitor_pods
   # Do not delete
 end
 
-target 'lichess' do
+target 'lidraughts' do
   capacitor_pods
   # Add your Pods here
   pod 'Firebase/Messaging'
