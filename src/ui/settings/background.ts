@@ -7,7 +7,7 @@ import layout from '../layout'
 import i18n from '../../i18n'
 import settings from '../../settings'
 import * as helper from '../helper'
-import { loadImage, handleError, setStatusBarStyle, isTransparent } from '../../theme'
+import { loadImages, handleError, setStatusBarStyle, isTransparent } from '../../theme'
 
 interface Progress {
   loaded: number
@@ -82,7 +82,7 @@ function renderBody(ctrl: State) {
                 if (isTransparent(val)) {
                   ctrl.loading = true
                   redraw()
-                  loadImage('bg', val, ctrl.onProgress)
+                  loadImages('bg', val, ctrl.onProgress)
                   .then(() => {
                     layout.onBackgroundChange(val)
                     ctrl.stopLoading()

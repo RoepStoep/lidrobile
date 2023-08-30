@@ -113,7 +113,7 @@ export default {
         ['eightbit', '8-bit']
       ],
       background: prop('bgTheme', 'dark'),
-      board: prop('theme.board', 'maple'),
+      board: prop('theme.board', 'brown'),
       piece: prop('theme.piece', 'wide_crown')
     },
     vibrateOnGameEvents: prop('vibrateOnGameEvents', false),

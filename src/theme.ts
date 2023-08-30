@@ -2,7 +2,7 @@ import { Plugins, StatusBarStyle, FilesystemDirectory, FileReadResult } from '@c
 import settings from './settings'
 
 const { Filesystem } = Plugins
-const baseUrl = 'https://veloce.github.io/lichobile-themes'
+const baseUrl = 'https://roepstoep.github.io/lidrobile-themes'
 
 let styleEl: HTMLStyleElement
 
@@ -25,9 +25,9 @@ export function init() {
 
   // load background theme
   if (isTransparent(bgTheme)) {
-    const filename = getFilenameFromKey('bg', bgTheme)
-    getLocalFile('bg', filename).then(r => {
-      createStylesheetRule('bg', bgTheme, filename, r)
+    const filenames = getFilenamesFromKey('bg', bgTheme)
+    getLocalFiles('bg', filenames).then(r => {
+      createStylesheetRule('bg', bgTheme, filenames, r)
     })
     .catch(() => {
       settings.general.theme.background('dark')
@@ -36,9 +36,9 @@ export function init() {
 
   // load board theme
   if (!settings.general.theme.bundledBoardThemes.includes(boardTheme)) {
-    const filename = getFilenameFromKey('board', boardTheme)
-    getLocalFile('board', filename).then(r => {
-      createStylesheetRule('board', boardTheme, filename, r)
+    const filenames = getFilenamesFromKey('board', boardTheme)
+    getLocalFiles('board', filenames).then(r => {
+      createStylesheetRule('board', boardTheme, filenames, r)
     })
     .catch(() => {
       settings.general.theme.board('brown')
@@ -46,39 +46,48 @@ export function init() {
   }
 }
 
-export function getLocalFile(theme: Theme, fileName: string): Promise<FileReadResult> {
-  return Filesystem.readFile({
-    path: theme + '-' + fileName,
-    directory: FilesystemDirectory.Data
-  })
+function getLocalFiles(theme: Theme, filenames: string[]): Promise<FileReadResult[]> {
+  return Promise.all(filenames.map(
+    (filename) => Filesystem.readFile({
+      path: theme + '-' + filename,
+      directory: FilesystemDirectory.Data
+    })
+  ))
 }
 
-export function getLocalFiles(theme: Theme): Promise<readonly string[]> {
+export function enumLocalDir(theme: Theme): Promise<readonly string[]> {
   return Filesystem.readdir({
     path: '',
     directory: FilesystemDirectory.Data
   }).then(({ files }) => files.filter(f => f.startsWith(theme)))
 }
 
-export function filename(entry: ThemeEntry): string {
+export function filenameBg(entry: ThemeEntry): string {
   return entry.key + '.' + entry.ext
 }
 
+export function filenamesBoard(entry: ThemeEntry): string[] {
+  return [
+    entry.key + '_64.' + entry.ext,
+    entry.key + '_100.' + entry.ext,
+  ]
+}
+
 // either download it from server of get it from filesystem
-export function loadImage(
+export function loadImages(
   theme: Theme,
   key: string,
   onProgress: (e: ProgressEvent) => void
 ): Promise<void> {
-  const filename = getFilenameFromKey(theme, key)
-  return getLocalFile(theme, filename)
+  const filenames = getFilenamesFromKey(theme, key)
+  return getLocalFiles(theme, filenames)
   .catch(() => {
     // if not found, download
-    return download(theme, filename, onProgress)
-    .then(() => getLocalFile(theme, filename))
+    return Promise.all(filenames.map(filename => download(theme, filename, onProgress)))
+    .then(() => getLocalFiles(theme, filenames))
   })
   .then(res => {
-    createStylesheetRule(theme, key, filename, res)
+    createStylesheetRule(theme, key, filenames, res)
   })
 }
 
@@ -90,36 +99,37 @@ export function handleError(err: any) {
 function createStylesheetRule(
   theme: Theme,
   key: string,
-  filename: string,
-  { data }: FileReadResult
+  filenames: string[],
+  files: FileReadResult[]
 ): void {
   if (!styleEl) {
     styleEl = document.createElement('style')
     styleEl.type = 'text/css'
     document.head.appendChild(styleEl)
   }
-  const cleanData = data.replace(/\n/g, '') // FIXME should be fixed in capacitor
-  const ext = filename.split('.').pop()
+  const cleanData = files.map(f => f.data.replace(/\n/g, '')) // FIXME should be fixed in capacitor
+  const ext = filenames[0].split('.').pop()
   const mime = ext === 'png' ?
     'data:image/png;base64,' : 'data:image/jpeg;base64,'
-  const dataUrl = mime + cleanData
+  const dataUrls = cleanData.map(data => mime + data)
   const css = theme === 'bg' ?
-    `.view-container.transp.${key} > main { background-image: url(${dataUrl}); }` :
-    `:root { --board-background: url(${dataUrl}); }\n` +
-    `.${key} > .cg-board { background-image: var(--board-background); }\n` +
-    `.game_menu_button.${key}::before { background-image: var(--board-background); background-size: 40px; }`
+    `.view-container.transp.${key} > main { background-image: url(${dataUrls[0]}); }` :
+    `:root { --board-background-64: url(${dataUrls[0]}); --board-background-100: url(${dataUrls[1]}); }\n` +
+    `.${key}.is64 > .cg-board { background-image: var(--board-background-64); }\n` +
+    `.${key}.is100 > .cg-board { background-image: var(--board-background-100); }\n` +
+    `.game_menu_button.${key}::before { background-image: var(--board-background-64); background-size: 40px; }`
 
   styleEl.appendChild(document.createTextNode(css))
 }
 
-function getFilenameFromKey(theme: Theme, key: string): string {
+function getFilenamesFromKey(theme: Theme, key: string): string[] {
   const avails = theme === 'bg' ?
     settings.general.theme.availableBackgroundThemes :
     settings.general.theme.availableBoardThemes
 
   const t = avails.find(t => t.key === key)!
 
-  return filename(t)
+  return theme === 'bg' ? [filenameBg(t)] : filenamesBoard(t)
 }
 
 function download(

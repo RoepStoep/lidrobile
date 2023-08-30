@@ -5,7 +5,7 @@ import redraw from '../../utils/redraw'
 import layout from '../layout'
 import i18n from '../../i18n'
 import settings from '../../settings'
-import { getLocalFiles, loadImage, filename as themeFilename, handleError } from '../../theme'
+import { enumLocalDir, loadImages, filenamesBoard as themeFilenames, handleError } from '../../theme'
 import * as helper from '../helper'
 
 const themeSettings = settings.general.theme
@@ -20,7 +20,7 @@ interface State {
   progress: Progress | null
   selected?: string
   loading?: boolean
-  isLocal: (opts: { key: string, filename: string }) => boolean
+  isLocal: (opts: { key: string, filenames: string[] }) => boolean
   onProgress: (e: ProgressEvent) => void
   stopLoading: () => void
 }
@@ -58,11 +58,11 @@ export default {
       }
     }
 
-    this.isLocal = ({ key, filename }): boolean =>
+    this.isLocal = ({ key, filenames }): boolean =>
       themeSettings.bundledBoardThemes.includes(key) ||
-      Boolean(this.localFiles && this.localFiles['board-' + filename])
+      filenames.every(filename => Boolean(this.localFiles && this.localFiles['board-' + filename]))
 
-    getLocalFiles('board').then(files => {
+    enumLocalDir('board').then(files => {
       this.localFiles = files.reduce((o, key) => ({ [key]: '1', ...o }), {})
       redraw()
     })
@@ -81,8 +81,8 @@ function renderBody(state: State) {
 
     const el = helper.getLI(e)
     const key = el && el.dataset.key
-    const filename = el && el.dataset.filename
-    if (key && filename) {
+    const filenames = el && el.dataset.filenames
+    if (key && filenames) {
       const prevTheme = state.selected
       state.selected = key
       if (themeSettings.bundledBoardThemes.includes(key)) {
@@ -90,13 +90,15 @@ function renderBody(state: State) {
         onBoardThemeChange(key)
       } else {
         state.loading = true
-        loadImage('board', key, state.onProgress)
+        loadImages('board', key, state.onProgress)
         .then(() => {
           themeSettings.board(key)
           onBoardThemeChange(key)
-          if (state.localFiles) {
-            state.localFiles['board-' + filename] = '1'
-          }
+          filenames.split(',').forEach(filename => {
+            if (state.localFiles) {
+              state.localFiles['board-' + filename] = '1'
+            }
+          })
           state.stopLoading()
         })
         .catch((err) => {
@@ -115,7 +117,7 @@ function renderBody(state: State) {
         oncreate: helper.ontapY(onTap, undefined, helper.getLI),
       }, themeSettings.availableBoardThemes.map((t) => {
         const selected = t.key === state.selected
-        const filename = themeFilename(t)
+        const filenames = themeFilenames(t)
         const loadingSelected = state.loading && selected
 
         return h('li.list_item.board_theme', {
@@ -124,10 +126,10 @@ function renderBody(state: State) {
             loading: selected && !!state.loading,
           }),
           'data-key': t.key,
-          'data-filename': filename,
+          'data-filenames': filenames.join(','),
         }, [
           h('span.name', t.name),
-          loadingSelected || state.isLocal({ key: t.key, filename }) ? null : h('i.fa.fa-cloud-download'),
+          loadingSelected || state.isLocal({ key: t.key, filenames }) ? null : h('i.fa.fa-cloud-download'),
           loadingSelected ? h('i.fa.fa-circle-o-notch.fa-spin') : null,
           !state.loading && selected ? h('i.fa.fa-check') : null,
           h('div.board_thumbnail.vertical_align', {
