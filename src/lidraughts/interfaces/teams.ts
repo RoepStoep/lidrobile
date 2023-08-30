@@ -3,7 +3,7 @@ export interface Team {
   readonly id: string
   readonly joined: boolean
   readonly leader: Leader
-  readonly leaders: ReadonlyArray<Leader>
+  readonly leaders?: ReadonlyArray<Leader>
   readonly location: string
   readonly name: string
   readonly nbMembers: number

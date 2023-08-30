@@ -23,7 +23,7 @@ export function body(ctrl: TeamsCtrl) {
     return null
   return h('div.teamPage.native_scroller.page', [
     h('section.teamInfos', [
-      h('div.teamLeader', team.leaders.map(userStatus)),
+      h('div.teamLeader', (team.leaders || [team.leader]).map(userStatus)),
       h('div.teamMembers', [team.nbMembers + ' ' + i18n('members')]),
       h('div.teamDescription', [team.description]),
     ]),
