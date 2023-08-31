@@ -69,10 +69,10 @@
         "signals": "1.0.0"
     },
     "scripts": {
-        "start": "concurrently 'npm run watch' 'npm run serve'",
+        "start": "concurrently \"npm run watch\" \"npm run serve\"",
         "serve": "http-server -p 8080 -s -g -c-1 .",
         "version": "node scripts/bump-version.js",
-        "lint": "tslint --project tsconfig.json -e '**/dts/**' -e '**/*.js'",
+        "lint": "tslint --project tsconfig.json -e \"**/dts/**\" -e \"**/*.js\"",
         "test": "jest",
         "i18n-update": "rimraf www/i18n/*.js && cd scripts && npm run i18n-update",
         "compile-date-locales": "node scripts/compile-date-locales",
@@ -82,9 +82,9 @@
         "compile-watch": "tsc -w --outDir build/",
         "clean": "rimraf build/ && rimraf www/*.js && rimraf www/*.js.map",
         "prewatch": "npm run compile",
-        "watch": "node scripts/inject-conf && concurrently 'npm:compile-watch' 'rollup -w -c' 'npm:styles-watch'",
+        "watch": "node scripts/inject-conf && concurrently \"npm:compile-watch\" \"rollup -w -c\" \"npm:styles-watch\"",
         "prebuild": "npm run clean && npm run compile",
-        "build": "node scripts/inject-conf && concurrently 'npm:compile-date-locales' 'npm:styles' 'rollup -c' && npx cap copy",
+        "build": "node scripts/inject-conf && concurrently \"npm:compile-date-locales\" \"npm:styles\" \"rollup -c\" && npx cap copy",
         "run-android": "npm run build && cd android && ./gradlew installDebug"
     },
     "jest": {
