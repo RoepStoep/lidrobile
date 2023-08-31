@@ -44,6 +44,14 @@ export function scan2uci(san: string): string {
     return san;
 }
 
+export function scan2san(san: string): string {
+  if (!san) return san;
+  const sep = san.includes('x') ? 'x' : '-',
+    parts = san.split(sep);
+  if (parts.length < 2) return san;
+  return parts[0] + sep + parts.slice(-1);
+}
+
 export function fenCompare(fen1: string, fen2: string) {
   const fenParts1: string[] = fen1.split(':');
   const fenParts2: string[] = fen2.split(':');

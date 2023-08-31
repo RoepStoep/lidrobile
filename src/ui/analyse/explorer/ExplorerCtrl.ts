@@ -136,9 +136,7 @@ export default function ExplorerCtrl(
         return {
           fen: fen,
           best: move && move.uci,
-          winner: res.checkmate ? oppositeColor(colorOf(fen)) : (
-            res.stalemate ? undefined : winnerOf(fen, move!)
-          )
+          winner: res.checkmate ? oppositeColor(colorOf(fen)) : winnerOf(fen, move!)
         } as SimpleTablebaseHit
       })
     }

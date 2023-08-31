@@ -67,27 +67,20 @@ export function nodeFullName(node: Tree.Node, algebraic: boolean) {
   return 'Initial position'
 }
 
-function pieceCount(fen: string) {
-  const parts = fen.split(/\s/)
-  return parts[0].split(/[nbrqkp]/i).length - 1
-}
-
-function tablebasePieces(variant: VariantKey) {
-  switch (variant) {
-    case 'standard':
-    case 'fromPosition':
-    case 'chess960':
-      return 7
-    case 'atomic':
-    case 'antichess':
-      return 6
-    default:
-      return 0
-  }
+function pieceCount(fen: Fen) {
+  //max: W:W31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50:B1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20:H0:F1
+  //min: W:WK5:BK46:H0:F1
+  return fen.split(',').length + 1;
 }
 
 export function tablebaseGuaranteed(variant: VariantKey, fen: string) {
-  return pieceCount(fen) <= tablebasePieces(variant)
+  switch (variant) {
+    case 'standard':
+    case 'fromPosition':
+      return pieceCount(fen) <= 0;
+    default:
+      return false;
+  }
 }
 
 export function defined<A>(v: A | undefined): v is A {

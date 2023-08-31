@@ -1,14 +1,8 @@
 import Stream from 'mithril/stream'
-import { parseUci } from 'chessops/util'
-import { makeSan } from 'chessops/san'
-import { Position, PositionError } from 'chessops/chess'
-import { parseFen } from 'chessops/fen'
-import { Result } from '@badrap/result'
-import { setupPosition } from 'chessops/variant'
+import { scan2uci, scan2san } from '../../../utils/draughtsFormat'
 import settings from '../../../settings'
 import redraw from '../../../utils/redraw'
 import { requestIdleCallback } from '../../../utils'
-import { altCastles, variantToRules } from '../../../utils/chessFormat'
 import { path as treePath, Tree } from '../../shared/tree'
 import { detectThreefold } from '../nodeFinder'
 import { tablebaseGuaranteed, defined } from '../util'
@@ -72,29 +66,37 @@ export function make(root: AnalyseCtrl, playableDepth: () => number): PracticeCt
     }
   }
 
-  function commentable(node: Tree.Node, bonus: number = 0): boolean {
+  function commentable(node: Tree.Node, v: VariantKey, bonus: number = 0): boolean {
     if (root.gameOver(node) || node.tbhit) return true
-    const ceval = node.ceval
-    return ceval ? ((ceval.depth + bonus) >= 15 || (ceval.depth >= 13 && Number(ceval.millis) > 3000)) : false
+    const ceval = node.ceval,
+      depth = v === 'antidraughts' ? 7 : 15,
+      minDepth = v === 'antidraughts' ? 6 : 13;
+    return ceval ? ((ceval.depth + bonus) >= depth || (ceval.depth >= minDepth && Number(ceval.millis) > 3000)) : false
   }
 
-  function playable(node: Tree.Node): boolean {
-    const ceval = node.ceval
+  function playable(node: Tree.Node, v: VariantKey): boolean {
+    const ceval = node.ceval,
+      depth = v === 'antidraughts' ? 7 : 15
     return ceval ? (
       ceval.depth >= Math.min(ceval.maxDepth || 99, playableDepth()) ||
-      (ceval.depth >= 15 && (ceval.cloud || Number(ceval.millis) > 5000))
+      (ceval.depth >= depth && (ceval.cloud || Number(ceval.millis) > 5000))
     ) : false
   }
 
   function tbhitToEval(hit: Tree.TablebaseHit | undefined | null) {
     return hit && (
       hit.winner ? {
-        mate: hit.winner === 'white' ? 10 : -10
+        win: hit.winner === 'white' ? 10 : -10
       } : { cp: 0 }
     )
   }
+
   function nodeBestUci(node: Tree.Node): Uci | undefined {
-    return (node.tbhit && node.tbhit.best) || (node.ceval && node.ceval.pvs[0].moves[0])
+    return (node.tbhit && node.tbhit.best) || (node.ceval && scan2uci(node.ceval.pvs[0].moves[0]))
+  }
+
+  function nodeBestSan(node: Tree.Node): Uci | undefined {
+    return (node.tbhit && node.tbhit.best) || (node.ceval && scan2san(node.ceval.pvs[0].moves[0]))
   }
 
   function makeComment(prev: Tree.Node, node: Tree.Node, path: Tree.Path): Comment {
@@ -112,7 +114,7 @@ export function make(root: AnalyseCtrl, playableDepth: () => number): PracticeCt
 
       best = nodeBestUci(prev)
 
-      if (best === node.uci || (node.san!.startsWith('O-O') && best === altCastles[node.uci!])) best = null
+      if (best === node.uci) best = null
 
       if (!best) verdict = 'goodMove'
       else if (shift < 0.025) verdict = 'goodMove'
@@ -128,14 +130,9 @@ export function make(root: AnalyseCtrl, playableDepth: () => number): PracticeCt
       verdict,
       best: best ? {
         uci: best,
-        san: position(prev).unwrap(pos => makeSan(pos, parseUci(best!)!), _ => '--'),
+        san: nodeBestSan(prev)!,
       } : undefined
     }
-  }
-
-  function position(node: Tree.Node): Result<Position, PositionError> {
-    const setup = parseFen(node.fen).unwrap()
-    return setupPosition(variantToRules(root.data.game.variant.key), setup)
   }
 
   function isMyTurn(): boolean {
@@ -157,9 +154,9 @@ export function make(root: AnalyseCtrl, playableDepth: () => number): PracticeCt
       }
     } else {
       comment(null)
-      if (node.san && commentable(node)) {
+      if (node.san && commentable(node, variant)) {
         const parentNode = root.tree.parentNode(root.path)
-        if (commentable(parentNode, +1)) comment(makeComment(parentNode, node, root.path))
+        if (commentable(parentNode, variant, +1)) comment(makeComment(parentNode, node, root.path))
         else {
           /*
            * Looks like the parent node didn't get enough analysis time
@@ -169,10 +166,10 @@ export function make(root: AnalyseCtrl, playableDepth: () => number): PracticeCt
            * Since computer moves are supposed to preserve eval anyway.
            */
           const olderNode = root.tree.parentNode(treePath.init(root.path))
-          if (commentable(olderNode, +1)) comment(makeComment(olderNode, node, root.path))
+          if (commentable(olderNode, variant, +1)) comment(makeComment(olderNode, node, root.path))
         }
       }
-      if (!played() && playable(node)) {
+      if (!played() && playable(node, variant)) {
         root.playUci(nodeBestUci(node)!)
         played(true)
       } else redraw()
@@ -195,9 +192,14 @@ export function make(root: AnalyseCtrl, playableDepth: () => number): PracticeCt
     else checkCeval()
   }
 
-  function resume() {
+  function resume(reset?: boolean) {
     running(true)
-    checkCevalOrTablebase()
+    if (reset) {
+      comment(null);
+      root.jump('');
+    } else {
+      checkCevalOrTablebase()
+    }
     redraw()
   }
 
@@ -240,7 +242,7 @@ export function make(root: AnalyseCtrl, playableDepth: () => number): PracticeCt
       if (c.best) root.playUci(c.best.uci)
     },
     hint() {
-      const best = root.node.ceval ? root.node.ceval.pvs[0].moves[0] : null,
+      const best = root.node.ceval ? scan2uci(root.node.ceval.pvs[0].moves[0]) : null,
       prev = hinting()
       if (!best || (prev && prev.mode === 'move')) hinting(null)
       else hinting({

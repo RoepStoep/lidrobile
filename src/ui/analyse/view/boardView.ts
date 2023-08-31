@@ -68,7 +68,7 @@ function computeShapes(ctrl: AnalyseCtrl): readonly Shape[] {
   if (ctrl.practice) {
     const hint = ctrl.practice.hinting()
     if (hint) {
-      if (hint.mode === 'move') curBestShapes = makeShapesFromUci(hint.uci, 'paleBlue', player)
+      if (hint.mode === 'move') curBestShapes = makeShapesFromUci(hint.uci, 'paleBlue')
       else curBestShapes = [{
         orig: draughtsFormat.decomposeUci(hint.uci)[0],
         brush: 'paleBlue'
