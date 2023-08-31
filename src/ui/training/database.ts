@@ -19,14 +19,16 @@ export interface UserOfflineData {
 
 type UserId = string
 
+const dbName = 'offlinePuzzles';
+
 function fetch(userId: UserId, variant: VariantKey): Promise<UserOfflineData | null> {
-  return asyncStorage.get<UserOfflineData>(`offlinePuzzles.${userId}.${variant}`)
+  return asyncStorage.get<UserOfflineData>(`${dbName}.${userId}.${variant}`)
 }
 
 function save(userId: UserId, variant: VariantKey, userData: UserOfflineData): Promise<UserOfflineData> {
-  return asyncStorage.set(`offlinePuzzles.${userId}.${variant}`, userData)
+  return asyncStorage.set(`${dbName}.${userId}.${variant}`, userData)
 }
 
 function clean(userId: UserId, variant: VariantKey) {
-  return asyncStorage.remove(`offlinePuzzles.${userId}.${variant}`)
+  return asyncStorage.remove(`${dbName}.${userId}.${variant}`)
 }
