@@ -78,7 +78,7 @@ export default {
           h('button', {
             oncreate: helper.ontap(() => {
               ctrl.close()
-              const f = toggleCoordinates(ctrl.fen(), false)
+              const f = toggleCoordinates(ctrl.fen() || '', false)
               const v = ctrl.variant()
               const c = ctrl.color()
               if (f) {
