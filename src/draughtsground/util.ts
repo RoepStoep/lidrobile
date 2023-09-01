@@ -1,7 +1,7 @@
 import * as cg from './interfaces'
 import { State } from './state'
 
-export function noop() {}
+export function noop(): void { /* noop */ }
 
 // https://gist.github.com/gre/1650294
 export function easeInOutCubic(t: number) {

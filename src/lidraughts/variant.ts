@@ -115,7 +115,7 @@ export function getVariantKeyById(id: string): VariantKey | undefined {
   const nId = parseInt(id)
   for (const key of Object.keys(variantMap)) {
     const variant = variantMap[key as VariantKey]
-    if (variant.id == nId) {
+    if (variant.id === nId) {
       return key as VariantKey
     }
   }

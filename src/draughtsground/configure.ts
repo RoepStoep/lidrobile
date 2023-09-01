@@ -36,7 +36,7 @@ export function configureBoard(state: State, config: cg.InitConfig): void {
   if (config.captureLength !== undefined)
     state.movable.captLen = config.captureLength
 
-  if (config.hasOwnProperty('lastMove') && !config.lastMove) {
+  if (Object.prototype.hasOwnProperty.call(config, 'lastMove') && !config.lastMove) {
     state.lastMove = null
     state.animateFrom = null
   }
@@ -88,7 +88,7 @@ export function setNewBoardState(d: State, config: cg.SetConfig): void {
     d.movable.captureUci = config.captureUci
   }
 
-  if (config.hasOwnProperty('lastMove') && !config.lastMove) {
+  if (Object.prototype.hasOwnProperty.call(config, 'lastMove') && !config.lastMove) {
     d.lastMove = null
     d.animateFrom = null
   } else if (config.lastMove) {
@@ -102,7 +102,7 @@ export function setNewBoardState(d: State, config: cg.SetConfig): void {
   }
 }
 
-export function setKingMoves(state: State, kingMoves: cg.KingMoves) {
+export function setKingMoves(state: State, kingMoves: cg.KingMoves): void {
   const fields = board.boardFields(state)
   for (let f = 1; f <= fields; f++) {
     const piece = state.pieces[allKeys[f - 1]]

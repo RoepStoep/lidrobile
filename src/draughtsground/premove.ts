@@ -26,7 +26,7 @@ export default function premove(pieces: cg.Pieces, boardSize: cg.BoardSize, key:
 
       for (let i = 0; i < (frisianVariant ? 3 : 2); i++) {
         let f = movesUp[field][i]
-        if (f != -1) {
+        if (f !== -1) {
 
           const key = field2key(f)
           if (piece.color === 'white' && i < 2)
@@ -44,7 +44,7 @@ export default function premove(pieces: cg.Pieces, boardSize: cg.BoardSize, key:
 
       for (let i = 0; i < (frisianVariant ? 3 : 2); i++) {
         let f = movesDown[field][i]
-        if (f != -1) {
+        if (f !== -1) {
 
           const key = field2key(f)
           if (piece.color === 'black' && i < 2)
@@ -63,7 +63,7 @@ export default function premove(pieces: cg.Pieces, boardSize: cg.BoardSize, key:
       if (frisianVariant) {
         for (let i = 0; i < 2; i++) {
           let f = movesHorizontal[field][i]
-          if (f != -1) {
+          if (f !== -1) {
 
             const pc = pieces[field2key(f)]
             if (pc === undefined || pc.color !== piece.color) {
@@ -86,7 +86,7 @@ export default function premove(pieces: cg.Pieces, boardSize: cg.BoardSize, key:
 
       for (let i = 0; i < (frisianVariant ? 3 : 2); i++) {
         let f = movesUp[field][i], k = 0
-        while (f != -1) {
+        while (f !== -1) {
           if (i < 2 || k > 0)
             dests.push(field2key(f))
           f = movesUp[f][i]
@@ -96,7 +96,7 @@ export default function premove(pieces: cg.Pieces, boardSize: cg.BoardSize, key:
 
       for (let i = 0; i < (frisianVariant ? 3 : 2); i++) {
         let f = movesDown[field][i], k = 0
-        while (f != -1) {
+        while (f !== -1) {
           if (i < 2 || k > 0)
             dests.push(field2key(f))
           f = movesDown[f][i]
@@ -107,7 +107,7 @@ export default function premove(pieces: cg.Pieces, boardSize: cg.BoardSize, key:
       if (frisianVariant) {
         for (let i = 0; i < 2; i++) {
           let f = movesHorizontal[field][i], k = 0
-          while (f != -1) {
+          while (f !== -1) {
             if (k > 0)
               dests.push(field2key(f))
             f = movesHorizontal[f][i]

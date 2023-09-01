@@ -119,7 +119,7 @@ function computeShapes(ctrl: AnalyseCtrl): readonly Shape[] {
 
 function makeShapesFromUci(uci: Uci, brush: string, brushFirst?: string): Shape[] {
   const moves = draughtsFormat.decomposeUci(draughtsFormat.scan2uci(uci))
-  if (moves.length == 1) return [{
+  if (moves.length === 1) return [{
     orig: moves[0],
     brush
   }]

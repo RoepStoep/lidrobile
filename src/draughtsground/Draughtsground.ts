@@ -148,7 +148,7 @@ export default class Draughtsground {
     const piecesKeys = Object.keys(this.state.pieces)
     for (let i = 0; i < piecesKeys.length; i++) {
       const p = this.state.pieces[piecesKeys[i]]
-      if (p.role != 'ghostman' && p.role != 'ghostking') {
+      if (p.role !== 'ghostman' && p.role !== 'ghostking') {
         const them = diff[util.opposite(p.color)]
         if (them.pieces[p.role] > 0) them.pieces[p.role]--
         else diff[p.color].pieces[p.role]++

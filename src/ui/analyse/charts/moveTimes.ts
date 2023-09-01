@@ -177,7 +177,7 @@ function makeSerieData(data: AnalyseData, origMoveCentis: number[]): { max: numb
       if (isWhite) series.white.push(point)
       else series.black.push(point)
     } else {
-      if (mergedSan.length == 0 && node && node.san)
+      if (mergedSan.length === 0 && node && node.san)
         mergedSan = node.san.slice(0, node.san.indexOf('x') + 1)
       if (!corres) {
         moveCentis[i + 1] += moveCentis[i]

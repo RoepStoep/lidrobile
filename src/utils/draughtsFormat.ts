@@ -37,9 +37,9 @@ export function san2alg(san?: string | null): string {
 
 export function scan2uci(san: string): string {
   if (san.indexOf('x') !== -1)
-    return san.split('x').map(m => (m.length == 1 ? '0' + m : m)).join('')
+    return san.split('x').map(m => (m.length === 1 ? '0' + m : m)).join('')
   else if (san.indexOf('-') !== -1)
-    return san.split('-').map(m => (m.length == 1 ? '0' + m : m)).join('')
+    return san.split('-').map(m => (m.length === 1 ? '0' + m : m)).join('')
   else
     return san
 }

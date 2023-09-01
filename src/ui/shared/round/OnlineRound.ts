@@ -287,7 +287,7 @@ export default class OnlineRound implements OnlineRoundInterface {
     const config: cg.SetConfig = {
       fen: s.fen,
       lastMove: s.uci ? draughtsFormat.uciToMove(s.uci) : null,
-      turnColor: (this.vm.ply - (ghosts == 0 ? 0 : 1)) % 2 === 0 ? 'white' : 'black'
+      turnColor: (this.vm.ply - (ghosts === 0 ? 0 : 1)) % 2 === 0 ? 'white' : 'black'
     }
     if (!this.replaying()) {
       config.movableColor = gameApi.isPlayerPlaying(this.data) ? this.data.player.color : null
@@ -716,7 +716,7 @@ export default class OnlineRound implements OnlineRoundInterface {
 
   private addStep(steps: GameStep[], newStep: GameStep): GameStep {
 
-    if (steps.length == 0 || countGhosts(steps[steps.length - 1].fen) === 0)
+    if (steps.length === 0 || countGhosts(steps[steps.length - 1].fen) === 0)
       steps.push(newStep)
     else
       this.mergeStep(steps[steps.length - 1], newStep)
@@ -730,11 +730,11 @@ export default class OnlineRound implements OnlineRoundInterface {
   private mergeSteps(steps: GameStep[]): GameStep[] {
 
     const mergedSteps: GameStep[] = new Array<GameStep>()
-    if (steps.length == 0)
+    if (steps.length === 0)
       return mergedSteps
     else
       mergedSteps.push(steps[0])
-    if (steps.length == 1) return mergedSteps
+    if (steps.length === 1) return mergedSteps
 
     for (let i = 1; i < steps.length; i++) {
       const step = steps[i - 1]

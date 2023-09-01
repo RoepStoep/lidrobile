@@ -106,8 +106,8 @@ function isPromotable(p: AnimPiece, boardSize: cg.BoardSize): boolean {
 }
 
 function computePlan(prevPieces: cg.Pieces, current: State, fadeOnly = false, noCaptSequences = false): AnimPlan {
-  let missingsW: AnimPiece[] = [], missingsB: AnimPiece[] = [],
-    newsW: AnimPiece[] = [], newsB: AnimPiece[] = []
+  const missingsW: AnimPiece[] = [], missingsB: AnimPiece[] = []
+  let newsW: AnimPiece[] = [], newsB: AnimPiece[] = []
   const prePieces: AnimPieces = {},
     samePieces: SamePieces = {},
     bs = current.boardSize

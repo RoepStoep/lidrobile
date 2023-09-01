@@ -15,7 +15,7 @@ function makeConfig(data: OnlineGameData, fen: string, flip = false, step?: Game
     (data.game.lastMove ? draughtsFormat.uciToMove(data.game.lastMove) : null)
 
   const turnColor = step ? 
-    ((step.ply - (countGhosts(step.fen) == 0 ? 0 : 1)) % 2 === 0 ? 'white' : 'black') :
+    ((step.ply - (countGhosts(step.fen) === 0 ? 0 : 1)) % 2 === 0 ? 'white' : 'black') :
     data.game.player
 
   const pieceMoveConf = settings.game.pieceMove()

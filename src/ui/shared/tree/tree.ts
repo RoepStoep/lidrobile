@@ -188,7 +188,7 @@ export function build(root: Tree.Node): TreeWrapper {
       newNode.uci = curNode.uci
 
       // if the capture sequence is now equal to another same level sibling in all relevant ways, we remove the current node as it is a duplicate
-      if (parent && nodeIndex != -1) {
+      if (parent && nodeIndex !== -1) {
 
         let duplicateIndex = -1
         for (let i = 0; i < parent.children.length; i++) {
@@ -218,7 +218,7 @@ export function build(root: Tree.Node): TreeWrapper {
 
     } else if (!curNode && path.length >= 2) {
       const parent = nodeAtPathOrNull(path.substr(0, path.length - 2))
-      if (parent && parent.captLen && parent.captLen > 1 && parent.children.length != 0) {
+      if (parent && parent.captLen && parent.captLen > 1 && parent.children.length) {
         // verify node was previously delivered and merged already
         existing = parent.children.find(function(c) { return c.fen === newNode.fen && c.san === newNode.san })
         if (existing) {

@@ -79,7 +79,7 @@ export function calcCaptKey(pieces: cg.Pieces, boardSize: cg.BoardSize, startX: 
   //Frisian captures always satisfy condition: (x = 0, y >= +-2) or (x = +-1, y = 0)
   //In normal captures these combination is impossible: x = 0 means y = 1, while y = 0 is impossible
   const yStep: number = yDiff === 0 ? 0 : (yDiff > 0 ? ((xDiff === 0 && Math.abs(yDiff) >= 2) ? 2 : 1) : ((xDiff === 0 && Math.abs(yDiff) >= 2) ? -2 : -1))
-  const xStep: number = xDiff === 0 ? 0 : (yDiff === 0 ? (xDiff > 0 ? 1 : -1) : (startY % 2 == 0 ? (xDiff < 0 ? -1 : 0) : (xDiff > 0 ? 1 : 0)))
+  const xStep: number = xDiff === 0 ? 0 : (yDiff === 0 ? (xDiff > 0 ? 1 : -1) : (startY % 2 === 0 ? (xDiff < 0 ? -1 : 0) : (xDiff > 0 ? 1 : 0)))
 
   if (xStep === 0 && yStep === 0) return null
 
@@ -305,7 +305,7 @@ function baseMove(state: State, orig: Key, dest: Key, finishCapture?: boolean): 
         if (pc && (pc.role === 'ghostking' || pc.role === 'ghostman'))
           delete state.pieces[k]
       }
-      if (dest == state.selected) unselect(state)
+      if (dest === state.selected) unselect(state)
     }
     return false
   }

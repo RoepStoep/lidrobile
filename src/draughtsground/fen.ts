@@ -9,7 +9,8 @@ export function read(fen: string, fields?: number): cg.Pieces {
   if (fen === 'start') fen = initial
   for (const fenPart of fen.split(':')) {
     if (fenPart.length <= 1) continue
-    let first = fenPart.slice(0, 1), clr: Color
+    const first = fenPart.slice(0, 1)
+    let clr: Color
     if (first === 'W') clr = 'white'
     else if (first === 'B') clr = 'black'
     else continue
@@ -88,7 +89,8 @@ export function toggleCoordinates(fen: string | undefined, algebraic: boolean, f
   const extraParts = []
   let prefix = '', fenW = 'W', fenB = 'B'
   for (const fenPart of fen.split(':')) {
-    let first = fenPart.slice(0, 1), clr: boolean
+    const first = fenPart.slice(0, 1)
+    let clr: boolean
     if (first === 'W') clr = true
     else if (first === 'B') clr = false
     else {
@@ -178,7 +180,7 @@ export function readKingMoves(fen: string): cg.KingMoves | null {
   if (kingMoves.indexOf('+') !== 0)
     return null
 
-  const playerMoves = kingMoves.split('+').filter(function (e) { return e.length != 0 })
+  const playerMoves = kingMoves.split('+').filter(function (e) { return e.length !== 0 })
   if (playerMoves.length !== 2)
     return null
 

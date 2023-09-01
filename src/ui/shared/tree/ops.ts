@@ -145,7 +145,7 @@ export function mergeNodes(curNode: Tree.Node, newNode: Tree.Node, mergeChildren
 
   if (curNode.san && newNode.san) {
     const curX = curNode.san.indexOf('x'), newX = newNode.san.indexOf('x')
-    if (curX != -1 && newX != -1)
+    if (curX !== -1 && newX !== -1)
       curNode.san = curNode.san.slice(0, curX) + newNode.san.slice(newX)
   }
 
@@ -163,7 +163,7 @@ export function mergeNodes(curNode: Tree.Node, newNode: Tree.Node, mergeChildren
     }
   }
 
-  if (curNode.displayPly && countGhosts(newNode.fen) == 0)
+  if (curNode.displayPly && countGhosts(newNode.fen) === 0)
     curNode.ply = curNode.displayPly
 
   if (newNode.captLen)
@@ -238,23 +238,23 @@ export function merge(n1: Tree.Node, n2: Tree.Node, n2Expanded?: Tree.Node): Tre
       let ghostChild = false
       for (let i = 0; !ghostChild && i < n1.children.length; i++) {
         if (countGhosts(n1.children[i].fen) > 0) {
-          let expandedChild = n2Expanded.children.length != 0 ? n2Expanded.children[0] : undefined
+          let expandedChild = n2Expanded.children.length ? n2Expanded.children[0] : undefined
           while (expandedChild && !fenCompare(expandedChild.fen, n2.fen))
-            expandedChild = expandedChild.children.length != 0 ? expandedChild.children[0] : undefined
-          if (expandedChild && fenCompare(expandedChild.fen, n2.fen) && expandedChild.children.length != 0 && countGhosts(expandedChild.children[0].fen) > 0) {
+            expandedChild = expandedChild.children.length ? expandedChild.children[0] : undefined
+          if (expandedChild && fenCompare(expandedChild.fen, n2.fen) && expandedChild.children.length && countGhosts(expandedChild.children[0].fen) > 0) {
             // found the corresponding node in the expanded tree
             const walkPly = expandedChild.children[0].ply
             let childNode: Tree.Node | undefined = expandedChild.children[0]
             const matchNode = copyNode(childNode)
             while (childNode && childNode.ply <= walkPly && !fenCompare(matchNode.fen, n1.children[i].fen)) {
-              childNode = childNode.children.length != 0 ? childNode.children[0] : undefined
+              childNode = childNode.children.length ? childNode.children[0] : undefined
               if (childNode) {
                 mergeNodes(matchNode, childNode)
               }
             }
             if (fenCompare(matchNode.fen, n1.children[i].fen)) {
               while (childNode && childNode.ply <= walkPly) {
-                childNode = childNode.children.length != 0 ? childNode.children[0] : undefined
+                childNode = childNode.children.length ? childNode.children[0] : undefined
                 if (childNode) {
                   mergeNodes(n1.children[i], childNode)
                 }
