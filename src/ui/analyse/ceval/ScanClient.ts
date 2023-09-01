@@ -48,7 +48,7 @@ export default class ScanClient {
    */
   public init = async (): Promise<void> => {
     try {
-      window.addEventListener('stockfish', this.listener, { passive: true })
+      window.addEventListener('scan', this.listener, { passive: true })
       const obj = await this.scan.start(parseVariant(this.scan.variant))
       this.engineName = obj.engineName
       await this.scan.send('hub')
@@ -58,14 +58,14 @@ export default class ScanClient {
         await this.scan.setOption('hash', this.hash)
       }
     } catch (err: unknown) {
-      console.error('stockfish init error', err)
+      console.error('scan init error', err)
     }
   }
 
   /*
    * Stop current command if not already stopped, then add a search command to
    * the queue.
-   * The search will start when stockfish is ready (after reinit if it takes more
+   * The search will start when scan is ready (after reinit if it takes more
    * than 10s to stop current search)
    */
   public start = (work: Work): Promise<void> => {
@@ -85,7 +85,7 @@ export default class ScanClient {
   }
 
   /*
-   * Sends 'stop' command to stockfish if not already stopped
+   * Sends 'stop' command to scan if not already stopped
    */
   public stop = (): void => {
     if (!this.stopped) {
@@ -99,7 +99,7 @@ export default class ScanClient {
   }
 
   public exit = (): Promise<void> => {
-    window.removeEventListener('stockfish', this.listener, false)
+    window.removeEventListener('scan', this.listener, false)
     return this.scan.exit()
   }
 
@@ -136,7 +136,7 @@ export default class ScanClient {
    * command is sent by scan
    */
   private processOutput(text: string) {
-    console.debug('[stockfish >>] ' + text)
+    console.debug('[scan >>] ' + text)
 
     if (text.indexOf('done') === 0) {
       this.ready.resolve()

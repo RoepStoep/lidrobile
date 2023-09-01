@@ -73,7 +73,7 @@ interface Window {
     uuid: string
     appVersion: string
     cpuCores: number
-    stockfishMaxMemory: number
+    scanMaxMemory: number
   }
   requestIdleCallback?: ((
     callback: ((deadline: RequestIdleCallbackDeadline) => void),

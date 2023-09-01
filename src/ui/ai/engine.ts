@@ -71,7 +71,7 @@ export default class Engine {
       if (!this.isInit) {
         await this.scan.start(parseVariant(this.scan.variant))
         this.isInit = true 
-        window.addEventListener('stockfish', this.listener, { passive: true })
+        window.addEventListener('scan', this.listener, { passive: true })
         await this.scan.send('hub')
         await this.scan.send('init')
         await this.scan.setOption('threads', getNbCores())          
@@ -155,7 +155,7 @@ export default class Engine {
   }
 
   public async exit(): Promise<void> {
-    window.removeEventListener('stockfish', this.listener, false)
+    window.removeEventListener('scan', this.listener, false)
     return this.scan.exit()
   }
 

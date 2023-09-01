@@ -113,7 +113,7 @@ export default {
 function renderAnalyseSettings(ctrl: AnalyseCtrl) {
 
   const maxCores = getNbCores()
-  const maxMem = window.deviceInfo.stockfishMaxMemory
+  const maxMem = window.deviceInfo.scanMaxMemory
 
   return h('div.analyseSettings', [
     h('div.action', {

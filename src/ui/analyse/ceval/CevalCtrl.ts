@@ -56,7 +56,6 @@ export default function CevalCtrl(
     }
   })()
 
-  // stockfish does not always sort pvs
   function sortPvsInPlace(pvs: Tree.PvData[], color: Color) {
     return pvs.sort((a, b) => {
       return povChances(color, b) - povChances(color, a)

@@ -21,19 +21,19 @@ export class ScanPlugin {
 
   public async start(): Promise<{ engineName: string }> {
     return new Promise((resolve) => {
-      let engineName = 'Stockfish'
+      let engineName = 'Scan 3.1'
       const listener = (e: Event) => {
         const line = (e as any).output
-        console.debug('[stockfish >>] ' + line)
+        console.debug('[scan >>] ' + line)
         if (line.startsWith('id name ')) {
           engineName = line.substring('id name '.length)
         }
         if (line.startsWith('uciok')) {
-          window.removeEventListener('stockfish', listener, false)
+          window.removeEventListener('scan', listener, false)
           resolve({ engineName })
         }
       }
-      window.addEventListener('stockfish', listener, { passive: true })
+      window.addEventListener('scan', listener, { passive: true })
       this.plugin.start(this.variant)
       .then(() => this.send('uci'))
     })
@@ -212,7 +212,7 @@ export function parsePV(fen: string, pv: string, frisian: boolean, uciCache: any
 }
 
 export function getMaxMemory(): number {
-  return window.deviceInfo.stockfishMaxMemory
+  return window.deviceInfo.scanMaxMemory
 }
 
 export function getNbCores(): number {

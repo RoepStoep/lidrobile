@@ -5,13 +5,13 @@ import { Capacitor, WebPlugin, registerWebPlugin } from '@capacitor/core'
 
 if (Capacitor.platform === 'web') {
 
-  // Stockfish
-  class StockfishWeb extends WebPlugin {
+  // Scan
+  class ScanWeb extends WebPlugin {
     private worker?: Worker
 
     constructor() {
       super({
-        name: 'StockfishVariants',
+        name: 'Scan',
         platforms: ['web']
       })
     }
@@ -25,10 +25,10 @@ if (Capacitor.platform === 'web') {
         if (this.worker) {
           setTimeout(resolve, 1)
         } else {
-          this.worker = new Worker('../stockfish.js')
+          this.worker = new Worker('../scan.js')
           this.worker.onmessage = msg => {
 
-            const ev: any = new Event('stockfish')
+            const ev: any = new Event('scan')
             ev['output'] = msg.data
             window.dispatchEvent(ev)
           }
@@ -54,8 +54,8 @@ if (Capacitor.platform === 'web') {
       })
     }
   }
-  const stockfishWeb = new StockfishWeb()
-  registerWebPlugin(stockfishWeb)
+  const scanWeb = new ScanWeb()
+  registerWebPlugin(scanWeb)
 
   // SoundEffect
   class SoundEffectWeb extends WebPlugin {
