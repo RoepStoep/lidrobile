@@ -254,9 +254,9 @@ function renderDailyPuzzle(ctrl: HomeCtrl) {
   const puzzleData = ctrl.dailyPuzzle
   const puzzle: any = puzzleData && (puzzleData.history ? puzzleData.history : puzzleData.puzzle)
   if (puzzle && puzzleData && puzzleData.puzzle) {
-    puzzle.id = puzzleData.puzzle.id;
-    puzzle.color = puzzleData.puzzle.color;
-    puzzle.variant = puzzleData.puzzle.variant;
+    puzzle.id = puzzleData.puzzle.id
+    puzzle.color = puzzleData.puzzle.color
+    puzzle.variant = puzzleData.puzzle.variant
   }
   const boardConf = puzzle ? {
     fixed: true,

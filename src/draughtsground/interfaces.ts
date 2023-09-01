@@ -155,4 +155,4 @@ export interface PrevData {
   otbMode: OtbMode | null
 }
 
-export type KHz = number;
+export type KHz = number

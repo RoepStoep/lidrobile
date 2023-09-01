@@ -47,7 +47,7 @@ export function renderBoard(d: State, dom: cg.DOM) {
   const piecesKeys = Object.keys(pieces) as Array<Key>
   let squareClassAtKey, pieceAtKey, anim, tempPiece, tempRole, translate
   let mvdset, mvd
-  let animDoubleKey = (d.animation.current && d.animation.current.lastMove && d.animation.current.lastMove.length > 2 && d.animation.current.lastMove[0] === d.animation.current.lastMove[d.animation.current.lastMove.length - 1]) ? d.animation.current.lastMove[0] : undefined;
+  let animDoubleKey = (d.animation.current && d.animation.current.lastMove && d.animation.current.lastMove.length > 2 && d.animation.current.lastMove[0] === d.animation.current.lastMove[d.animation.current.lastMove.length - 1]) ? d.animation.current.lastMove[0] : undefined
 
   let otbTurnFlipChange, otbModeChange, otbChange = false
   if (d.otb) {
@@ -64,7 +64,7 @@ export function renderBoard(d: State, dom: cg.DOM) {
       const wrapper = coords.parentElement
       if (wrapper) makeCoords(wrapper, d.boardSize, d.orientation, dom, d.coordSystem)
     } else if (d.coordinates === 1) {
-      makeFieldnumbers(d, dom);
+      makeFieldnumbers(d, dom)
     } else {
       clearCoords(dom)
     }
@@ -73,7 +73,7 @@ export function renderBoard(d: State, dom: cg.DOM) {
   // walk over all board dom elements, apply animations and flag moved pieces
   let el = dom.board.firstChild as cg.KeyedNode
   while (el) {
-    let k = el.cgKey
+    const k = el.cgKey
     pieceAtKey = pieces[k]
     squareClassAtKey = squares.get(k)
     anim = anims && anims[k]
@@ -90,46 +90,46 @@ export function renderBoard(d: State, dom: cg.DOM) {
       }
       if (el.classList.contains('temporary') && tempPiece) {
         // piece belongs here, check if it still has the right properties
-        const fullPieceName = pieceNameOf(tempPiece) + " temporary";
+        const fullPieceName = pieceNameOf(tempPiece) + ' temporary'
         if (el.cgPiece !== fullPieceName)
-          el.className = fullPieceName;
-        samePieces.add(k);
+          el.className = fullPieceName
+        samePieces.add(k)
       } else if (pieceAtKey) {
         const pieceAtKeyName = pieceNameOf(pieceAtKey)
         // there is now a piece at this dom key
         // continue animation if already animating and same color
         // (otherwise it could animate a captured piece)
         if (anim && el.cgAnimating && el.cgPiece === pieceAtKeyName) {
-          animDoubleKey = undefined; // only needed to get the animation started
-          const pos = util.key2pos(k, bs);
-          pos[0] += anim[2];
-          pos[1] += anim[3];
+          animDoubleKey = undefined // only needed to get the animation started
+          const pos = util.key2pos(k, bs)
+          pos[0] += anim[2]
+          pos[1] += anim[3]
           if (d.animation.current && d.animation.current.plan.nextPlan && d.animation.current.plan.nextPlan.anims[k] && !util.isObjectEmpty(d.animation.current.plan.nextPlan.anims[k])) {
-            pos[0] += d.animation.current.plan.nextPlan.anims[k][2];
-            pos[1] += d.animation.current.plan.nextPlan.anims[k][3];
+            pos[0] += d.animation.current.plan.nextPlan.anims[k][2]
+            pos[1] += d.animation.current.plan.nextPlan.anims[k][3]
           }
-          el.classList.add('anim');
+          el.classList.add('anim')
           if (tempRole) {
-            el.className = el.className.replace(pieceAtKey.role, tempRole);
-            el.classList.add('temprole');
+            el.className = el.className.replace(pieceAtKey.role, tempRole)
+            el.classList.add('temprole')
           } else if (el.classList.contains('temprole')) {
-            el.classList.remove('temprole');
+            el.classList.remove('temprole')
             if (pieceAtKey.role === 'king')
-              el.className = el.className.replace('man', 'king');
+              el.className = el.className.replace('man', 'king')
             else if (pieceAtKey.role === 'man')
-              el.className = el.className.replace('king', 'man');
+              el.className = el.className.replace('king', 'man')
           }
           translate = posToTranslate(pos, asWhite, anim[4])
           positionPiece(d, el, el.cgColor, translate)
         } else if (el.cgAnimating) {
-          el.cgAnimating = false;
-          el.classList.remove('anim');
+          el.cgAnimating = false
+          el.classList.remove('anim')
           if (el.classList.contains('temprole')) {
-            el.classList.remove('temprole');
+            el.classList.remove('temprole')
             if (pieceAtKey.role === 'king')
-              el.className = el.className.replace('man', 'king');
+              el.className = el.className.replace('man', 'king')
             else if (pieceAtKey.role === 'man')
-              el.className = el.className.replace('king', 'man');
+              el.className = el.className.replace('king', 'man')
           }
           translate = posToTranslate(util.key2pos(k, bs), asWhite, 0)
           positionPiece(d, el, el.cgColor, translate)
@@ -187,8 +187,8 @@ export function renderBoard(d: State, dom: cg.DOM) {
   // walk over all pieces in current state object, apply dom changes to moved
   // pieces or append new pieces
   for (let j = 0, jlen = piecesKeys.length; j < jlen; j++) {
-    let k = piecesKeys[j] as Key
-    let p = pieces[k]
+    const k = piecesKeys[j] as Key
+    const p = pieces[k]
     anim = anims && anims[k]
     tempPiece = temporaryPieces && temporaryPieces[k]
     tempRole = temporaryRoles && temporaryRoles[k]
@@ -199,17 +199,17 @@ export function renderBoard(d: State, dom: cg.DOM) {
       if (mvd) {
         // apply dom changes
         mvd.cgKey = k
-        const pos = util.key2pos(k, bs);
-        let shift: number;
+        const pos = util.key2pos(k, bs)
+        let shift: number
         if (anim) {
-          mvd.cgAnimating = true;
-          mvd.classList.add('anim');
-          pos[0] += anim[2];
-          pos[1] += anim[3];
-          shift = anim[4];
+          mvd.cgAnimating = true
+          mvd.classList.add('anim')
+          pos[0] += anim[2]
+          pos[1] += anim[3]
+          shift = anim[4]
           if (d.animation.current && d.animation.current.plan.nextPlan && d.animation.current.plan.nextPlan.anims[k] && !util.isObjectEmpty(d.animation.current.plan.nextPlan.anims[k])) {
-            pos[0] += d.animation.current.plan.nextPlan.anims[k][2];
-            pos[1] += d.animation.current.plan.nextPlan.anims[k][3];
+            pos[0] += d.animation.current.plan.nextPlan.anims[k][2]
+            pos[1] += d.animation.current.plan.nextPlan.anims[k][3]
           }
         } else shift = 0
         translate = posToTranslate(pos, asWhite, shift)
@@ -224,15 +224,15 @@ export function renderBoard(d: State, dom: cg.DOM) {
         pe.cgPiece = pName
         pe.cgColor = p.color
         pe.cgKey = k
-        let shift: number;
+        let shift: number
         if (anim) {
-          pe.cgAnimating = true;
-          pos[0] += anim[2];
-          pos[1] += anim[3];
-          shift = anim[4];
+          pe.cgAnimating = true
+          pos[0] += anim[2]
+          pos[1] += anim[3]
+          shift = anim[4]
           if (tempRole) {
-            pe.className = pe.className.replace(p.role, tempRole);
-            pe.classList.add('temprole');
+            pe.className = pe.className.replace(p.role, tempRole)
+            pe.classList.add('temprole')
           }
         } else shift = 0
         translate = posToTranslate(pos, asWhite, shift)
@@ -243,15 +243,15 @@ export function renderBoard(d: State, dom: cg.DOM) {
   }
 
   for (const i in temporaryPieces) {
-    tempPiece = temporaryPieces[i];
-    const k = i as Key;
+    tempPiece = temporaryPieces[i]
+    const k = i as Key
     if (tempPiece && !samePieces.has(k)) {
       const pe = document.createElement('piece') as cg.PieceNode
-      const pName = pieceNameOf(tempPiece) + " temporary"
-      const pos = util.key2pos(k, bs);
+      const pName = pieceNameOf(tempPiece) + ' temporary'
+      const pos = util.key2pos(k, bs)
       pe.className = pName
-      pe.cgPiece = pName;
-      pe.cgKey = k;
+      pe.cgPiece = pName
+      pe.cgKey = k
       translate = posToTranslate(pos, asWhite, 0)
       positionPiece(d, pe, tempPiece.color, translate)
       boardElement.appendChild(pe)
@@ -265,27 +265,27 @@ export function renderBoard(d: State, dom: cg.DOM) {
 }
 
 function posToTranslateBase(pos: cg.Pos, boardSize: cg.BoardSize, asWhite: boolean, xFactor: number, yFactor: number, shift: number): NumberPair {
-  const xf = boardSize[0] / 2 - 0.5;
+  const xf = boardSize[0] / 2 - 0.5
   if (shift !== 0) {
     return [
       (!asWhite ? xf - ((shift - 0.5) + pos[0]) : (shift - 0.5) + pos[0]) * xFactor,
       (!asWhite ? boardSize[1] - pos[1] : pos[1] - 1.0) * yFactor
-    ];
+    ]
   } else {
     return [
       (!asWhite ? xf - ((pos[1] % 2 !== 0 ? -0.5 : -1.0) + pos[0]) : (pos[1] % 2 !== 0 ? -0.5 : -1.0) + pos[0]) * xFactor,
       (!asWhite ? boardSize[1] - pos[1] : pos[1] - 1.0) * yFactor
-    ];
+    ]
   }
 }
 
 const posToTranslateAbs = (bounds: ClientRect, boardSize: cg.BoardSize) => {
-  const xFactor = bounds.width / (boardSize[0] / 2), yFactor = bounds.height / boardSize[1];
-  return (pos: cg.Pos, asWhite: boolean, shift: number) => posToTranslateBase(pos, boardSize, asWhite, xFactor, yFactor, shift);
-};
+  const xFactor = bounds.width / (boardSize[0] / 2), yFactor = bounds.height / boardSize[1]
+  return (pos: cg.Pos, asWhite: boolean, shift: number) => posToTranslateBase(pos, boardSize, asWhite, xFactor, yFactor, shift)
+}
 
 export const posToTranslateRel = (boardSize: cg.BoardSize) => {
-  return (pos: cg.Pos, asWhite: boolean, shift: number) => posToTranslateBase(pos, boardSize, asWhite, 2 * 100 / boardSize[0], 100 / boardSize[1], shift);
+  return (pos: cg.Pos, asWhite: boolean, shift: number) => posToTranslateBase(pos, boardSize, asWhite, 2 * 100 / boardSize[0], 100 / boardSize[1], shift)
 }
 
 function positionPiece(d: State, el: HTMLElement, color: Color, pos: NumberPair) {
@@ -316,16 +316,16 @@ function isSquareNode(el: cg.PieceNode | cg.SquareNode): el is cg.SquareNode {
 
 function pieceNameOf(p: Piece) {
   if (p.role === 'ghostman') {
-    return `${p.color} man ghost`;
+    return `${p.color} man ghost`
   } else if (p.role === 'ghostking') {
     if (p.kingMoves && p.kingMoves > 0)
-      return `${p.color} king ghost king${p.kingMoves}`;
+      return `${p.color} king ghost king${p.kingMoves}`
     else
-      return `${p.color} king ghost`;
+      return `${p.color} king ghost`
   } else if (p.role === 'king' && p.kingMoves && p.kingMoves > 0) {
-    return `${p.color} king king${p.kingMoves}`;
+    return `${p.color} king king${p.kingMoves}`
   } else {
-    return `${p.color} ${p.role}`;
+    return `${p.color} ${p.role}`
   }
 }
 
@@ -364,25 +364,25 @@ function computeSquareClasses(d: State): Map<Key, string> {
 export function makeCoords(el: HTMLElement, boardSize: cg.BoardSize, orientation: Color, dom?: cg.DOM, coordSystem?: number) {
   let coordRanks, coordFiles
   if (coordSystem === 1) {
-    coordRanks = renderCoords(util.ranksRev, 'ranks is64' + (orientation === 'black' ? ' black' : ''), (i) => i % 2 === 1 ? 'coord-odd' : 'coord-even');
-    coordFiles = renderCoords(util.files, 'files is64' + (orientation === 'black' ? ' black' : ''), (i) => i % 2 === 0 ? 'coord-odd' : 'coord-even');
+    coordRanks = renderCoords(util.ranksRev, 'ranks is64' + (orientation === 'black' ? ' black' : ''), (i) => i % 2 === 1 ? 'coord-odd' : 'coord-even')
+    coordFiles = renderCoords(util.files, 'files is64' + (orientation === 'black' ? ' black' : ''), (i) => i % 2 === 0 ? 'coord-odd' : 'coord-even')
   } else if (orientation === 'black') {
     const filesBlack: number[] = [], ranksBlack: number[] = [],
       rankBase = boardSize[0] / 2,
-      fileSteps = boardSize[1] / 2;
-    for (let i = 1; i <= rankBase; i++) filesBlack.push(i);
-    for (let i = 0; i < fileSteps; i++) ranksBlack.push(rankBase + boardSize[0] * i + 1);
-    coordRanks = renderCoords(ranksBlack, 'ranks is100 black', () => 'coord-odd');
-    coordFiles = renderCoords(filesBlack, 'files is100 black', () => 'coord-even');
+      fileSteps = boardSize[1] / 2
+    for (let i = 1; i <= rankBase; i++) filesBlack.push(i)
+    for (let i = 0; i < fileSteps; i++) ranksBlack.push(rankBase + boardSize[0] * i + 1)
+    coordRanks = renderCoords(ranksBlack, 'ranks is100 black', () => 'coord-odd')
+    coordFiles = renderCoords(filesBlack, 'files is100 black', () => 'coord-even')
   } else {
     const files: number[] = [], ranks: number[] = [],
       rankBase = boardSize[0] / 2,
       fields = boardSize[0] * boardSize[1] / 2,
-      fileSteps = boardSize[1] / 2;
-    for (let i = fields - rankBase + 1; i <= fields; i++) files.push(i);
-    for (let i = 0; i < fileSteps; i++) ranks.push(rankBase + boardSize[0] * i);
-    coordRanks = renderCoords(ranks, 'ranks is100', () => 'coord-even');
-    coordFiles = renderCoords(files, 'files is100', () => 'coord-odd');
+      fileSteps = boardSize[1] / 2
+    for (let i = fields - rankBase + 1; i <= fields; i++) files.push(i)
+    for (let i = 0; i < fileSteps; i++) ranks.push(rankBase + boardSize[0] * i)
+    coordRanks = renderCoords(ranks, 'ranks is100', () => 'coord-even')
+    coordFiles = renderCoords(files, 'files is100', () => 'coord-odd')
   }
   if (dom) {
     if (dom.elements.coordRanks) el.removeChild(dom.elements.coordRanks)
@@ -396,18 +396,18 @@ export function makeCoords(el: HTMLElement, boardSize: cg.BoardSize, orientation
 }
 
 export function makeFieldnumbers(s: State, dom?: cg.DOM) {
-  if (!dom) return;
-  clearCoords(dom);
+  if (!dom) return
+  clearCoords(dom)
   const asWhite = s.orientation !== 'black',
-    count = boardFields(s);
-  for (var f = 1; f <= count; f++) {
+    count = boardFields(s)
+  for (let f = 1; f <= count; f++) {
     const field = document.createElement('fieldnumber'),
-      san = f.toString();
+      san = f.toString()
     field.className = 'coord-odd'
-    field.textContent = s.coordSystem === 1 ? util.san2alg[san] : san;
-    const coords = posToTranslateAbs(dom.bounds, s.boardSize)(util.key2pos(util.allKeys[f - 1], s.boardSize), asWhite, 0);
-    field.style.transform = util.translate(coords);
-    dom.board.appendChild(field);
+    field.textContent = s.coordSystem === 1 ? util.san2alg[san] : san
+    const coords = posToTranslateAbs(dom.bounds, s.boardSize)(util.key2pos(util.allKeys[f - 1], s.boardSize), asWhite, 0)
+    field.style.transform = util.translate(coords)
+    dom.board.appendChild(field)
   }
 }
 
@@ -416,8 +416,8 @@ function clearCoords(dom: cg.DOM) {
   if (dom.elements.coordFiles) delete dom.elements.coordFiles
   const oldFields = dom.board.children
   if (oldFields && oldFields.length) {
-    for (var i = oldFields.length - 1; i >= 0; i--) {
-      const field = oldFields[i];
+    for (let i = oldFields.length - 1; i >= 0; i--) {
+      const field = oldFields[i]
       if (field.tagName === 'FIELDNUMBER') {
         dom.board.removeChild(field)
       }

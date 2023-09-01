@@ -31,7 +31,7 @@ export function playerName(player: any, withRating = false, tr = false, trLenght
 
   if (player.ai) {
     const name = aiName(player)
-    return withRating ? name + ' (' + levelToRating[player.ai] + ')' : name;
+    return withRating ? name + ' (' + levelToRating[player.ai] + ')' : name
   }
 
   return i18n('anonymous')

@@ -25,8 +25,8 @@ export default function BoardBrush(
 
   const arrowDests: ArrowDests = {}
   shapes.forEach(s => {
-    if (s.dest) arrowDests[s.dest] = (arrowDests[s.dest] || 0) + 1;
-  });
+    if (s.dest) arrowDests[s.dest] = (arrowDests[s.dest] || 0) + 1
+  })
   
   return h('svg', {
     xmlns: 'http://www.w3.org/2000/svg',

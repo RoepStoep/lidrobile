@@ -247,7 +247,7 @@ export default class AiRound implements AiRoundInterface, PromotingInterface {
     if (nextCapt !== -1) {
       this.engineNextMove = setTimeout(() => this.onEngineMove(bestmove.slice(sep + 1)), 600)
     } else {
-      this.engineNextMove = undefined;
+      this.engineNextMove = undefined
     }
   }
 
@@ -325,7 +325,7 @@ export default class AiRound implements AiRoundInterface, PromotingInterface {
   public onGameEnd = () => {
     if (this.engineNextMove) {
       clearTimeout(this.engineNextMove)
-      this.engineNextMove = undefined;
+      this.engineNextMove = undefined
     }
     this.draughtsground.cancelMove()
     this.draughtsground.stop()

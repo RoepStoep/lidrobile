@@ -132,36 +132,36 @@ export function build(root: Tree.Node): TreeWrapper {
 
   function getChildIndex(parent: Tree.Node, findChild: Tree.Node): number {
     for (let i = 0; i < parent.children.length; i++) {
-      const child = parent.children[i];
+      const child = parent.children[i]
       if (child.id === findChild.id && child.uci === findChild.uci && child.fen === findChild.fen && child.san === findChild.san)
-        return i;
+        return i
     }
-    return -1;
+    return -1
   }
 
   function setAmbs(node: Tree.Node, parent: Tree.Node): void {
     // hardcoded corresponding server ambiguity ids for studies, ugly solution but leads to displaying a path matching the server
-    var ambs = 1
+    let ambs = 1
     do {
-      node.id = node.id.substr(0, 1) + String.fromCharCode(35 + 50 + ambs);
-      ambs++;
-    } while (parent.children.some(child => child !== node && child.id === node.id));
+      node.id = node.id.substr(0, 1) + String.fromCharCode(35 + 50 + ambs)
+      ambs++
+    } while (parent.children.some(child => child !== node && child.id === node.id))
   }
   
   // returns new path
   function addNode(newNode: Tree.Node, path: Tree.Path): Tree.Path | undefined {
 
-    var newPath = path + newNode.id
-    var existing = nodeAtPathOrNull(newPath)
+    let newPath = path + newNode.id
+    let existing = nodeAtPathOrNull(newPath)
 
-    const newGhosts = countGhosts(newNode.fen);
+    const newGhosts = countGhosts(newNode.fen)
     if (existing && newGhosts > 0) {
       //new node might be an immediate ambiguity
-      const parent = nodeAtPathOrNull(path);
+      const parent = nodeAtPathOrNull(path)
       if (parent && parent.children.some(child => child.san === newNode.san && child.fen !== newNode.fen)) {
-        setAmbs(newNode, parent);
-        newPath = path + newNode.id;
-        existing = nodeAtPathOrNull(newPath);
+        setAmbs(newNode, parent)
+        newPath = path + newNode.id
+        existing = nodeAtPathOrNull(newPath)
       }
     }
 
@@ -174,59 +174,59 @@ export function build(root: Tree.Node): TreeWrapper {
     }
 
     if (newGhosts > 0) {
-      newNode.displayPly = newNode.ply + 1;
+      newNode.displayPly = newNode.ply + 1
     }
 
-    const curNode = nodeAtPathOrNull(path);
+    const curNode = nodeAtPathOrNull(path)
     if (curNode && curNode.uci && countGhosts(curNode.fen) > 0) {
 
-      const parent = (path.length >= 2) ? nodeAtPathOrNull(path.substr(0, path.length - 2)) : undefined;
-      const nodeIndex = parent ? getChildIndex(parent, curNode) : -1;
+      const parent = (path.length >= 2) ? nodeAtPathOrNull(path.substr(0, path.length - 2)) : undefined
+      const nodeIndex = parent ? getChildIndex(parent, curNode) : -1
 
       // merge new node properties with head of line curnode
-      ops.mergeNodes(curNode, newNode);
-      newNode.uci = curNode.uci;
+      ops.mergeNodes(curNode, newNode)
+      newNode.uci = curNode.uci
 
       // if the capture sequence is now equal to another same level sibling in all relevant ways, we remove the current node as it is a duplicate
       if (parent && nodeIndex != -1) {
 
-        var duplicateIndex = -1;
+        let duplicateIndex = -1
         for (let i = 0; i < parent.children.length; i++) {
           if (i !== nodeIndex) {
-            const child = parent.children[i];
+            const child = parent.children[i]
             if (child.san === curNode.san && child.fen === curNode.fen) {
-              duplicateIndex = i;
-              break;
+              duplicateIndex = i
+              break
             }
           }
         }
 
         if (duplicateIndex !== -1) {
           // merged into an existing node, overwrite with the current uci as the capture-path might have changed, and remove our variation
-          parent.children[duplicateIndex].uci = curNode.uci;
-          curNode.id = parent.children[duplicateIndex].id;
-          parent.children.splice(nodeIndex, 1);
+          parent.children[duplicateIndex].uci = curNode.uci
+          curNode.id = parent.children[duplicateIndex].id
+          parent.children.splice(nodeIndex, 1)
         } else if (parent.children.some(child => child.san === curNode.san && child.fen !== curNode.fen)) {
-          setAmbs(curNode, parent);
+          setAmbs(curNode, parent)
         }
       }
 
       if (path.length < 2)
-        return curNode.id;
+        return curNode.id
       else
-        return path.substr(0, path.length - 2) + curNode.id;
+        return path.substr(0, path.length - 2) + curNode.id
 
     } else if (!curNode && path.length >= 2) {
-      const parent = nodeAtPathOrNull(path.substr(0, path.length - 2));
+      const parent = nodeAtPathOrNull(path.substr(0, path.length - 2))
       if (parent && parent.captLen && parent.captLen > 1 && parent.children.length != 0) {
         // verify node was previously delivered and merged already
-        existing = parent.children.find(function(c) { return c.fen === newNode.fen && c.san === newNode.san; });
+        existing = parent.children.find(function(c) { return c.fen === newNode.fen && c.san === newNode.san })
         if (existing) {
           if (newNode.dests !== undefined && existing.dests === undefined) existing.dests = newNode.dests
           if (newNode.destsUci !== undefined && existing.destsUci === undefined) existing.destsUci = newNode.destsUci
           if (newNode.drops !== undefined && existing.drops === undefined) existing.drops = newNode.drops
           if (newNode.clock !== undefined && existing.clock === undefined) existing.clock = newNode.clock
-          return path.substr(0, path.length - 2) + existing.id;
+          return path.substr(0, path.length - 2) + existing.id
         }
       }
     }
@@ -295,7 +295,7 @@ export function build(root: Tree.Node): TreeWrapper {
   }
 
   function parentNode(path: Tree.Path): Tree.Node {
-    return nodeAtPath(treePath.init(path));
+    return nodeAtPath(treePath.init(path))
   }
 
   function getParentClock(node: Tree.Node, path: Tree.Path): Tree.Clock | undefined {

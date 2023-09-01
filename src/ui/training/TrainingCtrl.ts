@@ -26,7 +26,7 @@ import { getUnsolved, syncPuzzleResult, syncAndLoadNewPuzzle, syncAndClearCache,
 import { Database } from './database'
 import trainingSettings, { ISettingsCtrl } from './trainingSettings'
 import { countGhosts } from '../../draughtsground/fen'
-import { animationDuration } from '../../draughtsground/anim';
+import { animationDuration } from '../../draughtsground/anim'
 
 export default class TrainingCtrl implements PromotingInterface {
   data!: Data
@@ -71,7 +71,7 @@ export default class TrainingCtrl implements PromotingInterface {
 
     // try and play the solution next move
     const next = this.node.children[0]
-    if (merged) this.userJump(this.path.substr(0, this.path.length - 1) + merged.id.substr(1), true);
+    if (merged) this.userJump(this.path.substr(0, this.path.length - 1) + merged.id.substr(1), true)
     else if (next && next.puzzle === 'good') this.userJump(this.path + next.id, true)
     else {
       const firstGoodPath = treeOps.takePathWhile(this.mainline, node => {
@@ -86,7 +86,7 @@ export default class TrainingCtrl implements PromotingInterface {
   }
 
   isAlgebraic(): boolean {
-    return settings.game.coordSystem() === 1 && this.data.puzzle.variant.board && this.data.puzzle.variant.board.key === '64';
+    return settings.game.coordSystem() === 1 && this.data.puzzle.variant.board && this.data.puzzle.variant.board.key === '64'
   }
   
   coordSystem(): number {
@@ -236,8 +236,8 @@ export default class TrainingCtrl implements PromotingInterface {
 
   private init(cfg: PuzzleData) {
     if (cfg.puzzle.variant.key && !cfg.puzzle.variant.board) {
-      const variantData = getVariant(cfg.puzzle.variant.key);
-      cfg.puzzle.variant.board = variantData.board;
+      const variantData = getVariant(cfg.puzzle.variant.key)
+      cfg.puzzle.variant.board = variantData.board
     }
 
     this.initialData = cfg
@@ -283,7 +283,7 @@ export default class TrainingCtrl implements PromotingInterface {
         },
         this.data.game.treeParts
       ]) : ({
-        id: "",
+        id: '',
         ply: data.history!.ply - 1,
         fen: data.puzzle.fen,
         children: [
@@ -440,8 +440,8 @@ export default class TrainingCtrl implements PromotingInterface {
     if (settings.analyse.fullCapture() && this.node.destsUci) {
       const uci = this.node.destsUci.find(u => u.slice(0, 2) === orig && u.slice(-2) === dest)
       if (uci) {
-        this.sendMove(orig, dest, uci);
-        return;    
+        this.sendMove(orig, dest, uci)
+        return    
       }
     }
     this.sendMove(orig, dest)

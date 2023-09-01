@@ -120,11 +120,11 @@ export default class EditorCtrl {
   }
  
   public isAlgebraic = (): boolean => {
-    return settings.game.coordSystem() === 1 && this.getVariant().board.key === '64';
+    return settings.game.coordSystem() === 1 && this.getVariant().board.key === '64'
   }
   
   public coordSystem = (): number => {
-    return this.isAlgebraic() ? 1 : 0;
+    return this.isAlgebraic() ? 1 : 0
   }
 
   public getVariant = () => {
@@ -178,7 +178,7 @@ export default class EditorCtrl {
     this.updatePosition()
   }
 
-  public computeFen = (algebraic: boolean, small: boolean = false) => {
+  public computeFen = (algebraic: boolean, small = false) => {
     const data = this.data.editor
     const fen = data.color().toUpperCase() + ':' + this.draughtsground.getFen(algebraic)
     if (small) return fen
@@ -186,7 +186,7 @@ export default class EditorCtrl {
   }
 
   public loadNewFen = (newFen: string) => {
-    if (!newFen) return;
+    if (!newFen) return
     const v = this.data.game.variant.key()
     if (newFen === 'init') newFen = getInitialFen(v)
     else newFen = toggleCoordinates(newFen, false)

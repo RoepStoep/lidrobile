@@ -65,11 +65,11 @@ export function make(root: AnalyseCtrl, playableDepth: () => number): PracticeCt
     }
   }
 
-  function commentable(node: Tree.Node, v: VariantKey, bonus: number = 0): boolean {
+  function commentable(node: Tree.Node, v: VariantKey, bonus = 0): boolean {
     if (root.gameOver(node) || node.tbhit) return true
     const ceval = node.ceval,
       depth = v === 'antidraughts' ? 7 : 15,
-      minDepth = v === 'antidraughts' ? 6 : 13;
+      minDepth = v === 'antidraughts' ? 6 : 13
     return ceval ? ((ceval.depth + bonus) >= depth || (ceval.depth >= minDepth && Number(ceval.millis) > 3000)) : false
   }
 
@@ -194,8 +194,8 @@ export function make(root: AnalyseCtrl, playableDepth: () => number): PracticeCt
   function resume(reset?: boolean) {
     running(true)
     if (reset) {
-      comment(null);
-      root.jump('');
+      comment(null)
+      root.jump('')
     } else {
       checkCevalOrTablebase()
     }

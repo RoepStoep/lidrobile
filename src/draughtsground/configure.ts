@@ -28,13 +28,13 @@ export function configureBoard(state: State, config: cg.InitConfig): void {
 
     // show kingmoves for frisian variants
     if (state.highlight && state.highlight.kingMoves) {
-      const kingMoves = fen.readKingMoves(config.fen);
-      if (kingMoves) doSetKingMoves(state, kingMoves);
+      const kingMoves = fen.readKingMoves(config.fen)
+      if (kingMoves) doSetKingMoves(state, kingMoves)
     }
   }
 
   if (config.captureLength !== undefined)
-    state.movable.captLen = config.captureLength;
+    state.movable.captLen = config.captureLength
 
   if (config.hasOwnProperty('lastMove') && !config.lastMove) {
     state.lastMove = null
@@ -56,8 +56,8 @@ export function setNewBoardState(d: State, config: cg.SetConfig): void {
     d.boardSize = config.boardSize
   }
   if (config.variant) {
-    d.movable.variant = config.variant;
-    d.premovable.variant = config.variant;
+    d.movable.variant = config.variant
+    d.premovable.variant = config.variant
   }
   if (config.fen) {
     d.pieces = fen.read(config.fen, board.boardFields(d))
@@ -65,8 +65,8 @@ export function setNewBoardState(d: State, config: cg.SetConfig): void {
 
   // kingmoves for frisian variants
   if (d.highlight && d.highlight.kingMoves) {
-    const kingMoves = config.kingMoves ? config.kingMoves : (config.fen? fen.readKingMoves(config.fen) : null);
-    if (kingMoves !== null) setKingMoves(d, kingMoves);
+    const kingMoves = config.kingMoves ? config.kingMoves : (config.fen? fen.readKingMoves(config.fen) : null)
+    if (kingMoves !== null) setKingMoves(d, kingMoves)
   }
 
   if (config.orientation !== undefined) d.orientation = config.orientation
@@ -105,29 +105,29 @@ export function setNewBoardState(d: State, config: cg.SetConfig): void {
 export function setKingMoves(state: State, kingMoves: cg.KingMoves) {
   const fields = board.boardFields(state)
   for (let f = 1; f <= fields; f++) {
-    const piece = state.pieces[allKeys[f - 1]];
+    const piece = state.pieces[allKeys[f - 1]]
     if (piece && piece.kingMoves)
-      piece.kingMoves = undefined;
+      piece.kingMoves = undefined
   }
-  doSetKingMoves(state, kingMoves);
+  doSetKingMoves(state, kingMoves)
 }
 
 function doSetKingMoves(state: State, kingMoves: cg.KingMoves) {
   if (kingMoves.white.count > 0 && kingMoves.white.key) {
-    const piece = state.pieces[kingMoves.white.key];
+    const piece = state.pieces[kingMoves.white.key]
     if (piece && piece.role === 'king' && piece.color === 'white')
-      piece.kingMoves = kingMoves.white.count;
+      piece.kingMoves = kingMoves.white.count
   }
 
   if (kingMoves.black.count > 0 && kingMoves.black.key) {
-    const piece = state.pieces[kingMoves.black.key];
+    const piece = state.pieces[kingMoves.black.key]
     if (piece && piece.role === 'king' && piece.color === 'black')
-      piece.kingMoves = kingMoves.black.count;
+      piece.kingMoves = kingMoves.black.count
   }
 }
 
 function merge(base: any, extend: any) {
-  for (let key in extend) {
+  for (const key in extend) {
     if (isObject(base[key]) && isObject(extend[key])) merge(base[key], extend[key])
     else base[key] = extend[key]
   }

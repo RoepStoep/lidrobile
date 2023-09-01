@@ -113,10 +113,10 @@ export function getVariant(key: VariantKey): DocVariant {
 
 export function getVariantKeyById(id: string): VariantKey | undefined {
   const nId = parseInt(id)
-  for (let key of Object.keys(variantMap)) {
+  for (const key of Object.keys(variantMap)) {
     const variant = variantMap[key as VariantKey]
     if (variant.id == nId) {
-      return key as VariantKey;
+      return key as VariantKey
     }
   }
 }

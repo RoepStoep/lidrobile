@@ -16,7 +16,7 @@ import { connectingHeader } from '../shared/common'
 import { syncAndLoadNewPuzzle, puzzleLoadFailure } from './offlineService'
 import { PuzzleData } from '../../lidraughts/interfaces/training'
 import database from './database'
-import settings from '../../settings';
+import settings from '../../settings'
 
 interface Attrs {
   id?: string

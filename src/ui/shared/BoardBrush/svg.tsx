@@ -31,13 +31,13 @@ function arrowMargin(bounds: ClientRect, shorten: boolean, boardSize: cg.BoardSi
 }
 
 function pos2px(pos: BoardPos, bounds: ClientRect, boardSize: cg.BoardSize) {
-  return [(2 * pos[0] - (pos[1] % 2 !== 0 ? 0.5 : 1.5)) * bounds.width / boardSize[0], (pos[1] - 0.5) * bounds.height / boardSize[1]];
+  return [(2 * pos[0] - (pos[1] % 2 !== 0 ? 0.5 : 1.5)) * bounds.width / boardSize[0], (pos[1] - 0.5) * bounds.height / boardSize[1]]
 }
 
 export function circle(brush: Brush, pos: BoardPos, current: boolean, bounds: ClientRect, boardSize: cg.BoardSize) {
   const o = pos2px(pos, bounds, boardSize)
   const width = circleWidth(current, bounds, boardSize)
-  const radius = (bounds.width + bounds.height) / (2 * (boardSize[0] + boardSize[1]));
+  const radius = (bounds.width + bounds.height) / (2 * (boardSize[0] + boardSize[1]))
   return (
     <circle
       stroke={brush.color}
@@ -79,7 +79,7 @@ export function arrow(brush: Brush, orig: BoardPos, dest: BoardPos, current: boo
 export function piece(theme: string, pos: BoardPos, piece: Piece, bounds: ClientRect, boardSize: cg.BoardSize) {
   const o = pos2px(pos, bounds, boardSize)
   const size = bounds.width / 10
-  let name = piece.color[0] + piece.role[0].toUpperCase();
+  const name = piece.color[0] + piece.role[0].toUpperCase()
   const href = `images/pieces/${theme}/${name}.svg`
   return {
     tag: 'image',
@@ -115,7 +115,7 @@ export function defs(brushes: Brush[]) {
 }
 
 export function orient(pos: BoardPos, color: Color, boardSize: cg.BoardSize): [number, number] {
-  return color === 'white' ? pos : [(boardSize[0] / 2 + 1) - pos[0], (boardSize[1] + 1) - pos[1]];
+  return color === 'white' ? pos : [(boardSize[0] / 2 + 1) - pos[0], (boardSize[1] + 1) - pos[1]]
 }
 
 export function renderShape(

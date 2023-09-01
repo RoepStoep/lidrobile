@@ -9,14 +9,14 @@ import settings from '../../../settings'
 import { boardOrientation } from '../../../utils'
 import * as draughtsFormat from '../../../utils/draughtsFormat'
 
-function makeConfig(data: OnlineGameData, fen: string, flip: boolean = false, step?: GameStep): cg.InitConfig {
+function makeConfig(data: OnlineGameData, fen: string, flip = false, step?: GameStep): cg.InitConfig {
   const lastMove = (step && step.uci !== null) ? 
     draughtsFormat.uciToMove(step.uci) :
     (data.game.lastMove ? draughtsFormat.uciToMove(data.game.lastMove) : null)
 
   const turnColor = step ? 
     ((step.ply - (countGhosts(step.fen) == 0 ? 0 : 1)) % 2 === 0 ? 'white' : 'black') :
-    data.game.player;
+    data.game.player
 
   const pieceMoveConf = settings.game.pieceMove()
 

@@ -30,7 +30,7 @@ export function userTitle(
     <span className={'userStatus patron ' + status} data-icon="" /> :
     <span className={'fa fa-circle userStatus ' + status} />
   const title64 = title && title.endsWith('-64'),
-    titleClass = 'userTitle' + (title == 'BOT' ? '.bot' : (title64 ? '.title64' : ''));
+    titleClass = 'userTitle' + (title == 'BOT' ? '.bot' : (title64 ? '.title64' : ''))
   return h('div.title', [
     icon,
     h('span', [

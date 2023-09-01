@@ -35,7 +35,7 @@ import analyseMenu, { IMainMenuCtrl } from './menu'
 import analyseSettings, { ISettingsCtrl } from './analyseSettings'
 import ground from './ground'
 import socketHandler from './analyseSocketHandler'
-import { getCompChild } from './nodeFinder';
+import { getCompChild } from './nodeFinder'
 import { make as makeEvalCache, EvalCache } from './evalCache'
 import { Source } from './interfaces'
 import * as tabs from './tabs'
@@ -145,7 +145,7 @@ export default class AnalyseCtrl {
       infinite: settings.analyse.cevalInfinite(),
     }, this.onCevalMsg)
 
-    const explorerAllowed = false; //!this.study || this.study.data.chapter.features.explorer
+    const explorerAllowed = false //!this.study || this.study.data.chapter.features.explorer
     this.explorer = ExplorerCtrl(this, explorerAllowed)
     this.debouncedExplorerSetStep = debounce(this.explorer.setStep, animationDuration(settings.game.animations()) + 50)
 
@@ -320,13 +320,13 @@ export default class AnalyseCtrl {
     if (this.ceval.enabled()) {
       if (this.canUseCeval()) {
         // only analyze startingposition of multicaptures
-        const ghostEnd = (this.nodeList.length > 0 && this.node.displayPly && this.node.displayPly !== this.node.ply);
-        const path = ghostEnd ? this.path.slice(2) : this.path;
-        const nodeList = ghostEnd ? this.nodeList.slice(1) : this.nodeList;
+        const ghostEnd = (this.nodeList.length > 0 && this.node.displayPly && this.node.displayPly !== this.node.ply)
+        const path = ghostEnd ? this.path.slice(2) : this.path
+        const nodeList = ghostEnd ? this.nodeList.slice(1) : this.nodeList
         const forceMaxLv = !!this.retro || !!this.practice
         this.ceval.start(path, nodeList, forceMaxLv, false)
         this.evalCache.fetch(path, forceMaxLv ? 1 : this.ceval.getMultiPv())
-      } else this.stopCevalImmediately();
+      } else this.stopCevalImmediately()
     }
   }
 
@@ -512,19 +512,19 @@ export default class AnalyseCtrl {
 
   private pickUci(compChild?: Tree.Node, nextBest?: string) {
     if (!nextBest)
-      return undefined;
+      return undefined
     else if (!!compChild && compChild.uci && compChild.uci.length > nextBest.length && compChild.uci.slice(0, 2) === nextBest.slice(0, 2) && compChild.uci.slice(compChild.uci.length - 2) === nextBest.slice(nextBest.length - 2))
-      return compChild.uci;
+      return compChild.uci
     else
-      return nextBest;
+      return nextBest
   }
 
   nextNodeBest() {
-    return treeOps.withMainlineChild(this.node, (n: Tree.Node) => n.eval ? this.pickUci(getCompChild(this.node), n.eval.best) : undefined);
+    return treeOps.withMainlineChild(this.node, (n: Tree.Node) => n.eval ? this.pickUci(getCompChild(this.node), n.eval.best) : undefined)
   }
 
   mainlinePathToPly(ply: Ply): Tree.Path {
-    return treeOps.takePathWhile(this.mainline, n => (n.displayPly ? n.displayPly : n.ply) <= ply);
+    return treeOps.takePathWhile(this.mainline, n => (n.displayPly ? n.displayPly : n.ply) <= ply)
   }
 
   hasAnyComputerAnalysis = () => {
@@ -532,17 +532,17 @@ export default class AnalyseCtrl {
   }
 
   hasFullComputerAnalysis = (): boolean => {
-    return this.isFullAnalysis(this.mainline);
+    return this.isFullAnalysis(this.mainline)
   }
 
   private isFullAnalysis(nodes: Tree.Node[]) {
     for (let i = 0; i < nodes.length - 2; i++) {
-      const skip = i > 0 && nodes[i].ply === nodes[i - 1].ply;
-      const e = nodes[i].eval;
+      const skip = i > 0 && nodes[i].ply === nodes[i - 1].ply
+      const e = nodes[i].eval
       if (!skip && (!e || !Object.keys(e).length))
-        return false;
+        return false
     }
-    return true;
+    return true
   }
 
   isOfflineOrNotPlayable = (): boolean => {
@@ -604,8 +604,8 @@ export default class AnalyseCtrl {
     if (settings.analyse.fullCapture() && this.node.destsUci) {
       const uci = this.node.destsUci.find(u => u.slice(0, 2) === orig && u.slice(-2) === dest)
       if (uci) {
-        this.sendMove(orig, dest, uci);
-        return;    
+        this.sendMove(orig, dest, uci)
+        return    
       }
     }
     this.sendMove(orig, dest)
@@ -644,11 +644,11 @@ export default class AnalyseCtrl {
 
   isAlgebraic(): boolean {
     const board = this.data.game.variant.board || getVariant(this.data.game.variant.key).board
-    return settings.game.coordSystem() === 1 && board.key === '64';
+    return settings.game.coordSystem() === 1 && board.key === '64'
   }
 
   coordSystem(): number {
-    return this.isAlgebraic() ? 1 : 0;
+    return this.isAlgebraic() ? 1 : 0
   }
 
   private onCevalMsg = (path: string, ceval?: Tree.ClientEval) => {
@@ -696,7 +696,7 @@ export default class AnalyseCtrl {
 
   private debouncedStartCeval = debounce(this.startCeval, 500, { trailing: true })
 
-  private updateBoard(noCaptSequences: boolean = false) {
+  private updateBoard(noCaptSequences = false) {
     const node = this.node
 
     const color: Color = util.plyColor(node.ply)

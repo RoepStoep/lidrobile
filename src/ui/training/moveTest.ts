@@ -21,12 +21,12 @@ export default function moveTest(
   const progress: Array<Uci> = []
   nodeList.slice(treePath.size(initialPath) + 1).forEach(node => {
     if (node.mergedNodes && node.mergedNodes.length !== 0) {
-      for (var i = 0; i < node.mergedNodes.length; i++) {
-          const isUci = node.mergedNodes[i].uci;
-          if (isUci) progress.push(isUci);
+      for (let i = 0; i < node.mergedNodes.length; i++) {
+          const isUci = node.mergedNodes[i].uci
+          if (isUci) progress.push(isUci)
       }
     } else if (node.uci) {
-      progress.push(node.uci);
+      progress.push(node.uci)
     }
   })
 
@@ -34,8 +34,8 @@ export default function moveTest(
   const curLine = progress.reduce<Line | undefined>((acc: Line | undefined, uci: Uci) => {
     if (!acc) return undefined
     while (acc && !isLineFeedback(acc) && uci.length > 4) {
-      acc = acc[uci.slice(0, 4)];
-      uci = uci.slice(2);
+      acc = acc[uci.slice(0, 4)]
+      uci = uci.slice(2)
     }
     if (isLineFeedback(acc)) return acc
     return acc[uci]
@@ -58,9 +58,9 @@ export default function moveTest(
       return 'win'
     }
     else {
-      var actualColor = (node.displayPly ? node.displayPly : node.ply) % 2 === 1 ? 'white' : 'black';
+      const actualColor = (node.displayPly ? node.displayPly : node.ply) % 2 === 1 ? 'white' : 'black'
       if (actualColor === puzzle.color)
-          node.puzzle = 'good';
+          node.puzzle = 'good'
       const opponentUci = decomposeUci(nextUci)
       const move: MoveRequest = {
         variant: puzzle.variant.key,

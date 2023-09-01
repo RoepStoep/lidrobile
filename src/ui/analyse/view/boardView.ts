@@ -78,20 +78,20 @@ function computeShapes(ctrl: AnalyseCtrl): readonly Shape[] {
 
   if (!ctrl.retro && !ctrl.practice && ctrl.settings.s.showBestMove) {
     let nextBest = ctrl.nextNodeBest() || (ceval && ceval.best)
-    const ghostNode = ctrl.node.displayPly && ctrl.node.displayPly !== ctrl.node.ply && ctrl.nodeList.length > 1;
+    const ghostNode = ctrl.node.displayPly && ctrl.node.displayPly !== ctrl.node.ply && ctrl.nodeList.length > 1
     if (!nextBest) {
-      const prevCeval = ghostNode ? ctrl.nodeList[ctrl.nodeList.length - 2].ceval : undefined;
+      const prevCeval = ghostNode ? ctrl.nodeList[ctrl.nodeList.length - 2].ceval : undefined
       if (ghostNode && prevCeval && prevCeval.pvs[0].moves[0].indexOf('x') !== -1 && ctrl.node.uci) {
-        const ucis = ctrl.node.uci.match(/.{1,2}/g);
-        if (!!ucis) {
-          const sans = ucis.slice(0, ucis.length - 1).map(uci => parseInt(uci).toString()).join('x');
-          nextBest = prevCeval.pvs[0].moves[0].slice(sans.length + 1);
+        const ucis = ctrl.node.uci.match(/.{1,2}/g)
+        if (ucis) {
+          const sans = ucis.slice(0, ucis.length - 1).map(uci => parseInt(uci).toString()).join('x')
+          nextBest = prevCeval.pvs[0].moves[0].slice(sans.length + 1)
         }
       } else if (ceval)
-        nextBest = ceval.pvs[0].moves[0];
+        nextBest = ceval.pvs[0].moves[0]
     }
     if (nextBest) {
-      const capts = nextBest.split('x').length;
+      const capts = nextBest.split('x').length
       curBestShapes = makeShapesFromUci(nextBest, capts > 4 ? 'paleBlue_3' : 'paleBlue', capts > 4 ? 'paleBlue_2' : '')
     }
     if (!ghostNode && ceval && ceval.pvs.length > 1) {
@@ -118,17 +118,17 @@ function computeShapes(ctrl: AnalyseCtrl): readonly Shape[] {
 }
 
 function makeShapesFromUci(uci: Uci, brush: string, brushFirst?: string): Shape[] {
-  const moves = draughtsFormat.decomposeUci(draughtsFormat.scan2uci(uci));
+  const moves = draughtsFormat.decomposeUci(draughtsFormat.scan2uci(uci))
   if (moves.length == 1) return [{
     orig: moves[0],
     brush
-  }];
-  const shapes: Shape[] = new Array<Shape>();
+  }]
+  const shapes: Shape[] = new Array<Shape>()
   for (let i = 0; i < moves.length - 1; i++)
     shapes.push({
       orig: moves[i],
       dest: moves[i + 1],
       brush: (brushFirst && i === 0) ? brushFirst : brush
-    });
-  return shapes;
+    })
+  return shapes
 }

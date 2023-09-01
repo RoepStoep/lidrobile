@@ -8,11 +8,11 @@ export function easeInOutCubic(t: number) {
   return t < 0.5 ? 4 * t * t * t : (t - 1) * (2 * t - 2) * (2 * t - 2) + 1
 }
 
-export const pos2key = (pos: cg.Pos, s: cg.BoardSize) => allKeys[pos[0] + (s[0] / 2) * (pos[1] - 1) - 1];
-export const field2key = (n: number) => n < 10 ? ('0' + n.toString()) as Key : n.toString() as Key;
+export const pos2key = (pos: cg.Pos, s: cg.BoardSize) => allKeys[pos[0] + (s[0] / 2) * (pos[1] - 1) - 1]
+export const field2key = (n: number) => n < 10 ? ('0' + n.toString()) as Key : n.toString() as Key
 
-export const key2pos = (k: Key, s: cg.BoardSize) => key2posn(parseInt(k), s);
-const key2posn = (k: number, s: cg.BoardSize) => [(k - 1) % (s[0] / 2) + 1, ((k - 1) + ((s[0] / 2) - (k - 1) % (s[0] / 2))) / (s[1] / 2)] as cg.Pos;
+export const key2pos = (k: Key, s: cg.BoardSize) => key2posn(parseInt(k), s)
+const key2posn = (k: number, s: cg.BoardSize) => [(k - 1) % (s[0] / 2) + 1, ((k - 1) + ((s[0] / 2) - (k - 1) % (s[0] / 2))) / (s[1] / 2)] as cg.Pos
 
 export function boardpos(pos: cg.Pos, boardSize: cg.BoardSize, asWhite: boolean): BoardPos {
   return {
@@ -22,18 +22,18 @@ export function boardpos(pos: cg.Pos, boardSize: cg.BoardSize, asWhite: boolean)
 }
 
 export function posToTranslate(pos: cg.Pos, boardSize: cg.BoardSize, asWhite: boolean, bounds: ClientRect): NumberPair {
-  const xSize = boardSize[0] / 2, xf = xSize - 0.5;
+  const xSize = boardSize[0] / 2, xf = xSize - 0.5
   return [
     (!asWhite ? xf - ((pos[1] % 2 !== 0 ? -0.5 : -1) + pos[0]) : (pos[1] % 2 !== 0 ? -0.5 : -1) + pos[0]) * bounds.width / xSize,
     (!asWhite ? boardSize[1] - pos[1] : pos[1] - 1.0) * bounds.height / boardSize[1]
-  ];
+  ]
 }
 
-export const allKeys: readonly Key[] = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28', '29', '30', '31', '32', '33', '34', '35', '36', '37', '38', '39', '40', '41', '42', '43', '44', '45', '46', '47', '48', '49', '50'];
-export const algebraicKeys: readonly string[] = ['b8', 'd8', 'f8', 'h8', 'a7', 'c7', 'e7', 'g7', 'b6', 'd6', 'f6', 'h6', 'a5', 'c5', 'e5', 'g5', 'b4', 'd4', 'f4', 'h4', 'a3', 'c3', 'e3', 'g3', 'b2', 'd2', 'f2', 'h2', 'a1', 'c1', 'e1', 'g1'];
-export const san2alg : { [key: string]: string } = { '1':'b8', '2':'d8', '3':'f8', '4':'h8', '5':'a7', '6':'c7', '7':'e7', '8':'g7', '9':'b6', '10':'d6', '11':'f6', '12':'h6', '13':'a5', '14':'c5', '15':'e5', '16':'g5', '17':'b4', '18':'d4', '19':'f4', '20':'h4', '21':'a3', '22':'c3', '23':'e3', '24':'g3', '25':'b2', '26':'d2', '27':'f2', '28':'h2', '29':'a1', '30':'c1', '31':'e1', '32':'g1' };
-export const ranks: readonly string[] = ['1', '2', '3', '4', '5', '6', '7', '8'], ranksRev: readonly string[] = ['8', '7', '6', '5', '4', '3', '2', '1'];
-export const files: readonly string[] = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'], filesRev: readonly string[] = ['h', 'g', 'f', 'e', 'd', 'c', 'b', 'a'];
+export const allKeys: readonly Key[] = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28', '29', '30', '31', '32', '33', '34', '35', '36', '37', '38', '39', '40', '41', '42', '43', '44', '45', '46', '47', '48', '49', '50']
+export const algebraicKeys: readonly string[] = ['b8', 'd8', 'f8', 'h8', 'a7', 'c7', 'e7', 'g7', 'b6', 'd6', 'f6', 'h6', 'a5', 'c5', 'e5', 'g5', 'b4', 'd4', 'f4', 'h4', 'a3', 'c3', 'e3', 'g3', 'b2', 'd2', 'f2', 'h2', 'a1', 'c1', 'e1', 'g1']
+export const san2alg : { [key: string]: string } = { '1':'b8', '2':'d8', '3':'f8', '4':'h8', '5':'a7', '6':'c7', '7':'e7', '8':'g7', '9':'b6', '10':'d6', '11':'f6', '12':'h6', '13':'a5', '14':'c5', '15':'e5', '16':'g5', '17':'b4', '18':'d4', '19':'f4', '20':'h4', '21':'a3', '22':'c3', '23':'e3', '24':'g3', '25':'b2', '26':'d2', '27':'f2', '28':'h2', '29':'a1', '30':'c1', '31':'e1', '32':'g1' }
+export const ranks: readonly string[] = ['1', '2', '3', '4', '5', '6', '7', '8'], ranksRev: readonly string[] = ['8', '7', '6', '5', '4', '3', '2', '1']
+export const files: readonly string[] = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'], filesRev: readonly string[] = ['h', 'g', 'f', 'e', 'd', 'c', 'b', 'a']
 export function opposite(color: Color) {
   return color === 'white' ? 'black' : 'white'
 }
@@ -85,8 +85,8 @@ export function computeSquareBounds(orientation: Color, bounds: ClientRect, key:
   const pos = key2pos(key, boardSize),
     w = boardSize[0], h = boardSize[1]
   if (orientation !== 'white') {
-    pos[0] = (w / 2 + 1) - pos[0];
-    pos[1] = (h + 1) - pos[1];
+    pos[0] = (w / 2 + 1) - pos[0]
+    pos[1] = (h + 1) - pos[1]
   }
 
   return {
@@ -94,7 +94,7 @@ export function computeSquareBounds(orientation: Color, bounds: ClientRect, key:
     top: bounds.top + bounds.height * (pos[1] - 1) / h,
     width: bounds.width / w,
     height: bounds.height / h
-  };
+  }
 }
 
 export function getPieceByKey(dom: cg.DOM, key: Key): cg.PieceNode | null {
@@ -107,8 +107,8 @@ export function getPieceByKey(dom: cg.DOM, key: Key): cg.PieceNode | null {
 }
 
 export function isObjectEmpty(o: any): boolean {
-  for (let _ in o) return false;
-  return true;
+  for (const _ in o) return false
+  return true
 }
 
 export const movesDown100: number[][] = [

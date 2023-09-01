@@ -40,8 +40,8 @@ function jumpToNext(ctrl: IRetroCtrl) {
 
 function renderEvalProgress(ctrl: IRetroCtrl): Mithril.Child {
   const node = ctrl.node()
-  const minDepth = ctrl.variant === 'antidraughts' ? 3 : 8;
-  const maxDepth = ctrl.variant === 'antidraughts' ? 10 : 18;
+  const minDepth = ctrl.variant === 'antidraughts' ? 3 : 8
+  const maxDepth = ctrl.variant === 'antidraughts' ? 10 : 18
   return h('div.analyse-training_progress', h('div', {
     style: {
       width: `${node.ceval ? (100 * Math.max(0, node.ceval.depth - minDepth) / (maxDepth - minDepth)) + '%' : 0}`
@@ -191,7 +191,7 @@ const feedback = {
 function renderFeedback(root: AnalyseCtrl, fb: Feedback) {
   const ctrl: IRetroCtrl = root.retro!
   const current = ctrl.vm.current
-  const rootNode = root.node;
+  const rootNode = root.node
   if (ctrl.isSolving() && current && (root.path !== current.prev.path && !(rootNode.displayPly && rootNode.displayPly !== rootNode.ply && root.path.length > 1 && root.path.slice(0, root.path.length - 2) === current.prev.path))) {
     return feedback.offTrack(ctrl)
   }

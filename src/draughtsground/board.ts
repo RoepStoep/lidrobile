@@ -8,19 +8,19 @@ export function toggleOrientation(state: State): void {
   state.orientation = util.opposite(state.orientation)
   state.animation.current =
   state.draggable.current =
-  state.selected = null;
+  state.selected = null
 }
 
 export function reset(state: State): void {
   state.lastMove = null
-  state.animateFrom = null;
+  state.animateFrom = null
   setSelected(state, null)
   unsetPremove(state)
   unsetPredrop(state)
 }
 
 export function setPieces(state: State, pieces: cg.PiecesDiff): void {
-  for (let key in pieces) {
+  for (const key in pieces) {
     const piece = pieces[key]
     if (piece) state.pieces[key] = piece
     else delete state.pieces[key]
@@ -30,7 +30,7 @@ export function setPieces(state: State, pieces: cg.PiecesDiff): void {
 export function setCheck(state: State, color: Color | boolean): void {
   if (color === true) color = state.turnColor
   if (!color) state.check = null
-  else for (let k in state.pieces) {
+  else for (const k in state.pieces) {
     if (state.pieces[k].role === 'king' && state.pieces[k].color === color) {
       state.check = k as Key
     }
@@ -74,21 +74,21 @@ export function unsetPredrop(state: State): void {
 
 export function calcCaptKey(pieces: cg.Pieces, boardSize: cg.BoardSize, startX: number, startY: number, destX: number, destY: number): Key | null {
 
-  const xDiff: number = destX - startX, yDiff: number = destY - startY;
+  const xDiff: number = destX - startX, yDiff: number = destY - startY
 
   //Frisian captures always satisfy condition: (x = 0, y >= +-2) or (x = +-1, y = 0)
   //In normal captures these combination is impossible: x = 0 means y = 1, while y = 0 is impossible
-  const yStep: number = yDiff === 0 ? 0 : (yDiff > 0 ? ((xDiff === 0 && Math.abs(yDiff) >= 2) ? 2 : 1) : ((xDiff === 0 && Math.abs(yDiff) >= 2) ? -2 : -1));
-  const xStep: number = xDiff === 0 ? 0 : (yDiff === 0 ? (xDiff > 0 ? 1 : -1) : (startY % 2 == 0 ? (xDiff < 0 ? -1 : 0) : (xDiff > 0 ? 1 : 0)));
+  const yStep: number = yDiff === 0 ? 0 : (yDiff > 0 ? ((xDiff === 0 && Math.abs(yDiff) >= 2) ? 2 : 1) : ((xDiff === 0 && Math.abs(yDiff) >= 2) ? -2 : -1))
+  const xStep: number = xDiff === 0 ? 0 : (yDiff === 0 ? (xDiff > 0 ? 1 : -1) : (startY % 2 == 0 ? (xDiff < 0 ? -1 : 0) : (xDiff > 0 ? 1 : 0)))
 
-  if (xStep === 0 && yStep === 0) return null;
+  if (xStep === 0 && yStep === 0) return null
 
-  const captPos = [startX + xStep, startY + yStep] as cg.Pos;
-  if (captPos === undefined) return null;
+  const captPos = [startX + xStep, startY + yStep] as cg.Pos
+  if (captPos === undefined) return null
 
-  const captKey: Key = util.pos2key(captPos, boardSize);
+  const captKey: Key = util.pos2key(captPos, boardSize)
 
-  const piece: Piece | undefined = pieces[captKey];
+  const piece: Piece | undefined = pieces[captKey]
   if (piece !== undefined && piece.role !== 'ghostman' && piece.role !== 'ghostking')
     return captKey
   else
@@ -158,9 +158,9 @@ export function selectSquare(state: State, key: Key, force?: boolean): void {
     } else if ((state.selectable.enabled || force) && state.selected !== key) {
       if (userMove(state, state.selected, key)) {
         // if we can continue capturing keep the piece selected, so all target squares can be clicked one after the other
-        const skipLastMove = state.animateFrom ? state.animateFrom + 1 : 1;
+        const skipLastMove = state.animateFrom ? state.animateFrom + 1 : 1
         if (state.movable.captLen && state.movable.captLen > (state.lastMove ? state.lastMove.length - skipLastMove : 1))
-          setSelected(state, key);
+          setSelected(state, key)
       }
     }
   } else if (isMovable(state, key) || isPremovable(state, key)) {
@@ -241,19 +241,19 @@ export function isDraggable(state: State, orig: Key): boolean {
 export function playPremove(state: State): boolean {
   const move = state.premovable.current
   if (!move) return false
-  let success = false;
+  let success = false
   const orig = move[0], dest = move[1]
   if (canMove(state, orig, dest)) {
     const moveResult = baseUserMove(state, orig, dest)
     if (moveResult) {
-      const metadata: cg.MoveMetadata = { premove: true };
+      const metadata: cg.MoveMetadata = { premove: true }
       if (typeof moveResult !== 'boolean') 
-        metadata.captured = moveResult;
+        metadata.captured = moveResult
       setTimeout(() => {
         if (state.movable.events.after) 
           state.movable.events.after(orig, dest, metadata)
       })
-      success = true;
+      success = true
     }
   }
   unsetPremove(state)
@@ -301,13 +301,13 @@ function baseMove(state: State, orig: Key, dest: Key, finishCapture?: boolean): 
     // remove any remaining ghost pieces if capture sequence is done
     if (finishCapture) {
       for (let i = 0; i < util.allKeys.length; i++) {
-        const k = util.allKeys[i], pc = state.pieces[k];
+        const k = util.allKeys[i], pc = state.pieces[k]
         if (pc && (pc.role === 'ghostking' || pc.role === 'ghostman'))
-          delete state.pieces[k];
+          delete state.pieces[k]
       }
-      if (dest == state.selected) unselect(state);
+      if (dest == state.selected) unselect(state)
     }
-    return false;
+    return false
   }
 
   const isCapture = (state.movable.captLen && state.movable.captLen > 0), bs = state.boardSize
@@ -372,20 +372,20 @@ function baseMove(state: State, orig: Key, dest: Key, finishCapture?: boolean): 
         for (let i = 0; i < util.allKeys.length; i++) {
           const k = util.allKeys[i], pc = state.pieces[k]
           if (pc && (pc.role === 'ghostking' || pc.role === 'ghostman'))
-            delete state.pieces[k];
+            delete state.pieces[k]
         }
       }
     }
   }
 
   if (state.lastMove && state.lastMove.length && isCapture && state.lastMove[state.lastMove.length - 1] === orig) {
-    state.animateFrom = state.lastMove.length - 1;
-    if (captureUci) state.lastMove = state.lastMove.concat(draughtsFormat.decomposeUci(captureUci.slice(2)));
-    else state.lastMove.push(dest);
+    state.animateFrom = state.lastMove.length - 1
+    if (captureUci) state.lastMove = state.lastMove.concat(draughtsFormat.decomposeUci(captureUci.slice(2)))
+    else state.lastMove.push(dest)
   } else {
-    state.animateFrom = 0;
-    if (captureUci) state.lastMove = draughtsFormat.decomposeUci(captureUci);
-    else state.lastMove = [orig, dest];
+    state.animateFrom = 0
+    if (captureUci) state.lastMove = draughtsFormat.decomposeUci(captureUci)
+    else state.lastMove = [orig, dest]
   }
 
   setTimeout(state.events.change || util.noop)
@@ -413,12 +413,12 @@ function baseUserMove(state: State, orig: Key, dest: Key): Piece | boolean {
   if (result) {
     state.movable.dests = null
     if (state.movable.captLen === null || state.movable.captLen <= 1)
-      state.turnColor = util.opposite(state.turnColor);
+      state.turnColor = util.opposite(state.turnColor)
     state.animation.current = null
   }
   return result
 }
 
 export function boardFields(s: State): number {
-  return s.boardSize[0] * s.boardSize[1] / 2;
+  return s.boardSize[0] * s.boardSize[1] / 2
 }

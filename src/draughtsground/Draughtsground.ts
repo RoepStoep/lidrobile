@@ -14,7 +14,7 @@ const pieceScores = {
   king: 2,
   ghostman: 0,
   ghostking: 0
-};
+}
 
 export default class Draughtsground {
   public state: State
@@ -60,7 +60,7 @@ export default class Draughtsground {
     if (this.state.coordinates === 2) {
       makeCoords(wrapper, this.state.boardSize, this.state.orientation, this.dom, this.state.coordSystem)
     } else if (this.state.coordinates === 1) {
-      makeFieldnumbers(this.state, this.dom);
+      makeFieldnumbers(this.state, this.dom)
     }
 
     if (!isViewOnly) {
@@ -87,7 +87,7 @@ export default class Draughtsground {
       return
     }
     if (cur.start === null) cur.start = now
-    let rest = 1 - (now - cur.start) * cur.frequency;
+    let rest = 1 - (now - cur.start) * cur.frequency
     if (rest <= 0) {
       if (cur.plan.nextPlan && !util.isObjectEmpty(cur.plan.nextPlan.anims)) {
         state.animation.current = {
@@ -95,21 +95,21 @@ export default class Draughtsground {
           frequency: 2.2 / state.animation.duration,
           plan: cur.plan.nextPlan,
           lastMove: state.lastMove
-        };
-        cur = state.animation.current;
+        }
+        cur = state.animation.current
         rest = 1
       } else {
-        state.animation.current = null;
+        state.animation.current = null
       }
     }
 
     if (state.animation.current !== null) {
-      if (rest > 0.999) rest = 0.999;
-      const ease = util.easeInOutCubic(rest);
-      for (let i in cur.plan.anims) {
-        const cfg = cur.plan.anims[i];
-        cfg[2] = cfg[0] * ease;
-        cfg[3] = cfg[1] * ease;
+      if (rest > 0.999) rest = 0.999
+      const ease = util.easeInOutCubic(rest)
+      for (const i in cur.plan.anims) {
+        const cfg = cur.plan.anims[i]
+        cfg[2] = cfg[0] * ease
+        cfg[3] = cfg[1] * ease
       }
       this.redrawSync()
       batchRequestAnimationFrame(this.applyAnim)
@@ -144,25 +144,25 @@ export default class Draughtsground {
         pieces: { king: 0, man: 0 },
         score: 0
       }
-    };
+    }
     const piecesKeys = Object.keys(this.state.pieces)
     for (let i = 0; i < piecesKeys.length; i++) {
       const p = this.state.pieces[piecesKeys[i]]
-      if (p.role != "ghostman" && p.role != "ghostking") {
+      if (p.role != 'ghostman' && p.role != 'ghostking') {
         const them = diff[util.opposite(p.color)]
-        if (them.pieces[p.role] > 0) them.pieces[p.role]--;
-        else diff[p.color].pieces[p.role]++;
+        if (them.pieces[p.role] > 0) them.pieces[p.role]--
+        else diff[p.color].pieces[p.role]++
       }
     }
     diff.white.score = this.getScore(this.state.pieces)
     diff.black.score = -diff.white.score
-    return diff;
+    return diff
   }
 
-  set(config: cg.SetConfig, noCaptSequences: boolean = false): void {
+  set(config: cg.SetConfig, noCaptSequences = false): void {
     anim(state => setNewBoardState(state, config), this, false, noCaptSequences)
     if (this.state.selected && !this.state.pieces[this.state.selected])
-      this.state.selected = null;
+      this.state.selected = null
   }
 
   reconfigure(config: cg.InitConfig, animate?: boolean): void {
@@ -226,12 +226,12 @@ export default class Draughtsground {
   playPremove = (): boolean => {
 
     if (this.state.premovable.current) {
-      const dest = this.state.premovable.current ? this.state.premovable.current[1] : '00';
-      if (Boolean(anim(board.playPremove, this))) {
+      const dest = this.state.premovable.current ? this.state.premovable.current[1] : '00'
+      if (anim(board.playPremove, this)) {
         // if we can continue capturing keep the piece selected, so all target squares can be clicked one after the other
         if (this.state.movable.captLen !== null && this.state.movable.captLen > 1)
-          board.setSelected(this.state, dest);
-        return true;
+          board.setSelected(this.state, dest)
+        return true
       }
       // if the premove couldn't be played, redraw to clear it up
       this.redraw()
@@ -302,10 +302,10 @@ export default class Draughtsground {
   }
 
   private getScore(pieces: cg.Pieces): number {
-    let score = 0, k;
+    let score = 0, k
     for (k in pieces) {
-      score += pieceScores[pieces[k].role] * (pieces[k].color === 'white' ? 1 : -1);
+      score += pieceScores[pieces[k].role] * (pieces[k].color === 'white' ? 1 : -1)
     }
-    return score;
+    return score
   }
 }

@@ -9,8 +9,8 @@ function hasCompChild(node: Tree.Node): boolean {
 
 export function getCompChild(node: Tree.Node) {
   return node.children.find(function (c) {
-    return !!c.comp;
-  });
+    return !!c.comp
+  })
 }
 
 export function nextGlyphSymbol(color: Color, symbol: string, mainline: Tree.Node[], fromPly: number): Tree.Node | undefined {

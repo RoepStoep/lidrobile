@@ -192,7 +192,7 @@ export function empty(): Mithril.Children {
 export function userStatus(user: BaseUser) {
   const status = user.online ? 'online' : 'offline',
     title64 = user.title && user.title.endsWith('-64'),
-    titleClass = 'userTitle' + (user.title == 'BOT' ? ' bot' : (title64 ? ' title64' : ''));
+    titleClass = 'userTitle' + (user.title == 'BOT' ? ' bot' : (title64 ? ' title64' : ''))
   return (
     <div className="user">
       {user.patron ?

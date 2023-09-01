@@ -48,7 +48,7 @@ export default function view(ctrl: OnlineRound) {
 }
 
 export function emptyTV(channel?: string, onFeatured?: () => void) {
-  let variant: VariantKey;
+  let variant: VariantKey
   if (channel) {
     variant = channel.toLowerCase() as VariantKey
     if (!getVariant(variant)) variant = 'standard'

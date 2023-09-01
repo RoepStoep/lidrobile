@@ -38,12 +38,12 @@ export default class Replay {
   }
 
   public situation = (): draughts.GameSituation => {
-    let i = this.situations.length - 1;
+    let i = this.situations.length - 1
     while (i >= 0) {
       if (this.displayPly(this.situations[i]) === this.ply) {
-        break;
+        break
       }
-      i--;
+      i--
     }
     return this.situations[i]
   }
@@ -138,19 +138,19 @@ export default class Replay {
         if (moveOrDrop.situation.uci && prevUci && prevUci.slice(prevUci.length - 2) === moveOrDrop.situation.uci.slice(0, 2)) {
           moveOrDrop.situation.uci = prevUci.slice(0, prevUci.length - 2) + moveOrDrop.situation.uci
           moveOrDrop.situation.id = prevSit.id.slice(0, 1) + moveOrDrop.situation.id.slice(1)
-          moveOrDrop.situation.uciMoves = moveOrDrop.situation.uciMoves.slice(0, moveOrDrop.situation.uciMoves.length - 2).concat(moveOrDrop.situation.uci);
+          moveOrDrop.situation.uciMoves = moveOrDrop.situation.uciMoves.slice(0, moveOrDrop.situation.uciMoves.length - 2).concat(moveOrDrop.situation.uci)
         }
         if (moveOrDrop.situation.san && prevSan) {
           const capt1 = prevSan.indexOf('x'), capt2 = moveOrDrop.situation.san.indexOf('x')
           if (capt1 !== -1 && capt2 !== -1 && prevSan.slice(capt1 + 1) === moveOrDrop.situation.san.slice(0, capt2)) {
             moveOrDrop.situation.san = prevSan.slice(0, capt1) + moveOrDrop.situation.san.slice(capt2)
-            moveOrDrop.situation.pdnMoves = moveOrDrop.situation.pdnMoves.slice(0, moveOrDrop.situation.pdnMoves.length - 2).concat(moveOrDrop.situation.san);
+            moveOrDrop.situation.pdnMoves = moveOrDrop.situation.pdnMoves.slice(0, moveOrDrop.situation.pdnMoves.length - 2).concat(moveOrDrop.situation.san)
           }
         }
       }
-      let drop = 1;
+      let drop = 1
       while (this.ply < this.situations[this.situations.length - drop].ply) {
-        drop++;
+        drop++
       }
       this.situations = this.situations.slice(0, this.situations.length - drop)
     }

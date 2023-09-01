@@ -174,9 +174,9 @@ export function end(ctrl: Draughtsground, e: TouchEvent) {
     else {
       board.userMove(state, cur.orig, dest)
       // if we can continue capturing keep the piece selected, so all target squares can be clicked one after the other
-      const skipLastMove = state.animateFrom ? state.animateFrom + 1 : 1;
+      const skipLastMove = state.animateFrom ? state.animateFrom + 1 : 1
       if (state.movable.captLen && state.movable.captLen > (state.lastMove ? state.lastMove.length - skipLastMove : 1))
-        board.setSelected(state, dest);
+        board.setSelected(state, dest)
     }
   }
   // board editor mode: delete any piece dropped off the board
@@ -228,15 +228,15 @@ export function getKeyAtDomPos(state: State, pos: NumberPair, bounds: ClientRect
     if (col % 2 !== 0)
       return null
     else
-      col = col / 2;
+      col = col / 2
   } else {
     if (col % 2 === 0)
-      return null;
+      return null
     else
       col = (col + 1) / 2
   }
 
-  return (col > 0 && col <= bs[0] / 2 && row > 0 && row <= bs[1]) ? util.pos2key([col, row], bs) : null;
+  return (col > 0 && col <= bs[0] / 2 && row > 0 && row <= bs[1]) ? util.pos2key([col, row], bs) : null
 }
 
 function processDrag(ctrl: Draughtsground) {

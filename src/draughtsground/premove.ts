@@ -4,17 +4,17 @@ import { field2key, movesDown100, movesUp100, movesHorizontal100, movesDown64, m
 export default function premove(pieces: cg.Pieces, boardSize: cg.BoardSize, key: Key, variant?: string | null): Key[] {
 
   const piece = pieces[key],
-    field: number = Number(key);
+    field = Number(key)
 
-  if (piece === undefined || isNaN(field)) return new Array<Key>();
+  if (piece === undefined || isNaN(field)) return new Array<Key>()
 
   const frisianVariant = variant && variant !== null && (variant === 'frisian' || variant === 'frysk'),
     is100 = boardSize[0] === 10,
     movesUp = is100 ? movesUp100 : movesUp64,
     movesDown = is100 ? movesDown100 : movesDown64,
-    movesHorizontal = is100 ? movesHorizontal100 : movesHorizontal64;
+    movesHorizontal = is100 ? movesHorizontal100 : movesHorizontal64
 
-  const dests: Key[] = new Array<Key>();
+  const dests: Key[] = new Array<Key>()
   switch (piece.role) {
 
     case 'man':
@@ -25,36 +25,36 @@ export default function premove(pieces: cg.Pieces, boardSize: cg.BoardSize, key:
       //
 
       for (let i = 0; i < (frisianVariant ? 3 : 2); i++) {
-        let f = movesUp[field][i];
+        let f = movesUp[field][i]
         if (f != -1) {
 
-          const key = field2key(f);
+          const key = field2key(f)
           if (piece.color === 'white' && i < 2)
-            dests.push(key);
+            dests.push(key)
 
-          const pc = pieces[key];
+          const pc = pieces[key]
           if (pc === undefined || pc.color !== piece.color) {
-            f = movesUp[f][i];
+            f = movesUp[f][i]
             if (f !== -1)
-              dests.push(field2key(f));
+              dests.push(field2key(f))
           }
 
         }
       }
 
       for (let i = 0; i < (frisianVariant ? 3 : 2); i++) {
-        let f = movesDown[field][i];
+        let f = movesDown[field][i]
         if (f != -1) {
 
-          const key = field2key(f);
+          const key = field2key(f)
           if (piece.color === 'black' && i < 2)
-            dests.push(key);
+            dests.push(key)
 
-          const pc = pieces[key];
+          const pc = pieces[key]
           if (pc === undefined || pc.color !== piece.color) {
-            f = movesDown[f][i];
+            f = movesDown[f][i]
             if (f !== -1)
-              dests.push(field2key(f));
+              dests.push(field2key(f))
           }
 
         }
@@ -62,21 +62,21 @@ export default function premove(pieces: cg.Pieces, boardSize: cg.BoardSize, key:
 
       if (frisianVariant) {
         for (let i = 0; i < 2; i++) {
-          let f = movesHorizontal[field][i];
+          let f = movesHorizontal[field][i]
           if (f != -1) {
 
-            const pc = pieces[field2key(f)];
+            const pc = pieces[field2key(f)]
             if (pc === undefined || pc.color !== piece.color) {
-              f = movesHorizontal[f][i];
+              f = movesHorizontal[f][i]
               if (f !== -1)
-                dests.push(field2key(f));
+                dests.push(field2key(f))
             }
 
           }
         }
       }
 
-      break;
+      break
 
     case 'king':
 
@@ -85,40 +85,40 @@ export default function premove(pieces: cg.Pieces, boardSize: cg.BoardSize, key:
       //
 
       for (let i = 0; i < (frisianVariant ? 3 : 2); i++) {
-        let f = movesUp[field][i], k = 0;
+        let f = movesUp[field][i], k = 0
         while (f != -1) {
           if (i < 2 || k > 0)
-            dests.push(field2key(f));
-          f = movesUp[f][i];
-          k++;
+            dests.push(field2key(f))
+          f = movesUp[f][i]
+          k++
         }
       }
 
       for (let i = 0; i < (frisianVariant ? 3 : 2); i++) {
-        let f = movesDown[field][i], k = 0;
+        let f = movesDown[field][i], k = 0
         while (f != -1) {
           if (i < 2 || k > 0)
-            dests.push(field2key(f));
-          f = movesDown[f][i];
-          k++;
+            dests.push(field2key(f))
+          f = movesDown[f][i]
+          k++
         }
       }
 
       if (frisianVariant) {
         for (let i = 0; i < 2; i++) {
-          let f = movesHorizontal[field][i], k = 0;
+          let f = movesHorizontal[field][i], k = 0
           while (f != -1) {
             if (k > 0)
-              dests.push(field2key(f));
-            f = movesHorizontal[f][i];
-            k++;
+              dests.push(field2key(f))
+            f = movesHorizontal[f][i]
+            k++
           }
         }
       }
 
-      break;
+      break
 
   }
 
-  return dests;
-};
+  return dests
+}

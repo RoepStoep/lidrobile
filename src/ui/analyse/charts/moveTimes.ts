@@ -143,25 +143,25 @@ function makeSerieData(data: AnalyseData, origMoveCentis: number[]): { max: numb
     black: []
   }
 
-  const corres = data.game.speed === 'correspondence';
+  const corres = data.game.speed === 'correspondence'
   const tree = data.treeParts
   const logC = Math.pow(Math.log(3), 2)
   let ply = 0, lastPly = -1, max = 0
 
   const moveCentis = origMoveCentis.slice(0)
   let skipped = 0, mergedSan = ''
-  for (var i = 0; i < moveCentis.length; i++) {
+  for (let i = 0; i < moveCentis.length; i++) {
     const node = tree[i + 1 + skipped]
     ply = node ? node.ply! : ply + 1
     if (ply !== lastPly || i + 1 === moveCentis.length) {
 
-      if (ply === lastPly) ply++;
-      lastPly = ply;
+      if (ply === lastPly) ply++
+      lastPly = ply
 
-      let san = node && node.san ? node.san : '-';
+      let san = node && node.san ? node.san : '-'
       if (mergedSan.length !== 0 && node) {
-        san = mergedSan + san.slice(san.indexOf('x') + 1);
-        mergedSan = '';
+        san = mergedSan + san.slice(san.indexOf('x') + 1)
+        mergedSan = ''
       }
 
       const isWhite = !!(ply & 1)
@@ -178,13 +178,13 @@ function makeSerieData(data: AnalyseData, origMoveCentis: number[]): { max: numb
       else series.black.push(point)
     } else {
       if (mergedSan.length == 0 && node && node.san)
-        mergedSan = node.san.slice(0, node.san.indexOf('x') + 1);
+        mergedSan = node.san.slice(0, node.san.indexOf('x') + 1)
       if (!corres) {
-        moveCentis[i + 1] += moveCentis[i];
-        moveCentis.splice(i, 1);
+        moveCentis[i + 1] += moveCentis[i]
+        moveCentis.splice(i, 1)
       }
-      i--;
-      skipped++;
+      i--
+      skipped++
     }
   }
 
