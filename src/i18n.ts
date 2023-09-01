@@ -350,7 +350,6 @@ const untranslated: StringMap = {
   resourceNotFoundError: 'Resource not found.',
   lidraughtsIsUnavailableError: 'lidraughts.org is temporarily down for maintenance.',
   lidraughtsIsUnreachable: 'lidraughts.org is unreachable.',
-  mustSignInToJoin: 'You must sign in to join it.',
   clockPosition: 'Clock position',
   playerisInvitingYou: '%s is inviting you',
   unsupportedVariant: 'Variant %s is not supported in this version',
