@@ -62,11 +62,11 @@ export default class CevalCtrl {
 
     // send moves after last capture
     for (let i = 1; i < nodes.length; i++) {
-      let s = nodes[i];
+      const s = nodes[i]
       if (s.san!.indexOf('x') !== -1) {
-        work.moves = [];
-        work.initialFen = s.fen;
-      } else work.moves.push(shortUci(s));
+        work.moves = []
+        work.initialFen = s.fen
+      } else work.moves.push(shortUci(s))
     }
 
     this.engine.start(work)
@@ -114,7 +114,7 @@ export default class CevalCtrl {
   }
 
   public setMultiPv(pv: number): void {
-    this.opts.multiPv = 1 // pv
+    this.opts.multiPv = pv
   }
 
   public getMultiPv(): number {
@@ -152,8 +152,8 @@ export default class CevalCtrl {
 
 function shortUci(n: Tree.Node) {
   if (!n.uci) return ''
-  if (n.uci.length > 4) return n.uci.slice(0, 2) + 'x' + n.uci.slice(2);
-  else return n.uci.slice(0, 2) + '-' + n.uci.slice(2);
+  if (n.uci.length > 4) return n.uci.slice(0, 2) + 'x' + n.uci.slice(2)
+  else return n.uci.slice(0, 2) + '-' + n.uci.slice(2)
 }
 
 function median(values: number[]): number {

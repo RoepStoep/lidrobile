@@ -149,7 +149,7 @@ export default class AiRound implements AiRoundInterface, PromotingInterface {
   public startNewGame(variant: VariantKey, setupFen?: string, _clockType?: ClockType, setupColor?: Color) {
     if (this.engineNextMove) {
       clearTimeout(this.engineNextMove)
-      this.engineNextMove = undefined;
+      this.engineNextMove = undefined
     }
 
     const payload: InitPayload = {
@@ -170,12 +170,6 @@ export default class AiRound implements AiRoundInterface, PromotingInterface {
         player: data.setup.player,
         captureLength: data.setup.captureLength || 0
       }), [data.setup], data.setup.ply)
-    })
-    .then(() => {
-      if (this.engine.variant() !== variant) {
-        return this.engine.exit()
-          .then(() => this.engine.init(variant))
-      } else return Promise.resolve()
     })
     .then(() => {
       if (setupFen) {
@@ -257,16 +251,6 @@ export default class AiRound implements AiRoundInterface, PromotingInterface {
     }
   }
 
-  public onEngineDrop = (bestdrop: string) => {
-    const pos = draughtsFormat.uciToDropPos(bestdrop)
-    const role = 'man' as Role; // draughtsFormat.uciToDropRole(bestdrop)
-    const piece = { role, color: this.data.opponent.color }
-    this.vm.engineSearching = false
-    this.draughtsground.apiNewPiece(piece, pos)
-    this.replay.addDrop(role, pos)
-    redraw()
-  }
-
   private engineMove = () => {
     this.vm.engineSearching = true
     const sit = this.replay.situation(), captureFen = this.replay.lastCaptureFen()
@@ -276,14 +260,14 @@ export default class AiRound implements AiRoundInterface, PromotingInterface {
         ai: l
       })
       // send fen and moves after last capture
-      let uciMoves = []
+      let uciMoves: string[] = []
       for (let i = 0; i < sit.pdnMoves.length; i++) {
         if (sit.pdnMoves[i].indexOf('x') !== -1) uciMoves = []
-        else uciMoves.push(sit.uciMoves[i]);
+        else uciMoves.push(sit.uciMoves[i])
       }
       this.engine!.init()
       .then(() => this.engine!.setLevel(l))
-      .then(() => this.engine!.search(l, captureFen || this.data.game.initialFen, sit.fen, uciMoves))
+      .then(() => this.engine!.search(captureFen || this.data.game.initialFen, sit.fen, uciMoves))
     }, 500)
   }
 

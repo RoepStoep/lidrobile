@@ -12,6 +12,7 @@ import * as draughts from '../../draughts'
 import * as draughtsFormat from '../../utils/draughtsFormat'
 import session from '../../session'
 import sound from '../../sound'
+import settings from '../../settings'
 import { PuzzleData } from '../../lidraughts/interfaces/training'
 import { PromotingInterface } from '../shared/round'
 
@@ -89,7 +90,7 @@ export default class TrainingCtrl implements PromotingInterface {
   }
   
   coordSystem(): number {
-    return this.isAlgebraic() ? 1 : 0;
+    return this.isAlgebraic() ? 1 : 0
   }
 
   public setPath = (path: Tree.Path): void => {
@@ -492,18 +493,18 @@ export default class TrainingCtrl implements PromotingInterface {
       if ((color === 'white') === ((node.displayPly ? node.displayPly : node.ply) % 2 === 1)) node.puzzle = 'good'
     }
 
-    const mergedSolution = treeOps.mergeExpandedNodes(solution);
+    const mergedSolution = treeOps.mergeExpandedNodes(solution)
     treeOps.updateAll(mergedSolution, updateNode)
 
     const solutionNode = treeOps.childById(this.initialNode, mergedSolution.id)
 
-    var merged: Tree.Node | undefined = undefined;
+    let merged: Tree.Node | undefined = undefined
     if (solutionNode) {
       merged = treeOps.merge(solutionNode, mergedSolution, solution)
-      if (merged) treeOps.updateAll(merged, updateNode);
+      if (merged) treeOps.updateAll(merged, updateNode)
     } else this.initialNode.children.push(mergedSolution)
 
-    return merged;
+    return merged
   }
 
   private sendResult = (win: boolean) => {

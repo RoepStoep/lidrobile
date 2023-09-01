@@ -1,5 +1,5 @@
 import { Capacitor } from '@capacitor/core'
-import { ScanPlugin, scanFen, parsePV, parseVariant } from '../../../scan'
+import { ScanPlugin, scanFen, parsePV } from '../../../scan'
 import { defer, Deferred } from '../../../utils/defer'
 import * as Tree from '../../shared/tree/interfaces'
 import { Work } from './interfaces'
@@ -8,7 +8,7 @@ const EVAL_REGEX = new RegExp(''
   + /^info depth=(\d+) mean-depth=\S+ /.source
   + /score=(\S+) nodes=(\d+) /.source
   + /time=(\S+) (?:nps=\S+ )?/.source
-  + /pv=\"?([0-9\-xX\s]+)\"?/.source);
+  + /pv="?([0-9\-xX\s]+)"?/.source)
 
 export default class ScanClient {
   private readonly scan: ScanPlugin
@@ -49,7 +49,7 @@ export default class ScanClient {
   public init = async (): Promise<void> => {
     try {
       window.addEventListener('scan', this.listener, { passive: true })
-      const obj = await this.scan.start(parseVariant(this.scan.variant))
+      const obj = await this.scan.start()
       this.engineName = obj.engineName
       await this.scan.send('hub')
       await this.scan.setOption('bb-size', '0')
@@ -120,7 +120,7 @@ export default class ScanClient {
       this.startQueue = []
       this.ready = defer()
 
-      await this.scan.send('pos pos=' + scanFen(work.initialFen) + (work.moves.length != 0 ? (' moves="' + work.moves.join(' ') + '"') : ''))
+      await this.scan.send('pos pos=' + scanFen(work.initialFen) + (work.moves.length !== 0 ? (' moves="' + work.moves.join(' ') + '"') : ''))
       if (work.maxDepth >= 99) {
         await this.scan.send('level infinite')
       } else {
@@ -151,23 +151,23 @@ export default class ScanClient {
       nodes = parseInt(matches[3]),
       elapsedMs: number = parseFloat(matches[4]) * 1000,
       multiPv = 1,
-      moves = parsePV(this.work!.currentFen, matches[5], this.frisianVariant, this.uciCache);
+      moves = parsePV(this.work!.currentFen, matches[5], this.frisianVariant, this.uciCache)
 
     let ev = Math.round(parseFloat(matches[2]) * 100),
-      win: number | undefined = undefined;
+      win: number | undefined = undefined
 
     if (Math.abs(ev) > 9000) {
-      const ply = ev > 0 ? (10000 - ev) : -(10000 + ev);
-      win = Math.round((ply + ply % 2) / 2);
+      const ply = ev > 0 ? (10000 - ev) : -(10000 + ev)
+      win = Math.round((ply + ply % 2) / 2)
     } else if (Math.abs(ev) > 8000) {
-      const ply = ev > 0 ? (9000 - ev) : -(9000 + ev);
-      win = Math.round((ply + ply % 2) / 2);
+      const ply = ev > 0 ? (9000 - ev) : -(9000 + ev)
+      win = Math.round((ply + ply % 2) / 2)
     }
 
     const pivot = this.work.threatMode ? 0 : 1
     if (this.work.ply % 2 === pivot) {
-      if (win) win = -win;
-      else ev = -ev;
+      if (win) win = -win
+      else ev = -ev
     }
 
     const pvData = {
@@ -175,7 +175,7 @@ export default class ScanClient {
       cp: win ? undefined : ev,
       win: win ? win : undefined,
       depth,
-    };
+    }
 
     const knps = nodes / elapsedMs
 

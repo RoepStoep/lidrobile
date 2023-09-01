@@ -1,6 +1,6 @@
 import { Capacitor } from '@capacitor/core'
 import { AiRoundInterface } from '../shared/round'
-import { ScanPlugin, getNbCores, getMaxMemory, parsePV, parseVariant, scanFen } from '../../scan'
+import { ScanPlugin, getNbCores, getMaxMemory, parsePV, scanFen } from '../../scan'
 
 interface LevelToNumber {
   [index: number]: number
@@ -48,7 +48,7 @@ export const levelToRating: LevelToNumber = {
 
 export default class Engine {
   private uciCache: any = {}
-  private searchFen: string = ''
+  private searchFen = ''
   private level = 1
   private scan: ScanPlugin
   private isInit = false
@@ -69,7 +69,7 @@ export default class Engine {
   public async init(): Promise<void> {
     try {
       if (!this.isInit) {
-        await this.scan.start(parseVariant(this.scan.variant))
+        await this.scan.start()
         this.isInit = true 
         window.addEventListener('scan', this.listener, { passive: true })
         await this.scan.send('hub')
@@ -107,14 +107,14 @@ export default class Engine {
     const bookPly = LVL_BOOK_PLY[l - 1], 
       bookMargin = LVL_BOOK_MARGIN[l - 1],
       moveTime = LVL_MOVETIMES[l - 1]
-    let pst: number, handicap: number, depth: number, ply: number, nodes: number;
+    let pst: number, handicap: number, depth: number, ply: number, nodes: number
     if (initVariant === 'frysk') {
       pst = LVL_PST_FY[l - 1]
       handicap = LVL_HANDICAPS_FY[l - 1]
       depth = LVL_DEPTHS_FY[l - 1]
       ply = 0
       // frysk "opening book"
-      if (initialFen === "Wbbbbbeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeewwwww" && moves.length < 4)
+      if (initialFen === 'Wbbbbbeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeewwwww' && moves.length < 4)
           nodes = 1
       else
           nodes = LVL_NODES_FY[l - 1]
@@ -140,13 +140,13 @@ export default class Engine {
 
     const scanMoves = moves.map(m => {
       if (m.length > 4)
-        return m.slice(0, 2) + 'x' + m.slice(2);
+        return m.slice(0, 2) + 'x' + m.slice(2)
       else
-        return m.slice(0, 2) + '-' + m.slice(2);
-    });
+        return m.slice(0, 2) + '-' + m.slice(2)
+    })
 
     // TODO: Movetimes might need a different approach
-    this.scan.send('pos pos=' + initialFen + (scanMoves.length != 0 ? (' moves="' + scanMoves.join(' ') + '"') : ''))
+    this.scan.send('pos pos=' + initialFen + (scanMoves.length !== 0 ? (' moves="' + scanMoves.join(' ') + '"') : ''))
       .then(() => handicap ? this.scan.send(`level handicap=${handicap}`) : Promise.resolve())
       .then(() => ply ? this.scan.send(`level ply=${ply}`) : Promise.resolve())
       .then(() => nodes ? this.scan.send(`level nodes=${nodes}`) : Promise.resolve())
