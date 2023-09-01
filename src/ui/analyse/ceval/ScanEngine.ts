@@ -1,36 +1,34 @@
 import { Capacitor } from '@capacitor/core'
 import * as Tree from '../../shared/tree/interfaces'
 import { Work, IEngine } from './interfaces'
-import { Scan, scanFen, parsePV, parseVariant } from '../../../scan'
+import { StockfishWrapper } from '../../../stockfish'
 
 const EVAL_REGEX = new RegExp(''
-  + /^info depth=(\d+) mean-depth=\S+ /.source
-  + /score=(\S+) nodes=(\d+) /.source
-  + /time=(\S+) (?:nps=\S+ )?/.source
-  + /pv=\"?([0-9\-xX\s]+)\"?/.source);
+  + /^info depth (\d+) seldepth \d+ multipv (\d+) /.source
+  + /score (cp|mate) ([-\d]+) /.source
+  + /(?:(upper|lower)bound )?nodes (\d+) nps \S+ /.source
+  + /(?:hashfull \d+ )?(?:tbhits \d+ )?time (\S+) /.source
+  + /pv (.+)/.source)
 
-export default function ScanEngine(
+export default function StockfishEngine(
   variant: VariantKey,
   threads: number,
   hash: number,
 ): IEngine {
-  const scan = new Scan(variant)
+  const stockfish = new StockfishWrapper(variant)
 
-  let engineName = 'Scan 3.1'
+  let engineName = 'Stockfish'
+  let evaluation = 'classical'
 
   let stopTimeoutId: number
   let listener: (e: Event) => void
   let readyPromise: Promise<void> = Promise.resolve()
 
-  let curEval: Tree.ClientEval | undefined  = undefined 
-  let expectedPvs = 1
+  let curEval: Tree.ClientEval | undefined = undefined
 
-  const frisianVariant = variant === 'frisian' || variant === 'frysk'
-  const uciCache: any = {}
-
-  // after a 'go' command, scan will be continue to emit until the 'done'
+  // after a 'go' command, stockfish will be continue to emit until the 'bestmove'
   // message, reached by depth or after a 'stop' command
-  // finished here means scan has emited 'done' and is ready for
+  // finished here means stockfish has emited 'bestmove' and is ready for
   // another command
   let finished = true
 
@@ -46,23 +44,24 @@ export default function ScanEngine(
    */
   async function init() {
     try {
-      const obj = await scan.start(parseVariant(variant))
+      const obj = await stockfish.start()
       engineName = obj.engineName
-      await scan.send('hub')
-      await scan.setOption('bb-size', '0')
-      await scan.setOption('threads', threads)
+      await stockfish.setVariant()
+      await stockfish.setOption('UCI_AnalyseMode', 'true')
+      await stockfish.setOption('Analysis Contempt', 'Off')
+      await stockfish.setOption('Threads', threads)
       if (Capacitor.platform !== 'web') {
-        await scan.setOption('Hash', hash)
+        await stockfish.setOption('Hash', hash)
       }
     } catch (err: unknown) {
-      console.error('scan init error', err)
+      console.error('stockfish init error', err)
     }
   }
 
   /*
    * Stop current command if not already stopped, then add a search command to
    * the queue.
-   * The search will start when scan is ready (after reinit if it takes more
+   * The search will start when stockfish is ready (after reinit if it takes more
    * than 10s to stop current search)
    */
   function start(work: Work) {
@@ -82,12 +81,12 @@ export default function ScanEngine(
   }
 
   /*
-   * Sends 'stop' command to scan if not already stopped
+   * Sends 'stop' command to stockfish if not already stopped
    */
   function stop() {
     if (!stopped) {
       stopped = true
-      scan.send('stop')
+      stockfish.send('stop')
     }
   }
 
@@ -109,23 +108,31 @@ export default function ScanEngine(
         window.addEventListener('stockfish', listener, { passive: true })
       })
 
-      await scan.send('pos pos=' + scanFen(work.initialFen) + (work.moves.length != 0 ? (' moves="' + work.moves.join(' ') + '"') : ''))
-      if (work.maxDepth >= 99) {
-        await scan.send('level infinite')
-      } else {
-        await scan.send('level depth=' + work.maxDepth)
+      if (window.lichess.buildConfig.NNUE) {
+        await stockfish.setOption('Use NNUE', work.useNNUE)
       }
-      await scan.send('go analyze')
+      await stockfish.setOption('MultiPV', work.multiPv)
+      await stockfish.send(['position', 'fen', work.initialFen, 'moves'].concat(work.moves).join(' '))
+      if (work.maxDepth >= 99) {
+        await stockfish.send('go depth 99')
+      } else {
+        await stockfish.send('go movetime 90000 depth ' + work.maxDepth)
+      }
     }
   }
 
   /*
-   * Scan output processing done here
-   * Calls the 'resolve' function of the 'ready' Promise when 'done'
-   * command is sent by scan
+   * Stockfish output processing done here
+   * Calls the 'resolve' function of the 'ready' Promise when 'bestmove' uci
+   * command is sent by stockfish
    */
   function processOutput(text: string, work: Work, rdyResolve: () => void) {
-    if (text.indexOf('done') === 0) {
+    const evalMatch = text.match(/^info string (classical|NNUE) evaluation/)
+    if (evalMatch) {
+      evaluation = evalMatch[1]
+    }
+
+    if (text.indexOf('bestmove') === 0) {
       finished = true
       rdyResolve()
       work.emit()
@@ -135,42 +142,37 @@ export default function ScanEngine(
     const matches = text.match(EVAL_REGEX)
     if (!matches) return
 
-    let depth = parseInt(matches[1]),
-      ev = Math.round(parseFloat(matches[2]) * 100),
-      nodes = parseInt(matches[3]),
-      elapsedMs: number = parseFloat(matches[4]) * 1000,
-      multiPv = 1,
-      win: number | undefined = undefined;
+    const depth = parseInt(matches[1]),
+      multiPv = parseInt(matches[2]),
+      isMate = matches[3] === 'mate',
+      povEv = parseInt(matches[4]),
+      evalType = matches[5],
+      nodes = parseInt(matches[6]),
+      elapsedMs: number = parseInt(matches[7]),
+      moves = matches[8].split(' ')
 
-    const moves = parsePV(work!.currentFen, matches[5], frisianVariant, uciCache);
-
-    if (Math.abs(ev) > 9000) {
-      const ply = ev > 0 ? (10000 - ev) : -(10000 + ev);
-      win = Math.round((ply + ply % 2) / 2);
-    } else if (Math.abs(ev) > 8000) {
-      const ply = ev > 0 ? (9000 - ev) : -(9000 + ev);
-      win = Math.round((ply + ply % 2) / 2);
-    }
-
-    // Track max pv index to determine when pv prints are done.
-    if (expectedPvs < multiPv) expectedPvs = multiPv
+    // Sometimes we get #0. Let's just skip it.
+    if (isMate && !povEv) return
 
     const pivot = work.threatMode ? 0 : 1
-    if (work.ply % 2 === pivot) {
-      if (win) win = -win;
-      else ev = -ev;
-    }
+    const ev = (work.ply % 2 === pivot) ? -povEv : povEv
+
+    // For now, ignore most upperbound/lowerbound messages.
+    // The exception is for multiPV, sometimes non-primary PVs
+    // only have an upperbound.
+    // See: https://github.com/ddugovic/Stockfish/issues/228
+    if (evalType && multiPv === 1) return
 
     const pvData = {
       moves,
-      cp: win ? undefined : ev,
-      win: win ? win : undefined,
-      depth,
-    };
+      cp: isMate ? undefined : ev,
+      mate: isMate ? ev : undefined,
+      depth
+    }
 
     const knps = nodes / elapsedMs
 
-    if (multiPv === 1) {
+    if (curEval === undefined) {
       curEval = {
         fen: work.currentFen,
         maxDepth: work.maxDepth,
@@ -178,23 +180,31 @@ export default function ScanEngine(
         knps,
         nodes,
         cp: pvData.cp,
-        win: pvData.win,
+        mate: pvData.mate,
         pvs: [pvData],
         millis: elapsedMs
       }
-    } else if (curEval) {
-      curEval.pvs.push(pvData)
-      curEval.depth = Math.min(curEval.depth, depth)
+    } else {
+      curEval.depth = depth
+      curEval.knps = knps
+      curEval.nodes = nodes
+      curEval.cp = pvData.cp
+      curEval.mate = pvData.mate
+      curEval.millis = elapsedMs
+      const multiPvIdx = multiPv - 1
+      if (curEval.pvs.length > multiPvIdx) {
+        curEval.pvs[multiPvIdx] = pvData
+      } else {
+        curEval.pvs.push(pvData)
+      }
     }
 
-    if (multiPv === expectedPvs && curEval) {
-      work.emit(curEval)
-    }
+    work.emit(curEval)
   }
-  
+
   function exit() {
     window.removeEventListener('stockfish', listener, false)
-    return scan.exit()
+    return stockfish.exit()
   }
 
   function reset() {
@@ -208,9 +218,12 @@ export default function ScanEngine(
     exit,
     isSearching() {
       return !finished
-    }
+    },
     getName() {
       return engineName
-    }
+    },
+    getEvaluation() {
+      return evaluation
+    },
   }
 }

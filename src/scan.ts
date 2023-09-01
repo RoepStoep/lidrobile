@@ -12,7 +12,7 @@ const CapacitorScanPlugin = Plugins.Scan as IScanPlugin
 
 export class ScanPlugin {
   private plugin: IScanPlugin
-  private variant: VariantKey
+  public variant: VariantKey
 
   constructor(readonly v: VariantKey) {
     this.plugin = CapacitorScanPlugin
