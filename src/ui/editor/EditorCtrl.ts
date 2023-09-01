@@ -191,7 +191,7 @@ export default class EditorCtrl {
     if (newFen === 'init') newFen = getInitialFen(v)
     else newFen = toggleCoordinates(newFen, false)
     if (fenUtil.validateFen(newFen, v)) {
-      router.goTo(`/editor/variant/${encodeURIComponent(v)}/fen/${encodeURIComponent(newFen)}`, true)
+      router.set(`/editor/variant/${encodeURIComponent(v)}/fen/${encodeURIComponent(newFen)}`, true)
     } else {
       Plugins.LiToast.show({ text: i18n('invalidFen'), duration: 'short' })
     }
@@ -203,7 +203,7 @@ export default class EditorCtrl {
     draughts.situation({ variant, fen })
       .then(({ situation }) => {
         if (situation.playable) {
-          router.goTo(`/analyse/variant/${encodeURIComponent(variant)}/fen/${encodeURIComponent(fen)}`)
+          router.set(`/analyse/variant/${encodeURIComponent(variant)}/fen/${encodeURIComponent(fen)}`)
         } else {
           Plugins.LiToast.show({ text: i18n('invalidFen'), duration: 'short' })
         }

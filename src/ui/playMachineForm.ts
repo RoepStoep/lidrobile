@@ -59,7 +59,7 @@ function close(fromBB?: string) {
 function startAIGame() {
   return xhr.newAiGame(fromPositionFen)
   .then((data) => {
-    router.goTo('/game' + data.url.round)
+    router.set('/game' + data.url.round)
   })
   .catch(utils.handleXhrError)
 }
@@ -96,7 +96,7 @@ function renderForm(formName: string, settingsObj: AiSettings, variants: string[
         oncreate: helper.ontap(() => {
           close()
           if (fromPositionFen) {
-            router.goTo(`/editor/${encodeURIComponent(fromPositionFen)}`)
+            router.set(`/editor/${encodeURIComponent(fromPositionFen)}`)
           }
         })
       }, [
@@ -105,7 +105,7 @@ function renderForm(formName: string, settingsObj: AiSettings, variants: string[
       ] : h('div', h('button.withIcon.fa.fa-pencil', {
         oncreate: helper.ontap(() => {
           close()
-          router.goTo('/editor')
+          router.set('/editor')
         })
       }, i18n('boardEditor')))
     ))

@@ -60,13 +60,13 @@ function renderFriend(friend: Friend) {
 
   function action() {
     close()
-    router.goTo('/@/' + userId)
+    router.set('/@/' + userId)
   }
 
   function onTapTv(e: Event) {
     e.stopPropagation()
     close()
-    router.goTo('/@/' + userId + '/tv')
+    router.set('/@/' + userId + '/tv')
   }
 
   return (
@@ -99,7 +99,7 @@ function renderFriend(friend: Friend) {
         <span data-icon="c" oncreate={helper.ontapY((e: Event) => {
           e.stopPropagation()
           close()
-          router.goTo(`/inbox/new/${userId}`)
+          router.set(`/inbox/new/${userId}`)
         })} />
       </div>
     </li>

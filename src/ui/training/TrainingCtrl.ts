@@ -225,9 +225,9 @@ export default class TrainingCtrl implements PromotingInterface {
   public goToAnalysis = (): void => {
     const puzzle = this.data.puzzle
     if (hasNetwork() && puzzle.gameId !== 'custom') {
-      router.goTo(`/analyse/online/${puzzle.gameId}/${puzzle.color}?ply=${puzzle.initialPly}&curFen=${puzzle.fen}&color=${puzzle.color}&variant=${puzzle.variant.key}}&fallback=1`)
+      router.set(`/analyse/online/${puzzle.gameId}/${puzzle.color}?ply=${puzzle.initialPly}&curFen=${puzzle.fen}&color=${puzzle.color}&variant=${puzzle.variant.key}}&fallback=1`)
     } else {
-      router.goTo(`/analyse/variant/${this.data.puzzle.variant.key}/fen/${encodeURIComponent(this.initialNode.fen)}?color=${puzzle.color}&goBack=1`)
+      router.set(`/analyse/variant/${this.data.puzzle.variant.key}/fen/${encodeURIComponent(this.initialNode.fen)}?color=${puzzle.color}&goBack=1`)
     }
   }
 

@@ -44,7 +44,7 @@ export default function DraughtsClockCtrl(): IDraughtsClockCtrl {
 
   function goHome() {
     if (!clockObj().isRunning() || clockObj().flagged()) {
-      router.goTo('/')
+      router.set('/')
     }
   }
 

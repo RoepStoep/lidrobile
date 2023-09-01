@@ -65,9 +65,9 @@ export default {
       .catch(err => {
         handleXhrError(err)
         if (vnode.attrs.fallback && vnode.attrs.variant && vnode.attrs.curFen && vnode.attrs.color) {
-          router.goTo(`/analyse/variant/${vnode.attrs.variant}/fen/${encodeURIComponent(vnode.attrs.curFen)}?color=${vnode.attrs.color}&goBack=1`)
+          router.set(`/analyse/variant/${vnode.attrs.variant}/fen/${encodeURIComponent(vnode.attrs.curFen)}?color=${vnode.attrs.color}&goBack=1`)
         } else {
-          router.goTo('/analyse', true)
+          router.set('/analyse', true)
         }
         redraw()
       })
@@ -77,7 +77,7 @@ export default {
         setTimeout(() => {
           const otbData = savedOtbGame && getAnalyseData(savedOtbGame, orientation)
           if (!otbData) {
-            router.goTo('/analyse', true)
+            router.set('/analyse', true)
           } else {
             otbData.player.spectator = true
             this.ctrl = new AnalyseCtrl(otbData, undefined, source, orientation, shouldGoBack, ply, tabId)
@@ -91,7 +91,7 @@ export default {
         setTimeout(() => {
           const aiData = savedAiGame && getAnalyseData(savedAiGame, orientation)
           if (!aiData) {
-            router.goTo('/analyse', true)
+            router.set('/analyse', true)
           } else {
             aiData.player.spectator = true
             this.ctrl = new AnalyseCtrl(aiData, undefined, source, orientation, shouldGoBack, ply, tabId)
@@ -109,7 +109,7 @@ export default {
         }
         let url = `/analyse/variant/${settingsVariant}`
         if (fenArg) url += `/fen/${encodeURIComponent(fenArg)}`
-        router.goTo(url, true)
+        router.set(url, true)
         redraw()
       } else {
         this.ctrl = new AnalyseCtrl(makeDefaultData(variant, fenArg), undefined, source, orientation, shouldGoBack, ply, tabId)

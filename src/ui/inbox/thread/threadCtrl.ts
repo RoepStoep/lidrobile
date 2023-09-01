@@ -41,7 +41,7 @@ function sendResponse(form: HTMLFormElement) {
   xhr.respond(id, response)
   .then(data => {
     if (data.ok) {
-      router.goTo('/inbox/' + id)
+      router.set('/inbox/' + id)
     }
     else {
       redraw()
@@ -52,6 +52,6 @@ function sendResponse(form: HTMLFormElement) {
 
 function deleteThread(id: string) {
   xhr.deleteThread(id)
-  .then(() => router.goTo('/inbox/'))
+  .then(() => router.set('/inbox/'))
   .catch(handleXhrError)
 }

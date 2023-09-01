@@ -41,7 +41,7 @@ export function renderFooter(ctrl: InboxCtrl) {
         {renderNavButton('V', !ctrl.isLoading() && forwardEnabled, ctrl.last)}
       </div>
       <div className="actions_bar composeAction">
-        <button className="action_bar_button" oncreate={helper.ontapY(() => router.goTo('/inbox/new'))}>
+        <button className="action_bar_button" oncreate={helper.ontapY(() => router.set('/inbox/new'))}>
           <span className="fa fa-pencil" />
           {i18n('composeMessage')}
         </button>
@@ -62,7 +62,7 @@ function renderInboxItem(thread: Thread) {
   return (
     <tr className={'list_item' + (thread.isUnread ? ' unread' : '')}
     key={thread.id}
-    oncreate={helper.ontapY(() => router.goTo('/inbox/' + thread.id))}>
+    oncreate={helper.ontapY(() => router.set('/inbox/' + thread.id))}>
       <td className="threadAuthor"> { thread.author } </td>
       <td className="threadName"> { thread.name } </td>
       <td className="threadDate"> { formatMessageTime(thread.updatedAt) } </td>
