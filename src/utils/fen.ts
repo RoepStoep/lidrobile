@@ -18,7 +18,7 @@ export function cleanFenUri(fenUri: string): string {
   return fen
 }
 
-export function validateFen(fen: string, variant: VariantKey = 'standard') {
+export function validateFen(fen: string, variant: VariantKey = 'standard'): boolean {
   const tokens = fenUtil.toggleCoordinates(fen, false).split(':')
   if (!validateTokens(tokens))
     return false
@@ -27,10 +27,11 @@ export function validateFen(fen: string, variant: VariantKey = 'standard') {
   if (!validateFields(fields))
     return false
 
-  if (variant === 'frisian' || variant === 'frysk')
+  if (variant === 'frisian' || variant === 'frysk') {
     return validateFrisian(tokens)
-  else
+  } else {
     return true
+  }
 }
 
 function validateFrisian(tokens: string[]) {

@@ -4,14 +4,14 @@ import { State } from './state'
 export function noop(): void { /* noop */ }
 
 // https://gist.github.com/gre/1650294
-export function easeInOutCubic(t: number) {
+export function easeInOutCubic(t: number): number {
   return t < 0.5 ? 4 * t * t * t : (t - 1) * (2 * t - 2) * (2 * t - 2) + 1
 }
 
-export const pos2key = (pos: cg.Pos, s: cg.BoardSize) => allKeys[pos[0] + (s[0] / 2) * (pos[1] - 1) - 1]
-export const field2key = (n: number) => n < 10 ? ('0' + n.toString()) as Key : n.toString() as Key
+export const pos2key = (pos: cg.Pos, s: cg.BoardSize): Key => allKeys[pos[0] + (s[0] / 2) * (pos[1] - 1) - 1]
+export const field2key = (n: number): Key => n < 10 ? ('0' + n.toString()) as Key : n.toString() as Key
 
-export const key2pos = (k: Key, s: cg.BoardSize) => key2posn(parseInt(k), s)
+export const key2pos = (k: Key, s: cg.BoardSize): cg.Pos => key2posn(parseInt(k), s)
 const key2posn = (k: number, s: cg.BoardSize) => [(k - 1) % (s[0] / 2) + 1, ((k - 1) + ((s[0] / 2) - (k - 1) % (s[0] / 2))) / (s[1] / 2)] as cg.Pos
 
 export function boardpos(pos: cg.Pos, boardSize: cg.BoardSize, asWhite: boolean): BoardPos {
@@ -34,19 +34,19 @@ export const algebraicKeys: readonly string[] = ['b8', 'd8', 'f8', 'h8', 'a7', '
 export const san2alg : { [key: string]: string } = { '1':'b8', '2':'d8', '3':'f8', '4':'h8', '5':'a7', '6':'c7', '7':'e7', '8':'g7', '9':'b6', '10':'d6', '11':'f6', '12':'h6', '13':'a5', '14':'c5', '15':'e5', '16':'g5', '17':'b4', '18':'d4', '19':'f4', '20':'h4', '21':'a3', '22':'c3', '23':'e3', '24':'g3', '25':'b2', '26':'d2', '27':'f2', '28':'h2', '29':'a1', '30':'c1', '31':'e1', '32':'g1' }
 export const ranks: readonly string[] = ['1', '2', '3', '4', '5', '6', '7', '8'], ranksRev: readonly string[] = ['8', '7', '6', '5', '4', '3', '2', '1']
 export const files: readonly string[] = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'], filesRev: readonly string[] = ['h', 'g', 'f', 'e', 'd', 'c', 'b', 'a']
-export function opposite(color: Color) {
+export function opposite(color: Color): Color {
   return color === 'white' ? 'black' : 'white'
 }
 
-export function containsX<T>(xs: T[] | undefined, x: T) {
+export function containsX<T>(xs: T[] | undefined, x: T): boolean {
   return xs !== undefined && xs.indexOf(x) !== -1
 }
 
-export function distance(pos1: NumberPair, pos2: NumberPair) {
+export function distance(pos1: NumberPair, pos2: NumberPair): number {
   return Math.sqrt(Math.pow(pos1[0] - pos2[0], 2) + Math.pow(pos1[1] - pos2[1], 2))
 }
 
-export function transform(state: State, pieceColor: Color, translateProp: string) {
+export function transform(state: State, pieceColor: Color, translateProp: string): string {
   if (state.otb) {
     const o = state.orientation
     const m = state.otbMode
@@ -65,11 +65,11 @@ export function transform(state: State, pieceColor: Color, translateProp: string
   return translateProp
 }
 
-export function translate(coord: NumberPair) {
+export function translate(coord: NumberPair): string {
   return 'translate(' + coord[0] + 'px,' + coord[1] + 'px)'
 }
 
-export function translate3d(coord: NumberPair) {
+export function translate3d(coord: NumberPair): string {
   return 'translate3d(' + coord[0] + 'px,' + coord[1] + 'px, 0)'
 }
 
