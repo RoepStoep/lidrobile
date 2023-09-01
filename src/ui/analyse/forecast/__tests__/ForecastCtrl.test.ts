@@ -1,5 +1,5 @@
 import ForecastCtrl from '../ForecastCtrl'
-import { ForecastStep, MinimalForecastStep, AnalyseDataForForecast, ForecastData } from '~/lichess/interfaces/forecast'
+import { ForecastStep, MinimalForecastStep, AnalyseDataForForecast, ForecastData } from '~/lidraughts/interfaces/forecast'
 
 const mockPlayer = {
   id: 'xIFe'

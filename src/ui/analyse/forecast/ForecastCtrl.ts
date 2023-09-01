@@ -1,4 +1,4 @@
-import { AnalyseDataForForecast, ForecastStep, MinimalForecastStep } from '~/lichess/interfaces/forecast'
+import { AnalyseDataForForecast, ForecastStep, MinimalForecastStep } from '~/lidraughts/interfaces/forecast'
 import router from '~/router'
 import redraw from '~/utils/redraw'
 import { playAndSaveForecasts, saveForecasts } from './xhr'

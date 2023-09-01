@@ -1,5 +1,5 @@
 import { chunk } from 'lodash-es'
-import { ForecastStep } from '~/lichess/interfaces/forecast'
+import { ForecastStep } from '~/lidraughts/interfaces/forecast'
 
 type Move = {
   index: number;

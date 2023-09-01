@@ -1,5 +1,5 @@
 import { fetchJSON } from '~/http'
-import { ForecastData, ForecastStep } from '~/lichess/interfaces/forecast'
+import { ForecastData, ForecastStep } from '~/lidraughts/interfaces/forecast'
 
 interface SaveResponse extends ForecastData {
   reload?: boolean

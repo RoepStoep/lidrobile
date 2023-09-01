@@ -1,7 +1,7 @@
 import h from 'mithril/hyperscript'
 import i18n, { plural } from '~/i18n'
-import { playable } from '~/lichess/game'
-import { ForecastStep } from '~/lichess/interfaces/forecast'
+import { playable } from '~/lidraughts/game'
+import { ForecastStep } from '~/lidraughts/interfaces/forecast'
 import settings from '~/settings'
 import { ontap } from '~/ui/helper'
 import AnalyseCtrl from '../AnalyseCtrl'
@@ -26,9 +26,6 @@ export default function renderForecasts(ctrl: AnalyseCtrl): MaybeVNode {
       h('div.forecasts-wrapper.native_scroller', [
         h(
           'div.forecasts-list',
-          {
-            className: settings.game.pieceNotation() ? 'displayPieces' : '',
-          },
           [
             ...fctrl.lines.map(nodes => {
               const key = keyOf(nodes)

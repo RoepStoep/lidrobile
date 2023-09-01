@@ -1,5 +1,5 @@
 import { Signal } from 'signals'
-import { PongMessage } from './lichess/interfaces'
+import { PongMessage } from './lidraughts/interfaces'
 
 export default {
   // global screen redraw mechanism; it works the same way as m.redraw() works
