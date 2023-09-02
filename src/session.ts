@@ -319,7 +319,7 @@ async function refresh(): Promise<void> {
       session = undefined
       onLogout()
       redraw()
-      Toast.show({ text: 'You have been signed out', position: 'center', duration: 'short' })
+      Toast.show({ text: i18n('signedOut'), position: 'center', duration: 'short' })
     }
   }
 }

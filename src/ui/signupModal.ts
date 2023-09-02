@@ -1,4 +1,5 @@
 import { Keyboard } from '@capacitor/keyboard'
+import { Toast } from '@capacitor/toast'
 import h from 'mithril/hyperscript'
 import debounce from 'lodash-es/debounce'
 import session, { SignupData, EmailConfirm } from '../session'
@@ -175,6 +176,7 @@ function onSignup(e: Event) {
       checkEmail = true
       redraw()
     } else {
+      Toast.show({ text: i18n('loginSuccessful'), duration: 'short' })
       socket.reconnectCurrent()
       redraw()
       loginModal.close()
