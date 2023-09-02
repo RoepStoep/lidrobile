@@ -1,11 +1,12 @@
 import { select } from 'd3-selection'
 import { scaleLinear } from 'd3-scale'
 import { area as d3Area } from 'd3-shape'
-import i18n from '../../../i18n'
 
 import * as Tree from '../../shared/tree/interfaces'
 import { ops as treeOps } from '../../shared/tree'
 import AnalyseCtrl from '../AnalyseCtrl'
+import { GameStage } from '../../../lidraughts/interfaces/analyse'
+import i18n from '~/i18n'
 
 interface Point {
   acpl: number
@@ -29,7 +30,7 @@ export default function drawAcplChart(
   const height = rect.height - margin.top - margin.bottom
   const g = svg.append('g').attr('transform', 'translate(' + margin.left + ',' + margin.top + ')')
 
-  function addDivisionLine(xPos: number, name: string) {
+  function addDivisionLine(xPos: number, name: GameStage) {
     g.append('line')
     .attr('class', 'division ' + name)
     .attr('x1', xPos)
@@ -42,7 +43,7 @@ export default function drawAcplChart(
     .attr('transform', 'rotate(90)')
     .attr('y', -xPos)
     .attr('dy', '-0.4em')
-    .text(name)
+    .text(i18n(name))
   }
 
   const firstPly = aCtrl.data.treeParts[0].ply || 0
@@ -111,12 +112,12 @@ export default function drawAcplChart(
   .attr('d', line as any)
 
   if (division && (division.middle || division.end)) {
-    addDivisionLine(x(0), i18n('opening'))
+    addDivisionLine(x(0), 'opening')
     if (division.middle) {
-      addDivisionLine(x(division.middle), i18n('middlegame'))
+      addDivisionLine(x(division.middle), 'middlegame')
     }
     if (division.end) {
-      addDivisionLine(x(division.end), i18n('endgame'))
+      addDivisionLine(x(division.end), 'endgame')
     }
   }
 
