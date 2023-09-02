@@ -37,6 +37,7 @@ const cachedState: State = {}
 export default {
   oninit({ attrs }) {
     const variantProp = <VariantKey>settings.training.variant() || 'standard'
+    const numId = safeStringToNum(attrs.id) || base62ToNumber(attrs.id)
     const variant = attrs.variant ? attrs.variant : (numId ? 'standard' : variantProp)
     const loadNewPuzzle = () => {
       if (variant !== variantProp) {
@@ -62,7 +63,6 @@ export default {
       }
     }
 
-    const numId = safeStringToNum(attrs.id) || base62ToNumber(attrs.id)
     if (numId) {
       if (cachedState.ctrl && window.history.state.puzzleId === numId) {
         this.ctrl = cachedState.ctrl
