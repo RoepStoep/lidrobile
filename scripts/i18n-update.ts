@@ -19,6 +19,7 @@ async function main() {
 
   // Download translations zip
   const zipFile = createWriteStream(`${baseDir}/out.zip`)
+
   downloadTranslationsTo(zipFile)
     .on('finish', async () => {
 
@@ -169,12 +170,19 @@ async function loadXml(locales: readonly string[], section: string) {
     const locale = locales[idx]
     console.log(colors.blue(`Loading translations for ${colors.bold(locale)}...`))
     try {
-      sectionXml[locale] = await loadTranslations(section, locale)
+      const translations = await loadTranslations(section, locale)
+      if (!isEmpty(translations)) {
+        sectionXml[locale] = translations
+      }
     } catch (_) {
       console.warn(colors.yellow(`Could not load ${section} translations for locale: ${locale}`))
     }
   }
   return sectionXml
+}
+
+function isEmpty(obj: StringMap): boolean {
+  return obj && Object.keys(obj).length === 0
 }
 
 main()
