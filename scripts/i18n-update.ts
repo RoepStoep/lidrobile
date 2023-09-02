@@ -27,6 +27,7 @@ async function main() {
 
     const locales = readdirSync(`${baseDir}/dest`)
     .map(fn => fn.split('.')[0])
+    .filter(l => l !== 'README')
 
     // load and flatten translations in one object
     const everything = {}

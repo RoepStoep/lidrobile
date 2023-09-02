@@ -3,7 +3,7 @@
 # And the CLI then renames it
 
 App/build
-App/public
+App/App/public
 
 App/Pods
 
