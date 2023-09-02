@@ -259,7 +259,7 @@ const countries: StringMap = {
   _adygea: 'Adygea',
   '_belarus-wrw': 'Belarus White-red-white',
   '_east-turkestan': 'East Turkestan',
-  '_lichess': 'Lichess',
+  '_lidraughts': 'Lidraughts',
   '_pirate': 'Pirate',
   '_rainbow': 'Rainbow',
   '_united-nations': 'United Nations',

@@ -19,6 +19,6 @@
 		}
 	},
 	"ios": {
-		"scheme": "lichess"
+		"scheme": "lidraughts"
 	}
 }

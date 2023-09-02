@@ -19,7 +19,7 @@ const config: CapacitorConfig = {
     }
   },
   ios: {
-    scheme: 'lichess',
+    scheme: 'lidraughts',
   }
 }
 
