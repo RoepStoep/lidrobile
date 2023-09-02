@@ -187,10 +187,6 @@ export function secondsToMinutes(sec: number): number {
   return sec === 0 ? sec : sec / 60
 }
 
-export function tupleOf(x: number | string): [string, string] {
-  return [x.toString(), x.toString()]
-}
-
 export function oppositeColor(color: Color): Color {
   return color === 'white' ? 'black' : 'white'
 }
@@ -310,7 +306,7 @@ function charToInt(char: string) {
 
 export function base62ToNumber(id?: string): number | undefined {
   // Server idSize is 5 at the time of writing, but we'll be lenient
-  if (id === undefined || id.length > 7 || id.length === 0 || id.match(/[^a-zA-Z0-9]/)) {
+  if (id === undefined || id.length > 7 || id.length === 0 || (/[^a-zA-Z0-9]/.exec(id))) {
     return undefined
   }
 
@@ -359,4 +355,8 @@ export function animationDuration(pref: boolean): number {
   //   default:
   //     return base
   // }
+}
+
+export function randomColor(): Color {
+  return Math.random() > 0.5 ? 'white' : 'black'
 }
