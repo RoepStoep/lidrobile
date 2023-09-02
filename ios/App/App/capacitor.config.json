@@ -7,12 +7,15 @@
 	"appendUserAgent": "Lidrobile/7.0.5",
 	"plugins": {
 		"SplashScreen": {
-			"backgroundColor": "000000",
+			"androidSplashResourceName": "launch_splash",
 			"launchAutoHide": false,
-			"androidSplashResourceName": "launch_splash"
+			"useDialog": false
 		},
 		"PushNotifications": {
-			"presentationOptions": ["sound", "alert"]
+			"presentationOptions": [
+				"sound",
+				"alert"
+			]
 		}
 	}
 }
