@@ -1,4 +1,4 @@
-import { Plugins } from '@capacitor/core'
+import { Share } from '@capacitor/share'
 import h from 'mithril/hyperscript'
 import { handleXhrError, hasNetwork } from '../../../../utils'
 import * as gameApi from '../../../../lidraughts/game'
@@ -38,7 +38,7 @@ export default {
     return h('button', {
       oncreate: helper.ontap(() => {
         const orientation = ctrl.draughtsground.state.orientation
-        Plugins.LiShare.share({ url: `${gameApi.publicUrl(ctrl.data)}/${orientation}#${ctrl.vm.ply}` })
+        Share.share({ url: `${gameApi.publicUrl(ctrl.data)}/${orientation}#${ctrl.vm.ply}` })
       })
     }, [i18n('shareGameURL')])
   },
@@ -49,7 +49,7 @@ export default {
           handleXhrError(err)
           throw err
         })
-        .then((pdn: string) => Plugins.LiShare.share({ text: pdn }))
+        .then((pdn: string) => Share.share({ text: pdn }))
     }
     return (
       <button oncreate={helper.ontap(handler)}>

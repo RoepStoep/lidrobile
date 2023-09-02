@@ -1,4 +1,5 @@
-import { Plugins } from '@capacitor/core'
+import { Toast } from '@capacitor/toast'
+import { App } from '@capacitor/app'
 import Rlite from 'rlite-router'
 import router from './router'
 import i18n from './i18n'
@@ -16,7 +17,7 @@ function fenFromParams(params: any): string {
 
 export default {
   init() {
-    Plugins.App.addListener('appUrlOpen', ({ url }) => {
+    App.addListener('appUrlOpen', ({ url }) => {
       setTimeout(() => {
         const urlObject = new URL(url)
         const path = urlObject.pathname
@@ -85,7 +86,7 @@ links.add('signup/confirm/:token', ({ params }) => {
       signupModal.close()
       router.set(`/@/${data.id}`)
       setTimeout(() => {
-        Plugins.LiToast.show({ text: i18n('loginSuccessful'), duration: 'long' })
+        Toast.show({ text: i18n('loginSuccessful'), position: 'center', duration: 'long' })
       }, 1000)
     })
     .catch(handleXhrError)

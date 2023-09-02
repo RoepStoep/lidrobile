@@ -1,5 +1,5 @@
 import h from 'mithril/hyperscript'
-import { Plugins } from '@capacitor/core'
+import { Toast } from '@capacitor/toast'
 import i18n from '../../i18n'
 import router from '../../router'
 import { validateFen, positionLooksLegit } from '../../utils/fen'
@@ -85,7 +85,7 @@ export default {
                 if (validateFen(f, v) && positionLooksLegit(f, getVariant(v).board.size)) {
                   router.set(`/ai/variant/${v}/fen/${encodeURIComponent(f)}/color/${c}`)
                 } else {
-                  Plugins.LiToast.show({ text: i18n('invalidFen'), duration: 'short' })
+                  Toast.show({ text: i18n('invalidFen'), position: 'center', duration: 'short' })
                 }
               }
             })
@@ -99,7 +99,7 @@ export default {
                 if (validateFen(f, v) && positionLooksLegit(f, getVariant(v).board.size)) {
                   router.set(`/otb/variant/${v}/fen/${encodeURIComponent(f)}`)
                 } else {
-                  Plugins.LiToast.show({ text: i18n('invalidFen'), duration: 'short' })
+                  Toast.show({ text: i18n('invalidFen'), position: 'center', duration: 'short' })
                 }
               }
             })

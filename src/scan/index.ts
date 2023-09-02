@@ -1,21 +1,17 @@
-import { Plugins } from '@capacitor/core'
-import { VariantKey } from './lidraughts/interfaces/variant'
+import { registerPlugin } from '@capacitor/core'
+import { ScanPlugin as IScanPlugin } from 'capacitor-scan'
+import { VariantKey } from '../lidraughts/interfaces/variant'
 
-interface IScanPlugin {
-  getMaxMemory(): Promise<{ value: number }>
-  start(options: { variant: string } ): Promise<void>
-  cmd(options: { cmd: string }): Promise<void>
-  exit(): Promise<void>
-}
-
-const CapacitorScanPlugin = Plugins.Scan as IScanPlugin
+export const Scan = registerPlugin<IScanPlugin>('Scan', {
+  web: () => import('./ScanWeb').then(m => new m.ScanWeb()),
+})
 
 export class ScanPlugin {
   private plugin: IScanPlugin
   public variant: VariantKey
 
   constructor(readonly v: VariantKey) {
-    this.plugin = CapacitorScanPlugin
+    this.plugin = Scan
     this.variant = v
   }
 

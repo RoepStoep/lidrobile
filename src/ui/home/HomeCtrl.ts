@@ -1,4 +1,6 @@
-import { Plugins, AppState, NetworkStatus, PluginListenerHandle } from '@capacitor/core'
+import { App, AppState } from '@capacitor/app'
+import { Network, NetworkStatus } from '@capacitor/network'
+import { PluginListenerHandle } from '@capacitor/core'
 import throttle from 'lodash-es/throttle'
 import debounce from 'lodash-es/debounce'
 import Zanimo from '../../utils/zanimo'
@@ -62,12 +64,12 @@ export default class HomeCtrl {
       this.loadOfflinePuzzle()
     }
 
-    this.networkListener = Plugins.Network.addListener('networkStatusChange', (s: NetworkStatus) => {
+    this.networkListener = Network.addListener('networkStatusChange', (s: NetworkStatus) => {
       console.debug('networkStatusChange')
       if (s.connected) this.init()
     })
 
-    this.appStateListener = Plugins.App.addListener('appStateChange', (state: AppState) => {
+    this.appStateListener = App.addListener('appStateChange', (state: AppState) => {
       console.debug('appStateChange')
       if (state.isActive) this.init()
     })

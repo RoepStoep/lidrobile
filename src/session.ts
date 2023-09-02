@@ -1,4 +1,5 @@
-import { Plugins } from '@capacitor/core'
+import { Toast } from '@capacitor/toast'
+import { Device } from '@capacitor/device'
 import throttle from 'lodash-es/throttle'
 import redraw from './utils/redraw'
 import signals from './signals'
@@ -118,7 +119,7 @@ function myTurnGames(): readonly NowPlayingGame[] {
 }
 
 function showSavedPrefToast(data: string): string {
-  Plugins.LiToast.show({ text: '✓ lidraughts.org: ' + i18n('yourPreferencesHaveBeenSaved'), duration: 'short' })
+  Toast.show({ text: '✓ lidraughts.org: ' + i18n('yourPreferencesHaveBeenSaved'), position: 'center', duration: 'short' })
   return data
 }
 
@@ -318,7 +319,7 @@ async function refresh(): Promise<void> {
       session = undefined
       onLogout()
       redraw()
-      Plugins.LiToast.show({ text: i18n('signedOut'), duration: 'short' })
+      Toast.show({ text: i18n('signedOut'), position: 'center', duration: 'short' })
     }
   }
 }
@@ -337,10 +338,10 @@ async function backgroundRefresh(): Promise<void> {
 }
 
 function sendUUID(): void {
-  Plugins.Device.getInfo()
-  .then(info => {
-    if (info.uuid !== 'web') {
-      fetchText(`/auth/set-fp/${info.uuid}/0`, { method: 'POST' })
+  Device.getId()
+  .then(({ uuid }) => {
+    if (uuid !== 'web') {
+      fetchText(`/auth/set-fp/${uuid}/0`, { method: 'POST' })
     }
   })
 }

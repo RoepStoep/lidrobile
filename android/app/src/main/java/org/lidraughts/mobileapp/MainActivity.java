@@ -9,23 +9,16 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.PatternMatcher;
 import android.util.Log;
 import android.webkit.WebView;
 
+import com.capacitorjs.plugins.dialog.Dialog;
 import com.getcapacitor.BridgeActivity;
-import com.getcapacitor.Dialogs;
-import com.getcapacitor.Plugin;
-import com.getcapacitor.community.keepawake.KeepAwake;
-import com.getcapacitor.plugin.Storage;
-
-import org.lichess.plugin.SoundEffect;
-import org.lidraughts.mobileapp.scan.Scan;
-import org.lidraughts.mobileapp.BuildConfig;
 
 import java.io.File;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.regex.Pattern;
 
 public class MainActivity extends BridgeActivity {
@@ -37,15 +30,7 @@ public class MainActivity extends BridgeActivity {
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
 
-    // Initializes the Bridge
-    this.init(savedInstanceState, new ArrayList<Class<? extends Plugin>>() {{
-      // Additional plugins you've installed go here
-      add(LiToast.class);
-      add(LiShare.class);
-      add(SoundEffect.class);
-      add(KeepAwake.class);
-      add(Scan.class);
-    }});
+    registerPlugin(FullScreenPlugin.class);
 
     this.versionUpdateActions();
 
@@ -66,7 +51,7 @@ public class MainActivity extends BridgeActivity {
           String message = "lidraughts needs a recent version of the rendering engine which is provided by" +
                   " the '" + appName   + "' application. The version you're using is too old ("
                   + pInfo.versionName + "). Please update it or lidraughts will not work.";
-          Dialogs.confirm(this, message, title, "OK", "Cancel", new Dialogs.OnResultListener() {
+          Dialog.confirm(this, message, title, "OK", "Cancel", new Dialog.OnResultListener() {
             @Override
             public void onResult(boolean value, boolean didCancel, String inputValue) {
               if (!didCancel) {

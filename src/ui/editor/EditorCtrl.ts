@@ -1,4 +1,4 @@
-import { Plugins } from '@capacitor/core'
+import { Toast } from '@capacitor/toast'
 import debounce from 'lodash-es/debounce'
 import Draughtsground from '../../draughtsground/Draughtsground'
 import * as cg from '../../draughtsground/interfaces'
@@ -193,7 +193,7 @@ export default class EditorCtrl {
     if (fenUtil.validateFen(newFen, v)) {
       router.set(`/editor/variant/${encodeURIComponent(v)}/fen/${encodeURIComponent(newFen)}`, true)
     } else {
-      Plugins.LiToast.show({ text: i18n('invalidFen'), duration: 'short' })
+      Toast.show({ text: i18n('invalidFen'), position: 'center', duration: 'short' })
     }
   }
 
@@ -205,7 +205,7 @@ export default class EditorCtrl {
         if (situation.playable) {
           router.set(`/analyse/variant/${encodeURIComponent(variant)}/fen/${encodeURIComponent(fen)}`)
         } else {
-          Plugins.LiToast.show({ text: i18n('invalidFen'), duration: 'short' })
+          Toast.show({ text: i18n('invalidFen'), position: 'center', duration: 'short' })
         }
       })
   }
@@ -214,13 +214,13 @@ export default class EditorCtrl {
     const fen = this.computeFen(false)
     const variant = this.data.game.variant.key()
     if (variant !== 'standard') {
-      Plugins.LiToast.show({ text: 'You can\'t continue from a variant position', duration: 'long', position: 'bottom' })
+      Toast.show({ text: 'You can\'t continue from a variant position', position: 'center', duration: 'long' })
     } else draughts.situation({ variant, fen })
       .then(({ situation }) => {
         if (situation.playable) {
           this.continuePopup.open(fen, variant)
         } else {
-          Plugins.LiToast.show({ text: i18n('invalidFen'), duration: 'short' })
+          Toast.show({ text: i18n('invalidFen'), position: 'center', duration: 'short' })
         }
       })
   }
