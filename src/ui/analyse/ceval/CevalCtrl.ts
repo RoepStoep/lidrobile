@@ -7,7 +7,6 @@ import { povChances } from './winningChances'
 export default class CevalCtrl {
   public readonly minDepth = 6
   public readonly allowed: boolean
-  public readonly variant: VariantKey
 
   private initialized = false
   private engine: ScanClient
@@ -21,7 +20,6 @@ export default class CevalCtrl {
     readonly emit: (path: string, ev?: Tree.ClientEval) => void,
   ) {
     this.allowed = opts.allowed
-    this.variant = opts.variant
     this.isEnabled = settings.analyse.enableCeval()
     this.engine = new ScanClient(opts.variant, opts.cores, opts.hashSize)
   }
@@ -93,9 +91,9 @@ export default class CevalCtrl {
     return this.engine.isSearching()
   }
 
-  public destroy = (): void => {
+  public destroy = async (): Promise<void> => {
     if (this.initialized) {
-      this.engine.exit()
+      return this.engine.exit()
       .then(() => {
         this.initialized = false
         this.started = false
@@ -109,7 +107,7 @@ export default class CevalCtrl {
 
   public stop = (): void => {
     if (!this.enabled() || !this.started) return
-    this.engine.stop()
+    void this.engine.stop()
     this.started = false
   }
 
@@ -123,11 +121,20 @@ export default class CevalCtrl {
 
   public setMultiPv(pv: number): void {
     this.opts.multiPv = pv
-    this.restart()
+    void this.restart()
   }
 
-  public setThreads(threads: number): void {
-    void this.engine.setThreads(threads).then(this.restart)
+  public setCores = (cores: number): Promise<void> => {
+    this.opts.cores = cores
+    return this.engine.setThreads(cores).then(this.restart)
+  }
+
+  public setHashSize = async (hash: number): Promise<void> => {
+    this.opts.hashSize = hash
+    return this.destroy().then(() =>{
+      this.engine = new ScanClient(this.opts.variant, this.opts.cores, this.opts.hashSize)
+      return this.init().then(this.restart)
+    })
   }
 
   public getMultiPv(): number {

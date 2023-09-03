@@ -10,11 +10,11 @@ export const Scan = registerPlugin<IScanPlugin>('Scan', {
 
 export class ScanPlugin {
   private readonly plugin: IScanPlugin
-  private readonly variant: string
+  private ttSize: number
 
-  constructor(readonly v: VariantKey) {
+  constructor(readonly variant: VariantKey, hash: number) {
+    this.ttSize = ttSize(hash)
     this.plugin = Scan
-    this.variant = parseVariant(v)
   }
 
   public async start(): Promise<{ engineName: string }> {
@@ -26,7 +26,6 @@ export class ScanPlugin {
         const matches = line.match(NAME_REGEX)
         if (matches) {
           engineName = `${matches[1]} ${matches[2]}`
-          console.log('Received engine name ' + engineName)
         }
         if (line.startsWith('ready')) {
           window.removeEventListener('scan', listener, false)
@@ -34,10 +33,15 @@ export class ScanPlugin {
         }
       }
       window.addEventListener('scan', listener, { passive: true })
-      this.plugin.start({ variant: this.variant })
+      this.plugin.start({ variant: parseVariant(this.variant) })
+        .then(() => this.setOption('tt-size', this.ttSize))
         .then(() => this.send('hub'))
         .then(() => this.send('init'))
     })
+  }
+
+  public setHash(hash: number): void {
+    this.ttSize = ttSize(hash)
   }
 
   public isReady(): Promise<void> {
@@ -67,6 +71,16 @@ export class ScanPlugin {
     return this.plugin.exit()
   }
 
+}
+
+/* 
+ * tt-size: 
+ *   The number of entries in the transposition table will be 2 ^ tt-size. 
+ *   Every time you increase it by one, the size of the table will double.
+ *   Every entry takes 16 bytes so tt-size = 26 corresponds to 1 GiB; Use smaller values for fast games. 
+ */
+function ttSize(hash: number) {
+  return Math.floor(Math.log2((hash * 1024 * 1024) / 16))
 }
 
 export function scanPieces(fen: string): string[] {
@@ -232,5 +246,6 @@ export async function getMaxMemory(): Promise<number> {
 
 export function getNbCores(): number {
   const cores = window.deviceInfo.cpuCores
-  return cores > 2 ? cores - 1 : 1
+  // NOTE: Scan knps actually decreases beyond 4 cores
+  return Math.min(cores > 2 ? cores - 1 : 1, 4)
 }

@@ -13,11 +13,11 @@ const EVAL_REGEX = new RegExp(''
 export default class ScanClient {
   private readonly scan: ScanPlugin
   private n_threads: number
+  private frisianVariant: boolean
+
   private stopTimeoutId?: number
   private work?: Work
   private curEval?: Tree.ClientEval
-
-  private frisianVariant: boolean
   private uciCache: any = {}
 
   // after a 'go' command, scan will be continue to emit until the 'done'
@@ -36,9 +36,9 @@ export default class ScanClient {
   constructor(
     readonly variant: VariantKey,
     threads: number,
-    readonly hash: number,
+    hash: number,
   ) {
-    this.scan = new ScanPlugin(variant)
+    this.scan = new ScanPlugin(variant, hash)
     this.n_threads = threads
     this.frisianVariant = variant === 'frisian' || variant === 'frysk'
     this.ready = defer()
@@ -53,10 +53,9 @@ export default class ScanClient {
       window.addEventListener('scan', this.listener, { passive: true })
       const obj = await this.scan.start()
       this.engineName = obj.engineName
-      await this.scan.setOption('bb-size', '0')
+
       if (Capacitor.getPlatform() !== 'web') {
         await this.scan.setOption('threads', this.n_threads)
-        await this.scan.setOption('hash', this.hash)
       }
     } catch (err: unknown) {
       console.error('scan init error', err)

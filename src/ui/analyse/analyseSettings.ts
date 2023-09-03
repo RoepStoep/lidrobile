@@ -43,13 +43,14 @@ export default {
       isOpen = true
     }
 
-    function close(fromBB?: string) {
+    async function close(fromBB?: string) {
       if (fromBB !== 'backbutton' && isOpen) router.backbutton.stack.pop()
       isOpen = false
       if (settings.analyse.cevalCores() !== cevalCoresOnOpen) {
-        root.ceval.setThreads(settings.analyse.cevalCores())
-      } else if (settings.analyse.cevalHashSize() !== cevalHashSizeOnOpen) {
-        router.reload()
+        await root.ceval.setCores(settings.analyse.cevalCores())
+      }
+      if (settings.analyse.cevalHashSize() !== cevalHashSizeOnOpen) {
+        await root.ceval.setHashSize(settings.analyse.cevalHashSize())
       }
     }
 
