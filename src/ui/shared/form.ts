@@ -155,7 +155,7 @@ export default {
           setTimeout(redraw, 10)
         }
       }),
-      h('div.forms-sliderValue', value + ' / ' + max)
+      h('div.forms-sliderValue', `${value} / ${max}`)
     ])
   }
 }

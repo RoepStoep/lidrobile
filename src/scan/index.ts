@@ -9,16 +9,16 @@ export const Scan = registerPlugin<IScanPlugin>('Scan', {
 })
 
 export class ScanPlugin {
-  private plugin: IScanPlugin
-  private variant: string
+  private readonly plugin: IScanPlugin
+  private readonly variant: string
 
   constructor(readonly v: VariantKey) {
-    // lichobile: canUseNNUE() && settings.analyse.cevalUseNNUE()  ? Stockfish : StockfishVariants
     this.plugin = Scan
     this.variant = parseVariant(v)
   }
 
   public async start(): Promise<{ engineName: string }> {
+    // another call to init is required for changing variant, bb-size, tt-size
     return new Promise((resolve) => {
       let engineName = 'Scan'
       const listener = (e: Event) => {

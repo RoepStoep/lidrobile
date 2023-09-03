@@ -69,7 +69,7 @@ export default class CevalCtrl {
       } else work.moves.push(shortUci(s))
     }
 
-    this.engine.start(work)
+    await this.engine.start(work)
     this.started = true
     this.lastStarted = {
       path,
@@ -78,9 +78,10 @@ export default class CevalCtrl {
   }
 
   // Useful if/when options change while analysis is running.
-  public restart(): void {
+  private restart = async (): Promise<void> => {
     if (this.lastStarted) {
-      void this.start(this.lastStarted.path, this.lastStarted.nodes, false, false)
+      await this.engine.stop()
+      await this.start(this.lastStarted.path, this.lastStarted.nodes, false, false)
     }
   }
 
@@ -123,6 +124,10 @@ export default class CevalCtrl {
   public setMultiPv(pv: number): void {
     this.opts.multiPv = pv
     this.restart()
+  }
+
+  public setThreads(threads: number): void {
+    void this.engine.setThreads(threads).then(this.restart)
   }
 
   public getMultiPv(): number {

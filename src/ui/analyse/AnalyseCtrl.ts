@@ -659,7 +659,14 @@ export default class AnalyseCtrl {
   private onCevalMsg = (path: string, ceval?: Tree.ClientEval) => {
     if (ceval) {
       this.tree.updateAt(path, (node: Tree.Node) => {
-        if (node.ceval && node.ceval.depth >= ceval.depth) return
+        if (node.ceval && node.ceval.depth >= ceval.depth) {
+          if (!ceval.cloud) {
+            // make sure current search speed is always visible
+            node.ceval.knps = ceval.knps
+            redraw()
+          }
+          return
+        }
 
         if (node.ceval === undefined) {
           node.ceval = { ...ceval }

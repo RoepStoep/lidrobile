@@ -12,6 +12,7 @@ const EVAL_REGEX = new RegExp(''
 
 export default class ScanClient {
   private readonly scan: ScanPlugin
+  private n_threads: number
   private stopTimeoutId?: number
   private work?: Work
   private curEval?: Tree.ClientEval
@@ -33,11 +34,12 @@ export default class ScanClient {
   public engineName = 'Scan'
 
   constructor(
-    variant: VariantKey,
-    readonly threads: number,
+    readonly variant: VariantKey,
+    threads: number,
     readonly hash: number,
   ) {
     this.scan = new ScanPlugin(variant)
+    this.n_threads = threads
     this.frisianVariant = variant === 'frisian' || variant === 'frysk'
     this.ready = defer()
     this.ready.resolve()
@@ -52,13 +54,18 @@ export default class ScanClient {
       const obj = await this.scan.start()
       this.engineName = obj.engineName
       await this.scan.setOption('bb-size', '0')
-      await this.scan.setOption('threads', this.threads)
       if (Capacitor.getPlatform() !== 'web') {
+        await this.scan.setOption('threads', this.n_threads)
         await this.scan.setOption('hash', this.hash)
       }
     } catch (err: unknown) {
       console.error('scan init error', err)
     }
+  }
+
+  public setThreads = (threads: number): Promise<void> => {
+    this.n_threads = threads
+    return this.scan.setOption('threads', this.n_threads)
   }
 
   /*
@@ -68,7 +75,7 @@ export default class ScanClient {
    * than 10s to stop current search)
    */
   public start = (work: Work): Promise<void> => {
-    this.stop()
+    void this.stop()
     this.startQueue.push(work)
 
     clearTimeout(this.stopTimeoutId)
@@ -79,17 +86,17 @@ export default class ScanClient {
     return Promise.race([this.ready.promise, timeout])
     .then(this.search)
     .catch(() => {
-      this.reset().then(this.search)
+      return this.reset().then(this.search)
     })
   }
 
   /*
    * Sends 'stop' command to scan if not already stopped
    */
-  public stop = (): void => {
+  public stop = async (): Promise<void> => {
     if (!this.stopped) {
       this.stopped = true
-      this.scan.send('stop')
+      return this.scan.send('stop')
     }
   }
 
@@ -123,7 +130,7 @@ export default class ScanClient {
       if (work.maxDepth >= 99) {
         await this.scan.send('level infinite')
       } else {
-        await this.scan.send('level depth=' + work.maxDepth)
+        await this.scan.send(`level depth=${work.maxDepth}`)
       }
       await this.scan.send('go analyze')
     }
