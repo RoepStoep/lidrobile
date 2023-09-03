@@ -15,6 +15,10 @@ export class ScanWeb extends WebPlugin implements ScanPlugin {
     return Promise.resolve({ value: 1024 })
   }
 
+  async getCPUArch(): Promise<{ value: string }> {
+    return Promise.resolve({ value: 'x86_64' })
+  }
+
   async start() {
     return new Promise((resolve) => {
       if (this.worker) {

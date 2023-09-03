@@ -26,8 +26,7 @@ dependencies {
     implementation project(':capacitor-storage')
     implementation project(':capacitor-toast')
     implementation project(':capacitor-sound-effect')
-    implementation project(':capacitor-stockfish')
-    implementation project(':capacitor-stockfish-variants')
+    implementation project(':capacitor-scan')
 
 }
 

@@ -68,11 +68,7 @@
 		"classpath": "org.lichess.plugin.SoundEffectPlugin"
 	},
 	{
-		"pkg": "capacitor-stockfish",
-		"classpath": "org.lichess.mobileapp.stockfish.Stockfish"
-	},
-	{
-		"pkg": "capacitor-stockfish-variants",
-		"classpath": "org.lichess.mobileapp.stockfish.StockfishVariants"
+		"pkg": "capacitor-scan",
+		"classpath": "org.lidraughts.mobileapp.scan.Scan"
 	}
 ]
