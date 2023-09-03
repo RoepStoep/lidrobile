@@ -2,37 +2,41 @@ import { registerPlugin } from '@capacitor/core'
 import { ScanPlugin as IScanPlugin } from 'capacitor-scan'
 import { VariantKey } from '../lidraughts/interfaces/variant'
 
+const NAME_REGEX = new RegExp(/^id\sname=([\w]+)\sversion=([\w.]+)/.source)
+
 export const Scan = registerPlugin<IScanPlugin>('Scan', {
   web: () => import('./ScanWeb').then(m => new m.ScanWeb()),
 })
 
 export class ScanPlugin {
   private plugin: IScanPlugin
-  public variant: VariantKey
+  private variant: string
 
   constructor(readonly v: VariantKey) {
     // lichobile: canUseNNUE() && settings.analyse.cevalUseNNUE()  ? Stockfish : StockfishVariants
     this.plugin = Scan
-    this.variant = v
+    this.variant = parseVariant(v)
   }
 
   public async start(): Promise<{ engineName: string }> {
     return new Promise((resolve) => {
-      let engineName = 'Scan 3.1'
+      let engineName = 'Scan'
       const listener = (e: Event) => {
         const line = (e as any).output
-        console.debug('[scan >>] ' + line)
-        if (line.startsWith('id name ')) {
-          engineName = line.substring('id name '.length)
+        const matches = line.match(NAME_REGEX)
+        if (matches) {
+          engineName = `${matches[1]} ${matches[2]}`
+          console.log('Received engine name ' + engineName)
         }
-        if (line.startsWith('uciok')) {
+        if (line.startsWith('ready')) {
           window.removeEventListener('scan', listener, false)
           resolve({ engineName })
         }
       }
       window.addEventListener('scan', listener, { passive: true })
       this.plugin.start({ variant: this.variant })
-      .then(() => this.send('uci'))
+        .then(() => this.send('hub'))
+        .then(() => this.send('init'))
     })
   }
 
@@ -40,13 +44,13 @@ export class ScanPlugin {
     return new Promise((resolve) => {
       const listener = (e: Event) => {
         const line = (e as any).output
-        if (line.startsWith('readyok')) {
+        if (line.startsWith('pong')) {
           window.removeEventListener('scan', listener, false)
           resolve()
         }
       }
       window.addEventListener('scan', listener, { passive: true })
-      this.send('isready')
+      this.send('ping')
     })
   }
 

@@ -54,16 +54,19 @@ export default class Engine {
   private isInit = false
   private listener: (e: Event) => void
 
-  constructor(readonly ctrl: AiRoundInterface, readonly variant: VariantKey) {
+  public readonly variant: VariantKey
+
+  constructor(readonly ctrl: AiRoundInterface, readonly v: VariantKey) {
     this.listener = (e: Event) => {
       const line = (e as any).output
       console.debug('[scan >>] ' + line)
       const bmMatch = line.match(/^done move=([0-9\-xX\s]+)/)
       if (bmMatch) {
-        this.ctrl.onEngineMove(parsePV(this.searchFen, bmMatch[1], this.scan.variant === 'frisian' || this.scan.variant === 'frysk', this.uciCache)[0])
+        this.ctrl.onEngineMove(parsePV(this.searchFen, bmMatch[1], v === 'frisian' || v === 'frysk', this.uciCache)[0])
       }
     }
-    this.scan = new ScanPlugin(variant)
+    this.variant = v
+    this.scan = new ScanPlugin(v)
   }
 
   public async init(): Promise<void> {
@@ -87,8 +90,6 @@ export default class Engine {
   }
 
   public async newGame(): Promise<void> {
-    // from UCI protocol spec, the client should always send isready after
-    // ucinewgame
     await this.scan.send('new-game')
     await this.scan.isReady()
   }
@@ -98,8 +99,6 @@ export default class Engine {
   }
 
   public async search(initialFen: string, currentFen: string, moves: string[]): Promise<void> {
-    const initVariant = this.scan.variant
-
     this.searchFen = currentFen
     initialFen = scanFen(initialFen)
     const l = this.level
@@ -108,7 +107,7 @@ export default class Engine {
       bookMargin = LVL_BOOK_MARGIN[l - 1],
       moveTime = LVL_MOVETIMES[l - 1]
     let pst: number, handicap: number, depth: number, ply: number, nodes: number
-    if (initVariant === 'frysk') {
+    if (this.variant === 'frysk') {
       pst = LVL_PST_FY[l - 1]
       handicap = LVL_HANDICAPS_FY[l - 1]
       depth = LVL_DEPTHS_FY[l - 1]
@@ -118,13 +117,13 @@ export default class Engine {
           nodes = 1
       else
           nodes = LVL_NODES_FY[l - 1]
-    } else if (initVariant === 'frisian') {
+    } else if (this.variant === 'frisian') {
       pst = LVL_PST[l - 1]
       handicap = LVL_HANDICAPS_FR[l - 1]
       depth = LVL_DEPTHS_FR[l - 1]
       ply = 0
       nodes = LVL_NODES_FR[l - 1]
-    } else if (initVariant === 'antidraughts') {
+    } else if (this.variant === 'antidraughts') {
       pst = LVL_PST_L[l - 1]
       handicap = LVL_HANDICAPS_L[l - 1]
       depth = LVL_DEPTHS_L[l - 1]

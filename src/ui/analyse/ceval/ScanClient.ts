@@ -30,7 +30,7 @@ export default class ScanClient {
   // stopped flag is true when a search has been interrupted before its end
   private stopped = false
 
-  public engineName = 'Scan 3.1'
+  public engineName = 'Scan'
 
   constructor(
     variant: VariantKey,
@@ -51,7 +51,6 @@ export default class ScanClient {
       window.addEventListener('scan', this.listener, { passive: true })
       const obj = await this.scan.start()
       this.engineName = obj.engineName
-      await this.scan.send('hub')
       await this.scan.setOption('bb-size', '0')
       await this.scan.setOption('threads', this.threads)
       if (Capacitor.getPlatform() !== 'web') {
