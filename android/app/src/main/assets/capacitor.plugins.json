@@ -64,11 +64,11 @@
 		"classpath": "com.capacitorjs.plugins.toast.ToastPlugin"
 	},
 	{
-		"pkg": "capacitor-sound-effect",
-		"classpath": "org.lichess.plugin.SoundEffectPlugin"
-	},
-	{
 		"pkg": "capacitor-scan",
 		"classpath": "org.lidraughts.mobileapp.scan.Scan"
+	},
+	{
+		"pkg": "capacitor-sound-effect",
+		"classpath": "org.lichess.plugin.SoundEffectPlugin"
 	}
 ]

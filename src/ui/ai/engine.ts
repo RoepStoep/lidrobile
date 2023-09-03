@@ -49,7 +49,6 @@ export const levelToRating: LevelToNumber = {
 export default class Engine {
   private uciCache: any = {}
   private searchFen = ''
-  private level = 1
   private scan: ScanPlugin
   private isInit = false
   private listener: (e: Event) => void
@@ -66,22 +65,20 @@ export default class Engine {
       }
     }
     this.variant = v
-    this.scan = new ScanPlugin(v)
+    this.scan = new ScanPlugin(v, 16)
   }
 
   public async init(): Promise<void> {
     try {
       if (!this.isInit) {
+        if (Capacitor.getPlatform() !== 'web') {
+          const mem = await getMaxMemory()
+          this.scan.setHash(mem)
+        }
         await this.scan.start()
         this.isInit = true 
         window.addEventListener('scan', this.listener, { passive: true })
-        await this.scan.send('hub')
-        await this.scan.send('init')
-        await this.scan.setOption('threads', getNbCores())          
-        const mem = await getMaxMemory()
-        if (Capacitor.getPlatform() !== 'web') {
-          await this.scan.setOption('hash', mem)
-        }
+        await this.scan.setOption('threads', getNbCores())
         await this.newGame()
       }
     } catch (e) {
@@ -94,14 +91,10 @@ export default class Engine {
     await this.scan.isReady()
   }
 
-  public async setLevel(l: number): Promise<void> {
-    this.level = l
-  }
-
-  public async search(initialFen: string, currentFen: string, moves: string[]): Promise<void> {
+  public async search(level: number, initialFen: string, currentFen: string, moves: string[]): Promise<void> {
     this.searchFen = currentFen
     initialFen = scanFen(initialFen)
-    const l = this.level
+    const l = level
 
     const bookPly = LVL_BOOK_PLY[l - 1], 
       bookMargin = LVL_BOOK_MARGIN[l - 1],
@@ -145,7 +138,7 @@ export default class Engine {
     })
 
     // TODO: Movetimes might need a different approach
-    this.scan.send('pos pos=' + initialFen + (scanMoves.length !== 0 ? (' moves="' + scanMoves.join(' ') + '"') : ''))
+    return this.scan.send('pos pos=' + initialFen + (scanMoves.length !== 0 ? (' moves="' + scanMoves.join(' ') + '"') : ''))
       .then(() => handicap ? this.scan.send(`level handicap=${handicap}`) : Promise.resolve())
       .then(() => ply ? this.scan.send(`level ply=${ply}`) : Promise.resolve())
       .then(() => nodes ? this.scan.send(`level nodes=${nodes}`) : Promise.resolve())

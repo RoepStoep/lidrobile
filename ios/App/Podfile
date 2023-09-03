@@ -25,8 +25,8 @@ def capacitor_pods
   pod 'CapacitorStatusBar', :path => '../../node_modules/@capacitor/status-bar'
   pod 'CapacitorStorage', :path => '../../node_modules/@capacitor/storage'
   pod 'CapacitorToast', :path => '../../node_modules/@capacitor/toast'
-  pod 'CapacitorSoundEffect', :path => '../../node_modules/capacitor-sound-effect'
   pod 'CapacitorScan', :path => '../../node_modules/capacitor-scan'
+  pod 'CapacitorSoundEffect', :path => '../../node_modules/capacitor-sound-effect'
 end
 
 target 'lidraughts' do

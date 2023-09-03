@@ -265,9 +265,8 @@ export default class AiRound implements AiRoundInterface, PromotingInterface {
         if (sit.pdnMoves[i].indexOf('x') !== -1) uciMoves = []
         else uciMoves.push(sit.uciMoves[i])
       }
-      this.engine!.init()
-      .then(() => this.engine!.setLevel(l))
-      .then(() => this.engine!.search(captureFen || this.data.game.initialFen, sit.fen, uciMoves))
+      void this.engine!.init()
+        .then(() => this.engine!.search(l, captureFen || this.data.game.initialFen, sit.fen, uciMoves))
     }, 500)
   }
 

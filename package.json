@@ -75,7 +75,7 @@
         "@capacitor/toast": "1.0.6",
         "@types/d3": "4.5.0",
         "@types/lodash-es": "4.17.3",
-        "capacitor-scan": "github:roepstoep/capacitor-scan#95c48256632ca17f0ff430d039edc424b226718e",
+        "capacitor-scan": "github:roepstoep/capacitor-scan#7a11b1f04bc01086c2799da6bf062715047c51ae",
         "capacitor-sound-effect": "2.0.1",
         "d3-axis": "1.0.8",
         "d3-scale": "1.0.6",
