@@ -30,7 +30,7 @@ export function composeBody(ctrl: IComposeCtrl) {
 
         <input id="subject" type="text" className="composeInput"
         placeholder={i18n('subject')}
-        oncreate={ctrl.id() ? helper.autofocus : null}
+        oncreate={ctrl.id() ? helper.autofocus : undefined}
         />
         {(errors && errors.subject) ? renderError(errors.subject[0]) : null}
 
