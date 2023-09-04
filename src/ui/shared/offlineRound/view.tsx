@@ -95,7 +95,7 @@ export function renderEndedGameStatus(ctrl: OfflineRoundInterface) {
 
 export function renderClaimDrawButton(ctrl: OfflineRoundInterface) {
   return (gameApi.playable(ctrl.data) && gameApi.threefoldable(ctrl.data)) ? h('button[data-icon=2].draw-yes', {
-    oncreate: helper.ontap(() => ctrl.replay.claimDraw())
+    oncreate: helper.ontap(() => ctrl.replay?.claimDraw())
   }, i18n('threefoldRepetition')) : null
 }
 
@@ -113,7 +113,7 @@ export function renderNewGameButton(ctrl: OfflineRoundInterface) {
 }
 
 export function renderReplay(ctrl: OfflineRoundInterface) {
-  return h('div.replay.box', {
+  return ctrl.replay ? h('div.replay.box', {
     oncreate: (vnode: Mithril.VnodeDOM<any, any>) => {
       setTimeout(() => autoScroll(vnode.dom as HTMLElement), 100)
       helper.ontapY((e: Event) => onReplayTap(ctrl, e), undefined, getMoveEl)(vnode)
