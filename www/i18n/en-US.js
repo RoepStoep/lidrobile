@@ -360,7 +360,7 @@ export default {
   "butYouCanKeepTrying": "But you can keep trying.",
   "success": "Success",
   "wasThisPuzzleAnyGood": "Was this puzzle any good?",
-  "pleaseVotePuzzle": "Help lidraughts improve by voting, using the up or down arrow:",
+  "pleaseVotePuzzle": "Help Lidraughts improve by voting, using the up or down arrow:",
   "thankYou": "Thank you!",
   "ratingX": "Rating: %s",
   "fromGameLink": "From game %s",

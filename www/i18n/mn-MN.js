@@ -315,7 +315,6 @@ export default {
   "butYouCanKeepTrying": "Гэхдээ та үргэлжлүүлэн бодох боломжтой.",
   "success": "Зөв",
   "wasThisPuzzleAnyGood": "Энэ бодлого хэр байв?",
-  "pleaseVotePuzzle": "Бодлогын чанарыг үнэлэх",
   "thankYou": "Баярлалаа!",
   "ratingX": "Чансаа:%s",
   "fromGameLink": "%s өргөөс сэдэвлэсэн бодлого",
