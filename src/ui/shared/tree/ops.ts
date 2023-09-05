@@ -79,12 +79,11 @@ export function copyNode(node: Tree.Node, copyChildren = false): Tree.Node {
     id: node.id,
     ply: node.ply,
     displayPly: node.displayPly,
-    fen: node.fen,
     uci: node.uci,
-    san: node.san,
+    fen: node.fen,
     children: copyChildren ? node.children : [],
-    drops: node.drops,
     comments: node.comments,
+    gamebook: node.gamebook,
     dests: node.dests,
     destsUci: node.destsUci,
     captLen: node.captLen,
@@ -97,13 +96,14 @@ export function copyNode(node: Tree.Node, copyChildren = false): Tree.Node {
     parentClock: node.parentClock,
     shapes: node.shapes,
     comp: node.comp,
+    san: node.san,
     threefold: node.threefold,
+    draw: node.draw,
     fail: node.fail,
     puzzle: node.puzzle,
     pdnMoves: node.pdnMoves,
     player: node.player,
-    end: node.end,
-    gamebook: node.gamebook
+    end: node.end
   } as Tree.Node
 }
 

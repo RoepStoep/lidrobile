@@ -46,7 +46,6 @@ export interface Node {
   comments?: Comment[]
   // TODO maybe don't keep both formats for dests & drops
   dests?: string | DestsMap
-  drops?: string | ReadonlyArray<string> | undefined | null
   destsUci?: ReadonlyArray<string>
   captLen?: number
   threat?: ClientEval
@@ -60,6 +59,7 @@ export interface Node {
   shapes?: ReadonlyArray<Shape>
   readonly comp?: boolean
   threefold?: boolean
+  draw?: boolean;
   readonly fail?: boolean
   puzzle?: string
   // added locally during analysis by worker

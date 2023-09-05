@@ -478,6 +478,17 @@ export default class AnalyseCtrl {
     .catch(handleXhrError)
   }
 
+  getChartData() {
+    const d = this.data
+    return {
+      analysis: d.analysis,
+      game: d.game,
+      player: d.player,
+      opponent: d.opponent,
+      treeParts: treeOps.mainlineNodeList(this.tree.root)
+    }
+  }
+
   playUci = (uci: Uci): void => {
     const move = draughtsFormat.decomposeUci(uci)
     this.sendMove(move[0], move[move.length - 1], move.length > 2 ? uci : undefined)
