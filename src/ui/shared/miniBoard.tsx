@@ -2,6 +2,7 @@ import h from 'mithril/hyperscript'
 import * as helper from '../helper'
 import { noop, formatTimeInSecs } from '../../utils'
 import { FeaturedGame2 } from '../../lidraughts/interfaces'
+import settings from '../../settings'
 import ViewOnlyBoard from './ViewOnlyBoard'
 import CountdownTimer from './CountdownTimer'
 
@@ -57,7 +58,7 @@ const MiniBoard: Mithril.Component<Attrs, State> = {
 }
 
 function fenColor(fen: string) {
-  return fen.indexOf(' b') > 0 ? 'black' : 'white'
+  return fen.startsWith('B:') ? 'black' : 'white'
 }
 
 function renderPlayer(gameObj: FeaturedGame2, color: Color) {
@@ -78,7 +79,8 @@ function renderPlayer(gameObj: FeaturedGame2, color: Color) {
 }
 
 function renderScore(color: Color, winner?: Color) {
-  return h('span.score', winner ? (color === winner ? '1' : '0') : '½')
+  const dr = settings.game.draughtsResult()
+  return h('span.score', winner ? (color === winner ? (dr ? '2' : '1') : '0') : (dr ? '1' : '½'))
 }
 
 function renderTime(color: Color, time: number, turnColor: Color) {
