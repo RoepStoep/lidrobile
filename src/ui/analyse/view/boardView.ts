@@ -80,7 +80,7 @@ function computeShapes(ctrl: AnalyseCtrl): readonly Shape[] {
       if (hint.mode === 'move') curBestShapes = makeShapesFromUci(hint.uci, 'paleBlue')
       else curBestShapes = [{
         orig: draughtsFormat.decomposeUci(hint.uci)[0],
-        brush: 'paleBlue'
+        brush: 'paleBlue_2'
       }]
     }
   }
@@ -118,7 +118,8 @@ function computeShapes(ctrl: AnalyseCtrl): readonly Shape[] {
   }
 
   if (!ctrl.retro && !ctrl.practice && ctrl.showThreat && threat) {
-    threatShape = makeShapesFromUci(threat.pvs[0].moves[0], 'paleRed')
+    const capts = threat.pvs[0].moves[0].split('x').length
+    threatShape = makeShapesFromUci(threat.pvs[0].moves[0], capts > 1 ? 'paleRed' : 'paleRed3')
   }
 
   const badNode = ctrl.retro && ctrl.retro.showBadNode()
