@@ -3,6 +3,7 @@ import { ScanPlugin, scanFen, parsePV } from '../../../scan'
 import { defer, Deferred } from '../../../utils/defer'
 import * as Tree from '../../shared/tree/interfaces'
 import { Work } from './interfaces'
+import { readKingMoves } from '../../../draughtsground/fen'
 
 const EVAL_REGEX = new RegExp(''
   + /^info depth=(\d+) mean-depth=\S+ /.source
@@ -127,7 +128,24 @@ export default class ScanClient {
       this.startQueue = []
       this.ready = defer()
 
-      await this.scan.send('pos pos=' + scanFen(work.initialFen) + (work.moves.length !== 0 ? (' moves="' + work.moves.join(' ') + '"') : ''))
+      let command = `pos pos=${scanFen(work.initialFen)}${work.moves.length !== 0 ? (' moves="' + work.moves.join(' ') + '"') : ''}`
+
+      if (this.frisianVariant) {
+        const kingMoves = readKingMoves(work.initialFen)
+        let wolf = ''
+        if (kingMoves?.white.key && kingMoves?.white.count) {
+          wolf += `W${kingMoves.white.key}=${kingMoves.white.count}`
+        }
+        if (kingMoves?.black.key && kingMoves?.black.count) {
+          if (wolf) wolf += ' '
+          wolf += `B${kingMoves.black.key}=${kingMoves.black.count}`
+        }
+        if (wolf) {
+          command += ` wolf="${wolf}"`
+        }
+      }
+
+      await this.scan.send(command)
       if (work.maxDepth >= 99) {
         await this.scan.send('level infinite')
       } else {

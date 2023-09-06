@@ -1,6 +1,7 @@
 import { Capacitor } from '@capacitor/core'
 import { AiRoundInterface } from '../shared/round'
 import { ScanPlugin, getNbCores, getMaxMemory, parsePV, scanFen } from '../../scan'
+import { readKingMoves } from '../../draughtsground/fen'
 
 interface LevelToNumber {
   [index: number]: number
@@ -93,7 +94,8 @@ export default class Engine {
 
   public async search(level: number, initialFen: string, currentFen: string, moves: string[]): Promise<void> {
     this.searchFen = currentFen
-    initialFen = scanFen(initialFen)
+    
+    const fen = scanFen(initialFen)
     const l = level
 
     const bookPly = LVL_BOOK_PLY[l - 1], 
@@ -106,7 +108,7 @@ export default class Engine {
       depth = LVL_DEPTHS_FY[l - 1]
       ply = 0
       // frysk "opening book"
-      if (initialFen === 'Wbbbbbeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeewwwww' && moves.length < 4)
+      if (fen === 'Wbbbbbeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeewwwww' && moves.length < 4)
           nodes = 1
       else
           nodes = LVL_NODES_FY[l - 1]
@@ -137,8 +139,25 @@ export default class Engine {
         return m.slice(0, 2) + '-' + m.slice(2)
     })
 
+    let command = `pos pos=${fen}${scanMoves.length ? (' moves="' + scanMoves.join(' ') + '"') : ''}`
+
+    if (this.variant === 'frysk' || this.variant === 'frisian') {
+      const kingMoves = readKingMoves(initialFen)
+      let wolf = ''
+      if (kingMoves?.white.key && kingMoves?.white.count) {
+        wolf += `W${kingMoves.white.key}=${kingMoves.white.count}`
+      }
+      if (kingMoves?.black.key && kingMoves?.black.count) {
+        if (wolf) wolf += ' '
+        wolf += `B${kingMoves.black.key}=${kingMoves.black.count}`
+      }
+      if (wolf) {
+        command += ` wolf="${wolf}"`
+      }
+    }
+
     // TODO: Movetimes might need a different approach
-    return this.scan.send('pos pos=' + initialFen + (scanMoves.length !== 0 ? (' moves="' + scanMoves.join(' ') + '"') : ''))
+    return this.scan.send(command)
       .then(() => handicap ? this.scan.send(`level handicap=${handicap}`) : Promise.resolve())
       .then(() => ply ? this.scan.send(`level ply=${ply}`) : Promise.resolve())
       .then(() => nodes ? this.scan.send(`level nodes=${nodes}`) : Promise.resolve())
