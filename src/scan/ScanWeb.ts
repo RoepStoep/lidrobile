@@ -19,12 +19,12 @@ export class ScanWeb extends WebPlugin implements ScanPlugin {
     return Promise.resolve({ value: 'x86_64' })
   }
 
-  async start() {
+  async start({ variant }: { variant: string }) {
     return new Promise((resolve) => {
       if (this.worker) {
         setTimeout(resolve, 1)
       } else {
-        this.worker = new Worker('../scan.js')
+        this.worker = new Worker(variant === 'frisian' ? '../scan_frisian.js' : '../scan_normal.js')
         this.worker.onmessage = msg => {
 
           const ev: any = new Event('scan')
@@ -33,7 +33,7 @@ export class ScanWeb extends WebPlugin implements ScanPlugin {
         }
         setTimeout(resolve, 1)
       }
-    }).then(() => {})
+    }).then(() => this.cmd({ 'cmd': `set-param name=variant value=${variant}` }))
   }
 
   async cmd({ cmd }: { cmd: string }) {

@@ -162,6 +162,7 @@ export default class ScanClient {
    */
   private processOutput(text: string) {
     console.debug('[scan >>] ' + text)
+    if (typeof(text) !== 'string') return
 
     if (text.indexOf('done') === 0) {
       this.ready.resolve()
