@@ -363,13 +363,13 @@ export default class AnalyseCtrl {
     }
   }
 
+  private practiceDepth = () => this.data.game.variant.key === 'antidraughts' ? 8 : 20
+
   togglePractice = () => {
     if (this.practice || !this.ceval.allowed) this.practice = null
     else {
       if (this.retro) this.retro = null
-      this.practice = makePractice(this, () => {
-        return 18
-      })
+      this.practice = makePractice(this, this.practiceDepth)
     }
   }
 

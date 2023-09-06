@@ -8,7 +8,7 @@ import { readKingMoves } from '../../../draughtsground/fen'
 const EVAL_REGEX = new RegExp(''
   + /^info depth=(\d+) mean-depth=\S+ /.source
   + /score=(\S+) nodes=(\d+) /.source
-  + /time=(\S+) (?:nps=\S+ )?/.source
+  + /(?:time=(\S+) )?(?:nps=\S+ )?/.source
   + /pv="?([0-9\-xX\s]+)"?/.source)
 
 export default class ScanClient {
@@ -175,7 +175,7 @@ export default class ScanClient {
 
     const depth = parseInt(matches[1]),
       nodes = parseInt(matches[3]),
-      elapsedMs: number = parseFloat(matches[4]) * 1000,
+      elapsedMs: number = parseFloat(matches[4]) * 1000 || 0,
       multiPv = 1,
       moves = parsePV(this.work!.currentFen, matches[5], this.frisianVariant, this.uciCache)
 
@@ -211,7 +211,7 @@ export default class ScanClient {
         fen: this.work.currentFen,
         maxDepth: this.work.maxDepth,
         depth,
-        knps: nodes / elapsedMs,
+        knps: elapsedMs ? nodes / elapsedMs : 0,
         nodes,
         cp: pvData.cp,
         win: pvData.win,

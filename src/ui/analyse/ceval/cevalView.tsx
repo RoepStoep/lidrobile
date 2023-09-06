@@ -48,7 +48,7 @@ function renderCevalInfos(ctrl: AnalyseCtrl) {
 function formatTime(millis: number) {
   const s = Math.round(millis / 1000)
   if (s < 60) {
-    return s + 's'
+    return `${s}s`
   }
   else {
     const min = Math.round(s / 60)
