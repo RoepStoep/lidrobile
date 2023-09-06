@@ -31,15 +31,15 @@ function renderOffTrack(ctrl: PracticeCtrl): Mithril.Child {
 }
 
 function renderEnd(root: AnalyseCtrl, ctrl: PracticeCtrl, end: string): Mithril.Child {
-  const isMate = end === 'checkmate'
-  const color = isMate ? oppositeColor(root.turnColor()) : root.turnColor()
+  const isWin = end === 'checkmate'
+  const color = (isWin && root.data.game.variant.key !== 'antidraughts') ? oppositeColor(root.turnColor()) : root.turnColor()
   return h('div.analyse-training_player', [
     color ? h('div.piece-no-square', {
       className: ctrl.pieceTheme
     }, h('piece.king.' + color)) : h('div.icon.off', '!'),
     h('div.analyse-training_box_instruction', [
-      h('strong', i18n(end)),
-      isMate ?
+      isWin ? null : h('strong', i18n(end)),
+      isWin ?
         h('em', h('color', i18n(color === 'white' ? 'whiteWinsGame' : 'blackWinsGame'))) :
         h('em', i18n('theGameIsADraw'))
     ])

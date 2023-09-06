@@ -20,6 +20,16 @@ export function empty(a?: any) {
   return !a || a.length === 0
 }
 
+export function isEmptyObject(obj: any) {
+  for (const prop in obj) {
+    if (Object.prototype.hasOwnProperty.call(obj, prop)) {
+      return false
+    }
+  }
+
+  return true
+}
+
 export function renderEval(e: number) {
   e = Math.max(Math.min(Math.round(e / 10) / 10, 99), -99)
   return (e > 0 ? '+' : '') + e

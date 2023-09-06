@@ -521,13 +521,8 @@ export default class AnalyseCtrl {
 
   gameOver(node?: Tree.Node): 'draw' | 'checkmate' | false {
     const n = node || this.node
-    if (!n) return false
-    if (n.end === undefined) return false
-    else {
-      if (!n.end) return false
-      else if (n.dests === '') return 'checkmate'
-      else return 'draw'
-    }
+    if (!n?.end || (n.dests !== '' && !util.isEmptyObject(n.dests))) return false
+    return n.draw ? 'draw' : 'checkmate'
   }
 
   canUseCeval = () => {
@@ -647,6 +642,7 @@ export default class AnalyseCtrl {
       drops: situation.drops,
       captLen: situation.captureLength,
       end: situation.end,
+      draw: situation.draw,
       player: situation.player,
       uci: situation.uci,
       san: situation.san,
@@ -765,6 +761,7 @@ export default class AnalyseCtrl {
           node.destsUci = situation.destsUci
           node.captLen = situation.captureLength
           node.end = situation.end
+          node.draw = situation.draw
           node.player = situation.player
         })
         if (path === this.path) {

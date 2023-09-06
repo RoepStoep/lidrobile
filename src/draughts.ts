@@ -18,6 +18,7 @@ export interface GameSituation {
   readonly drops?: ReadonlyArray<string>
   readonly captureLength?: number
   readonly end: boolean
+  readonly draw: boolean
   readonly playable: boolean
   readonly status?: GameStatus
   readonly winner?: Color

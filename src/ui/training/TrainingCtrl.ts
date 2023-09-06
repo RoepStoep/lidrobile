@@ -359,6 +359,7 @@ export default class TrainingCtrl implements PromotingInterface {
           node.destsUci = situation.destsUci
           node.captLen = situation.captureLength
           node.end = situation.end
+          node.draw = situation.draw
           node.player = situation.player
         })
         if (path === this.path) {
@@ -404,6 +405,7 @@ export default class TrainingCtrl implements PromotingInterface {
         captLen: situation.captureLength,
         kingMoves: situation.kingMoves,
         end: situation.end,
+        draw: situation.draw,
         player: situation.player,
         san: situation.san,
         pdnMoves: situation.pdnMoves

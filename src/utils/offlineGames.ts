@@ -50,6 +50,7 @@ export function getAnalyseData(data: StoredOfflineGame, orientation: Color): Ana
       captLen: o.captureLength,
       pdnMoves: o.pdnMoves,
       end: o.end,
+      draw: o.draw,
       player: o.player,
       children: []
     }
