@@ -13,18 +13,18 @@ import session from '../../session'
 import { IUserCtrl, ProfileUser, isSessionUser, isFullUser } from './UserCtrl'
 
 export function header(user: ProfileUser, ctrl: IUserCtrl) {
-  const title = userTitle(user.online!, user.patron!, user.username, user.title)
+  const title = userTitle(user.online, user.patron!, user.username, user.title)
 
   const backButton = !ctrl.isMe() ? renderBackbutton(title) : null
   return dropShadowHeader(backButton ? null : title, backButton)
 }
 
 export function userTitle(
-  online: boolean,
+  online: boolean | undefined,
   patron: boolean,
   username: string,
-  title?: string
-): Mithril.Children {
+  title?: string,
+): Mithril.Child {
   const status = hasNetwork() && online ? 'online' : 'offline'
   const icon = patron ?
     <span className={'userStatus patron ' + status} data-icon="" /> :
@@ -32,7 +32,7 @@ export function userTitle(
   const title64 = title && title.endsWith('-64'),
     titleClass = 'userTitle' + (title === 'BOT' ? '.bot' : (title64 ? '.title64' : ''))
   return h('div.title', [
-    icon,
+    online === undefined ? null : icon,
     h('span', [
       ...(title ? [h('span.' + titleClass, title64 ? title.slice(0, title.length - 3) : title), ' '] : []),
       username

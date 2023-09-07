@@ -169,8 +169,8 @@ export function miniUser(userId: string): Promise<MiniUser> {
   return fetchJSON(`/@/${userId}/mini`)
 }
 
-export function timeline(): Promise<TimelineData> {
-  return fetchJSON('/timeline', {query: {nb: 10}}, false)
+export function timeline(nb?: number): Promise<TimelineData> {
+  return fetchJSON('/timeline', {query: {nb: nb || 10}}, false)
 }
 
 export function status(): Promise<void> {

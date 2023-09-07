@@ -151,13 +151,12 @@ export default class HomeCtrl {
           redraw()
         })
 
-      timelineXhr()
+      timelineXhr(8)
         .then((timeline) => {
           this.timelineData = {
             users: timeline.users,
             entries: timeline.entries
               .filter((o: TimelineEntry) => supportedTimelineTypes.indexOf(o.type) !== -1)
-              .slice(0, 15)
               .map(o => {
                 o.fromNow = fromNow(new Date(o.date))
                 return o

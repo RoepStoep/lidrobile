@@ -23,7 +23,7 @@ export default {
   oninit() {
     this.timelineData = prop<TimelineData>({ entries: [], users: {} })
 
-    timelineXhr()
+    timelineXhr(20)
       .then((data: TimelineData) => {
         this.timelineData(
           {
@@ -76,7 +76,7 @@ export function renderTimelineEntry(e: TimelineEntry, users: LightUserMap) {
       return renderTourJoin(e)
     case 'study-create':
     case 'study-like':
-      return renderStudy(e)
+      return renderStudy(e, users)
     case 'forum-post':
       return renderForum(e, users)
     case 'blog-post':
@@ -112,7 +112,7 @@ function renderUblog(entry: UblogPostTimelineEntry, users: LightUserMap) {
     key: `ublog-post${data.id}`,
     'data-external': `/@/${data.userId}/blog/${data.slug}/${data.id}`,
   }, [
-    userTitle(false, actor.patron ?? false, actor.id, actor.title),
+    userTitle(undefined, actor.patron ?? false, actor.id, actor.title),
     i18nVdom('xPublishedY', '', h('strong', data.title)),
     ' ',
     h('small', h('em', entry.fromNow)),
@@ -126,7 +126,7 @@ function renderUblogLike(entry: UblogLikeTimelineEntry, users: LightUserMap) {
     key: `ublog-post-like${data.id}`,
     'data-external': `/ublog/${data.id}/redirect`,
   }, [
-    userTitle(false, actor.patron ?? false, actor.id, actor.title),
+    userTitle(undefined, actor.patron ?? false, actor.id, actor.title),
     i18nVdom('xLikesY', '', h('strong', data.title)),
     ' ',
     h('small', h('em', entry.fromNow)),
@@ -140,23 +140,24 @@ function renderForum(entry: ForumPostTimelineEntry, users: LightUserMap) {
     key: 'forum-post' + data.postId,
     'data-external': `/forum/redirect/post/${data.postId}`,
   }, [
-    userTitle(false, actor.patron ?? false, actor.id, actor.title),
+    userTitle(undefined, actor.patron ?? false, actor.id, actor.title),
     i18nVdom('xPostedInForumY', '', h('strong', data.topicName)),
     ' ',
     h('small', h('em', entry.fromNow)),
   ])
 }
 
-function renderStudy(entry: StudyCreateTimelineEntry | StudyLikeTimelineEntry) {
+function renderStudy(entry: StudyCreateTimelineEntry | StudyLikeTimelineEntry, users: LightUserMap) {
   const data = entry.data
   const eType = entry.type === 'study-create' ? 'xHostsY' : 'xLikesY'
-  const entryText = i18n(eType, entry.data.userId, entry.data.studyName)
+  const actor = users[data.userId]
+  const entryText = i18nVdom(eType, userTitle(undefined, actor.patron ?? false, actor.id, actor.title), h('strong', entry.data.studyName))
   return h('li.list_item.timelineEntry', {
     key: 'study-like' + entry.date,
     'data-path': `/study/${data.studyId}`
   }, [
     h('span[data-icon=4].withIcon'),
-    h.trust(entryText.replace(/^(\w+)\s/, '<strong>$1&nbsp;</strong>')),
+    entryText,
     h('small', h('em', entry.fromNow)),
   ])
 }
