@@ -119,12 +119,14 @@ function determineTournamentType (tournament: TournamentListItem) {
     tournamentType = 'teamBattle'
   }
   else if (tournament.createdBy !== 'lidraughts') {
-    tournamentType = 'user'
+    tournamentType = tournament.promoted ? 'promoted' : 'user'
   }
   else if (tournament.hasMaxRating) {
     tournamentType = 'maxRating'
   }
-  else {
+  else if (tournament.schedule?.freq === 'hourly' && (tournament.variant.key === 'russian' || tournament.variant.key === 'brazilian')) {
+    tournamentType = 'draughts64'
+  } else {
     tournamentType = tournament.schedule ? tournament.schedule.freq : ''
   }
 

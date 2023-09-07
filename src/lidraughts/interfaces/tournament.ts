@@ -178,6 +178,7 @@ export interface TournamentListItem {
   readonly minutes: number
   readonly nbPlayers: number
   readonly perf: Perf
+  readonly promoted?: boolean
   readonly private: boolean
   readonly rated: boolean
   readonly schedule?: Schedule
