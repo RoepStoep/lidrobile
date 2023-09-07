@@ -4,6 +4,7 @@ import { safeStringToNum } from '../../../utils'
 import * as helper from '../../helper'
 import layout from '../../layout'
 import { dropShadowHeader, backButton } from '../../shared/common'
+import { renderTitle } from '~/ui/user/userView'
 
 import RelatedCtrl from './RelatedCtrl'
 import { renderBody } from './relatedView'
@@ -31,7 +32,7 @@ export default {
   view({ attrs }) {
     const name = attrs.username ? h('div.title', [
       h('span', [
-        ...(attrs.title ? [h('span.userTitle', attrs.title), ' '] : []),
+        ...renderTitle(attrs.title),
         attrs.username
       ])
     ]) : attrs.id

@@ -3,6 +3,7 @@ import { dropShadowHeader as headerWidget, backButton} from '../../shared/common
 import i18n, { plural } from '../../../i18n'
 import { Leader } from '../../../lidraughts/interfaces/teams'
 import TeamsCtrl from './TeamCtrl'
+import { renderTitle } from '~/ui/user/userView'
 
 export function header(ctrl: TeamsCtrl) {
   const team = ctrl.team
@@ -35,7 +36,7 @@ export function body(ctrl: TeamsCtrl) {
 
 function userStatus(leader: Leader) {
   const patron = leader.patron ? h('span.patron.userStatus', {'data-icon': ''}, []) : null
-  const title = leader.title ? h('span.userTitle', [(leader.title.endsWith('-64') ? leader.title.slice(0, leader.title.length - 3) : leader.title) + ' ']) : null
+  const title = renderTitle(leader.title)
   
   return h('div.user', [
     h('span', [plural('teamLeaders', 1) + ': ']),

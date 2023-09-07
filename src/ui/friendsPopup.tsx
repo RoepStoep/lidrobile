@@ -5,6 +5,7 @@ import popupWidget from './shared/popup'
 import i18n, { plural } from '../i18n'
 import friendsApi, { Friend } from '../lidraughts/friends'
 import challengeForm from './challengeForm'
+import { renderTitle } from '~/ui/user/userView'
 
 let isOpen = false
 
@@ -55,8 +56,6 @@ function renderFriends() {
 function renderFriend(friend: Friend) {
 
   const userId = friend.name.toLowerCase()
-  const isBot = friend.title === 'BOT'
-  const title64 = friend.title && friend.title.endsWith('-64')
 
   function action() {
     close()
@@ -78,10 +77,7 @@ function renderFriend(friend: Friend) {
           null
         }
         <span>
-          {friend.title ?
-            <span className={'userTitle' + (isBot ? ' bot' : (title64 ? ' title64' : ''))}>{title64 ? friend.title.slice(0, friend.title.length - 3) : friend.title}&nbsp;</span> :
-            null
-          }
+          {renderTitle(friend.title)}
           {friend.name}
         </span>
       </div>

@@ -6,9 +6,9 @@ import * as helper from '../../helper'
 import { PlayerInfo, PlayerInfoPairing } from '../../../lidraughts/interfaces/tournament'
 import i18n from '../../../i18n'
 import { closeIcon } from '../../shared/icons'
+import { renderTitle } from '~/ui/user/userView'
 
 import * as xhr from '../tournamentXhr'
-import { renderPlayerTitle } from './tournamentView'
 import TournamentCtrl from './TournamentCtrl'
 
 export interface PlayerInfoCtrl {
@@ -102,7 +102,7 @@ export default {
           </button>
           <h2 className="tournamentModalHeader">
             {player.rank + '. '}
-            {renderPlayerTitle(player)}
+            {renderTitle(player.title)}
             {player.name + ' (' + player.rating + ') '}
           </h2>
         </header>

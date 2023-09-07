@@ -12,6 +12,7 @@ import settings from '../../../settings'
 import MiniBoard from '../../shared/miniBoard'
 import CountdownTimer from '../../shared/CountdownTimer'
 import { chatView } from '../../shared/chat'
+import { renderTitle } from '~/ui/user/userView'
 
 import faq from '../faq'
 import playerInfo from './playerInfo'
@@ -299,17 +300,6 @@ function renderNavButton(icon: string, isEnabled: boolean, action: () => void) {
   })
 }
 
-export function renderPlayerTitle(player: {title?: string}): Mithril.Child {
-  if (player.title == null) {
-    return null
-  }
-  const isBot = player.title === 'BOT'
-  const title64 = player.title.endsWith('-64')
-  const titleClass = 'userTitle' + (isBot ? '.bot' : (title64 ? '.title64' : ''))
-
-  return h(`span.${titleClass}`, [title64 ? player.title.slice(0, player.title.length - 3) : player.title, h.trust('&nbsp;')])
-}
-
 function renderPlayerEntry(userName: string, player: StandingPlayer, i: number, teamColor?: number, teamName?: string): Mithril.Child {
   const evenOrOdd = i % 2 === 0 ? 'even' : 'odd'
   const isMe = player.name === userName
@@ -320,7 +310,7 @@ function renderPlayerEntry(userName: string, player: StandingPlayer, i: number, 
       <div className="tournamentIdentity">
         <span className="flagRank" data-icon={player.withdraw === true ? 'b' : ''}> {player.withdraw === true ? '' : (`${player.rank}.`)} &thinsp; </span>
         <span className="playerName">
-          {renderPlayerTitle(player)}
+          {renderTitle(player.title)}
           {`${player.name} (${player.rating}${player.provisional ? '?' : ''})`}
         </span>
         <span className={`playerTeam ttc-${ttc}`}> {teamName ?? ''} </span>
@@ -373,7 +363,7 @@ function renderPlace(data: PodiumPlace) {
     <div className={'place' + rank}>
       <div className="trophy"> </div>
       <div className="username" oncreate={helper.ontap(() => router.set('/@/' + data.name))}>
-        {renderPlayerTitle(data)}
+        {renderTitle(data.title)}
         {data.name}
       </div>
       <div className="rating"> {data.rating} </div>

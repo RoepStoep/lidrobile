@@ -29,15 +29,21 @@ export function userTitle(
   const icon = patron ?
     <span className={'userStatus patron ' + status} data-icon="" /> :
     <span className={'fa fa-circle userStatus ' + status} />
-  const title64 = title && title.endsWith('-64'),
-    titleClass = 'userTitle' + (title === 'BOT' ? '.bot' : (title64 ? '.title64' : ''))
   return h('div.title', [
     online === undefined ? null : icon,
     h('span', [
-      ...(title ? [h('span.' + titleClass, title64 ? title.slice(0, title.length - 3) : title), ' '] : []),
+      ...renderTitle(title),
       username
     ])
   ])
+}
+
+export function renderTitle(title?: string): Mithril.ChildArray {
+  if (!title) return []
+
+  const title64 = title.endsWith('-64')
+  const titleClass = 'userTitle' + (title === 'BOT' ? '.bot' : (title64 ? '.title64' : ''))
+  return [h('span.' + titleClass, title64 ? title.slice(0, title.length - 3) : title), h.trust('&nbsp;')]
 }
 
 export function profile(user: ProfileUser, ctrl: IUserCtrl) {

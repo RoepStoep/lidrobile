@@ -13,6 +13,7 @@ import i18n from '../../i18n'
 import friendsPopup from '../friendsPopup'
 import { backArrow } from './icons'
 import { BaseUser } from '../../lidraughts/interfaces/user'
+import { renderTitle } from '~/ui/user/userView'
 
 export function menuButton() {
   return h('button.fa.fa-navicon.main_header_button.menu_button', {
@@ -190,16 +191,14 @@ export function empty(): Mithril.Children {
 }
 
 export function userStatus(user: BaseUser) {
-  const status = user.online ? 'online' : 'offline',
-    title64 = user.title && user.title.endsWith('-64'),
-    titleClass = 'userTitle' + (user.title === 'BOT' ? ' bot' : (title64 ? ' title64' : ''))
+  const status = user.online ? 'online' : 'offline'
   return (
     <div className="user">
       {user.patron ?
         <span className={'patron userStatus ' + status} data-icon="" /> :
         <span className={'fa fa-circle userStatus ' + status} />
       }
-      {user.title ? <span className={titleClass}>{title64 ? user.title.slice(0, user.title.length - 3) : user.title}&nbsp;</span> : null}
+      {renderTitle(user.title)}
       {user.username}
     </div>
   )

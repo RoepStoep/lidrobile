@@ -8,6 +8,7 @@ import { Paginator } from '../../../lidraughts/interfaces'
 import * as helper from '../../helper'
 import TabNavigation from '../../shared/TabNavigation'
 import TabView from '../../shared/TabView'
+import { renderTitle } from '~/ui/user/userView'
 
 import RelatedCtrl from './RelatedCtrl'
 
@@ -81,8 +82,6 @@ function renderPlayer(ctrl: RelatedCtrl, obj: Related, i: number) {
   const perfKey = obj.perfs && Object.keys(obj.perfs)[0] as PerfKey
   const perf = obj.perfs && obj.perfs[perfKey]
   const userLink = helper.ontapY(() => router.set(`/@/${obj.user}`))
-  const title64 = obj.title && obj.title.endsWith('-64')
-  const titleClass = 'userTitle' + (obj.title === 'BOT' ? ' bot' : (title64 ? ' title64' : ''))
   const evenOrOdd = i % 2 === 0 ? 'even' : 'odd'
   return (
     <li className={`list_item followingList ${evenOrOdd}`}>
@@ -92,7 +91,7 @@ function renderPlayer(ctrl: RelatedCtrl, obj: Related, i: number) {
             <span className={'patron userStatus ' + status} data-icon="" /> :
             <span className={'fa fa-circle userStatus ' + status} />
           }
-          {obj.title ? <span className={titleClass}>{title64 ? obj.title.slice(0, obj.title.length - 3) : obj.title}&nbsp;</span> : null}
+          {renderTitle(obj.title)}
           {obj.user}
         </div>
         { perfKey ?
