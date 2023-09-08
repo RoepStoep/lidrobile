@@ -31,7 +31,7 @@ export default {
             return h('li.list_item.piece_theme', {
               className: key + (selected ? ' selected' : ''),
               'data-key': key,
-            }, [i18n(label || key), selected ? h('span.fa.fa-check') : null])
+            }, [i18n(label || key.replace('_', ' ')), selected ? h('span.fa.fa-check') : null])
           }))
         ])
       ]
