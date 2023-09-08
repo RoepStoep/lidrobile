@@ -164,6 +164,19 @@ export default class AnalyseCtrl {
     this.initialPath = treeOps.takePathWhile(mainline, n => n.ply <= initPly)
     this.setPath(this.initialPath)
 
+    if (this.forecast && this.data.game.turns) {
+      if (!this.initialPath) {
+        this.initialPath = treeOps.takePathWhile(this.mainline, n => n.ply <= this.data.game.turns)
+      }
+      const gameNodeList = this.tree.getNodeList(this.initialPath)
+      const skipNodes = this.tree.getCurrentNodesAfterPly(gameNodeList, this.mainline, this.data.game.turns)
+      let skipSteps = 0
+      for (const skipNode of skipNodes) {
+        skipSteps += skipNode.uci ? (skipNode.uci.length - 2) / 2 : 1
+      }
+      this.forecast.skipSteps = skipSteps
+    }
+
     if (this.data.game.createdAt) {
       this.formattedDate = formatDateTime(new Date(this.data.game.createdAt))
     }

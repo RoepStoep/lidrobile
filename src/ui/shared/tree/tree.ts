@@ -74,8 +74,9 @@ export function build(root: Tree.Node): TreeWrapper {
     const nodes = []
     for (const i in nodeList) {
       const node = nodeList[i]
-      if (node.ply <= ply && mainline[i].id !== node.id) break
-      if (node.ply > ply) nodes.push(node)
+      const nodePly = node.displayPly || node.ply
+      if (nodePly <= ply && mainline[i].id !== node.id) break
+      if (nodePly > ply) nodes.push(node)
     }
     return nodes
   }

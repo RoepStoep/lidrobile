@@ -9,22 +9,40 @@ type Move = {
 
 export function groupMoves(nodes: ForecastStep[]): Move[] {
   const moves: Move[] = []
-  if (nodes[0].ply % 2 === 0) {
+  const startPly = nodes[0].displayPly || nodes[0].ply
+
+  let lastIndex = -1
+  if (startPly % 2 === 0) {
     // black is the first move
+    lastIndex = Math.floor((startPly + 1) / 2)
     moves.push({
-      index: Math.floor((nodes[0].ply + 1) / 2),
+      index: lastIndex,
       black: nodes[0].san,
       white: null,
     })
     nodes = nodes.slice(1)
   }
 
-  chunk(nodes, 2).forEach(([white, black]) => {
-    moves.push({
-      index: (white.ply + 1) / 2,
-      white: white.san,
-      black: black?.san,
-    })
+  nodes.forEach(node => {
+    const dply = node.displayPly || node.ply
+    if (dply === 0) return
+
+    const cindex = (dply + 1) / 2
+    if (cindex !== lastIndex && dply % 2 === 1) {
+      moves.push({
+        index: cindex,
+        white: node.san,
+        black: null,
+      })
+      lastIndex = cindex
+    } else {
+      const curMove = moves[moves.length - 1]
+      if (dply % 2 === 1) {
+        curMove.white += ` ${node.san}`
+      } else {
+        curMove.black = curMove.black ? curMove.black +  ` ${node.san}` : node.san
+      }
+    }
   })
 
   return moves
@@ -33,7 +51,7 @@ export function groupMoves(nodes: ForecastStep[]): Move[] {
 function renderMoveTxt(move: Move): string {
   let txt = `${move.index}.`
   if (!move.white) {
-    txt += '..'
+    txt += '...'
   } else {
     txt += ` ${move.white}`
   }

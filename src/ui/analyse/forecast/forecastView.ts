@@ -6,6 +6,10 @@ import { ontap } from '~/ui/helper'
 import AnalyseCtrl from '../AnalyseCtrl'
 import ForecastCtrl, { keyOf } from './ForecastCtrl'
 import { groupMoves } from './util'
+import { Tree } from '../../shared/tree'
+import { read, write } from '~/draughtsground/fen'
+import { calcCaptKey } from '~/draughtsground/board'
+import { key2pos } from '~/draughtsground/util'
 
 type MaybeVNode = Mithril.Child | null
 
@@ -76,23 +80,79 @@ export default function renderForecasts(ctrl: AnalyseCtrl): MaybeVNode {
   )
 }
 
+function shortKey(key: string) {
+  return key.slice(0, 1) === '0' ? key.slice(1) : key
+}
+
 function makeCandidateNodes(
   ctrl: AnalyseCtrl,
   fctrl: ForecastCtrl
 ): ForecastStep[] {
-  const afterPly = ctrl.tree.getCurrentNodesAfterPly(
+  const withCurrent = ctrl.tree.getCurrentNodesAfterPly(
     ctrl.nodeList,
     ctrl.mainline,
-    ctrl.data.game.turns
+    Math.max(0, ctrl.data.game.turns - 1)
   )
-  return fctrl.truncate(
-    afterPly.map((node) => ({
-      ply: node.ply,
-      fen: node.fen,
-      uci: node.uci!,
-      san: node.san!,
-    }))
-  )
+  const expandedNodes: ForecastStep[] = []
+  let afterCurrent: Tree.Node[] = [], skippedSteps = 0, currentFen: string | undefined
+  for (let n = 0; n < withCurrent.length; n++) {
+    const node = withCurrent[n], nodePly = node.displayPly || node.ply
+    if (nodePly > ctrl.data.game.turns) {
+      afterCurrent = withCurrent.slice(n)
+      break
+    }
+    currentFen = node.fen
+  }
+  if (!afterCurrent) return expandedNodes
+  for (const node of fctrl.truncateNodes(afterCurrent)) {
+    if (node.uci && node.uci.length >= 6 && currentFen) {
+      let uci = node.uci, orig = uci.slice(0, 2) as Key
+      const pieces = read(currentFen), origPiece = pieces[orig]
+      const boardSize = ctrl.data.game.variant.board.size
+      while (uci.length >= 4) {
+        delete pieces[orig]
+        const dest = uci.slice(2, 4) as Key
+        const origPos = key2pos(orig, boardSize), destPos = key2pos(dest, boardSize)
+        const captKey = calcCaptKey(pieces, boardSize, origPos[0], origPos[1], destPos[0], destPos[1])
+        if (!captKey) break
+        const captPiece = pieces[captKey]
+        pieces[captKey] = {
+          role: captPiece.role === 'king' ? 'ghostking' : 'ghostman',
+          color: captPiece.color
+        }
+        pieces[dest] = origPiece
+
+        skippedSteps++
+        if (skippedSteps > fctrl.skipSteps) {
+          const done = uci.length === 4, fen = done ? node.fen : currentFen.slice(0, 2) + write(pieces)
+          expandedNodes.push({
+            ply: done ? node.ply : (node.ply - 1),
+            displayPly: node.ply,
+            fen: fen,
+            uci: uci.slice(0, 4),
+            san: shortKey(orig) + 'x' + shortKey(dest)
+          })
+        }
+
+        uci = uci.slice(2)
+        orig = dest
+      }
+    } else {
+      skippedSteps++
+      if (skippedSteps > fctrl.skipSteps)
+        expandedNodes.push({
+          ply: node.ply,
+          displayPly: node.displayPly,
+          fen: node.fen,
+          uci: node.uci!,
+          san: node.san!
+        })
+    }
+    if (expandedNodes.length) {
+      currentFen = expandedNodes[expandedNodes.length - 1].fen
+    }
+  }
+  return expandedNodes
 }
 
 function renderNodesHtml(nodes: ForecastStep[]): MaybeVNode[] {

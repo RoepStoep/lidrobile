@@ -2,6 +2,8 @@ import { AnalyseDataForForecast, ForecastStep, MinimalForecastStep } from '~/lid
 import router from '~/router'
 import redraw from '~/utils/redraw'
 import { playAndSaveForecasts, saveForecasts } from './xhr'
+import { countGhosts } from '~/draughtsground/fen'
+import { Tree } from '../../shared/tree'
 
 const MAX_FORECAST_PLIES = 30
 
@@ -13,6 +15,29 @@ function linesToSanMap(lines: ForecastStep[][]): SanMap {
   }, new Map())
 }
 
+function setDisplayPlies(fc: ForecastStep[][]) {
+  for (let f = 0; f < fc.length; f++) {
+    for (let i = 0; i < fc[f].length; i++) {
+      if (countGhosts(fc[f][i].fen) > 0)
+        fc[f][i].displayPly = fc[f][i].ply + 1
+    }
+  }
+  return fc
+}
+
+function unmergedLength(fc: MinimalForecastStep[]): number {
+  if (fc.length <= 1) return fc.length
+
+  let len = 1
+  for (let i = 1; i < fc.length; i++) {
+    const fc1 = (fc[i].displayPly ? fc[i].displayPly : fc[i].ply)
+    const fc2 = (fc[i - 1].displayPly ? fc[i - 1].displayPly : fc[i - 1].ply)
+    if (fc1 && fc2 && fc1 > fc2)
+      len++
+  }
+  return len
+}
+
 export function keyOf(fc: MinimalForecastStep[]): string {
   return fc.map((node) => node.ply + ':' + node.uci).join(',')
 }
@@ -20,6 +45,7 @@ export function keyOf(fc: MinimalForecastStep[]): string {
 export default class ForecastCtrl {
   public focusKey: string | null = null
   public loading = false
+  public skipSteps = 0
   readonly isMyTurn: boolean
 
   private _lines: SanMap
@@ -29,18 +55,33 @@ export default class ForecastCtrl {
 
   constructor(data: AnalyseDataForForecast) {
     const forecastData = data.forecast
-    this._lines = linesToSanMap(forecastData?.steps || [])
+    this._lines = linesToSanMap(setDisplayPlies(forecastData?.steps || []))
     const onMyTurn = forecastData?.onMyTurn
     this.isMyTurn = !!onMyTurn
     this._gameId = data.game.id
     this._playerId = data.player?.id || null
   }
 
+  truncate<T extends MinimalForecastStep>(nodes: T[]): T[] {
+    let fc = nodes
+    // must end with player move
+    if (this.isMyTurn) {
+      while (fc.length && unmergedLength(fc) % 2 !== 1) {
+        fc = fc.slice(0, -1)
+      }
+    } else {
+      while (fc.length && unmergedLength(fc) % 2 !== 0) {
+        fc = fc.slice(0, -1)
+      }
+    }
+    return fc.slice(0, MAX_FORECAST_PLIES)
+  }
+
   /**
    * @returns the given line forecast steps, truncated to a reasonable length and ending
    *          with the viewing player's move.
    */
-  truncate<T extends MinimalForecastStep>(nodes: T[]): T[] {
+  truncateNodes(nodes: Tree.Node[]): Tree.Node[] {
     const requiredPlyMod = this.isMyTurn ? 1 : 0
 
     // must end with player move
@@ -90,7 +131,7 @@ export default class ForecastCtrl {
         this.reloadToLastPly()
       } else {
         this.loading = false
-        this._lines = linesToSanMap(data.steps || [])
+        this._lines = linesToSanMap(setDisplayPlies(data.steps || []))
         redraw()
       }
     })
@@ -113,7 +154,7 @@ export default class ForecastCtrl {
           this.reloadToLastPly()
         } else {
           this.loading = false
-          this._lines = linesToSanMap(data.steps || [])
+          this._lines = linesToSanMap(setDisplayPlies(data.steps || []))
           redraw()
         }
       })
@@ -152,12 +193,16 @@ export default class ForecastCtrl {
    * For example, 2. e4 and 2. d4 are not collisions on white's turn.
    */
   collides(fc1: MinimalForecastStep[], fc2: MinimalForecastStep[]): boolean {
+    let n = 0
     for (let i = 0, max = Math.min(fc1.length, fc2.length); i < max; i++) {
       if (fc1[i].uci !== fc2[i].uci) {
         if (this.isMyTurn) {
-          return i !== 0 && i % 2 === 0
+          return n !== 0 && n % 2 === 0
         }
-        return i % 2 === 1
+        return n % 2 === 1
+      }
+      if (!fc1[i].displayPly || fc1[i].displayPly === fc1[i].ply) {
+        n++
       }
     }
     /**

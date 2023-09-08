@@ -9,6 +9,7 @@ export interface ForecastData {
  */
 export interface MinimalForecastStep {
   ply: Ply
+  displayPly?: Ply;
   uci: Uci
 }
 
