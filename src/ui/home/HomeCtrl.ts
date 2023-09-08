@@ -20,6 +20,7 @@ import session from '../../session'
 import { supportedTypes as supportedTimelineTypes } from '../timeline'
 import offlinePuzzleDB from '../training/database'
 import { loadNewPuzzle } from '../training/offlineService'
+import { finishedStatus } from '~/lidraughts/status'
 
 import { dailyPuzzle as dailyPuzzleXhr, featuredTournaments as featuredTournamentsXhr, featuredStreamers as featuredStreamersXhr } from './homeXhr'
 
@@ -224,19 +225,24 @@ export default class HomeCtrl {
         const opp = playerToFeatured(data.opponent)
         const player = playerToFeatured(data.player)
 
-      this.featuredGame = {
-        c: data.clock ? {
-          white: Math.round(data.clock.white),
-          black: Math.round(data.clock.black),
-        } : undefined,
-        black: data.game.player === 'white' ? opp : player,
-        orientation: data.orientation,
-        fen: data.game.fen,
-        variant: data.game.variant.key,
-        id: data.game.id,
-        lastMove: data.game.lastMove,
-        white: data.game.player === 'white' ? player : opp,
-      }
+        this.featuredGame = {
+          c: data.clock ? {
+            white: Math.round(data.clock.white),
+            black: Math.round(data.clock.black),
+          } : undefined,
+          black: data.game.player === 'white' ? opp : player,
+          orientation: data.orientation,
+          fen: data.game.fen,
+          variant: data.game.variant.key,
+          id: data.game.id,
+          lastMove: data.game.lastMove,
+          white: data.game.player === 'white' ? player : opp,
+          finished: finishedStatus(data.game.status)
+        }
+
+        if (this.featuredGame.finished) {
+          this.featuredGame.winner = data.game.winner
+        }
 
         this.socketSend('startWatching', data.game.id)
 

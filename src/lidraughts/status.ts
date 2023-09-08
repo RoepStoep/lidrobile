@@ -1,7 +1,7 @@
 // https://github.com/ornicar/scalachess/blob/master/src/main/scala/Status.scala
 
 import i18n from '../i18n'
-import { GameData } from './interfaces/game'
+import { GameData, GameStatus } from './interfaces/game'
 import { AnalyseData } from './interfaces/analyse'
 import { VariantKey } from './interfaces/variant'
 
@@ -26,6 +26,10 @@ function started(data: GameData | AnalyseData): boolean {
 
 function finished(data: GameData | AnalyseData): boolean {
   return data.game.status.id >= ids.mate
+}
+
+export function finishedStatus(status: GameStatus): boolean {
+  return status.id >= ids.aborted
 }
 
 function aborted(data: GameData | AnalyseData): boolean {
