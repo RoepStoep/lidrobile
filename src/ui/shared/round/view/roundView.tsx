@@ -32,6 +32,7 @@ import { renderInlineReplay, renderReplay } from './replay'
 import OnlineRound from '../OnlineRound'
 import { Position, Material } from '../'
 import { getVariant } from '../../../../lidraughts/variant'
+import { renderTitle as renderUserTitle } from '~/ui/user/userView'
 
 export default function view(ctrl: OnlineRound) {
   const isPortrait = helper.isPortrait()
@@ -330,10 +331,7 @@ function renderPlayerName(player: Player) {
   if (player.name || player.username || player.user) {
     const name = player.name || player.username || player.user?.username
     return h('span', [
-      player.user?.title ? [
-        h('span.userTitle' + (player.user?.title === 'BOT' ? '.bot' : ''), player.user.title),
-        ' '
-      ] : [],
+      renderUserTitle(player.user?.title),
       name
     ])
   }

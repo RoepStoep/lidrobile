@@ -259,15 +259,17 @@ function renderFeaturedTournaments(ctrl: HomeCtrl) {
 
 function renderFeaturedStreamers(ctrl: HomeCtrl) {
   if (ctrl.featuredStreamers?.length)
-    return h('ul.home__streamers', ctrl.featuredStreamers.map(s =>
-      h('li.home__streamer', {
+    return h('ul.home__streamers', ctrl.featuredStreamers.map(s => {
+      const title = s.user.title || ''
+      const shortTitle = title.endsWith('-64') ? title.slice(0, title.length - 3) : title
+      return h('li.home__streamer', {
         oncreate: helper.ontapY(() => openExternalBrowser(s.url)),
       }, [
-        h('strong[data-icon=]', (s.user.title ? s.user.title + ' ' : '') + s.user.name),
+        h('strong[data-icon=]', (shortTitle ? shortTitle + ' ' : '') + s.user.name),
         h('span.status', ' ' + s.status),
       ])
-    ))
-  else
+    }))
+  else 
     return null
 }
 

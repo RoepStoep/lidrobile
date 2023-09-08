@@ -3,7 +3,7 @@ import { truncate } from '../utils'
 import { LightPlayer } from './interfaces'
 import { levelToRating } from '../ui/ai/engine'
 
-export function lightPlayerName(player?: LightPlayer, withRating?: boolean) {
+export function lightPlayerName(player?: LightPlayer, withRating?: boolean): string {
   if (player) {
     return (player.title ? (player.title.endsWith('-64') ? player.title.slice(0, player.title.length - 3) : player.title) + ' ' + player.name : player.name) + (
       withRating ? ' (' + player.rating + ')' : '')

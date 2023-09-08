@@ -5,6 +5,7 @@ import { FeaturedGame2 } from '../../lidraughts/interfaces'
 import settings from '../../settings'
 import ViewOnlyBoard from './ViewOnlyBoard'
 import CountdownTimer from './CountdownTimer'
+import { renderTitle } from '~/ui/user/userView'
 
 export interface Attrs {
   readonly fen: string
@@ -68,7 +69,7 @@ function renderPlayer(gameObj: FeaturedGame2, color: Color) {
   return h('div.mini_board__player', [
     h('span.mini_board__user', [
       player.rank ? `#${player.rank} ` : '',
-      player.title ? h('span.userTitle', player.title + ' ') : null,
+      renderTitle(player.title),
       player.name,
       h('span.rating', player.rating),
       player.berserk ? h('span.berserk[data-icon=`]') : null,
