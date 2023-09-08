@@ -118,7 +118,9 @@ export default class StrongSocket {
         if (e.data === '0') return this.pong()
         const m = JSON.parse(e.data)
         if (m.t === 'n') this.pong()
-        this.handle(m)
+        if (m.t === 'b') {
+          (m.d || []).forEach((mb: MsgIn) => this.handle(mb))
+        } else this.handle(m)
       }
     } catch (e) {
       this.onError(e)
