@@ -452,6 +452,9 @@ export default class Siema {
       for (let i = 0; i < this.innerElements.length; i++) {
         this.innerElements[i].removeAttribute('style')
       }
+      if (this.sliderFrame) {
+        this.sliderFrame.removeAttribute('style')
+      }
       this.selector.removeAttribute('style')
     }
 
