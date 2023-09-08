@@ -1,4 +1,3 @@
-import { chunk } from 'lodash-es'
 import { ForecastStep } from '~/lidraughts/interfaces/forecast'
 
 type Move = {
@@ -38,9 +37,19 @@ export function groupMoves(nodes: ForecastStep[]): Move[] {
     } else {
       const curMove = moves[moves.length - 1]
       if (dply % 2 === 1) {
-        curMove.white += ` ${node.san}`
+        if (node.san.includes('x')) {
+          curMove.white += node.san.slice(node.san.indexOf('x'))
+        } else {
+          curMove.white += ` ${node.san}`
+        }
       } else {
-        curMove.black = curMove.black ? curMove.black +  ` ${node.san}` : node.san
+        if (!curMove.black) {
+          curMove.black = node.san  
+        } else if (node.san.includes('x')) {
+          curMove.black += node.san.slice(node.san.indexOf('x'))
+        } else {
+          curMove.black += ` ${node.san}`
+        }
       }
     }
   })
@@ -48,21 +57,3 @@ export function groupMoves(nodes: ForecastStep[]): Move[] {
   return moves
 }
 
-function renderMoveTxt(move: Move): string {
-  let txt = `${move.index}.`
-  if (!move.white) {
-    txt += '...'
-  } else {
-    txt += ` ${move.white}`
-  }
-
-  if (move.black) {
-    txt += ` ${move.black}`
-  }
-
-  return txt
-}
-
-export function renderForecastTxt(nodes: ForecastStep[]): string {
-  return groupMoves(nodes).map(renderMoveTxt).join(' ')
-}

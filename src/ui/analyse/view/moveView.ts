@@ -45,6 +45,6 @@ export function renderMove(ctx: Ctx, node: Tree.Node): Mithril.Vnode<any, any>[]
 
 export function renderIndexAndMove(ctx: Ctx, node: Tree.Node): Mithril.Child[] {
   return node.uci ?
-  [renderIndex((node.displayPly ? node.displayPly : node.ply), ctx.withDots)].concat(renderMove(ctx, node)) :
+  [renderIndex((node.displayPly || node.ply), ctx.withDots)].concat(renderMove(ctx, node)) :
   [h('span.init', 'Initial position')]
 }

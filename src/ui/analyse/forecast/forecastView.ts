@@ -9,6 +9,7 @@ import { groupMoves } from './util'
 import { Tree } from '../../shared/tree'
 import { read, write } from '~/draughtsground/fen'
 import { calcCaptKey } from '~/draughtsground/board'
+import { san2alg } from '../../../utils/draughtsFormat'
 import { key2pos } from '~/draughtsground/util'
 
 type MaybeVNode = Mithril.Child | null
@@ -42,7 +43,7 @@ export default function renderForecasts(ctrl: AnalyseCtrl): MaybeVNode {
                   }),
                 },
                 [
-                  h('sans', renderNodesHtml(nodes)),
+                  h('sans', renderNodesHtml(nodes, ctrl.isAlgebraic())),
                   fctrl.focusKey === key ? h(
                     'span.fa.fa-times-circle.delete',
                     {
@@ -69,7 +70,7 @@ export default function renderForecasts(ctrl: AnalyseCtrl): MaybeVNode {
         }, [
           isCandidate ? h('div', [
             h('span', i18n('addCurrentVariation')),
-            h('sans', renderNodesHtml(candidateNodes)),
+            h('sans', renderNodesHtml(candidateNodes, ctrl.isAlgebraic())),
           ]) :
           h('span', i18n('playVariationToCreateConditionalPremoves'))
         ]),
@@ -155,7 +156,7 @@ function makeCandidateNodes(
   return expandedNodes
 }
 
-function renderNodesHtml(nodes: ForecastStep[]): MaybeVNode[] {
+function renderNodesHtml(nodes: ForecastStep[], algebraic: boolean): MaybeVNode[] {
   if (!nodes[0]) return []
   if (!nodes[0].san) nodes = nodes.slice(1)
   if (!nodes[0]) return []
@@ -163,8 +164,8 @@ function renderNodesHtml(nodes: ForecastStep[]): MaybeVNode[] {
   return groupMoves(nodes).map(({ black, white, index }) => {
     return h('move', [
       h('index', index + (white ? '.' : '...')),
-      white ? h('san', white) : null,
-      black ? h('san', black) : null,
+      white ? h('san', algebraic ? san2alg(white) : white) : null,
+      black ? h('san', algebraic ? san2alg(black) : black) : null,
     ])
   })
 }
