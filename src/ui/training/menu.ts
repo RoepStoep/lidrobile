@@ -131,8 +131,8 @@ function renderUserInfosOnline(user: PuzzleUserData, variant: VariantKey) {
 
 function onRecentTap(e: TouchEvent) {
   const button = helper.getButton(e)
-  const id = button && (button.dataset as DOMStringMap).id
-  const variant = button && (button.dataset as DOMStringMap).variant
+  const id = button?.dataset.id
+  const variant = button?.dataset.variant
   if (id) {
     if (variant) router.set(`/training/${id}/variant/${variant}`, true)
     else router.set(`/training/${id}`, true)

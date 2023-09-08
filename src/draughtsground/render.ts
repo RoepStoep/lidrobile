@@ -187,7 +187,7 @@ export function renderBoard(d: State, dom: cg.DOM) {
   // walk over all pieces in current state object, apply dom changes to moved
   // pieces or append new pieces
   for (let j = 0, jlen = piecesKeys.length; j < jlen; j++) {
-    const k = piecesKeys[j] as Key
+    const k = piecesKeys[j]
     const p = pieces[k]
     anim = anims && anims[k]
     tempPiece = temporaryPieces && temporaryPieces[k]

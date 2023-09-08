@@ -152,7 +152,7 @@ function makeSerieData(data: AnalyseData, origMoveCentis: number[]): { max: numb
   let skipped = 0, mergedSan = ''
   for (let i = 0; i < moveCentis.length; i++) {
     const node = tree[i + 1 + skipped]
-    ply = node ? node.ply! : ply + 1
+    ply = node ? node.ply : ply + 1
     if (ply !== lastPly || i + 1 === moveCentis.length) {
 
       if (ply === lastPly) ply++

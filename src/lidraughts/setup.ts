@@ -19,7 +19,7 @@ export function humanSetupFromSettings(settingsObj: HumanSettings): HumanSeekSet
 export function humanSetupFromPool(poolObj: Pool, rated: boolean): HumanSeekSetup {
   const mode = rated ? 1 : 0
   return {
-    mode: mode as ModeId, 
+    mode, 
     variant: 1, // standard
     timeMode: 1 as TimeModeId, // realTime
     time: poolObj.lim,

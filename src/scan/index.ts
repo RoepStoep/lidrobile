@@ -24,7 +24,7 @@ export class ScanPlugin {
       const listener = (e: Event) => {
         const line = (e as any).output
         if (typeof(line) !== 'string') return
-        const matches = line.match(NAME_REGEX)
+        const matches = NAME_REGEX.exec(line)
         if (matches) {
           engineName = `${matches[1]} ${matches[2]}`
         }

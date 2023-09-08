@@ -177,7 +177,7 @@ export default class ScanClient {
       nodes = parseInt(matches[3]),
       elapsedMs: number = parseFloat(matches[4]) * 1000 || 0,
       multiPv = 1,
-      moves = parsePV(this.work!.currentFen, matches[5], this.frisianVariant, this.uciCache)
+      moves = parsePV(this.work.currentFen, matches[5], this.frisianVariant, this.uciCache)
 
     let ev = Math.round(parseFloat(matches[2]) * 100),
       win: number | undefined = undefined
