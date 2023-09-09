@@ -30,7 +30,7 @@ export default {
 
         <ul className="about_links">
           <li>{externalLink('Github', 'https://github.com/RoepStoep/lidrobile')}</li>
-          { Capacitor.platform !== 'ios' ?
+          { Capacitor.getPlatform() !== 'ios' ?
               <li>{externalLink('Donate', 'https://lidraughts.org/patron')}</li> :
               null
           }
