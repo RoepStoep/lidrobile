@@ -66,13 +66,24 @@ function renderForm() {
   const timeMode = settingsObj.timeMode()
   const hasClock = timeMode === '1'
   const hasDays = timeMode === '2'
-
-  const colors = utils.getColorOptionsFromModeAndVariant(settingsObj.mode(), settingsObj.variant())
-  if (colors.length === 1) {
-    settingsObj.color(colors[0][1])
+  const variant = settingsObj.variant()
+  const isUltra = hasClock && settingsObj.time() === '0.25' && settingsObj.increment() === '0'
+  if (isUltra && variant !== '1') {
+    settingsObj.mode('0')
   }
 
-  const modes = session.isConnected() ? [
+  const colors = [
+    ['randomColor', 'random'],
+    ['white', 'white'],
+    ['black', 'black']
+  ]
+
+  // only standard ultrabullet can be rated
+  const modes = (
+    session.isConnected() &&
+    timeMode !== '0' &&
+    (!isUltra || variant === '1')
+  ) ? [
     ['casual', '0'],
     ['rated', '1']
   ] : [
@@ -159,7 +170,10 @@ function renderForm() {
   return h('form#invite_form.game_form', {
     onsubmit(e: Event) {
       e.preventDefault()
-      if (!settings.gameSetup.isTimeValid(settingsObj)) return
+      if (!settings.gameSetup.isTimeValid(settingsObj)) {
+        Toast.show({ text: 'Invalid clock settings', position: 'center', duration: 'short' })
+        return
+      }
       close()
       doChallenge()
     }

@@ -1,3 +1,4 @@
+import { Toast } from '@capacitor/toast'
 import h from 'mithril/hyperscript'
 import * as utils from '../utils'
 import tupleOf from '../utils/tupleOf'
@@ -178,7 +179,6 @@ function renderCustomSetup(formName: string, settingsObj: HumanSettings, variant
   if (isUltra && variant !== '1') {
     settingsObj.mode('0')
   }
-  const mode = settingsObj.mode()
 
   // be sure to set real time clock if disconnected
   if (!session.isConnected()) {
@@ -188,6 +188,7 @@ function renderCustomSetup(formName: string, settingsObj: HumanSettings, variant
     humanSetup.mode('0')
   }
 
+  // only standard ultrabullet can be rated
   const modes = (
     session.isConnected() &&
     timeMode !== '0' &&
@@ -199,13 +200,11 @@ function renderCustomSetup(formName: string, settingsObj: HumanSettings, variant
     ['casual', '0']
   ]
 
-  // if mode is rated only allow random color
-  // if mode is rated only allow random color for three-check, atomic, antichess
-  // horde variants
-  const colors = utils.getColorOptionsFromModeAndVariant(mode, settingsObj.variant())
-  if (colors.length === 1) {
-    settingsObj.color(colors[0][1])
-  }
+  const colors = [
+    ['randomColor', 'random'],
+    ['white', 'white'],
+    ['black', 'black']
+  ]
 
   const generalFieldset = [
     h('div.select_input',
@@ -265,7 +264,10 @@ function renderCustomSetup(formName: string, settingsObj: HumanSettings, variant
   return h('form.game_form', {
     onsubmit(e: Event) {
       e.preventDefault()
-      if (!settings.gameSetup.isTimeValid(settingsObj)) return
+      if (!settings.gameSetup.isTimeValid(settingsObj)) {
+        Toast.show({ text: 'Invalid clock settings', position: 'center', duration: 'short' })
+        return
+      }
       close()
       goSeek(humanSetupFromSettings(settingsObj))
     }
