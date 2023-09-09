@@ -24,7 +24,8 @@ export function humanSetupFromPool(poolObj: Pool, rated: boolean): HumanSeekSetu
     time: poolObj.lim,
     increment: poolObj.inc,
     days: 1,
-    color: 'random'
+    color: 'random',
+    fromPool: true
   }
 }
 

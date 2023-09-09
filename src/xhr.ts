@@ -54,7 +54,8 @@ export function seekGame(setup: HumanSeekSetup): Promise<HookData> {
     ratingRange,
   } : { ...rest }
 
-  return fetchJSON('/setup/hook/' + currentSri(), {
+  body['fromPool'] = undefined
+  return fetchJSON('/setup/hook/' + currentSri() + (setup.fromPool ? '?pool=1' : ''), {
     method: 'POST',
     body: JSON.stringify(body),
   }, true)

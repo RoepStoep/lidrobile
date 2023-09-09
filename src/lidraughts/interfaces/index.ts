@@ -54,6 +54,7 @@ export interface HumanSeekSetup extends SeekSetup {
   readonly mode: ModeId
   readonly ratingRangeMin?: number
   readonly ratingRangeMax?: number
+  readonly fromPool?: boolean
 }
 
 export interface AiSeekSetup extends SeekSetup {
