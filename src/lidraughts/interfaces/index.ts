@@ -319,7 +319,7 @@ export interface TempBan {
 }
 
 export function isPoolMember(conf: PoolMember | SeekSetup): conf is PoolMember {
-  return (conf as PoolMember).id !== undefined
+  return false && (conf as PoolMember).id !== undefined
 }
 
 export function isSeekSetup(conf: PoolMember | SeekSetup): conf is SeekSetup {

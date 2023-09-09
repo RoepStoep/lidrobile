@@ -1,3 +1,4 @@
+import { Toast } from '@capacitor/toast'
 import h from 'mithril/hyperscript'
 import * as utils from '../utils'
 import tupleOf from '../utils/tupleOf'

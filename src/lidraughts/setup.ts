@@ -17,17 +17,14 @@ export function humanSetupFromSettings(settingsObj: HumanSettings): HumanSeekSet
 }
 
 export function humanSetupFromPool(poolObj: Pool, rated: boolean): HumanSeekSetup {
-  const mode = rated ? 1 : 0
   return {
-    mode, 
+    mode: rated ? 1 : 0, 
     variant: 1, // standard
-    timeMode: 1 as TimeModeId, // realTime
+    timeMode: 1, // realTime
     time: poolObj.lim,
     increment: poolObj.inc,
-    days: 2,
-    color: 'random' as Color,
-    ratingRangeMin: 800,
-    ratingRangeMax: 2900
+    days: 1,
+    color: 'random'
   }
 }
 

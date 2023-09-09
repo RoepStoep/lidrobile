@@ -82,7 +82,7 @@ function goSeek(conf: PoolMember | HumanSeekSetup) {
 
   // pool
   if (isPoolMember(conf)) {
-    //lobby.startSeeking(conf)
+    lobby.startSeeking(conf)
   }
   // real time seek
   else if (isSeekSetup(conf) && conf.timeMode === 1) {
@@ -173,7 +173,6 @@ function renderPool(p: Pool) {
 function renderCustomSetup(formName: string, settingsObj: HumanSettings, variants: string[][], timeModes: string[][]) {
   const timeMode = settingsObj.timeMode()
   const hasClock = timeMode === '1'
-  const hasDays = timeMode === '2' && session.isConnected()
   const variant = settingsObj.variant()
   const isUltra = hasClock && settingsObj.time() === '0.25' && settingsObj.increment() === '0'
   if (isUltra && variant !== '1') {
@@ -199,6 +198,9 @@ function renderCustomSetup(formName: string, settingsObj: HumanSettings, variant
   ] : [
     ['casual', '0']
   ]
+  if (modes.length === 1) {
+    settingsObj.mode(modes[0][1])
+  }
 
   const colors = [
     ['randomColor', 'random'],
@@ -254,7 +256,7 @@ function renderCustomSetup(formName: string, settingsObj: HumanSettings, variant
     )
   }
 
-  if (hasDays) {
+  if (timeMode === '2' && session.isConnected()) {
     timeFieldset.push(
       h('div.select_input.large_label', formWidgets.renderSelect('daysPerTurn', formName + 'days',
           settings.gameSetup.availableDays.map(tupleOf), settingsObj.days, false)

@@ -12,7 +12,7 @@ import i18n, { plural } from '../i18n'
 import socket, { SocketIFace, SEEKING_SOCKET_NAME, RedirectObj, MessageHandlers } from '../socket'
 import { PongMessage, PoolMember, HumanSeekSetup, isPoolMember, isSeekSetup } from '../lidraughts/interfaces'
 import { OnlineGameData } from '../lidraughts/interfaces/game'
-import { humanSetupFromSettings } from '../lidraughts/setup'
+import { humanSetupFromSettings, humanSetupFromPool } from '../lidraughts/setup'
 import * as helper from './helper'
 import { loader } from './shared/common'
 import popupWidget from './shared/popup'
@@ -212,27 +212,17 @@ function enterPool(member: PoolMember) {
     session.refresh()
     .then(() => {
       // ensure session with a refresh
-      if (session.isConnected()) {
-        socketSend('poolIn', member)
-        clearInterval(poolInIntervalId)
-        poolInIntervalId = setInterval(() => {
-          socketSend('poolIn', member)
-        }, 10 * 1000)
-      }
-      // if anon. use a seek similar to the pool
-      else {
-        const pool = xhr.cachedPools.find(p => p.id  === member.id)
-        if (pool) {
-          sendHook({
-            mode: 0,
-            variant: 1,
-            timeMode: 1,
-            time: pool.lim,
-            increment: pool.inc,
-            days: 1,
-            color: 'random'
-          })
-        }
+      // if (session.isConnected()) {
+      //   socketSend('poolIn', member)
+      //   clearInterval(poolInIntervalId)
+      //   poolInIntervalId = setInterval(() => {
+      //     socketSend('poolIn', member)
+      //   }, 10 * 1000)
+      // }
+      const pool = xhr.cachedPools.find(p => p.id  === member.id)
+      if (pool) {
+        // use a seek similar to the pool
+        sendHook(humanSetupFromPool(pool, session.isConnected()))
       }
     })
 
