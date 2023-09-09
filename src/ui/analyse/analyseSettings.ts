@@ -85,7 +85,10 @@ export default {
         root.draughtsground.set({
           orientation: s.flip ? oppositeColor(root.orientation) : root.orientation
         })
-        if (root.retro) root.toggleRetro()
+        if (root.retro) {
+          root.retro = null
+          root.toggleRetro()
+        }
         if (root.practice) root.restartPractice()
       },
       cevalSetMultiPv(pv: number) {

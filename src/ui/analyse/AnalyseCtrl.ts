@@ -366,8 +366,7 @@ export default class AnalyseCtrl {
       else {
         this.ceval.disable()
       }
-    }
-    else {
+    } else {
       this.stopCevalImmediately()
       if (this.practice) this.practice = null
       this.retro = RetroCtrl(this)
