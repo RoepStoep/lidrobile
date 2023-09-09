@@ -15,14 +15,15 @@ function linesToSanMap(lines: ForecastStep[][]): SanMap {
   }, new Map())
 }
 
-function setDisplayPlies(fc: ForecastStep[][]) {
-  for (let f = 0; f < fc.length; f++) {
-    for (let i = 0; i < fc[f].length; i++) {
-      if (countGhosts(fc[f][i].fen) > 0)
-        fc[f][i].displayPly = fc[f][i].ply + 1
+function setDisplayPlies(forecasts: ForecastStep[][]) {
+  for (const fc of forecasts) {
+    for (const node of fc) {
+      if (countGhosts(node.fen)) {
+        node.displayPly = node.ply + 1
+      }
     }
   }
-  return fc
+  return forecasts
 }
 
 function unmergedLength(fc: MinimalForecastStep[]): number {
@@ -30,8 +31,8 @@ function unmergedLength(fc: MinimalForecastStep[]): number {
 
   let len = 1
   for (let i = 1; i < fc.length; i++) {
-    const fc1 = (fc[i].displayPly ? fc[i].displayPly : fc[i].ply)
-    const fc2 = (fc[i - 1].displayPly ? fc[i - 1].displayPly : fc[i - 1].ply)
+    const fc1 = fc[i].displayPly || fc[i].ply
+    const fc2 = fc[i - 1].displayPly || fc[i - 1].ply
     if (fc1 && fc2 && fc1 > fc2)
       len++
   }
@@ -64,15 +65,11 @@ export default class ForecastCtrl {
 
   truncate<T extends MinimalForecastStep>(nodes: T[]): T[] {
     let fc = nodes
+    const requiredPlyMod = this.isMyTurn ? 1 : 0
+
     // must end with player move
-    if (this.isMyTurn) {
-      while (fc.length && unmergedLength(fc) % 2 !== 1) {
-        fc = fc.slice(0, -1)
-      }
-    } else {
-      while (fc.length && unmergedLength(fc) % 2 !== 0) {
-        fc = fc.slice(0, -1)
-      }
+    while (fc.length && unmergedLength(fc) % 2 !== requiredPlyMod) {
+      fc = fc.slice(0, -1)
     }
     return fc.slice(0, MAX_FORECAST_PLIES)
   }

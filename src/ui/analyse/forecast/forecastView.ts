@@ -7,7 +7,7 @@ import AnalyseCtrl from '../AnalyseCtrl'
 import ForecastCtrl, { keyOf } from './ForecastCtrl'
 import { groupMoves } from './util'
 import { Tree } from '../../shared/tree'
-import { read, write } from '~/draughtsground/fen'
+import { read, write, countGhosts } from '~/draughtsground/fen'
 import { calcCaptKey } from '~/draughtsground/board'
 import { san2alg } from '../../../utils/draughtsFormat'
 import { key2pos } from '~/draughtsground/util'
@@ -125,11 +125,12 @@ function makeCandidateNodes(
 
         skippedSteps++
         if (skippedSteps > fctrl.skipSteps) {
-          const done = uci.length === 4, fen = done ? node.fen : currentFen.slice(0, 2) + write(pieces)
+          const done = uci.length === 4 && !countGhosts(node.fen)
+          const ply = node.displayPly || node.ply
           expandedNodes.push({
-            ply: done ? node.ply : (node.ply - 1),
-            displayPly: node.ply,
-            fen: fen,
+            ply: done ? ply : (ply - 1),
+            displayPly: ply,
+            fen: uci.length === 4 ? node.fen : currentFen.slice(0, 2) + write(pieces),
             uci: uci.slice(0, 4),
             san: shortKey(orig) + 'x' + shortKey(dest)
           })
@@ -143,7 +144,7 @@ function makeCandidateNodes(
       if (skippedSteps > fctrl.skipSteps)
         expandedNodes.push({
           ply: node.ply,
-          displayPly: node.displayPly,
+          displayPly: countGhosts(node.fen) ? node.ply + 1 : undefined,
           fen: node.fen,
           uci: node.uci!,
           san: node.san!
