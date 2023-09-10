@@ -38,7 +38,8 @@ export default {
   oninit({ attrs }) {
     const variantProp = <VariantKey>settings.training.variant() || 'standard'
     const numId = safeStringToNum(attrs.id) || base62ToNumber(attrs.id)
-    const variant = attrs.variant ? attrs.variant : (numId ? 'standard' : variantProp)
+    const tryVariant = attrs.variant ? attrs.variant : (numId ? 'standard' : variantProp)
+    const variant = settings.training.supportedVariants.indexOf(tryVariant) !== -1 ? tryVariant : 'standard'
     const loadNewPuzzle = () => {
       if (variant !== variantProp) {
         settings.training.variant(variant)

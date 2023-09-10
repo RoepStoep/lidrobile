@@ -52,19 +52,13 @@ export default {
         })
       })
 
-      router.add('analyse/:source/:id/:color', ({ params }) => {
-        import('./ui/analyse/analyse').then(m => {
-          onRouteMatch(m.default, params)
-        })
-      })
-
-      router.add('analyse/:source/:id', ({ params }) => {
-        import('./ui/analyse/analyse').then(m => {
-          onRouteMatch(m.default, params)
-        })
-      })
-
       router.add('analyse/fen/:fen', ({ params }) => {
+        import('./ui/analyse/analyse').then(m => {
+          onRouteMatch(m.default, params)
+        })
+      })
+
+      router.add('analyse/variant/:variant/fen/:fen', ({ params }) => {
         import('./ui/analyse/analyse').then(m => {
           onRouteMatch(m.default, params)
         })
@@ -76,7 +70,13 @@ export default {
         })
       })
 
-      router.add('analyse/variant/:variant/fen/:fen', ({ params }) => {
+      router.add('analyse/:source/:id/:color', ({ params }) => {
+        import('./ui/analyse/analyse').then(m => {
+          onRouteMatch(m.default, params)
+        })
+      })
+
+      router.add('analyse/:source/:id', ({ params }) => {
         import('./ui/analyse/analyse').then(m => {
           onRouteMatch(m.default, params)
         })
@@ -196,13 +196,19 @@ export default {
         })
       })
 
-      router.add('editor/:fen', ({ params }) => {
+      router.add('editor/variant/:variant/fen/:fen', ({ params }) => {
         import('./ui/editor/editor').then(m => {
           onRouteMatch(m.default, params)
         })
       })
 
-      router.add('editor/variant/:variant/fen/:fen', ({ params }) => {
+      router.add('editor/variant/:variant', ({ params }) => {
+        import('./ui/editor/editor').then(m => {
+          onRouteMatch(m.default, params)
+        })
+      })
+
+      router.add('editor/:fen', ({ params }) => {
         import('./ui/editor/editor').then(m => {
           onRouteMatch(m.default, params)
         })
@@ -316,13 +322,19 @@ export default {
         })
       })
 
-      router.add('training/:id', ({ params }) => {
+      router.add('training/variant/:variant', ({ params }) => {
         import('./ui/training/training').then(m => {
           onRouteMatch(m.default, params)
         })
       })
 
       router.add('training/:id/variant/:variant', ({ params }) => {
+        import('./ui/training/training').then(m => {
+          onRouteMatch(m.default, params)
+        })
+      })
+
+      router.add('training/:id', ({ params }) => {
         import('./ui/training/training').then(m => {
           onRouteMatch(m.default, params)
         })

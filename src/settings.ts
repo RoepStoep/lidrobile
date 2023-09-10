@@ -360,6 +360,7 @@ export default {
   },
 
   training: {
+    supportedVariants: ['standard', 'frisian', 'russian'],
     puzzleBufferLen: 50,
     ratingDiffThreshold: 100,
     variant: prop('training.variant', 'standard'),
