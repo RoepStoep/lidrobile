@@ -5,7 +5,7 @@ import socket from '../../socket'
 import settings from '../../settings'
 import router from '../../router'
 import redraw from '../../utils/redraw'
-import { handleXhrError, safeStringToNum } from '../../utils'
+import { handleXhrError, safeStringToNum, gameIcon } from '../../utils'
 import { specialFenVariants } from '../../lidraughts/variant'
 import { getAnalyseData, getCurrentAIGame, getCurrentOTBGame } from '../../utils/offlineGames'
 import * as helper from '../helper'
@@ -142,8 +142,14 @@ export default {
 
       let backButton: Mithril.Children = null
       if (this.ctrl.shouldGoBack) {
-        if (this.ctrl.data.game.id === 'synthetic') {
-          backButton = renderBackbutton(h('div.main_header_title', i18n('analysis')))
+        const game = this.ctrl.data.game
+        if (game.id === 'synthetic') {
+          backButton = renderBackbutton(
+            h('div.main_header_title', [
+              game.variant.key !== 'standard' ? h('div.icon-game', { 'data-icon': gameIcon(game.variant.key) || '' }) : null,
+              i18n('analysis'),
+            ])
+          )
         } else {
           backButton = renderBackbutton([
             h(GameTitle, { data: this.ctrl.data, subTitle: 'date' }),
