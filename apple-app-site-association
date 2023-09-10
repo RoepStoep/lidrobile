@@ -3,7 +3,7 @@
     "apps": [],
     "details": [
       {
-        "appIDs": [ "HP5YLVDU97.org.lichess.mobileapp.official" ],
+        "appIDs": [ "X926R3GUXD.org.lidraughts.mobileapp" ],
         "components": [
           {
             "/": "/features",
@@ -68,7 +68,7 @@
         ]
       },
       {
-        "appID": "HP5YLVDU97.org.lichess.mobileapp.official",
+        "appID": "X926R3GUXD.org.lidraughts.mobileapp",
         "paths": [
           "NOT /features",
           "NOT /practice",
@@ -95,6 +95,6 @@
     ]
   },
   "webcredentials": {
-    "apps": [ "HP5YLVDU97.org.lichess.mobileapp.official" ]
+    "apps": [ "X926R3GUXD.org.lidraughts.mobileapp" ]
   }
 }
