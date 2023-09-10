@@ -130,7 +130,7 @@ public class MainActivity extends BridgeActivity {
     SharedPreferences prefs = getSharedPreferences("LiVersionCheck", Context.MODE_PRIVATE);
     int previousVersionCode = prefs.getInt("LAST_VERSION_CODE", 0);
     if (BuildConfig.VERSION_CODE > previousVersionCode) {
-      // fix home quick setup loading bug when going from 6.x to 7.x
+      // fix home quick setup loading bug when going from 1.x to 2.x
       if (previousVersionCode == 0) {
         deleteDir(getApplicationContext().getCacheDir());
       }
