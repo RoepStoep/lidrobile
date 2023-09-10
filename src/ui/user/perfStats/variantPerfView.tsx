@@ -260,6 +260,7 @@ function normalizeGraphData(i: GraphPoint): DateRating {
 }
 
 function smoothGraphData(graphData: GraphData): GraphData {
+  if (!graphData.length) return []
   const copy = graphData.slice()
   const reversed = graphData.slice().reverse()
   const startDate = copy[0].date
