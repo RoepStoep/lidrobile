@@ -11,6 +11,7 @@ import { ChatMsg } from '../../lidraughts/interfaces/chat'
 import router from '../../router'
 import { SocketIFace } from '../../socket'
 import { closeIcon } from '../shared/icons'
+import { renderTitle } from '~/ui/user/userView'
 
 export type ChatStore = 'Corres' | 'Game' | 'Study' | 'Tournament'
 
@@ -212,13 +213,22 @@ function renderPlayerMsg(player: Player, msg: ChatMsg, i: number, all: ChatMsg[]
 
 function renderSpectatorMsg(msg: ChatMsg) {
   const lidraughtsTalking = msg.u === 'lidraughts'
+  let truncatedName = msg.n || msg.u
+  if (truncatedName.length > 14) {
+    const space = truncatedName.indexOf(' ')
+    if (space > 2) {
+      truncatedName = truncatedName.slice(0, 1) + '.' + truncatedName.slice(space)
+    }
+    truncatedName = truncatedName.slice(0, 14)
+  }
 
   return h('li.spectator_chat_msg.allow_select', {
     className: helper.classSet({
       system: lidraughtsTalking,
     })
   }, lidraughtsTalking ? msg.t : [
-    h('strong', msg.u),
+    renderTitle(msg.title), 
+    h('strong', truncatedName),
     h.trust('&nbsp;'), h.trust('&nbsp;'),
     h('span', msg.t)
   ])

@@ -5,7 +5,9 @@ import { levelToRating } from '../ui/ai/engine'
 
 export function lightPlayerName(player?: LightPlayer, withRating?: boolean): string {
   if (player) {
-    return (player.title ? (player.title.endsWith('-64') ? player.title.slice(0, player.title.length - 3) : player.title) + ' ' + player.name : player.name) + (
+    const shortTitle = player.title ? player.title.endsWith('-64') ? player.title.slice(0, player.title.length - 3) : player.title : ''
+    const playerName = player.user?.displayName || player.name
+    return (shortTitle ? shortTitle + ' ' + playerName : playerName) + (
       withRating ? ' (' + player.rating + ')' : '')
   } else {
     return i18n('anonymous')
@@ -14,9 +16,9 @@ export function lightPlayerName(player?: LightPlayer, withRating?: boolean): str
 
 // this is too polymorphic to be typed... needs a refactoring
 export function playerName(player: any, withRating = false, tr = false, trLenght?: number): string {
-  if (player.name || player.username || player.user) {
-    let name = player.name || player.username || player.user.username
-    if (player.user && player.user.title) {
+  let name = player.user?.displayName || player.name || player.username || player.user?.username
+  if (name) {
+    if (player.user?.title) {
       const t = player.user.title, t64 = t.endsWith('-64')
       name = (t64 ? t.slice(0, t.length - 3) : t) + ' ' + name
     }

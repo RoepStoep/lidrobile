@@ -1,6 +1,6 @@
 import { GameData } from './game'
 import { AnalyseData } from './analyse'
-import { LightUser, MiniUser as MiniUserData } from './user'
+import { User, LightUser, MiniUser as MiniUserData } from './user'
 
 export interface Streamer {
   url: string
@@ -34,6 +34,7 @@ export interface HookData {
 
 export interface LightPlayer {
   readonly name: string
+  readonly user?: User
   readonly title?: string
   readonly rating?: number
 }
@@ -277,6 +278,7 @@ export interface FeaturedGame2 {
 
 export interface FeaturedPlayer {
   readonly name: string
+  readonly id?: string
   readonly rating: number
   readonly ratingDiff: number
   readonly rank?: number

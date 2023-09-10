@@ -59,6 +59,7 @@ export interface BaseUser {
 export interface User extends BaseUser {
   readonly engine: boolean
   readonly name?: string
+  readonly displayName?: string
   readonly language: string
   readonly rating?: number
   readonly createdAt: Timestamp

@@ -63,6 +63,7 @@ interface TournamentPairing {
 
 export interface PodiumPlace {
   readonly name: string
+  readonly id?: string
   readonly nb: PlayerInfoNb
   readonly performance: number
   readonly rank: number
@@ -95,6 +96,7 @@ export interface StandingPage {
 
 export interface StandingPlayer {
   readonly name: string
+  readonly id?: string
   readonly provisional: boolean
   readonly rank: number
   readonly rating: number
@@ -137,7 +139,9 @@ export interface PlayerInfoPairing {
 
 interface PlayerInfoOpponent {
   readonly name: string
+  readonly id?: string
   readonly rating: number
+  readonly title?: string
 }
 
 interface PlayerInfoPlayer {

@@ -276,7 +276,7 @@ function fixSeeks(seeks: CorrespondenceSeek[]): CorrespondenceSeek[] {
 
 function playerToFeatured(p: Player): FeaturedPlayer {
   return {
-    name: p.name || p.username || p.user && p.user.username || '',
+    name: p.user?.displayName || p.name || p.username || p.user?.username || '',
     rating: p.rating || 0,
     ratingDiff: p.ratingDiff || 0,
     berserk: p.berserk,

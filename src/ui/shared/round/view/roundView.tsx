@@ -328,8 +328,8 @@ function userInfos(user: User, player: Player, playerName: string) {
 }
 
 function renderPlayerName(player: Player) {
-  if (player.name || player.username || player.user) {
-    const name = player.name || player.username || player.user?.username
+  const name = player.user?.displayName || player.name || player.username || player.user?.username
+  if (name) {
     return h('span', [
       renderUserTitle(player.user?.title),
       name
@@ -354,7 +354,7 @@ function renderPlayer(
   const togglePopup = user ? () => ctrl.openUserPopup(position, user.id) : utils.noop
   const vConf = user ?
     helper.ontap(togglePopup, () => userInfos(user, player, playerApi.playerName(player))) :
-    helper.ontap(utils.noop, () => Toast.show({ text: (player.name || player.username || player.user?.username)!, position: 'center', duration: 'short' }))
+    helper.ontap(utils.noop, () => Toast.show({ text: (player.user?.displayName || player.name || player.username || player.user?.username)!, position: 'center', duration: 'short' }))
 
   const checksNb = getChecksCount(ctrl, player.color)
 

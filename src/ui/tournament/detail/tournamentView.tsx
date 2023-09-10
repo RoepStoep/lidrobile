@@ -261,7 +261,7 @@ function tournamentLeaderboard(ctrl: TournamentCtrl) {
   const backEnabled = page > 1
   const forwardEnabled = page < data.nbPlayers / 10
   const user = session.get()
-  const userName = user ? user.username : ''
+  const userId = user ? user.username.toLowerCase() : ''
   const tb = data.teamBattle
 
   return (
@@ -271,7 +271,7 @@ function tournamentLeaderboard(ctrl: TournamentCtrl) {
         className={'tournamentStandings box' + (ctrl.isLoadingPage ? ' loading' : '')}
         oncreate={helper.ontap(e => handlePlayerInfoTap(ctrl, e), undefined, undefined, getLeaderboardItemEl)}
       >
-        {players.map((p, i) => renderPlayerEntry(userName, p, i, p.team ? ctrl.teamColorMap[p.team] : 0, p.team && tb ? tb.teams[p.team] : ''))}
+        {players.map((p, i) => renderPlayerEntry(userId, p, i, p.team ? ctrl.teamColorMap[p.team] : 0, p.team && tb ? tb.teams[p.team] : ''))}
       </ul>
       <div className={'navigationButtons' + (players.length < 1 ? ' invisible' : '')}>
         {renderNavButton('W', !ctrl.isLoadingPage && backEnabled, ctrl.first)}
@@ -300,13 +300,14 @@ function renderNavButton(icon: string, isEnabled: boolean, action: () => void) {
   })
 }
 
-function renderPlayerEntry(userName: string, player: StandingPlayer, i: number, teamColor?: number, teamName?: string): Mithril.Child {
+function renderPlayerEntry(userId: string, player: StandingPlayer, i: number, teamColor?: number, teamName?: string): Mithril.Child {
   const evenOrOdd = i % 2 === 0 ? 'even' : 'odd'
-  const isMe = player.name === userName
+  const playerUserId = player.id || player.name.toLowerCase()
+  const isMe = playerUserId === userId
   const ttc = teamColor ?? 0
 
   return (
-    <li key={player.name} data-player={player.name} className={`list_item tournament-list-item ${evenOrOdd}` + (isMe ? ' tournament-me' : '')} >
+    <li key={playerUserId} data-player={playerUserId} className={`list_item tournament-list-item ${evenOrOdd}` + (isMe ? ' tournament-me' : '')} >
       <div className="tournamentIdentity">
         <span className="flagRank" data-icon={player.withdraw === true ? 'b' : ''}> {player.withdraw === true ? '' : (`${player.rank}.`)} &thinsp; </span>
         <span className="playerName">
@@ -359,10 +360,11 @@ function renderPlace(data: PodiumPlace) {
   if (!data) return null
 
   const rank = data.rank
+  const userId = data.id || data.name.toLowerCase()
   return (
     <div className={'place' + rank}>
       <div className="trophy"> </div>
-      <div className="username" oncreate={helper.ontap(() => router.set('/@/' + data.name))}>
+      <div className="username" oncreate={helper.ontap(() => router.set('/@/' + userId))}>
         {renderTitle(data.title)}
         {data.name}
       </div>

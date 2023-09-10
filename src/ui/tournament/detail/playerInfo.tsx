@@ -84,7 +84,7 @@ export default {
       return (
         <tr className="list_item" data-id={game.id} data-color={game.color} key={game.id}>
           <td className="oppRank"> {pairings.length - index} </td>
-          <td className="oppName"> {game.op.name} </td>
+          <td className="oppName"> {renderTitle(game.op.title)}{game.op.name} </td>
           <td className="oppRating"> {game.op.rating} </td>
           <td className="oppColor"> <span className={'color-icon ' + game.color}> </span> </td>
           <td className={outcomeClass}> {outcome} </td>
@@ -92,6 +92,7 @@ export default {
       )
     }
 
+    const userId = player.id || player.name.toLowerCase()
     return (
       <div className="modal tournamentInfoModal" id="tournamentPlayerInfoModal" oncreate={helper.slidesInLeft}>
         <header>
@@ -100,7 +101,7 @@ export default {
           >
             { closeIcon }
           </button>
-          <h2 className="tournamentModalHeader">
+          <h2 className="tournamentModalHeader" oncreate={helper.ontap(() => router.set('/@/' + userId))}>
             {player.rank + '. '}
             {renderTitle(player.title)}
             {player.name + ' (' + player.rating + ') '}
