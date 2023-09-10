@@ -98,7 +98,7 @@ function renderForm(ctrl: TournamentsListCtrl) {
           {formWidgets.renderSelect(i18n('duration'), 'duration', settings.tournament.availableDurations.map((x: string) => tupleOf(Number(x))), settings.tournament.duration, false)}
         </div>
         <div className="select_input inline no-margin">
-          {formWidgets.renderSelect('Time to start', 'timeToStart', settings.tournament.availableTimesToStart.map((x: string) => tupleOf(Number(x))), settings.tournament.timeToStart, false)}
+          {formWidgets.renderSelect(i18n('timeBeforeTournamentStarts'), 'timeToStart', settings.tournament.availableTimesToStart.map((x: string) => tupleOf(Number(x))), settings.tournament.timeToStart, false)}
         </div>
         <div className="select_input">
           {formWidgets.renderCheckbox(i18n('isPrivate'), 'private', settings.tournament.private)}

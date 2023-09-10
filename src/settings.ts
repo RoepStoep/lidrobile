@@ -328,7 +328,7 @@ export default {
     ],
     availableTimes: [
       ['0', '0'], ['½', '0.5'], ['¾', '0.75'], ['1', '1'], ['1.5', '1.5'],
-    ].concat(incrementTuples(2, 7, 1))
+    ].concat(incrementTuples(2, 8, 1))
      .concat(incrementTuples(10, 25, 5))
      .concat(incrementTuples(30, 60, 10)),
     availableIncrements: increments(0, 7, 1)
@@ -336,9 +336,7 @@ export default {
       .concat(increments(30, 60, 10)),
     availableDurations: increments(20, 55, 5)
       .concat(increments(60, 110, 10))
-      .concat(increments(120, 360, 30))
-      .concat(increments(420, 540, 60))
-      .concat(['600', '720']),
+      .concat(increments(120, 360, 30)),
     availableTimesToStart: ['1', '2', '3', '5', '10', '15', '20', '30', '45', '60'],
     variant: prop('tournament.variant', '1'),
     mode: prop('tournament.mode', '0'),
