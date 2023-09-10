@@ -6,7 +6,7 @@ in [TypeScript](http://www.typescriptlang.org/), with a bit of Kotlin and Swift.
 It is a web application that accesses the native SDK, thanks to [Ionic capacitor](https://capacitor.ionicframework.com/).
 The rendering library is [mithril.js](http://mithril.js.org/).
 It talks to a native [Scan 3.1](https://github.com/rhalbersma/scan) engine, through a
-[cordova plugin](https://github.com/RoepStoep/cordova-plugin-scan).
+[capacitor plugin](https://github.com/RoepStoep/capacitor-scan).
 Multi-variant draughts library is brought by [a JavaScript version of scaladraughts](https://github.com/RoepStoep/scaladraughtsjs).
 
 ## Required dependencies
@@ -49,11 +49,6 @@ or else you won't be able to click on anything.
 
 Be sure to install all the dependencies and follow the steps above in the [Setup
 project section](#setup-project).
-
-In order to build Stockfish, you need to download the current stockfish plugin
-NNUE file and save it to the proper location for each platform:
-
-    $ npm run fetch-nnue
 
 ### Android
 
@@ -98,7 +93,3 @@ Using Xcode:
     $ npx cap open ios
 
 More information available [here](https://capacitorjs.com/docs/ios).
-
-## Advanced setup
-
-See the [wiki](https://github.com/veloce/lichobile/wiki/Setting-up-the-app-using-a-local-setup-of-lichess).
