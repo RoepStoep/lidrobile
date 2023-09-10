@@ -158,11 +158,12 @@ const savePreferences = throttle((): Promise<string> => {
     'animation',
     'captured',
     'kingMoves',
-    'gameResult',
     'highlight',
     'destination',
     'coords',
     'replay',
+    'gameResult',
+    'coordSystem',
     'blindfold'
   ])).reduce(makeReducer('display.'), {}) as Record<string, string>
 
@@ -170,16 +171,19 @@ const savePreferences = throttle((): Promise<string> => {
     'premove',
     'takeback',
     'autoThreefold',
-    'fullCapture',
     'submitMove',
     'confirmResign',
-    'moretime',
+    'fullCapture',
   ])).reduce(makeReducer('behavior.'), {}) as Record<string, string>
 
+  const clock = Object.entries(pick(prefs, [
+    'moretime',
+  ])).reduce(makeReducer('clock.'), {}) as Record<string, string>
+  clock['clock.tenths'] = numValue(prefs['clockTenths'])
+  clock['clock.bar'] = numValue(prefs['clockBar'])
+  clock['clock.sound'] = numValue(prefs['clockSound'])
+
   const rest = Object.entries(pick(prefs, [
-    'clockTenths',
-    'clockBar',
-    'clockSound',
     'follow',
     'challenge',
     'message',
@@ -192,7 +196,7 @@ const savePreferences = throttle((): Promise<string> => {
       'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
       'Accept': 'application/json, text/*'
     },
-    body: serializeQueryParameters({ ...rest, ...display, ...behavior })
+    body: serializeQueryParameters({ ...rest, ...display, ...behavior, ...clock })
   }, true)
   .then(showSavedPrefToast)
 }, 1000)

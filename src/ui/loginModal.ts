@@ -14,6 +14,7 @@ import i18n from '../i18n'
 import router from '../router'
 import { closeIcon } from './shared/icons'
 import signupModal from './signupModal'
+import settings from '~/settings'
 
 let isOpen = false
 let loading = false
@@ -113,7 +114,19 @@ function onLogin(e: Event) {
     socket.reconnectCurrent()
     push.register()
     challengesApi.refresh()
-    session.refresh()
+    return session.refresh()
+  })
+  .then(() => {
+    const prefs = session.get()?.prefs
+    if (prefs) {
+      // copy some important prefs on login 
+      settings.analyse.fullCapture(!!prefs['fullCapture'])
+      settings.game.draughtsResult(!!prefs['gameResult'])
+      const coordSystem = prefs['coordSystem']
+      if (typeof coordSystem === 'number') {
+        settings.game.coordSystem(coordSystem)
+      }
+    }
   })
   .catch((err: ErrorResponse) => {
     loading = false
