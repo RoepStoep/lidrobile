@@ -1,0 +1,19 @@
+apiUnsupported: "Lidraughts アプリのバージョンが古すぎます。最新版にアップグレードを（無料です）。"
+apiDeprecated: "最新の Lidraughts アプリに無料でアップグレードを！このバージョンは %s にサポート終了します。"
+comments: "コメント"
+gameInformation: "ゲーム情報"
+home: "ホーム" #The home page
+playerisInvitingYou: "%s から招待です"
+unsupportedVariant: "%s はこのバージョンでは対応していません"
+notesSynchronizationHasFailed: "Lidraughts との同期に失敗しました。後でもう一度どうぞ。"
+vibrateOnGameEvents: "対局の進行によるバイブ機能"
+offline: "オフライン"
+otbFlipPiecesAndInfoAfterMove: "1 手ごとに駒と情報を上下反転" #Setting for offline over-the-board games
+settingsClockPosition: "時計の位置" #Determines whether each player's time is shown on the left or right side of the board
+positionRight: "右" #As in "right-hand side"; not truth, morality, or law
+positionLeft: "左" #As in "left-hand side"; not political or past participle
+playOnline: "オンラインでプレイする"
+playOffline: "オフラインでプレイする"
+playOfflineOverTheBoard: "オフライン（2人対戦）" #Offline over the board play. This appears in the menu, so try to keep it short.
+playOfflineComputer: "オフラインでＣＰＵと対戦する" #Offline play against the computer. This appears in the menu, so try to keep it short.
+bgThemeSyncWithSystem: "システムと同期" #Settings to synchronise background theme (dark or light) with the operating system (to support daynight automatic switch)

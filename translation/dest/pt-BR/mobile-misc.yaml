@@ -1,0 +1,19 @@
+apiUnsupported: "Sua versão do aplicativo Lidraughts é muito antiga! Por favor, atualize gratuitamente para a versão mais recente."
+apiDeprecated: "Atualize gratuitamente para o mais recente aplicativo do Lidraughts! O suporte para esta versão acabará em %s."
+comments: "Comentários"
+gameInformation: "Informação da partida"
+home: "Início" #The home page
+playerisInvitingYou: "%s está convidando você"
+unsupportedVariant: "Variante %s não é suportada nesta versão"
+notesSynchronizationHasFailed: "A sincronização de notas com o Lidraughts falhou. Por favor, tente mais tarde."
+vibrateOnGameEvents: "Vibrar em eventos do jogo"
+otbFlipPiecesAndInfoAfterMove: "Vire peças e informações do adversário após o lance" #Setting for offline over-the-board games
+settingsClockPosition: "Posição do relógio" #Determines whether each player's time is shown on the left or right side of the board
+positionRight: "Direita" #As in "right-hand side"; not truth, morality, or law
+positionLeft: "Esquerda" #As in "left-hand side"; not political or past participle
+landscapeBoardSide: "Lado da tela do tabuleiro (no modo paisagem)" #Side of the screen the board appears on in analysis or online rounds when the device is in landscape mode.
+playOnline: "Jogar online"
+playOffline: "Jogar offline"
+playOfflineOverTheBoard: "Jogar contra um amigo" #Offline over the board play. This appears in the menu, so try to keep it short.
+playOfflineComputer: "Jogar contra o computador" #Offline play against the computer. This appears in the menu, so try to keep it short.
+bgThemeSyncWithSystem: "Sincronizar com o sistema" #Settings to synchronise background theme (dark or light) with the operating system (to support daynight automatic switch)

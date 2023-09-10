@@ -1,0 +1,18 @@
+apiUnsupported: "Ваша версія Lidraughts састарэла! Калі ласка, абнавіцеся бясплатна да апошняй версіі."
+apiDeprecated: "Бясплатна абнавіцеся да апошняй версіі прылады Lidraughts! Падтрымка гэтай версіі будзе скончана %s."
+comments: "Каментары"
+gameInformation: "Інфармацыя пра гульню"
+home: "Галоўная" #The home page
+playerisInvitingYou: "%s запрошвае вас"
+unsupportedVariant: "Варыянт %s не падтрымліваецца гэтай версіяй"
+notesSynchronizationHasFailed: "Не атрымалася сінхранізаваць нататкі з Lidraughts. Паспрабуйце пазней."
+vibrateOnGameEvents: "Вібраваць пры падзеях у гульне"
+offline: "Афлайн"
+settingsClockPosition: "Размяшчэнне гадзінніка" #Determines whether each player's time is shown on the left or right side of the board
+positionRight: "Зправа" #As in "right-hand side"; not truth, morality, or law
+positionLeft: "Злева" #As in "left-hand side"; not political or past participle
+playOnline: "Гуляць анлайн"
+playOffline: "Гуляць афлайн"
+playOfflineOverTheBoard: "Ля дошкі" #Offline over the board play. This appears in the menu, so try to keep it short.
+playOfflineComputer: "Камп'ютар" #Offline play against the computer. This appears in the menu, so try to keep it short.
+bgThemeSyncWithSystem: "Сінхранізацыя з сістэмай" #Settings to synchronise background theme (dark or light) with the operating system (to support daynight automatic switch)

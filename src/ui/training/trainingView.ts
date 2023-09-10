@@ -65,7 +65,7 @@ function renderActionsBar(ctrl: TrainingCtrl) {
       oncreate: helper.ontap(ctrl.settings.open)
     }),
     h('button.action_bar_button.training_action.fa.fa-share-alt', {
-      oncreate: helper.ontap(ctrl.share, () => Toast.show({ text: 'Share this puzzle', duration: 'short', position: 'bottom' }))
+      oncreate: helper.ontap(ctrl.share, () => Toast.show({ text: i18n('shareThisPuzzle'), duration: 'short', position: 'bottom' }))
     }),
     h('button.action_bar_button.training_action[data-icon=A]', {
       oncreate: helper.ontap(ctrl.goToAnalysis, () => Toast.show({ text: i18n('analysis'), duration: 'short', position: 'bottom' })),

@@ -436,8 +436,6 @@ export default {
   "connectedToLidraughts": "Та lidraughts.org хуудаст холбогдлоо",
   "signedOut": "Та бүртгэлээсээ гарсан байна",
   "loginSuccessful": "Та бүртгэгдэн орлоо",
-  "playOnTheBoardOffline": "Нүүр тулсан өрөг",
-  "playOfflineComputer": "Компьютер",
   "opponent": "Өрсөлдөгч",
   "learnMenu": "Сургалт",
   "studyMenu": "Суралцах",
@@ -446,8 +444,6 @@ export default {
   "tools": "Хэрэглүүр",
   "increment": "Нэмэгдэл",
   "sharePDN": "Тэмцээний тэмдэглэлийг бусадтай хуваалцах",
-  "playOnline": "Сүлжээний орчинд тоглох",
-  "playOffline": "Сүлжээний бус орчинд тоглох",
   "allowAnalytics": "Програмын ашиглалтын талаарх мэдээллийг илгээхийг зөвшөөрөх",
   "shareGameURL": "Өргийн холбоос хаягыг бусадтай хуваалцах",
   "error.required": "Энэ нүдэнд мэдээлэл оруулах заавал шаардлагатай",
@@ -759,5 +755,9 @@ export default {
   "teamBestPlayers": "Шилдэг тоглогчид",
   "teamRecentMembers": "Сүүлд элссэн гишүүд",
   "nbMembers:one": "%s гишүүд",
-  "nbMembers:other": "%s гишүүд"
+  "nbMembers:other": "%s гишүүд",
+  "playOnline": "Сүлжээний орчинд тоглох",
+  "playOffline": "Сүлжээний бус орчинд тоглох",
+  "playOfflineOverTheBoard": "Нүүр тулсан өрөг",
+  "playOfflineComputer": "Компьютер"
 }

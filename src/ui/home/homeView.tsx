@@ -43,7 +43,7 @@ function offline(ctrl: HomeCtrl) {
         <section className="playOffline">
           <h2>{i18n('playOffline')}</h2>
           <button className="fatButton" oncreate={helper.ontapY(() => router.set('/ai'))}>{i18n('playOfflineComputer')}</button>
-          <button className="fatButton" oncreate={helper.ontapY(() => router.set('/otb'))}>{i18n('playOnTheBoardOffline')}</button>
+          <button className="fatButton" oncreate={helper.ontapY(() => router.set('/otb'))}>{i18n('playOfflineOverTheBoard')}</button>
         </section>
         { boardConf ?
         <section className="home__miniPuzzle">

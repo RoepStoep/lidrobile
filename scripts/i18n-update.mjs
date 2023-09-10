@@ -49,13 +49,13 @@ async function main() {
     }
   }
 
-  // const mobileTranslations = loadMobileTranslations()
-  // for (const locale in mobileTranslations) {
-  //   everything[locale] = {
-  //     ...everything[locale],
-  //     ...mobileTranslations[locale],
-  //   }
-  // }
+  const mobileTranslations = loadMobileTranslations()
+  for (const locale in mobileTranslations) {
+    everything[locale] = {
+      ...everything[locale],
+      ...mobileTranslations[locale],
+    }
+  }
 
   const allKeys = Object.keys(everything)
 
@@ -187,7 +187,7 @@ function loadMobileTranslationsForLocale(locale) {
   const localeDir = `${lidrobileTranslationsPath}/${locale}`
   
   for (const file of readdirSync(localeDir)) {
-    const data = loadYaml(readFileSync(`${localeDir}/${file}`, 'utf8'))[locale]
+    const data = loadYaml(readFileSync(`${localeDir}/${file}`, 'utf8'))
     translationMap = {
       ...translationMap,
       ...transformMobileTranslations(data)

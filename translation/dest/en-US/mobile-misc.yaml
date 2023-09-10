@@ -1,0 +1,26 @@
+apiUnsupported: "Your version of the Lidraughts app is too old! Please upgrade for free to the latest version."
+apiDeprecated: "Upgrade for free to the latest Lidraughts app! Support for this version will be dropped on %s."
+comments: "Comments"
+gameInformation: "Game information"
+home: "Home" #The home page
+returnToHome: "Return to home" #As in "Return to the home page"
+playerisInvitingYou: "%s is inviting you"
+unsupportedVariant: "Variant %s is not supported in this version"
+notesSynchronizationHasFailed: "Notes synchronization with Lidraughts has failed, please try later."
+vibrateOnGameEvents: "Vibrate on game events"
+offline: "Offline"
+otbFlipPiecesAndInfoAfterMove: "Flip pieces and opponent info after move" #Setting for offline over-the-board games
+settingsClockPosition: "Clock position" #Determines whether each player's time is shown on the left or right side of the board
+positionRight: "Right" #As in "right-hand side"; not truth, morality, or law
+positionLeft: "Left" #As in "left-hand side"; not political or past participle
+landscapeBoardSide: "Board screen side (in landscape mode)" #Side of the screen the board appears on in analysis or online rounds when the device is in landscape mode.
+playOnline: "Play online"
+playOffline: "Play offline"
+playOfflineOverTheBoard: "Over the board" #Offline over the board play. This appears in the menu, so try to keep it short.
+playOfflineComputer: "Computer" #Offline play against the computer. This appears in the menu, so try to keep it short.
+bgThemeSyncWithSystem: "Sync with system" #Settings to synchronise background theme (dark or light) with the operating system (to support daynight automatic switch)
+shareThisPuzzle: "Share this puzzle"
+localEvalCaution: "Caution: intensive usage will drain battery."
+incorrectThreefoldClaim: "Incorrect threefold repetition claim." #As in threefold repetition
+lidraughtsIsUnavailableError: "lidraughts.org is temporarily down for maintenance."
+lidraughtsIsUnreachable: "lidraughts.org is unreachable."

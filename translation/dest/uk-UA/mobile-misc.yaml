@@ -1,0 +1,20 @@
+apiUnsupported: "Ваша версія додатку Lidraughts застаріла! Будь ласка, оновіть безкоштовно до найновішої версії."
+apiDeprecated: "Оновіть безкоштовно до найновішої версії додатку Lidraughts! Супровід цієї версії буде припинено %s."
+comments: "Коментарі"
+gameInformation: "Інформація про гру"
+home: "Головна" #The home page
+playerisInvitingYou: "%s запрошує вас"
+unsupportedVariant: "Варіант %s не підтримується у цій версії"
+notesSynchronizationHasFailed: "Помилка синхронізації нотаток з Lidraughts. Будь ласка, спробуйте пізніше."
+vibrateOnGameEvents: "Вібрувати при ігрових подіях"
+offline: "Офлайн"
+otbFlipPiecesAndInfoAfterMove: "Перевертати фігури та інформацію про суперника після ходу" #Setting for offline over-the-board games
+settingsClockPosition: "Розташування годинника" #Determines whether each player's time is shown on the left or right side of the board
+positionRight: "Праворуч" #As in "right-hand side"; not truth, morality, or law
+positionLeft: "Ліворуч" #As in "left-hand side"; not political or past participle
+landscapeBoardSide: "Відображення дошки (в альбомній орієнтації)" #Side of the screen the board appears on in analysis or online rounds when the device is in landscape mode.
+playOnline: "Гра онлайн"
+playOffline: "Гра оффлайн"
+playOfflineOverTheBoard: "За дошкою" #Offline over the board play. This appears in the menu, so try to keep it short.
+playOfflineComputer: "Грати з програмою" #Offline play against the computer. This appears in the menu, so try to keep it short.
+bgThemeSyncWithSystem: "Синхронізація з системою" #Settings to synchronise background theme (dark or light) with the operating system (to support daynight automatic switch)

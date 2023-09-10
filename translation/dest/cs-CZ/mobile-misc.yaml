@@ -1,0 +1,18 @@
+apiUnsupported: "Vaše verze aplikace je příliš stará. Aktualizujte ji prosím zdarma na nejnovější verzi."
+apiDeprecated: "Aktualizujte zdarma na nejnovější Lidraughts aplikaci! Tato verze nebude podporována po %s."
+comments: "Komentáře"
+gameInformation: "Informace o hře"
+home: "Hlavní stránka" #The home page
+playerisInvitingYou: "%s vás zve"
+unsupportedVariant: "Varianta %s není v této verzi aplikace podporována"
+notesSynchronizationHasFailed: "Synchronizace poznámek se nezdařila, zkuste to prosím později."
+vibrateOnGameEvents: "Vibrovat při herních událostech"
+offline: "Odpojeno"
+settingsClockPosition: "Pozice hodin" #Determines whether each player's time is shown on the left or right side of the board
+positionRight: "Vpravo" #As in "right-hand side"; not truth, morality, or law
+positionLeft: "Vlevo" #As in "left-hand side"; not political or past participle
+playOnline: "Hrát online"
+playOffline: "Hrát offline"
+playOfflineOverTheBoard: "Jako na šachovnici" #Offline over the board play. This appears in the menu, so try to keep it short.
+playOfflineComputer: "Hraj proti počítači" #Offline play against the computer. This appears in the menu, so try to keep it short.
+bgThemeSyncWithSystem: "Systémové nastaveníi" #Settings to synchronise background theme (dark or light) with the operating system (to support daynight automatic switch)

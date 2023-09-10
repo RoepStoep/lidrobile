@@ -1,0 +1,15 @@
+apiUnsupported: "您的 Lidraughts 应用程序版本太旧了！请免费升级到最新版本。"
+apiDeprecated: "免费升级到最新的 Lidraughts 应用！此版本将在 %s 之后停止支持。"
+comments: "评论"
+gameInformation: "对局信息"
+home: "主页" #The home page
+playerisInvitingYou: "%s 邀请你"
+unsupportedVariant: "此版本不支持变体 %s"
+offline: "离线"
+positionRight: "右" #As in "right-hand side"; not truth, morality, or law
+positionLeft: "左" #As in "left-hand side"; not political or past participle
+playOnline: "在线下棋"
+playOffline: "离线下棋"
+playOfflineOverTheBoard: "面对面" #Offline over the board play. This appears in the menu, so try to keep it short.
+playOfflineComputer: "电脑" #Offline play against the computer. This appears in the menu, so try to keep it short.
+bgThemeSyncWithSystem: "跟随系统" #Settings to synchronise background theme (dark or light) with the operating system (to support daynight automatic switch)

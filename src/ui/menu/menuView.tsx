@@ -141,7 +141,7 @@ function renderLinks(user?: Session) {
       oncreate={helper.ontapXY(onLinkTap, undefined, helper.getLI)}
     >
       <li className="side_link" data-route="/">
-        <span className="fa fa-home" />{i18n('homepage')}
+        <span className="fa fa-home" />{i18n('home')}
       </li>
       {online ?
       <li className="sep_link">{i18n('playOnline')}</li> : null
@@ -219,7 +219,7 @@ function renderLinks(user?: Session) {
         <span className="fa fa-cogs"/>{i18n('playOfflineComputer')}
       </li>
       <li className="side_link" data-route="/otb">
-        <span className="fa fa-beer"/>{i18n('playOnTheBoardOffline')}
+        <span className="fa fa-beer"/>{i18n('playOfflineOverTheBoard')}
       </li>
       <li className="hr"></li>
       <li className="side_link" data-route="/settings">

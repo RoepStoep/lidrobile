@@ -1,0 +1,4 @@
+playOnline: "Сүлжээний орчинд тоглох"
+playOffline: "Сүлжээний бус орчинд тоглох"
+playOfflineOverTheBoard: "Нүүр тулсан өрөг" #Offline over the board play. This appears in the menu, so try to keep it short.
+playOfflineComputer: "Компьютер" #Offline play against the computer. This appears in the menu, so try to keep it short.

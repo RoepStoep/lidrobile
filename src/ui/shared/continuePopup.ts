@@ -103,7 +103,7 @@ export default {
                 }
               }
             })
-          }, i18n('playOnTheBoardOffline'))
+          }, i18n('playOfflineOverTheBoard'))
         ]
       },
       ctrl.isOpen(),

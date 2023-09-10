@@ -117,7 +117,7 @@ export function handleXhrError(error: ErrorResponse): void {
   else if (status === 401)
     message = 'unauthorizedError'
   else if (status === 404)
-    message = 'resourceNotFoundError'
+    message = 'Resource not found.'
   else if (status === 503)
     message = 'lidraughtsIsUnavailableError'
   else if (status >= 500)

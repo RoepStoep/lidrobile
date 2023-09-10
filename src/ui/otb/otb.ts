@@ -51,7 +51,7 @@ export default {
       const fen = attrs.fen || emptyFen
       const variant = attrs.variant || 'standard'
       const color = fen ? playerFromFen(fen) : 'white'
-      header = renderHeader(i18n('playOnTheBoardOffline'))
+      header = renderHeader(i18n('playOfflineOverTheBoard'))
       content = viewOnlyBoardContent(fen, color, variant, undefined, undefined)
     }
 

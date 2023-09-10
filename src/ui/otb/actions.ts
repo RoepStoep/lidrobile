@@ -25,7 +25,7 @@ function renderAlways(ctrl: OtbRound) {
       }, i18n('analysis'))
     ]),
     h('div.action', formWidgets.renderCheckbox(
-      i18n('Flip pieces and opponent info after move'), 'flipPieces', settings.otb.flipPieces,
+      i18n('otbFlipPiecesAndInfoAfterMove'), 'flipPieces', settings.otb.flipPieces,
         (v) => ground.changeOTBMode(ctrl.draughtsground, v)
     ))
   ]

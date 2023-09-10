@@ -21,12 +21,12 @@ let dateFormat: Intl.DateTimeFormat = new Intl.DateTimeFormat(undefined, dateFor
 let dateTimeFormat: Intl.DateTimeFormat = new Intl.DateTimeFormat(undefined, dateTimeFormatOpts)
 
 export default function i18n(key: string, ...args: Array<string | number>): string {
-  const str = messages[key] || untranslated[key]
+  const str = messages[key]
   return str ? format(str, ...args) : key
 }
 
 export function i18nVdom(key: string, ...args: Array<Mithril.Child>): Mithril.Children {
-  const str = messages[key] || untranslated[key]
+  const str = messages[key]
   return str ? formatVdom(str, ...args) : key
 }
 
@@ -360,25 +360,4 @@ const defaultRegions: StringMap = {
   'en': 'en-US',
   'pt': 'pt-PT',
   'zh': 'zh-CN',
-}
-
-const untranslated: StringMap = {
-  apiUnsupported: 'Your version of the Lidraughts app is too old! Please upgrade for free to the latest version.',
-  apiDeprecated: 'Upgrade for free to the latest Lidraughts app! Support for this version will be dropped on %s.',
-  resourceNotFoundError: 'Resource not found.',
-  lidraughtsIsUnavailableError: 'lidraughts.org is temporarily down for maintenance.',
-  lidraughtsIsUnreachable: 'lidraughts.org is unreachable.',
-  clockPosition: 'Clock position',
-  playerisInvitingYou: '%s is inviting you',
-  unsupportedVariant: 'Variant %s is not supported in this version',
-  notesSynchronizationHasFailed: 'Notes synchronization with Lidraughts has failed, please try later.',
-  returnToHome: 'Return to home',
-  homepage: 'Home',
-  share: 'Share',
-  localEvalCaution: 'Caution: intensive usage will drain battery.',
-  incorrectThreefoldClaim: 'Incorrect threefold repetition claim.',
-  vibrateOnGameEvents: 'Vibrate on game events',
-  landscapeBoardSide: 'Board screen side (in landscape mode)',
-  offline: 'Offline',
-  bgThemeSyncWithSystem: 'Sync with system'
 }

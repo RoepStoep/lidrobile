@@ -1,0 +1,24 @@
+apiUnsupported: "Uw versie van de Lidraughts-app is te oud! Gelieve gratis te upgraden naar de nieuwste versie."
+apiDeprecated: "Upgrade gratis naar de nieuwste Lidraughts-app! Ondersteuning voor deze versie zal ophouden op %s."
+comments: "Reacties"
+gameInformation: "Spelinformatie"
+home: "Startscherm" #The home page
+returnToHome: "Terug naar startscherm" #As in "Return to the home page"
+playerisInvitingYou: "%s nodigt je uit"
+unsupportedVariant: "Variant %s wordt niet ondersteund in deze versie"
+notesSynchronizationHasFailed: "Synchronisatie van notities met Lidraughts is mislukt, probeer het later opnieuw."
+vibrateOnGameEvents: "Trillen bij spelactiviteit"
+otbFlipPiecesAndInfoAfterMove: "Draai de stukken en de informatie van de tegenstander om na elke zet" #Setting for offline over-the-board games
+settingsClockPosition: "Positie klok" #Determines whether each player's time is shown on the left or right side of the board
+positionRight: "Rechts" #As in "right-hand side"; not truth, morality, or law
+positionLeft: "Links" #As in "left-hand side"; not political or past participle
+landscapeBoardSide: "Positie bord (in landschapsmodus)" #Side of the screen the board appears on in analysis or online rounds when the device is in landscape mode.
+playOnline: "Speel online"
+playOffline: "Speel offline"
+playOfflineOverTheBoard: "Speel offline" #Offline over the board play. This appears in the menu, so try to keep it short.
+bgThemeSyncWithSystem: "Synchroniseren met systeem" #Settings to synchronise background theme (dark or light) with the operating system (to support daynight automatic switch)
+shareThisPuzzle: "Deel deze puzzel"
+localEvalCaution: "Let op: intensief gebruik trekt de batterij leeg."
+incorrectThreefoldClaim: "Onjuiste claim voor herhaling van zetten." #As in threefold repetition
+lidraughtsIsUnavailableError: "lidraughts.org is tijdelijk niet bereikbaar vanwege onderhoud."
+lidraughtsIsUnreachable: "lidraughts.org kan niet worden bereikt."
