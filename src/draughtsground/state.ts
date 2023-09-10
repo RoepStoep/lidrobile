@@ -95,7 +95,7 @@ export function makeDefaults(): State {
     animateFrom: null,
     selected: null,
     coordinates: 2,
-    coordSystem: 0,
+    coordSystem: 1,
     otb: false,
     otbMode: 'facing' as cg.OtbMode,
     viewOnly: false,

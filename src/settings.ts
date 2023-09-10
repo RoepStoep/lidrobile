@@ -115,7 +115,7 @@ export default {
     highlights: prop<boolean>('boardHighlights', true),
     pieceDestinations: prop<boolean>('pieceDestinations', true),
     coords: prop<number>('coords', 2),
-    coordSystem: prop<number>('coordSystem', 0),
+    coordSystem: prop<number>('coordSystem', 1),
     magnified: prop<boolean>('pieceMagnified', true),
     zenMode: prop<boolean>('zenMode', false),
     blindfoldDraughts: prop<boolean>('blindfoldDraughts', false),
