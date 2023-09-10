@@ -604,6 +604,7 @@ export default {
   "tools": "Инструменты",
   "increment": "Добавка",
   "sharePDN": "Поделиться PDN",
+  "shareFEN": "Поделиться FEN",
   "allowAnalytics": "Разрешить анонимный сбор статистики",
   "shareGameURL": "Поделиться ссылкой на игру",
   "error.required": "Это обязательное поле",

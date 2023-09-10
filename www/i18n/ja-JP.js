@@ -484,6 +484,7 @@ export default {
   "tools": "ツール",
   "increment": "追加時間",
   "sharePDN": "PDNを表示",
+  "shareFEN": "FENを表示",
   "allowAnalytics": "無名な統計情報を許す？",
   "shareGameURL": "ゲームのURLを共有",
   "error.required": "この欄は入力必須です",

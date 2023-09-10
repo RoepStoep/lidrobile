@@ -603,6 +603,7 @@ export default {
   "tools": "工具",
   "increment": "加秒",
   "sharePDN": "分享PDN棋谱",
+  "shareFEN": "分享FEN棋谱",
   "allowAnalytics": "允许匿名统计数据",
   "shareGameURL": "分享棋局链接",
   "error.required": "本项必填",

@@ -603,6 +603,7 @@ export default {
   "tools": "Werkzeuge",
   "increment": "Inkrement",
   "sharePDN": "PDN teilen",
+  "shareFEN": "FEN teilen",
   "allowAnalytics": "Anonyme Statistiken senden",
   "shareGameURL": "Partie-URL teilen",
   "error.required": "Dieses Feld muss ausgefüllt werden",

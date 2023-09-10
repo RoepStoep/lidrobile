@@ -483,6 +483,7 @@ export default {
   "tools": "Araçlar",
   "increment": "Artış",
   "sharePDN": "PDN 'yi paylaş",
+  "shareFEN": "FEN 'yi paylaş",
   "allowAnalytics": "İstatistikleri paylaşmaya izin ver",
   "shareGameURL": "Oyun linkini paylaş",
   "error.required": "Bu alan gerekli",

@@ -538,6 +538,7 @@ export default {
   "tools": "Rīki",
   "increment": "Inkrements",
   "sharePDN": "Dalīties ar PDN",
+  "shareFEN": "Dalīties ar FEN",
   "allowAnalytics": "Atļaut anonīmu datu nosūtīšanu",
   "shareGameURL": "Dalīties ar spēles URL",
   "error.required": "Šis lauks ir obligāts",

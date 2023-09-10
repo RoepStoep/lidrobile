@@ -473,6 +473,7 @@ export default {
   "tools": "Herramientas",
   "increment": "Incremento",
   "sharePDN": "Compartir PDN",
+  "shareFEN": "Compartir FEN",
   "allowAnalytics": "Permitir estadísticas anónimas",
   "shareGameURL": "Compartir el enlace del juego",
   "error.required": "Este campo es obligatorio",

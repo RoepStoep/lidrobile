@@ -603,6 +603,7 @@ export default {
   "tools": "Narzędzia",
   "increment": "Dodawany czas",
   "sharePDN": "Udostępnij PDN",
+  "shareFEN": "Udostępnij FEN",
   "allowAnalytics": "Wysyłaj anonimowe statystyki",
   "shareGameURL": "Udostępnij link do partii",
   "error.required": "To pole jest wymagane",

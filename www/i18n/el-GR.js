@@ -603,6 +603,7 @@ export default {
   "tools": "Εργαλεία",
   "increment": "Προσαύξηση",
   "sharePDN": "Κοινοποίηση PDN",
+  "shareFEN": "Κοινοποίηση FEN",
   "allowAnalytics": "Επιτρέψτε την αποστολή ανώνυμων στατιστικών",
   "shareGameURL": "Κοινοποιήστε URL παιχνιδιού",
   "error.required": "Αυτό το πεδίο είναι υποχρεωτικό",

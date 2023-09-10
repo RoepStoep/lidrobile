@@ -469,6 +469,7 @@ export default {
   "tools": "Інструменты",
   "increment": "Прырост",
   "sharePDN": "Падзяліцца PDN",
+  "shareFEN": "Падзяліцца FEN",
   "allowAnalytics": "Дазволіць збор ананімнай статыстыкі",
   "shareGameURL": "Падзяліцца спасылкай на гульню",
   "error.required": "Абавязковае поле",

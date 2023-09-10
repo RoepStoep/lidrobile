@@ -472,6 +472,7 @@ export default {
   "tools": "Nástroje",
   "increment": "Navýšení",
   "sharePDN": "Sdílet PDN",
+  "shareFEN": "Sdílet FEN",
   "allowAnalytics": "Povolit anonymní statistiky",
   "shareGameURL": "Sdílet URL hry",
   "error.required": "Toto pole je povinné",

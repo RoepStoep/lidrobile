@@ -457,6 +457,7 @@ export default {
   "tools": "Strumenti",
   "increment": "Incremento",
   "sharePDN": "Condividi PDN",
+  "shareFEN": "Condividi FEN",
   "allowAnalytics": "Permetti statistiche anonime",
   "shareGameURL": "Condividi URL della partita",
   "error.required": "Questo campo è obbligatorio",

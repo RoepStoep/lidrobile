@@ -132,23 +132,23 @@ function renderShareMenu(ctrl: AnalyseCtrl) {
       oncreate: helper.ontap(() => {
         offlinePdnExport(ctrl)
       }),
-    }, ctrl.menu.s.computingPDN ? spinner.getVdom('monochrome') : [i18n('sharePDN')]) : null,
+    }, ctrl.menu.s.computingPDN ? spinner.getVdom('monochrome') : i18n('sharePDN')) : null,
     ctrl.source === 'online' && !gameApi.playable(ctrl.data) ? h('button', {
       oncreate: helper.ontap(() => {
         onlinePDNExport(ctrl, false)
       }),
-    }, ctrl.menu.s.computingPDNAnnotated ? spinner.getVdom('monochrome') : 'Share annotated PDN') : null,
+    }, ctrl.menu.s.computingPDNAnnotated ? spinner.getVdom('monochrome') : i18n('shareAnnotatedPDN')) : null,
     ctrl.source === 'online' && !gameApi.playable(ctrl.data) ? h('button', {
       oncreate: helper.ontap(() => {
         onlinePDNExport(ctrl, true)
       }),
-    }, ctrl.menu.s.computingPDN ? spinner.getVdom('monochrome') : 'Share raw PDN') : null,
+    }, ctrl.menu.s.computingPDN ? spinner.getVdom('monochrome') : i18n('shareRawPDN')) : null,
     ctrl.isOfflineOrNotPlayable() ? h('button', {
       oncreate: helper.ontap(() => {
         ctrl.menu.close()
         Share.share({ text: toggleCoordinates(ctrl.node.fen, ctrl.isAlgebraic()) })
       }),
-    }, 'Share current FEN') : null,
+    }, i18n('shareFEN')) : null,
   ]))
 }
 

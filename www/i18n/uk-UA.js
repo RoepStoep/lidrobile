@@ -484,6 +484,7 @@ export default {
   "tools": "Інструменти",
   "increment": "Додати",
   "sharePDN": "Поділитись PDN",
+  "shareFEN": "Поділитись FEN",
   "allowAnalytics": "Дозволити анонімну статистику",
   "shareGameURL": "Поділитись посиланням на гру",
   "error.required": "Це поле обов'язкове",

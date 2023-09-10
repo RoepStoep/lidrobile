@@ -374,6 +374,8 @@ export default {
   "studyMenu": "Stúdzje",
   "practice": "Oefenje",
   "increment": "Tafoeging per set",
+  "sharePDN": "Diel PDN",
+  "shareFEN": "Diel FEN",
   "everyone": "Elkenien",
   "tournamentNotFound": "Toernoai net fûn",
   "tournamentDoesNotExist": "Dizze toernoai bestiet net.",

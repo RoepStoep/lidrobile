@@ -546,6 +546,7 @@ export default {
   "tools": "Ferramentas",
   "increment": "Incremento",
   "sharePDN": "Compartilhar PDN",
+  "shareFEN": "Compartilhar FEN",
   "allowAnalytics": "Permitir estatísticas anónimas",
   "shareGameURL": "Compartilhar URL do Jogo",
   "error.required": "Este campo deve ser preenchido",

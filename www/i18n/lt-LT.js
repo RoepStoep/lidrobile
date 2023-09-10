@@ -483,6 +483,7 @@ export default {
   "tools": "Įrankiai",
   "increment": "Prieaugis",
   "sharePDN": "Dalintis PDN",
+  "shareFEN": "Dalintis FEN",
   "allowAnalytics": "Siųsti anoniminę statistiką",
   "shareGameURL": "Dalintis partijos adresu",
   "error.required": "Šį laukelį būtina užpildyti",

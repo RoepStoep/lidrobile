@@ -84,7 +84,7 @@ function renderActionsBar(ctrl: EditorCtrl) {
     h('button.action_bar_button.fa.fa-share-alt', {
       oncreate: helper.ontap(
         () => Share.share({ text: ctrl.computeFen(ctrl.isAlgebraic(), true) }),
-        () => Toast.show({ text: 'Share FEN', duration: 'short', position: 'bottom' })
+        () => Toast.show({ text: i18n('shareFEN'), duration: 'short', position: 'bottom' })
       )
     })
   ])
