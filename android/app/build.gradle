@@ -79,3 +79,11 @@ def readKeystoreProperties() {
         println '===== successfully applied keystore properties ====='
     }
 }
+
+task copyScanAssets(type: Copy) {
+    from '../../res/assets'
+    into 'src/main/assets'
+    include '**/*'
+}
+
+preBuild.dependsOn copyScanAssets
