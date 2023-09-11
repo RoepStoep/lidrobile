@@ -20,6 +20,14 @@
 		96845F012590DC4500C770E3 /* CPUInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 96845F002590DC4500C770E3 /* CPUInfo.m */; };
 		969B609A236B2E9500DB0383 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 969B6099236B2E9500DB0383 /* GoogleService-Info.plist */; };
 		D7E1541F4731FBAB47F7F646 /* Pods_lidraughts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E1693543776B40CE12260567 /* Pods_lidraughts.framework */; };
+		F8774AD12AAFA75D00002D22 /* book in Resources */ = {isa = PBXBuildFile; fileRef = F8774AC92AAFA75D00002D22 /* book */; };
+		F8774AD22AAFA75D00002D22 /* book_bt in Resources */ = {isa = PBXBuildFile; fileRef = F8774ACA2AAFA75D00002D22 /* book_bt */; };
+		F8774AD32AAFA75D00002D22 /* book_frisian in Resources */ = {isa = PBXBuildFile; fileRef = F8774ACB2AAFA75D00002D22 /* book_frisian */; };
+		F8774AD42AAFA75D00002D22 /* eval in Resources */ = {isa = PBXBuildFile; fileRef = F8774ACC2AAFA75D00002D22 /* eval */; };
+		F8774AD52AAFA75D00002D22 /* eval_frisian in Resources */ = {isa = PBXBuildFile; fileRef = F8774ACD2AAFA75D00002D22 /* eval_frisian */; };
+		F8774AD62AAFA75D00002D22 /* book_losing in Resources */ = {isa = PBXBuildFile; fileRef = F8774ACE2AAFA75D00002D22 /* book_losing */; };
+		F8774AD72AAFA75D00002D22 /* eval_losing in Resources */ = {isa = PBXBuildFile; fileRef = F8774ACF2AAFA75D00002D22 /* eval_losing */; };
+		F8774AD82AAFA75D00002D22 /* eval_bt in Resources */ = {isa = PBXBuildFile; fileRef = F8774AD02AAFA75D00002D22 /* eval_bt */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -43,6 +51,14 @@
 		969B609B236B34F000DB0383 /* App.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = App.entitlements; sourceTree = "<group>"; };
 		AF51FD2D460BCFE21FA515B2 /* Pods-App.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App.release.xcconfig"; path = "Pods/Target Support Files/Pods-App/Pods-App.release.xcconfig"; sourceTree = "<group>"; };
 		E1693543776B40CE12260567 /* Pods_lidraughts.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_lidraughts.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		F8774AC92AAFA75D00002D22 /* book */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = book; path = ../../res/assets/book; sourceTree = "<group>"; };
+		F8774ACA2AAFA75D00002D22 /* book_bt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = book_bt; path = ../../res/assets/book_bt; sourceTree = "<group>"; };
+		F8774ACB2AAFA75D00002D22 /* book_frisian */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = book_frisian; path = ../../res/assets/book_frisian; sourceTree = "<group>"; };
+		F8774ACC2AAFA75D00002D22 /* eval */ = {isa = PBXFileReference; lastKnownFileType = file; name = eval; path = ../../res/assets/eval; sourceTree = "<group>"; };
+		F8774ACD2AAFA75D00002D22 /* eval_frisian */ = {isa = PBXFileReference; lastKnownFileType = file; name = eval_frisian; path = ../../res/assets/eval_frisian; sourceTree = "<group>"; };
+		F8774ACE2AAFA75D00002D22 /* book_losing */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = book_losing; path = ../../res/assets/book_losing; sourceTree = "<group>"; };
+		F8774ACF2AAFA75D00002D22 /* eval_losing */ = {isa = PBXFileReference; lastKnownFileType = file; name = eval_losing; path = ../../res/assets/eval_losing; sourceTree = "<group>"; };
+		F8774AD02AAFA75D00002D22 /* eval_bt */ = {isa = PBXFileReference; lastKnownFileType = file; name = eval_bt; path = ../../res/assets/eval_bt; sourceTree = "<group>"; };
 		FC68EB0AF532CFC21C3344DD /* Pods-App.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App.debug.xcconfig"; path = "Pods/Target Support Files/Pods-App/Pods-App.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -69,6 +85,14 @@
 		504EC2FB1FED79650016851F = {
 			isa = PBXGroup;
 			children = (
+				F8774AC92AAFA75D00002D22 /* book */,
+				F8774ACA2AAFA75D00002D22 /* book_bt */,
+				F8774ACB2AAFA75D00002D22 /* book_frisian */,
+				F8774ACE2AAFA75D00002D22 /* book_losing */,
+				F8774ACC2AAFA75D00002D22 /* eval */,
+				F8774AD02AAFA75D00002D22 /* eval_bt */,
+				F8774ACD2AAFA75D00002D22 /* eval_frisian */,
+				F8774ACF2AAFA75D00002D22 /* eval_losing */,
 				504EC3061FED79650016851F /* App */,
 				504EC3051FED79650016851F /* Products */,
 				7F8756D8B27F46E3366F6CEA /* Pods */,
@@ -183,13 +207,21 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F8774AD72AAFA75D00002D22 /* eval_losing in Resources */,
+				F8774AD42AAFA75D00002D22 /* eval in Resources */,
+				F8774AD32AAFA75D00002D22 /* book_frisian in Resources */,
 				504EC3121FED79650016851F /* LaunchScreen.storyboard in Resources */,
 				504EC30F1FED79650016851F /* Assets.xcassets in Resources */,
 				50379B232058CBB4000EE86E /* capacitor.config.json in Resources */,
 				504EC30D1FED79650016851F /* Main.storyboard in Resources */,
 				2FAD9763203C412B000D30F8 /* config.xml in Resources */,
+				F8774AD52AAFA75D00002D22 /* eval_frisian in Resources */,
 				969B609A236B2E9500DB0383 /* GoogleService-Info.plist in Resources */,
+				F8774AD22AAFA75D00002D22 /* book_bt in Resources */,
+				F8774AD62AAFA75D00002D22 /* book_losing in Resources */,
+				F8774AD82AAFA75D00002D22 /* eval_bt in Resources */,
 				9636414426DD288A00BD7A38 /* public in Resources */,
+				F8774AD12AAFA75D00002D22 /* book in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
