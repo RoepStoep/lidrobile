@@ -6,10 +6,10 @@
 
     <item
         android:bottom="200dp"
-        android:drawable="@drawable/vector_logo"
-        android:gravity="center"
         android:left="200dp"
         android:right="200dp"
-        android:scaleType="centerInside"
-        android:top="200dp" />
+        android:top="200dp"
+        android:gravity="center"
+        android:drawable="@drawable/vector_logo"
+        android:scaleType="centerInside" />
 </layer-list>
