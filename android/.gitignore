@@ -98,7 +98,6 @@ capacitor-cordova-android-plugins
 
 # Copied web assets
 app/src/main/assets/public
-app/src/main/assets/book*
-app/src/main/assets/eval*
+app/src/main/assets/scan
 
 app/.cxx

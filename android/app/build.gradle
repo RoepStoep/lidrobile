@@ -81,8 +81,8 @@ def readKeystoreProperties() {
 }
 
 task copyScanAssets(type: Copy) {
-    from '../../res/assets'
-    into 'src/main/assets'
+    from '../../res/scan'
+    into 'src/main/assets/scan'
     include '**/*'
 }
 

@@ -34,8 +34,11 @@ export class ScanPlugin {
         }
       }
       window.addEventListener('scan', listener, { passive: true })
-      this.plugin.start({ variant: parseVariant(this.variant) })
+
+      const scanVariant = parseVariant(this.variant)
+      this.plugin.start({ variant: scanVariant })
         .then(() => this.setOption('tt-size', this.ttSize))
+        .then(() => this.setOption('bb-size', bbSize(scanVariant)))
         .then(() => this.send('hub'))
         .then(() => this.send('init'))
     })
@@ -82,6 +85,19 @@ export class ScanPlugin {
  */
 function ttSize(hash: number) {
   return Math.floor(Math.log2((hash * 1024 * 1024) / 16))
+}
+
+function bbSize(scanVariant: string) {
+  switch (scanVariant) {
+    case 'normal':
+    case 'frisian':
+    case 'losing':
+      return 3
+    case 'bt':
+      return 4
+    default:
+      return 0
+  }
 }
 
 export function scanPieces(fen: string): string[] {
