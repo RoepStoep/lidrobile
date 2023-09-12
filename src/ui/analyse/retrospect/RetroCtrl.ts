@@ -48,8 +48,8 @@ export default function RetroCtrl(root: AnalyseCtrl): IRetroCtrl {
   let candidateNodes: Tree.Node[] = []
   const explorerCancelPlies: number[] = []
   let solvedPlies: number[] = []
-  const maxDepth = game.variant.key === 'antidraughts' ? 10 : 18
-  const minDepth = game.variant.key === 'antidraughts' ? 7 : 14
+  const maxDepth = game.variant.key === 'antidraughts' ? 10 : 21
+  const minDepth = game.variant.key === 'antidraughts' ? 6 : 16
 
   const vm: VM = {
     current: null,

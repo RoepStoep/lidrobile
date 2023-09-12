@@ -34,6 +34,9 @@ export default class CevalCtrl {
     })
   }
 
+  private cevalMaxDepth = 
+    this.opts.variant === 'antidraughts' ? settings.analyse.cevalMaxDepthAnti : settings.analyse.cevalMaxDepthNormal
+
   public async start(threatMode: boolean, path: Tree.Path, nodes: Tree.Node[], forceMaxLevel: boolean, deeper: boolean): Promise<void> {
     if (!this.enabled()) {
       return
@@ -49,7 +52,7 @@ export default class CevalCtrl {
       initialFen: nodes[0].fen,
       currentFen: step.fen,
       moves: [],
-      maxDepth: forceMaxLevel ? settings.analyse.cevalMaxDepth() : this.effectiveMaxDepth(deeper),
+      maxDepth: forceMaxLevel ? this.cevalMaxDepth() : this.effectiveMaxDepth(deeper),
       path,
       ply: step.ply,
       multiPv: 1, // forceMaxLevel ? 1 : this.opts.multiPv,
@@ -170,12 +173,12 @@ export default class CevalCtrl {
   }
 
   public effectiveMaxDepth(deeper = false): number {
-    return (deeper || this.opts.infinite) ? 99 : settings.analyse.cevalMaxDepth()
+    return (deeper || this.opts.infinite) ? 99 : this.cevalMaxDepth()
   }
 
   private onEmit = (work: Work, ev?: Tree.ClientEval) => {
     if (ev) sortPvsInPlace(ev.pvs, (work.ply % 2 === 0) ? 'white' : 'black')
-    if (ev) npsRecorder(ev)
+    if (ev) npsRecorder(ev, this.opts.variant)
     this.emit(work.path, ev, work.threatMode)
   }
 }
@@ -199,29 +202,45 @@ function sortPvsInPlace(pvs: Tree.PvData[], color: Color) {
 }
 
 const npsRecorder = (() => {
-  const values: number[] = []
-  const applies = (ev: Tree.ClientEval) => {
-    return ev.knps && ev.depth >= 16 &&
+  const valuesNormal: number[] = []
+  const valuesAnti: number[] = []
+  const applies = (ev: Tree.ClientEval, minDepth: number) => {
+    return ev.knps && ev.depth >= minDepth &&
       ev.cp !== undefined && Math.abs(ev.cp) < 500 &&
-      (ev.fen.split(/\s/)[0].split(/[nbrqkp]/i).length - 1) >= 10
+      (ev.fen.split(',').length - 1) >= 10
   }
-  return (ev: Tree.ClientEval) => {
-    if (!applies(ev)) return
+  return (ev: Tree.ClientEval, v: VariantKey) => {
+    if (!applies(ev, v === 'antidraughts' ? 3 : 14)) return
+    const values = v === 'antidraughts' ? valuesAnti : valuesNormal
     values.push(ev.knps!)
     if (values.length > 9) {
       const knps = median(values) || 0
-      let depth = 18
-      if (knps > 100) depth = 19
-      if (knps > 150) depth = 20
-      if (knps > 250) depth = 21
-      if (knps > 500) depth = 22
-      if (knps > 1000) depth = 23
-      if (knps > 2000) depth = 24
-      if (knps > 3500) depth = 25
-      if (knps > 5000) depth = 26
-      if (knps > 7000) depth = 27
-      if (settings.analyse.cevalMaxDepth() !== depth) {
-        settings.analyse.cevalMaxDepth(depth)
+      let depth: number
+      if (v === 'antidraughts') {
+        depth = 6
+        if (knps > 1000) depth = 7
+        if (knps > 3000) depth = 8
+        if (knps > 5000) depth = 9
+        if (knps > 8000) depth = 10
+        if (knps > 11000) depth = 11
+        if (knps > 14000) depth = 12
+        if (settings.analyse.cevalMaxDepthAnti() !== depth) {
+          settings.analyse.cevalMaxDepthAnti(depth)
+        }
+      } else {
+        depth = 18
+        if (knps > 500) depth = 19
+        if (knps > 1000) depth = 20
+        if (knps > 3000) depth = 21
+        if (knps > 5000) depth = 22
+        if (knps > 7000) depth = 23
+        if (knps > 9000) depth = 24
+        if (knps > 11000) depth = 25
+        if (knps > 13000) depth = 26
+        if (knps > 15000) depth = 27
+        if (settings.analyse.cevalMaxDepthNormal() !== depth) {
+          settings.analyse.cevalMaxDepthNormal(depth)
+        }
       }
       if (values.length > 40) values.shift()
     }
