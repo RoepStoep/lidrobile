@@ -3,6 +3,7 @@ import { Tree } from '../../shared/tree'
 import ScanClient from './ScanClient'
 import { Opts, Work, Started } from './interfaces'
 import { povChances } from './winningChances'
+import { decomposeUci } from '~/utils/draughtsFormat'
 
 export default class CevalCtrl {
   public readonly minDepth = 6
@@ -74,7 +75,7 @@ export default class CevalCtrl {
         if (s.san!.indexOf('x') !== -1) {
           work.moves = []
           work.initialFen = s.fen
-        } else work.moves.push(shortUci(s))
+        } else work.moves.push(scanMove(s))
       }
     }
 
@@ -183,10 +184,11 @@ export default class CevalCtrl {
   }
 }
 
-function shortUci(n: Tree.Node) {
+function scanMove(n: Tree.Node) {
   if (!n.uci) return ''
-  if (n.uci.length > 4) return n.uci.slice(0, 2) + 'x' + n.uci.slice(2)
-  else return n.uci.slice(0, 2) + '-' + n.uci.slice(2)
+  const parts = decomposeUci(n.uci)
+  if (parts.length > 2) return parts.join('x')
+  return `${parts[0]}-${parts.slice(-1)}`
 }
 
 function median(values: number[]): number {

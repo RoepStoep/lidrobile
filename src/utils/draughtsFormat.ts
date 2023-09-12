@@ -19,7 +19,7 @@ export function uciTolastDrop(uci: string): KeyPair {
 
 export function decomposeUci(uci: Uci): Key[] {
   const uciArray: Key[] = new Array<Key>()
-  if (uci.length > 1) {
+  if (uci && uci.length > 1) {
       for (let i = 0; i < uci.length; i += 2) {
         uciArray.push(uci.substr(i, 2) as Key)
       }

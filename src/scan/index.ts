@@ -225,7 +225,7 @@ export function parsePV(fen: string, pv: string, frisian: boolean, uciCache: any
     const takes = m.indexOf('x')
     if (takes !== -1) {
       const cached = uciCache[fen + moveNr + m]
-      if (cached) return cached
+      if (cached) return cached as string
       const fields = m.split('x').map(f => parseInt(f) - 1)
       const orig = fields[0], dest = fields[1]
       let uci: string[] = [(orig + 1).toString()]
