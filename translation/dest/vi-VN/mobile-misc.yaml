@@ -20,6 +20,8 @@ playOfflineOverTheBoard: "Chơi ngoại tuyến trên bàn cờ" #Offline over t
 playOfflineComputer: "Máy tính" #Offline play against the computer. This appears in the menu, so try to keep it short.
 bgThemeSyncWithSystem: "Đồng bộ với hệ thống" #Settings to synchronise background theme (dark or light) with the operating system (to support daynight automatic switch)
 shareThisPuzzle: "Chia sẻ câu đố này"
+shareRawPDN: "Chia sẻ bản thô PDN" #Share PDN without annotations
+shareAnnotatedPDN: "Chia sẻ chú thích PDN"
 localEvalCaution: "Chú ý: sử dụng nhiều sẽ làm hao pin."
 incorrectThreefoldClaim: "Yêu cầu lặp lại ba lần không chính xác." #As in threefold repetition
 lidraughtsIsUnavailableError: "lidraughts.org tạm thời ngừng hoạt động để bảo trì."

@@ -1165,6 +1165,8 @@ export default {
   "playOfflineComputer": "Máy tính",
   "bgThemeSyncWithSystem": "Đồng bộ với hệ thống",
   "shareThisPuzzle": "Chia sẻ câu đố này",
+  "shareRawPDN": "Chia sẻ bản thô PDN",
+  "shareAnnotatedPDN": "Chia sẻ chú thích PDN",
   "localEvalCaution": "Chú ý: sử dụng nhiều sẽ làm hao pin.",
   "incorrectThreefoldClaim": "Yêu cầu lặp lại ba lần không chính xác.",
   "lidraughtsIsUnavailableError": "lidraughts.org tạm thời ngừng hoạt động để bảo trì.",

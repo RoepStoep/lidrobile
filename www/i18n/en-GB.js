@@ -604,6 +604,7 @@ export default {
   "tools": "Tools",
   "increment": "Increment",
   "sharePDN": "Share PDN",
+  "shareFEN": "Share FEN",
   "allowAnalytics": "Allow anonymous statistics",
   "shareGameURL": "Share game URL",
   "error.required": "This field is required",
