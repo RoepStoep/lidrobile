@@ -19,7 +19,7 @@ export default {
         if (!matched) {
           // it can be a game or challenge but we want to do an exact regex match
           const found = gamePattern.exec(path)
-          if (found) {
+          if (found && !exclusions.includes(found[1].toLowerCase())) {
             const color = found[2]
             const plyMatch = plyHashPattern.exec(urlObject.hash)
 
@@ -46,39 +46,43 @@ const links = new Rlite()
 const gamePattern = /^\/(\w{8})(\/black|\/white)?$/
 const plyHashPattern = /^#(\d+)$/
 
+const exclusions = [
+  'features', 'practice', 'streamer'
+]
+
 links.add('analysis', () => router.set('/analyse'))
-links.add('analysis/:variant/:fen', ({ params }) => {
-  const fen = encodeURIComponent(params.fen)
-  if (settings.analyse.supportedVariants.indexOf(params.variant) !== -1) {
-    router.set(`/analyse/variant/${params.variant}/fen/${fen}`)
-  } else {
-    router.set(`/analyse/fen/${fen}`)
-  }
-})
-links.add('analysis/:something', ({ params }) => {
-  const variantOrFen = params.something
-  if (settings.analyse.supportedVariants.indexOf(variantOrFen) !== -1) {
+links.add('analysis/:variant', ({ params }) => {
+  const variantOrFen = params.variant
+  if (settings.analyse.supportedVariants.includes(variantOrFen)) {
     router.set(`/analyse/variant/${variantOrFen}`)
   } else {
     const fen = encodeURIComponent(variantOrFen)
     router.set(`/analyse/fen/${fen}`)
   }
 })
-links.add('editor', () => router.set('/editor'))
-links.add('editor/:variant/:fen', ({ params }) => {
+links.add('analysis/:variant/:fen', ({ params }) => {
   const fen = encodeURIComponent(params.fen)
-  if (settings.analyse.supportedVariants.indexOf(params.variant) !== -1) {
-    router.set(`/editor/variant/${params.variant}/fen/${fen}`)
+  if (settings.analyse.supportedVariants.includes(params.variant)) {
+    router.set(`/analyse/variant/${params.variant}/fen/${fen}`)
   } else {
-    router.set(`/editor/${fen}`)
+    router.set(`/analyse/fen/${fen}`)
   }
 })
-links.add('editor/:something', ({ params }) => {
-  const variantOrFen = params.something
-  if (settings.analyse.supportedVariants.indexOf(variantOrFen) !== -1) {
+links.add('editor', () => router.set('/editor'))
+links.add('editor/:variant', ({ params }) => {
+  const variantOrFen = params.variant
+  if (settings.analyse.supportedVariants.includes(variantOrFen)) {
     router.set(`/editor/variant/${variantOrFen}`)
   } else {
     const fen = encodeURIComponent(variantOrFen)
+    router.set(`/editor/${fen}`)
+  }
+})
+links.add('editor/:variant/:fen', ({ params }) => {
+  const fen = encodeURIComponent(params.fen)
+  if (settings.analyse.supportedVariants.includes(params.variant)) {
+    router.set(`/editor/variant/${params.variant}/fen/${fen}`)
+  } else {
     router.set(`/editor/${fen}`)
   }
 })
@@ -92,27 +96,27 @@ links.add('player', () => router.set('/players'))
 links.add('tournament', () => router.set('/tournament'))
 links.add('tournament/:id', ({ params }) => router.set(`/tournament/${params.id}`))
 links.add('training', () => router.set('/training'))
-links.add('training/:variant/:id', ({ params }) => {
-  if (settings.training.supportedVariants.indexOf(params.variant) !== -1) {
-    router.set(`/training/${params.id}/variant/${params.variant}`)
-  } else {
-    router.set(`/training/${params.id}`)
-  }
-})
-links.add('training/:something', ({ params }) => {
-  const variantOrId = params.something
-  if (settings.training.supportedVariants.indexOf(variantOrId) !== -1) {
+links.add('training/:variant', ({ params }) => {
+  const variantOrId = params.variant
+  if (settings.training.supportedVariants.includes(variantOrId)) {
     router.set(`/training/variant/${variantOrId}`)
   } else {
     router.set(`/training/${variantOrId}`)
   }
 })
+links.add('training/:variant/:id', ({ params }) => {
+  if (settings.training.supportedVariants.includes(params.variant)) {
+    router.set(`/training/${params.id}/variant/${params.variant}`)
+  } else {
+    router.set(`/training/${params.id}`)
+  }
+})
 links.add('tv', () => router.set('/tv'))
 links.add('tv/:channel', ({ params }) => router.set(`/tv/${params.channel}`))
-// links.add('@/:id', ({ params }) => router.set(`/@/${params.id}`))
-// links.add('@/:id/tv', ({ params }) => router.set(`/@/${params.id}/tv`))
-// links.add('@/:id/all', ({ params }) => router.set(`/@/${params.id}/games`))
-// links.add('@/:id/perf/:key', ({ params }) => router.set(`/@/${params.id}/${params.key}/perf`))
+links.add('@/:id', ({ params }) => router.set(`/@/${params.id}`))
+links.add('@/:id/tv', ({ params }) => router.set(`/@/${params.id}/tv`))
+links.add('@/:id/all', ({ params }) => router.set(`/@/${params.id}/games`))
+links.add('@/:id/perf/:key', ({ params }) => router.set(`/@/${params.id}/${params.key}/perf`))
 links.add('signup/confirm/:token', ({ params }) => {
   const token = params.token
   if (token) {

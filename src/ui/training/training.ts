@@ -36,14 +36,12 @@ const cachedState: State = {}
 
 export default {
   oninit({ attrs }) {
-    const variantProp = <VariantKey>settings.training.variant() || 'standard'
     const numId = safeStringToNum(attrs.id) || base62ToNumber(attrs.id)
-    const tryVariant = attrs.variant ? attrs.variant : (numId ? 'standard' : variantProp)
-    const variant = settings.training.supportedVariants.indexOf(tryVariant) !== -1 ? tryVariant : 'standard'
+    // NOTE: default to standard when puzzleId was specified without variant
+    const tryVariant = attrs.variant || (numId ? 'standard' : <VariantKey>settings.training.variant()) || 'standard'
+    const variant = settings.training.supportedVariants.includes(tryVariant) ? tryVariant : 'standard'
     const loadNewPuzzle = () => {
-      if (variant !== variantProp) {
-        settings.training.variant(variant)
-      }
+      settings.training.variant(variant)
       const user = session.get()
       if (user) {
         syncAndLoadNewPuzzle(database, user, variant)

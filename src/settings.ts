@@ -34,6 +34,23 @@ const availableClocks = [
   ['Stage', 'stage'],
 ]
 
+const availableChannels = [
+  ['Top rated', 'best'],
+  ['Bullet', 'bullet'],
+  ['Blitz', 'blitz'],
+  ['Rapid', 'rapid'],
+  ['Classical', 'classical'],
+  ['Frisian', 'frisian'],
+  ['Frysk!', 'frysk'],
+  ['Antidraughts', 'antidraughts'],
+  ['Breakthrough', 'breakthrough'],
+  ['Russian', 'russian'],
+  ['Brazilian', 'brazilian'],
+  ['UltraBullet', 'ultraBullet'],
+  ['Bot', 'bot'],
+  ['Computer', 'computer'],
+]
+
 const ratingRanges = [...Array(11).keys()].map(x => x * 50)
 
 const settingsStore = {}
@@ -353,6 +370,7 @@ export default {
   },
 
   tv: {
+    availableChannels,
     channel: prop('tv.channel', 'best')
   },
 

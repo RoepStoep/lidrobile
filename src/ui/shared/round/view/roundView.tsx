@@ -5,7 +5,6 @@ import socket from '../../../../socket'
 import session from '../../../../session'
 import * as playerApi from '../../../../lidraughts/player'
 import * as gameApi from '../../../../lidraughts/game'
-import * as perfApi from '../../../../lidraughts/perfs'
 import gameStatusApi from '../../../../lidraughts/status'
 import { Player } from '../../../../lidraughts/interfaces/game'
 import { User } from '../../../../lidraughts/interfaces/user'
@@ -451,10 +450,6 @@ function renderPlayTable(
 }
 
 function tvChannelSelector(onFeatured?: () => void) {
-  const channels = perfApi.perfTypes.filter(e => e[0] !== 'correspondence').map(e => [e[1], e[0]])
-  channels.unshift(['Top rated', 'best'])
-  channels.push(['Bot', 'bot'])
-  channels.push(['Computer', 'computer'])
   const channel = settings.tv.channel() as PerfKey
   const icon = utils.gameIcon(channel)
 
@@ -475,7 +470,7 @@ function tvChannelSelector(onFeatured?: () => void) {
           onFeatured && onFeatured()
           setTimeout(redraw, 10)
         }
-      }, channels.map(v =>
+      }, settings.tv.availableChannels.map(v =>
         h('option', {
           key: v[1], value: v[1]
         }, v[0])
