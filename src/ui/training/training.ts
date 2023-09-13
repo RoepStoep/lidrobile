@@ -1,3 +1,4 @@
+import { Toast } from '@capacitor/toast'
 import h from 'mithril/hyperscript'
 import signals from '../../signals'
 import socket from '../../socket'
@@ -17,7 +18,6 @@ import { syncAndLoadNewPuzzle, puzzleLoadFailure } from './offlineService'
 import { PuzzleData } from '../../lidraughts/interfaces/training'
 import database from './database'
 import settings from '../../settings'
-import { Plugins } from '@capacitor/core'
 import { ErrorResponse } from '~/http'
 
 interface Attrs {
@@ -36,10 +36,12 @@ const cachedState: State = {}
 
 export default {
   oninit({ attrs }) {
-    const numId = safeStringToNum(attrs.id) || base62ToNumber(attrs.id)
+    const dailyPuzzle = attrs.id === 'daily'
+    const numId = dailyPuzzle ? undefined : (safeStringToNum(attrs.id) || base62ToNumber(attrs.id))
     // NOTE: default to standard when puzzleId was specified without variant
-    const tryVariant = attrs.variant || (numId ? 'standard' : <VariantKey>settings.training.variant()) || 'standard'
+    const tryVariant = dailyPuzzle ? 'standard' : (attrs.variant || (numId ? 'standard' : <VariantKey>settings.training.variant()) || 'standard')
     const variant = settings.training.supportedVariants.includes(tryVariant) ? tryVariant : 'standard'
+
     const loadNewPuzzle = () => {
       settings.training.variant(variant)
       const user = session.get()
@@ -61,6 +63,14 @@ export default {
         .catch(handleXhrError)
       }
     }
+    const handlePuzzleError = (e: ErrorResponse) => {
+      if (e.status === 404) {
+        Toast.show({ text: 'Puzzle not found.', duration: 'short' })
+        loadNewPuzzle()
+      } else {
+        handleXhrError(e)
+      }
+    }
 
     if (numId) {
       if (cachedState.ctrl && window.history.state.puzzleId === numId) {
@@ -73,15 +83,15 @@ export default {
           this.ctrl = new TrainingCtrl(cfg, database)
           cachedState.ctrl = this.ctrl
         })
-        .catch((e: ErrorResponse) => {
-          if (e.status === 404) {
-            Plugins.LiToast.show({ text: 'Puzzle not found.', duration: 'short' })
-            loadNewPuzzle()
-          } else {
-            handleXhrError(e)
-          }
-        })
+        .catch(handlePuzzleError)
       }
+    } else if (dailyPuzzle) {
+      xhr.loadDailyPuzzle()
+        .then(cfg => {
+          this.ctrl = new TrainingCtrl(cfg, database)
+          cachedState.ctrl = undefined
+        })
+        .catch(handlePuzzleError)
     } else {
       loadNewPuzzle()
     }

@@ -23,6 +23,10 @@ export function loadPuzzle(id: number, variant: string): Promise<PuzzleData> {
   return fetchJSON<PuzzleData>(`/training/${variant}/${id}/load`, { cache: 'reload' })
 }
 
+export function loadDailyPuzzle(): Promise<PuzzleData> {
+  return fetchJSON('/training/daily', undefined)
+}
+
 export function newPuzzle(variant: string): Promise<PuzzleData> {
   return fetchJSON<PuzzleData>(`/training/${variant}/new`)
 }

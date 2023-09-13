@@ -12,7 +12,7 @@ import { timeline as timelineXhr, seeks as corresSeeksXhr, lobby as lobbyXhr, fe
 import { hasNetwork, noop } from '../../utils'
 import { fromNow } from '../../i18n'
 import { isForeground } from '../../utils/appMode'
-import { Streamer, PongMessage, TimelineEntry, DailyPuzzleData, CorrespondenceSeek, FeaturedGame2, FeaturedPlayer, TimelineData } from '../../lidraughts/interfaces'
+import { Streamer, PongMessage, TimelineEntry, CorrespondenceSeek, FeaturedGame2, FeaturedPlayer, TimelineData } from '../../lidraughts/interfaces'
 import { Player } from '../../lidraughts/interfaces/game'
 import { TournamentListItem } from '../../lidraughts/interfaces/tournament'
 import { PuzzleData } from '../../lidraughts/interfaces/training'
@@ -45,7 +45,7 @@ export default class HomeCtrl {
   public socket?: SocketIFace
 
   public corresPool: ReadonlyArray<CorrespondenceSeek>
-  public dailyPuzzle?: DailyPuzzleData
+  public dailyPuzzle?: PuzzleData
   public featuredGame?: FeaturedGame2
   public featuredTournaments?: readonly TournamentListItem[]
   public featuredStreamers?: readonly Streamer[]

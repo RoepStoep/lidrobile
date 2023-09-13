@@ -199,25 +199,6 @@ export interface TimelineData {
   readonly users: {[username: string]: LightUser}
 }
 
-export interface DailyPuzzleData {
-  readonly puzzle: DailyPuzzle
-  readonly history: DailyPuzzleHistory
-}
-
-export interface DailyPuzzle {
-  readonly id: string
-  readonly fen: string
-  readonly color: Color
-  readonly variant: Variant
-}
-
-export interface DailyPuzzleHistory {
-  readonly id: string
-  readonly fen: string
-  readonly uci?: string
-  readonly san?: string
-}
-
 export interface NowPlayingOpponent {
   readonly username: string
   readonly id?: string
