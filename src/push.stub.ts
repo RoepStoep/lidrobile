@@ -3,7 +3,7 @@ export default {
 
   init() {},
 
-  async register(): Promise<void> {
+  async register(_?: boolean): Promise<void> {
     return Promise.resolve()
   },
 
