@@ -210,7 +210,7 @@ function lidraughtsBackedProp<T extends PrefValue>(path: string, defaultVal: T):
         setAtPath(session, path, args[0])
       }
       savePreferences()
-      .catch((err) => {
+      ?.catch((err) => {
         if (session) setAtPath(session, path, oldPref)
         if (hasNetwork()) handleXhrError(err)
       })
@@ -315,7 +315,7 @@ async function refresh(): Promise<void> {
     announce.set(data.announce)
     // if server tells me, reload challenges
     if (session.nbChallenges !== challengesApi.incoming().length) {
-      challengesApi.refresh().then(redraw)
+      challengesApi.refresh()?.then(redraw)
     }
     redraw()
   } catch (err) {
@@ -336,16 +336,16 @@ async function backgroundRefresh(): Promise<void> {
     announce.set(data.announce)
     // if server tells me, reload challenges
     if (session.nbChallenges !== challengesApi.incoming().length) {
-      challengesApi.refresh().then(redraw)
+      challengesApi.refresh()?.then(redraw)
     }
   }
 }
 
 function sendUUID(): void {
   Device.getId()
-  .then(({ uuid }) => {
-    if (uuid !== 'web') {
-      fetchText(`/auth/set-fp/${uuid}/0`, { method: 'POST' })
+  .then(({ identifier }) => {
+    if (identifier !== 'web') {
+      fetchText(`/auth/set-fp/${identifier}/0`, { method: 'POST' })
     }
   })
 }

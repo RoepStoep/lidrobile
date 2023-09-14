@@ -104,7 +104,7 @@ function onLogin(e: Event) {
   Keyboard.hide()
   loading = true
   session.login(username, password, token)
-  .then(() => {
+  ?.then(() => {
     loading = false
     close()
     Toast.show({ text: i18n('loginSuccessful'), position: 'top', duration: 'short' })

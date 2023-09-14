@@ -34,7 +34,7 @@ export default function appInit(
   window.deviceInfo = {
     platform: deviceInfo.platform,
     osVersion: deviceInfo.osVersion,
-    uuid: deviceId.uuid,
+    identifier: deviceId.identifier,
     appVersion: appInfo.version,
     cpuCores,
     scanMaxMemory: Math.ceil(sfMaxMem / 16.0) * 16,
@@ -54,7 +54,7 @@ export default function appInit(
     if (state.isActive) {
       sound.resume()
       setForeground()
-      session.refresh().then(() => {
+      session.refresh()?.then(() => {
         if (Capacitor.getPlatform() === 'ios') {
           Badge.setNumber({ badge: session.myTurnGames().length })
         }
@@ -109,7 +109,7 @@ function onOnline() {
       getPools()
 
       session.rememberLogin()
-      .then(() => {
+      ?.then(() => {
         push.register()
         challengesApi.refresh()
         if (Capacitor.getPlatform() === 'ios') {

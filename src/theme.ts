@@ -1,6 +1,6 @@
 import { Capacitor } from '@capacitor/core'
 import { Toast } from '@capacitor/toast'
-import { Filesystem, Directory, ReadFileResult } from '@capacitor/filesystem'
+import { Filesystem, Directory } from '@capacitor/filesystem'
 import { StatusBar, Style as StatusBarStyle } from '@capacitor/status-bar'
 import settings from './settings'
 
@@ -48,12 +48,12 @@ export function init() {
   }
 }
 
-function getLocalFiles(theme: Theme, filenames: string[]): Promise<ReadFileResult[]> {
+function getLocalFiles(theme: Theme, filenames: string[]): Promise<string[]> {
   return Promise.all(filenames.map(
     (filename) => Filesystem.readFile({
       path: theme + '-' + filename,
       directory: Directory.Data
-    })
+    }).then(f => typeof(f.data) === 'string' ? Promise.resolve(f.data) : f.data.text())
   ))
 }
 
@@ -102,14 +102,14 @@ function createStylesheetRule(
   theme: Theme,
   key: string,
   filenames: string[],
-  files: ReadFileResult[]
+  files: string[]
 ): void {
   if (!styleEl) {
     styleEl = document.createElement('style')
     styleEl.type = 'text/css'
     document.head.appendChild(styleEl)
   }
-  const cleanData = files.map(f => f.data.replace(/\n/g, '')) // FIXME should be fixed in capacitor
+  const cleanData = files.map(f => f.replace(/\n/g, '')) // FIXME should be fixed in capacitor
   const ext = filenames[0].split('.').pop()
   const mime = ext === 'png' ?
     'data:image/png;base64,' : 'data:image/jpeg;base64,'

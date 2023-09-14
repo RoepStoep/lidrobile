@@ -136,7 +136,7 @@ export default class HomeCtrl {
 
       Promise.all([
         featuredTournamentsXhr(),
-        session.refresh().then(() => session.isKidMode() ? Promise.resolve([]) : featuredStreamersXhr()),
+        session.refresh()?.then(() => session.isKidMode() ? Promise.resolve([]) : featuredStreamersXhr()),
       ])
         .then(results => {
           const [fTour, fStreamers] = results

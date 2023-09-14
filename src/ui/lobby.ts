@@ -166,7 +166,7 @@ function doStartSeeking(conf: PoolMember | HumanSeekSetup, gameId?: string) {
   sleepUtils.keepAwake()
 
   if (isPoolMember(conf)) enterPool(conf)
-  else session.refresh().then(() => sendHook(conf, gameId))
+  else session.refresh()?.then(() => sendHook(conf, gameId))
 }
 
 function stopAndClose(fromBB?: string) {
@@ -210,7 +210,7 @@ function enterPool(member: PoolMember) {
     if (!isOpenAndSeeking) return
 
     session.refresh()
-    .then(() => {
+    ?.then(() => {
       // ensure session with a refresh
       // if (session.isConnected()) {
       //   socketSend('poolIn', member)

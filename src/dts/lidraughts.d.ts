@@ -73,7 +73,7 @@ interface Window {
   deviceInfo: {
     platform: 'ios' | 'android' | 'electron' | 'web'
     osVersion: string
-    uuid: string
+    identifier: string
     appVersion: string
     cpuCores: number
     scanMaxMemory: number
