@@ -77,9 +77,13 @@ export default {
     )
   },
 
-  async register(): Promise<void> {
+  async register(prompt_again?: boolean): Promise<void> {
     if (settings.general.notifications.enable()) {
-      PushNotifications.requestPermissions().then(result => {
+      PushNotifications.checkPermissions().then(result => {
+        // NOTE: status 'prompt-with-rationale' is returned when previously denied but not disabled
+        const doPrompt = result.receive === 'prompt' || (prompt_again && result.receive === 'prompt-with-rationale')
+        return doPrompt ? PushNotifications.requestPermissions() : Promise.resolve(result)
+      }).then(result => {
         if (result.receive === 'granted') {
           return PushNotifications.register()
         } else {

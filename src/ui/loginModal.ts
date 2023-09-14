@@ -112,7 +112,7 @@ function onLogin(e: Event) {
     redraw()
     // reconnect socket to refresh friends...
     socket.reconnectCurrent()
-    push.register()
+    push.register(true)
     challengesApi.refresh()
     return session.refresh()
   })
