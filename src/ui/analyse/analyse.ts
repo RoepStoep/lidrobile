@@ -146,7 +146,7 @@ export default {
         if (game.id === 'synthetic') {
           backButton = renderBackbutton(
             h('div.main_header_title', [
-              game.variant.key !== 'standard' ? h('div.icon-game', { 'data-icon': gameIcon(game.variant.key) || '' }) : null,
+              game.variant.key !== 'standard' ? h('span.withIcon', { 'data-icon': gameIcon(game.variant.key) || '' }) : null,
               i18n('analysis'),
             ])
           )

@@ -7,6 +7,7 @@ import formWidgets from '../shared/form'
 import popupWidget from '../shared/popup'
 import router from '../../router'
 import TrainingCtrl from './TrainingCtrl'
+import i18n from '~/i18n'
 
 export interface ISettingsCtrl {
     root: TrainingCtrl
@@ -69,7 +70,7 @@ export interface ISettingsCtrl {
     return h('div.trainingSettings', [
       h('div.action', [
         formWidgets.renderMultipleChoiceButton(
-          'Puzzle variant',
+          i18n('puzzleVariant'),
           [
             { label: 'Standard', value: 'standard', dataIcon: '8' },
             { label: 'Frisian', value: 'frisian', dataIcon: '\'' },
@@ -86,7 +87,7 @@ export interface ISettingsCtrl {
           oncreate: helper.ontap(ctrl.resync)
         }, [
           h('span.fa.fa-random'),
-          'Sync and refresh saved puzzles'
+          i18n('syncAndRefreshSavedPuzzles')
         ])
       ])
     ])

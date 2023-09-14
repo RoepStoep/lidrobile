@@ -112,15 +112,16 @@ export default {
       h('div.form-multipleChoice', {
         className: wrap ? 'wrap' : ''
       }, options.map(o => {
-        const l = o.labelArg !== undefined ? i18n(o.label, o.labelArg) : i18n(o.label)
         return h('div', {
           className: o.value === selected ? 'selected' : '',
-          'data-icon': o.dataIcon,
           oncreate: helper.ontap(() => {
             prop(o.value)
             if (callback) callback(o.value)
           })
-        }, l)
+        }, [
+          o.dataIcon ? h('span.withIcon', { 'data-icon': o.dataIcon }) : undefined,
+          o.labelArg !== undefined ? i18n(o.label, o.labelArg) : i18n(o.label)
+        ])
       }))
     ])
   },

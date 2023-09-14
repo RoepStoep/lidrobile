@@ -19,6 +19,8 @@ playOffline: "Play offline"
 playOfflineOverTheBoard: "Over the board" # Offline over the board play. This appears in the menu, so try to keep it short.
 playOfflineComputer: "Computer" # Offline play against the computer. This appears in the menu, so try to keep it short.
 bgThemeSyncWithSystem: "Sync with system" # Settings to synchronise background theme (dark or light) with the operating system (to support daynight automatic switch)
+puzzleVariant: "Puzzle variant" # The draughts variant for puzzles
+syncAndRefreshSavedPuzzles: "Sync and refresh saved puzzles" # Synchronizes the puzzles solved offline with the lidraughts server, and downloads a new batch of puzzles
 shareThisPuzzle: "Share this puzzle"
 shareRawPDN: "Share raw PDN" # Share PDN without annotations
 shareAnnotatedPDN: "Share annotated PDN"
