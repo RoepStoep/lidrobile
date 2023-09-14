@@ -19,6 +19,8 @@ playOffline: "Speel offline"
 playOfflineOverTheBoard: "Speel offline" #Offline over the board play. This appears in the menu, so try to keep it short.
 playOfflineComputer: "Computer" #Offline play against the computer. This appears in the menu, so try to keep it short.
 bgThemeSyncWithSystem: "Synchroniseren met systeem" #Settings to synchronise background theme (dark or light) with the operating system (to support daynight automatic switch)
+puzzleVariant: "Puzzel variant" #The draughts variant for puzzles
+syncAndRefreshSavedPuzzles: "Opgeslagen puzzels synchroniseren en vernieuwen" #Synchronizes the puzzles solved offline with the lidraughts server, and downloads a new batch of puzzles
 shareThisPuzzle: "Deel deze puzzel"
 shareRawPDN: "Deel kale PDN" #Share PDN without annotations
 shareAnnotatedPDN: "Deel geannoteerde PDN"

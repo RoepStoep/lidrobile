@@ -167,7 +167,7 @@ function loadMobileTranslations() {
   const localeMap = new Map()
 
   const enGBData = 
-    loadYaml(readFileSync('../translation/source/mobile-misc.yaml', 'utf8'))['en-GB']
+    loadYaml(readFileSync('../translation/source/mobile-misc.yaml', 'utf8'))
   localeMap['en-GB'] = transformMobileTranslations(enGBData)
 
   for (const locale of readdirSync(lidrobileTranslationsPath)) {

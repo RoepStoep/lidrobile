@@ -1236,6 +1236,8 @@ export default {
   "playOfflineOverTheBoard": "Speel offline",
   "playOfflineComputer": "Computer",
   "bgThemeSyncWithSystem": "Synchroniseren met systeem",
+  "puzzleVariant": "Puzzel variant",
+  "syncAndRefreshSavedPuzzles": "Opgeslagen puzzels synchroniseren en vernieuwen",
   "shareThisPuzzle": "Deel deze puzzel",
   "shareRawPDN": "Deel kale PDN",
   "shareAnnotatedPDN": "Deel geannoteerde PDN",
