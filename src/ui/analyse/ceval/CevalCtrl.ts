@@ -92,7 +92,7 @@ export default class CevalCtrl {
   private restart = async (): Promise<void> => {
     if (this.lastStarted) {
       await this.engine.stop()
-      await this.start(this.lastStarted.threatMode, this.lastStarted.path, this.lastStarted.nodes, false, false)
+      await this.start(this.lastStarted.threatMode, this.lastStarted.path, this.lastStarted.nodes, false, this.isDeeper)
     }
   }
 
