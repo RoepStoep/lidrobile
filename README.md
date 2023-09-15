@@ -18,9 +18,8 @@ Multi-variant draughts library is brought by [a JavaScript version of scaladraug
 [<img src="https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png"
      alt="Get it on Google Play"
      height="74">](https://play.google.com/store/apps/details?id=org.lidraughts.mobileapp)
-[<img src="https://upload.wikimedia.org/wikipedia/commons/3/3c/Download_on_the_App_Store_Badge.svg"
-     alt="Download on the App Store"
-     height="50" style="padding-bottom: 12px">](https://itunes.apple.com/us/app/lidraughts-online-draughts/id1485028698)
+[<img src="res/ios-badge.svg"
+     alt="Download on the App Store">](https://itunes.apple.com/us/app/lidraughts-online-draughts/id1485028698)
 
 or get the APK from the [Releases section](https://github.com/RoepStoep/lidrobile/releases/latest)
 
