@@ -1,13 +1,28 @@
 [lidraughts.org/mobile](https://lidraughts.org/mobile)
 --------------------
 
-Lidraughts mobile is the lidraughts.org official application, forked from [Lichess mobile](https://github.com/veloce/lichobile). It is written
+[![Android build](https://github.com/RoepStoep/lidrobile/actions/workflows/android.yml/badge.svg)](https://github.com/RoepStoep/lidrobile/actions/workflows/android.yml)
+[![Lint and unit tests](https://github.com/RoepStoep/lidrobile/actions/workflows/checks.yml/badge.svg)](https://github.com/RoepStoep/lidrobile/actions/workflows/checks.yml)
+![GitHub](https://img.shields.io/badge/license-GPL--3.0-orange)
+
+Lidraughts mobile is the lidraughts.org official application, forked from [Lichess mobile](https://github.com/lichess-org/lichobile). It is written
 in [TypeScript](http://www.typescriptlang.org/), with a bit of Kotlin and Swift.
 It is a web application that accesses the native SDK, thanks to [Ionic capacitor](https://capacitor.ionicframework.com/).
 The rendering library is [mithril.js](http://mithril.js.org/).
 It talks to a native [Scan 3.1](https://github.com/rhalbersma/scan) engine, through a
 [capacitor plugin](https://github.com/RoepStoep/capacitor-scan).
 Multi-variant draughts library is brought by [a JavaScript version of scaladraughts](https://github.com/RoepStoep/scaladraughtsjs).
+
+## Download
+
+[<img src="https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png"
+     alt="Get it on Google Play"
+     height="74">](https://play.google.com/store/apps/details?id=org.lidraughts.mobileapp)
+[<img src="https://upload.wikimedia.org/wikipedia/commons/3/3c/Download_on_the_App_Store_Badge.svg"
+     alt="Download on the App Store"
+     height="50" style="padding-bottom: 12px">](https://itunes.apple.com/us/app/lidraughts-online-draughts/id1485028698)
+
+or get the APK from the [Releases section](https://github.com/RoepStoep/lidrobile/releases/latest)
 
 ## Required dependencies
 
