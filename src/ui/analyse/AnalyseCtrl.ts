@@ -742,6 +742,7 @@ export default class AnalyseCtrl {
       fen: node.fen,
       boardSize: board.size,
       variant: this.data.game.variant.key,
+      coordinates: settings.game.coords(),
       coordSystem: this.coordSystem(),
       turnColor: color,
       orientation: this.settings.s.flip ? oppositeColor(this.orientation) : this.orientation,

@@ -75,6 +75,7 @@ export default {
     if (numId) {
       if (cachedState.ctrl && window.history.state.puzzleId === numId) {
         this.ctrl = cachedState.ctrl
+        this.ctrl.updateBoard()
         redraw()
       }
       else {

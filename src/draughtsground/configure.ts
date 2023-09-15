@@ -55,6 +55,13 @@ export function setNewBoardState(d: State, config: cg.SetConfig): void {
   if (config.boardSize) {
     d.boardSize = config.boardSize
   }
+  if (config.coordinates !== undefined) {
+    d.coordinates = config.coordinates
+  }
+  if (config.coordSystem !== undefined) {
+    d.coordSystem = config.coordSystem
+  }
+
   if (config.variant) {
     d.movable.variant = config.variant
     d.premovable.variant = config.variant

@@ -317,7 +317,7 @@ export default class TrainingCtrl implements PromotingInterface {
     redraw()
   }
 
-  private updateBoard() {
+  public updateBoard() {
     const node = this.node
     const color: Color = node.ply % 2 === 0 ? 'white' : 'black'
     const dests = draughtsFormat.readDests(node.dests)
@@ -326,6 +326,7 @@ export default class TrainingCtrl implements PromotingInterface {
       fen: node.fen,
       boardSize: board.size,
       variant: this.data.puzzle.variant.key,
+      coordinates: settings.game.coords(),
       coordSystem: this.coordSystem(),
       turnColor: color,
       orientation: this.data.puzzle.color,

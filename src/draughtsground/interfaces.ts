@@ -79,6 +79,7 @@ export interface SetConfig {
   fen?: string
   boardSize?: BoardSize
   variant?: VariantKey,
+  coordinates?: number
   coordSystem?: number
   lastMove?: Key[] | null
   captureLength?: number
