@@ -16,6 +16,7 @@ export default function makeConfig(
     boardSize: board.size,
     orientation: ctrl.data.puzzle.color,
     coordinates: settings.game.coords(),
+    coordSystem: ctrl.coordSystem(),
     turnColor: ctrl.node.ply % 2 === 0 ? 'white' : 'black',
     highlight: {
       lastMove: settings.game.highlights(),

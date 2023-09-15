@@ -326,6 +326,7 @@ export default class TrainingCtrl implements PromotingInterface {
       fen: node.fen,
       boardSize: board.size,
       variant: this.data.puzzle.variant.key,
+      coordSystem: this.coordSystem(),
       turnColor: color,
       orientation: this.data.puzzle.color,
       movableColor: this.gameOver() ? null : this.data.puzzle.color,
