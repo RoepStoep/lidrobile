@@ -1,0 +1,19 @@
+Play international draughts (on a 10X10 board), or draughts variants on an 8x8 board, online and offline, against other players and against the computer. Built for the love of draughts, this app is open source and free for all.
+
+ - Play bullet, blitz, classical, and correspondence draughts
+ - Play in arena tournaments
+ - Play against the computer, both online and offline
+ - Find, follow, challenge players
+ - See your games stats
+ - Draughts variants, available online and offline: Frisian, Russian, Brazilian, Antidraughts, Breakthrough, Frysk!
+ - Practice with draughts puzzles for International, Frisian and Russian draughts
+ - Game analysis with local computer evaluation
+ - Board editor to setup positions
+ - Server computer analysis with move annotations and game summary
+ - Over The Board mode to play offline with a friend
+ - Standalone draughts clock with multiple time settings
+ - Available in 22 languages
+ - Designed for both phones and tablets, supporting landscape mode
+ - 100% free, without ads, and open source!
+
+For help and more details, please visit the project's website.
