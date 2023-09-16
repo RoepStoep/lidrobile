@@ -188,7 +188,7 @@ function scanMove(n: Tree.Node) {
   if (!n.uci) return ''
   const parts = decomposeUci(n.uci)
   if (parts.length > 2) return parts.join('x')
-  return `${parts[0]}-${parts.slice(-1)}`
+  return `${parts[0]}-${parts[parts.length - 1]}`
 }
 
 function median(values: number[]): number {

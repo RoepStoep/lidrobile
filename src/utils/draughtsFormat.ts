@@ -49,7 +49,7 @@ export function scan2san(san: string): string {
   const sep = san.includes('x') ? 'x' : '-',
     parts = san.split(sep)
   if (parts.length < 2) return san
-  return parts[0] + sep + parts.slice(-1)
+  return parts[0] + sep + parts[parts.length - 1]
 }
 
 export function fenCompare(fen1: string, fen2: string) {
