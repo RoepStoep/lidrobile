@@ -116,10 +116,6 @@ export default class AiRound implements AiRoundInterface, PromotingInterface {
       ground.reload(this.draughtsground, this.data, this.replay.situation())
     }
 
-    if (this.isEngineToMove()) {
-      this.engineMove()
-    }
-
     if (this.engine && this.engine.variant === variant) {
       this.engine.newGame()
       .then(() => {
