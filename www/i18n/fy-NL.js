@@ -1,4 +1,7 @@
 export default {
+  "challenges": "Utdagingen",
+  "noChallenges": "Gjin utdagingen",
+  "challengeToPlay": "Utdaagje foar in potsje",
   "preferences": "Foarkarren",
   "insideTheBoard": "Binnen it boerd",
   "outsideTheBoard": "Bûten it boerd",
@@ -216,7 +219,6 @@ export default {
   "more": "Mear",
   "memberSince": "Lid sûnt",
   "lastSeenActive": "%s Foar it lêst sjoen",
-  "challengeToPlay": "Utdaagje foar in potsje",
   "player": "Spiler",
   "list": "List",
   "from": "Fan",
@@ -420,7 +422,6 @@ export default {
   "error.unknown": "Fout",
   "custom": "Oanpast",
   "notifications": "Meldingen",
-  "challenges": "Utdagingen",
   "doItAgain": "Noch in kear dwaan",
   "why": "Wêrom?",
   "nbPlayers:one": "%s spilers",

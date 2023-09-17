@@ -15,7 +15,7 @@ const lidraughtsTranslationsPath = `${baseDir}/lidraughts/translation/dest`
 const lidrobileTranslationsPath = '../translation/dest/'
 const unzipMaxBufferSize = 1024 * 1024 * 10 // Set maxbuffer to 10MB to avoid errors when default 1MB used
 
-const modules = ['arena', 'perfStat', 'preferences', 'settings', 'site', 'study', 'team', 'tfa']
+const modules = ['arena', 'challenge', 'perfStat', 'preferences', 'settings', 'site', 'study', 'team', 'tfa']
 
 async function main() {
   mkdirSync(`${baseDir}`, {recursive: true})

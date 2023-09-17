@@ -242,7 +242,7 @@ function renderSendingChallenge(c: Challenge) {
     h('div.infos', [
       h('div.icon-game', { 'data-icon': utils.gameIcon(c.speed) }),
       h('div.description', [
-        h('h2.title', c.destUser ? playerName(c.destUser) : 'Open challenge'),
+        h('h2.title', c.destUser ? playerName(c.destUser) : i18n('openChallenge')),
         h('p.variant', [
           h('span.time-indication[data-icon=p]', challengesApi.challengeTime(c)),
           ' • ',
