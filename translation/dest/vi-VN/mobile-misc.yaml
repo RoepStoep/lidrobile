@@ -19,6 +19,8 @@ playOffline: "Chơi ngoại tuyến"
 playOfflineOverTheBoard: "Chơi ngoại tuyến trên bàn cờ" #Offline over the board play. This appears in the menu, so try to keep it short.
 playOfflineComputer: "Máy tính" #Offline play against the computer. This appears in the menu, so try to keep it short.
 bgThemeSyncWithSystem: "Đồng bộ với hệ thống" #Settings to synchronise background theme (dark or light) with the operating system (to support daynight automatic switch)
+puzzleVariant: "Biến thể câu đố" #The draughts variant for puzzles
+syncAndRefreshSavedPuzzles: "Đồng bộ hóa và làm mới các câu đố đã lưu" #Synchronizes the puzzles solved offline with the lidraughts server, and downloads a new batch of puzzles
 shareThisPuzzle: "Chia sẻ câu đố này"
 shareRawPDN: "Chia sẻ bản thô PDN" #Share PDN without annotations
 shareAnnotatedPDN: "Chia sẻ chú thích PDN"
