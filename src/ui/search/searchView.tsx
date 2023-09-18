@@ -72,18 +72,18 @@ export function renderSearchForm(ctrl: ISearchCtrl) {
         {renderSelectRow(ctrl, i18n('winner'), !!players.length, { name: 'players.winner', options: players})}
         {renderSelectRow(ctrl, i18n('ratingRange'), true, { name: 'ratingMin', options: ratingOptions, placeholder: i18n('from')}, {name: 'ratingMax', options: ratingOptions, placeholder: i18n('to')})}
         {renderSelectRow(ctrl, i18n('opponent'), true, { name: 'hasAi', options: opponentOptions() })}
-        {renderSelectRow(ctrl, i18n('aiNameLevelAiLevel', 'A.I.', '').trim(), isComputerOpp, {name: 'aiLevelMin', options: aiLevelOptions(), placeholder: i18n('from')}, { name: 'aiLevelMax', options: aiLevelOptions(), placeholder: i18n('to')})}
+        {renderSelectRow(ctrl, i18n('aiLevel'), isComputerOpp, {name: 'aiLevelMin', options: aiLevelOptions(), placeholder: i18n('from')}, { name: 'aiLevelMax', options: aiLevelOptions(), placeholder: i18n('to')})}
         {renderSelectRow(ctrl, i18n('source'), true, { name: 'source', options: sourceOptions})}
         {renderSelectRow(ctrl, i18n('variant'), true, { name: 'perf', options: perfOptions})}
         {renderSelectRow(ctrl, i18n('mode'), true, { name: 'mode', options: modeOptions()})}
         {renderSelectRow(ctrl, i18n('numberOfTurns'), true, { name: 'turnsMin', options: turnOptions(), placeholder: i18n('from')}, {name: 'turnsMax', options: turnOptions(), placeholder: i18n('to')})}
         {renderSelectRow(ctrl, i18n('duration'), true, { name: 'durationMin', options: durationOptions(), placeholder: i18n('from')}, {name: 'durationMax', options: durationOptions(), placeholder: i18n('to')})}
-        {renderSelectRow(ctrl, i18n('time'), true, { name: 'clock.initMin', options: timeOptions(), placeholder: i18n('from')}, {name: 'clock.initMax', options: timeOptions(), placeholder: i18n('to')})}
-        {renderSelectRow(ctrl, i18n('increment'), true, { name: 'clock.incMin', options: incrementOptions(), placeholder: i18n('from')}, {name: 'clock.incMax', options: incrementOptions(), placeholder: i18n('to')})}
+        {renderSelectRow(ctrl, i18n('clockInitialTime'), true, { name: 'clock.initMin', options: timeOptions(), placeholder: i18n('from')}, {name: 'clock.initMax', options: timeOptions(), placeholder: i18n('to')})}
+        {renderSelectRow(ctrl, i18n('clockIncrement'), true, { name: 'clock.incMin', options: incrementOptions(), placeholder: i18n('from')}, {name: 'clock.incMax', options: incrementOptions(), placeholder: i18n('to')})}
         {renderSelectRow(ctrl, i18n('result'), true, { name: 'status', options: resultOptions})}
         {renderSelectRow(ctrl, i18n('winner'), true, {name: 'winnerColor', options: winnerOptions()})}
         {renderSelectRow(ctrl, i18n('date'), true, { name: 'dateMin', options: dateOptions, placeholder: i18n('from'), noEmpty: true }, {name: 'dateMax', options: dateOptions, placeholder: i18n('to')})}
-        {renderSelectRow(ctrl, i18n('sort'), true, { name: 'sort.field', options: sortFieldOptions(), noEmpty: true }, {name: 'sort.order', options: sortOrderOptions(), noEmpty: true })}
+        {renderSelectRow(ctrl, i18n('sortBy'), true, { name: 'sort.field', options: sortFieldOptions(), noEmpty: true }, {name: 'sort.order', options: sortOrderOptions(), noEmpty: true })}
         <div className="game_search_row">
           <label>{i18n('computerAnalysis')}</label>
           <div className="game_search_input_wrapper">

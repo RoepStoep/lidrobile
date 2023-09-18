@@ -39,7 +39,7 @@ const TV: Mithril.Component<TVAttrs, State> = {
       this.round = new OnlineRound(false, vnode.attrs.id, d, vnode.attrs.flip, router.reload)
     })
     .catch(e => {
-      this.emptyTV = e.status === 404 && e.body.error === 'No game found'
+      this.emptyTV = e.body?.error && e.status === 404
       if (!this.emptyTV) {
         handleXhrError(e)
       } else {
