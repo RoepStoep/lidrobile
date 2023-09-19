@@ -1,4 +1,4 @@
-const esmModules = ['lodash-es', 'date-fns/esm'].join('|')
+const esmModules = ['lodash-es', 'date-fns/esm', '@babel/runtime'].join('|')
 
 module.exports = {
   preset: 'ts-jest',
