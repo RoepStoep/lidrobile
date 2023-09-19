@@ -167,7 +167,7 @@ function loadFile(locale: string): Promise<string> {
 }
 
 // supported date-fns locales with region
-const supportedDateLocales = ['ar-DZ', 'ar-MA', 'ar-SA', 'en-AU', 'en-CA', 'en-GB', 'en-IN', 'en-US', 'fa-IR', 'fr-CA', 'fr-CH', 'nl-BE', 'pt-BR', 'zh-CN', 'zh-TW']
+const supportedDateLocales = ['ar-DZ', 'ar-EG', 'ar-MA', 'ar-SA', 'ar-TN', 'de-AT', 'en-AU', 'en-CA', 'en-GB', 'en-IE', 'en-IN', 'en-NZ', 'en-US', 'en-ZA', 'fa-IR', 'fr-CA', 'fr-CH', 'it-CH', 'nl-BE', 'pt-BR', 'zh-CN', 'zh-HK', 'zh-TW']
 
 function loadDateLocale(locale: string): Promise<string> {
   if (locale === defaultLocale) return Promise.resolve(locale)
@@ -193,6 +193,7 @@ function quantity(locale: string, c: number): Quantity {
     case 'fr':
     case 'ff':
     case 'kab':
+    case 'co':
       return c < 2 ? 'one' : 'other'
     // czech
     case 'cs':
@@ -208,6 +209,7 @@ function quantity(locale: string, c: number): Quantity {
     case 'be':
     case 'bs':
     case 'sh':
+    case 'ry':
       if (rem10 === 1 && rem100 !== 11) return 'one'
       else if (rem10 >= 2 && rem10 <= 4 && !(rem100 >= 12 && rem100 <= 14)) return 'few'
       else if (rem10 === 0 || (rem10 >= 5 && rem10 <= 9) || (rem100 >= 11 && rem100 <= 14)) return 'many'
