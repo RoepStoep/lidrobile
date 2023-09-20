@@ -100,7 +100,7 @@ export default {
   "maxTimePlaying": "Maximale Spielzeit",
   "now": "jetzt",
   "preferences": "Einstellungen",
-  "gameDisplay": "Spieldarstellung",
+  "display": "Anzeige",
   "pieceAnimation": "Figurenanimation",
   "materialDifference": "Materialunterschied",
   "showKingMoves": "Zeige, wie oft eine Dame bewegt wurde (Frisian-Variation)",

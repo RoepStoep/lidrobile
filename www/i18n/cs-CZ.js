@@ -97,7 +97,7 @@ export default {
   "maxTimePlaying": "Maximální čas strávený hraním",
   "now": "nyní",
   "preferences": "Předvolby",
-  "gameDisplay": "Zobrazení hry",
+  "display": "Zobrazení",
   "pieceAnimation": "Animace figur",
   "materialDifference": "Materiální rozdíl",
   "pieceDestinations": "Možnosti figur (možné tahy a předtahy)",

@@ -95,7 +95,7 @@ export default {
   "maxTimePlaying": "Ilgākais spēlējot pavadītais laiks",
   "now": "tagad",
   "preferences": "Uzstādījumi",
-  "gameDisplay": "Spēļu ekrāns",
+  "display": "Izskats",
   "pieceAnimation": "Kauliņu animācija",
   "materialDifference": "Materiāla starpība",
   "showKingMoves": "Uzrādīt, cik reižu gājusi dāma (frīzu dambretē)",

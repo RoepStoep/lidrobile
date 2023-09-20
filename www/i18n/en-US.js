@@ -93,6 +93,7 @@ export default {
   "lessThanOneHour": "Less than one hour between games",
   "maxTimePlaying": "Max time spent playing",
   "now": "now",
+  "display": "Display",
   "gameBehavior": "Game behavior",
   "search": "Search",
   "advancedSearch": "Advanced search",

@@ -96,6 +96,7 @@ export default {
   "maxTimePlaying": "Максимальний час, проведений у грі",
   "now": "зараз",
   "preferences": "Налаштування",
+  "display": "Відображення",
   "pieceAnimation": "Анімація ходів",
   "materialDifference": "Співвідношення матеріалу",
   "boardHighlights": "Підсвітлення кольором (останнього ходу)",

@@ -94,6 +94,7 @@ export default {
   "maxTimePlaying": "הכי הרבה זמן במשחק",
   "now": "עכשיו",
   "preferences": "העדפות",
+  "display": "תצוגה",
   "pieceAnimation": "אנימציית הכלים",
   "materialDifference": "הבדל בחומר",
   "pieceDestinations": "יעדי הכלים: מהלכים וקדם-מהלכים מותרים",

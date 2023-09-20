@@ -11,7 +11,7 @@ function renderBody() {
     h('ul.native_scroller.page.settings_list.game', [
       h('li.list_item.nav', {
         oncreate: helper.ontapY(() => router.set('/account/preferences/game-display'))
-      }, i18n('gameDisplay')),
+      }, i18n('display')),
       h('li.list_item.nav', {
         oncreate: helper.ontapY(() => router.set('/account/preferences/clock'))
       }, i18n('clock')),

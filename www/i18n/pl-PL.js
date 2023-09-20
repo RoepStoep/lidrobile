@@ -103,7 +103,7 @@ export default {
   "maxTimePlaying": "Maksymalny czas spędzony na grze",
   "now": "teraz",
   "preferences": "Ustawienia",
-  "gameDisplay": "Widok partii",
+  "display": "Wyświetlanie",
   "pieceAnimation": "Animacja ruchu figur",
   "materialDifference": "Pokaż przewagę materialną",
   "showKingMoves": "Pokaż ile razy wykonano ruch damką (warcaby fryzyjskie)",

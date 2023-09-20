@@ -91,7 +91,7 @@ export default {
   "maxTimePlaying": "最長連続プレイ時間",
   "now": "現在",
   "preferences": "設定",
-  "gameDisplay": "表示設定",
+  "display": "表示",
   "pieceAnimation": "駒のアニメーション速度",
   "materialDifference": "駒の損得",
   "insideTheBoard": "盤の内",

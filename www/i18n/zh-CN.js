@@ -92,7 +92,7 @@ export default {
   "maxTimePlaying": "最长连续对局时间",
   "now": "现在",
   "preferences": "偏好设置",
-  "gameDisplay": "棋局显示",
+  "display": "显示",
   "pieceAnimation": "棋子动画",
   "materialDifference": "子力差距",
   "showKingMoves": "显示王棋移动的次数(Frisian跳棋)",

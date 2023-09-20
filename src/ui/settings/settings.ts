@@ -36,7 +36,7 @@ function renderBody(appVersion?: string) {
     h('ul.settings_list.native_scroller.page', [
       h('li.list_item.nav', {
         oncreate: helper.ontapY(() => router.set('/settings/gameDisplay'))
-      }, i18n('gameDisplay')),
+      }, i18n('display')),
       h('li.list_item.nav', {
         oncreate: helper.ontapY(() => router.set('/settings/clock'))
       }, i18n('clock')),

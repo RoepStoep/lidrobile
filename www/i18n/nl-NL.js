@@ -100,7 +100,7 @@ export default {
   "maxTimePlaying": "Langste tijd gespeeld",
   "now": "nu",
   "preferences": "Voorkeuren",
-  "gameDisplay": "Speluiterlijk",
+  "display": "Weergave",
   "pieceAnimation": "Stukanimatie",
   "materialDifference": "Materiaalverschil",
   "showKingMoves": "Toon het aantal keer dat een dam is gezet (Fries dammen)",

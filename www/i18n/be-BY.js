@@ -89,7 +89,7 @@ export default {
   "lessThanOneHour": "Менш за гадзіну паміж гульнямі",
   "now": "зараз",
   "preferences": "Налады",
-  "gameDisplay": "Дызайн",
+  "display": "Выгляд",
   "pieceAnimation": "Анімацыя фігур",
   "materialDifference": "Паказваць розніцу ў фігурах",
   "boardHighlights": "Падсвечваць апошні ход",

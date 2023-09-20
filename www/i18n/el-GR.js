@@ -96,7 +96,7 @@ export default {
   "maxTimePlaying": "Μέγιστος χρόνος που διατέθηκε παίζοντας",
   "now": "τώρα",
   "preferences": "Προτιμήσεις",
-  "gameDisplay": "Εμφάνιση παιχνιδιών",
+  "display": "Εμφάνιση",
   "pieceAnimation": "Κίνηση πιονιών",
   "materialDifference": "Διαφορά υλικού",
   "showKingMoves": "Εμφάνιση του πόσες φορές ένας βασιλιάς έχει μετακινηθεί (Frisian ντάμα)",

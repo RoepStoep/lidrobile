@@ -93,7 +93,7 @@ export default {
   "maxTimePlaying": "Oyun için harcanan en uzun süre",
   "now": "şimdi",
   "preferences": "Seçenekler",
-  "gameDisplay": "Oyun görünümü",
+  "display": "Görünüm",
   "pieceAnimation": "Hamle animasyonu",
   "materialDifference": "Taş farkı",
   "boardHighlights": "Tahta uyarıları (son hamle)",

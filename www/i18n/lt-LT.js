@@ -97,7 +97,7 @@ export default {
   "maxTimePlaying": "Daugiausia laiko praleista žaidžiant",
   "now": "dabar",
   "preferences": "Nuostatos",
-  "gameDisplay": "Žaidimo vaizdas",
+  "display": "Rodymas",
   "pieceAnimation": "Figūrų animacija",
   "materialDifference": "Figūrų vertės skirtumas",
   "boardCoordinates": "Lentos koordinatės (1-50, a1-h8)",

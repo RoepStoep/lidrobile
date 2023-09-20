@@ -93,7 +93,7 @@ export default {
   "maxTimePlaying": "Tiempo máximo jugando",
   "now": "ahora",
   "preferences": "Preferencias",
-  "gameDisplay": "Configuración visual del juego",
+  "display": "Mostrar",
   "pieceAnimation": "Animación de las piezas",
   "materialDifference": "Diferencia de material",
   "boardHighlights": "Destacar casillas del tablero (último movimiento)",

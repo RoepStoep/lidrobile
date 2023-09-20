@@ -94,7 +94,7 @@ export default {
   "maxTimePlaying": "Tempo massimo trascorso giocando",
   "now": "ora",
   "preferences": "Preferenze",
-  "gameDisplay": "Schermata di gioco",
+  "display": "Mostra",
   "pieceAnimation": "Animazione dei pezzi",
   "materialDifference": "Differenza di materiale",
   "pieceDestinations": "Destinazioni del pezzo (mosse e pre-mosse valide)",

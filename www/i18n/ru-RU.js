@@ -102,7 +102,7 @@ export default {
   "maxTimePlaying": "Максимальное время за игрой",
   "now": "сейчас",
   "preferences": "Настройки",
-  "gameDisplay": "Внешний вид",
+  "display": "Отображать",
   "pieceAnimation": "Анимация фигур",
   "materialDifference": "Показывать разницу в материале",
   "showKingMoves": "Показывать количество перемещений дамки (фрисландские шашки)",

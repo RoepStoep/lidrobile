@@ -100,7 +100,7 @@ export default {
   "maxTimePlaying": "Max time spent playing",
   "now": "now",
   "preferences": "Preferences",
-  "gameDisplay": "Game display",
+  "display": "Display",
   "pieceAnimation": "Piece animation",
   "materialDifference": "Material difference",
   "showKingMoves": "Show the amount of times a king has moved (Frisian draughts)",

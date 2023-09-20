@@ -98,7 +98,7 @@ export default {
   "maxTimePlaying": "Thời gian dài nhất đã chơi",
   "now": "bây giờ",
   "preferences": "Cài đặt",
-  "gameDisplay": "Hiển thị ván cờ",
+  "display": "Hiển thị",
   "pieceAnimation": "Tính linh hoạt của quân cờ",
   "materialDifference": "Chênh lệch giá trị quân cờ",
   "showKingMoves": "Hiển thị số lần vua đã di chuyển (cờ đam Frisian)",

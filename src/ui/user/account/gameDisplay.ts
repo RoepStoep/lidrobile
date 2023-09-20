@@ -11,7 +11,7 @@ export default {
   oncreate: helper.viewSlideIn,
 
   view() {
-    const header = dropShadowHeader(null, backButton(i18n('gameDisplay')))
+    const header = dropShadowHeader(null, backButton(i18n('display')))
     return layout.free(header,
       h('ul.native_scroller.page.settings_list.game', render(prefsCtrl))
     )

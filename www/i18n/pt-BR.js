@@ -99,7 +99,7 @@ export default {
   "maxTimePlaying": "Tempo máximo jogando",
   "now": "agora",
   "preferences": "Preferências",
-  "gameDisplay": "Exibição do jogo",
+  "display": "Mostrar",
   "pieceAnimation": "Animação das peças",
   "materialDifference": "Diferença material",
   "showKingMoves": "Mostre a quantidade de vezes que um rei se moveu (damas frísias)",

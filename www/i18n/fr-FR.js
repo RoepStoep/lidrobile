@@ -100,7 +100,7 @@ export default {
   "maxTimePlaying": "Temps maximal à jouer en continu",
   "now": "maintenant",
   "preferences": "Préférences",
-  "gameDisplay": "Affichage de la partie",
+  "display": "Affichage",
   "pieceAnimation": "Animation des pièces",
   "materialDifference": "Différence de matériel",
   "showKingMoves": "Indiquer le nombre de fois qu'une dame s'est déplacé (jeu de dames frisonnes)",
