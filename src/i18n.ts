@@ -340,6 +340,7 @@ export const allLocales: StringMap = {
   'es-ES': 'español',
   'fr-FR': 'français',
   'fy-NL': 'Frysk',
+  'he-IL': 'עִבְרִית',
   'it-IT': 'Italiano',
   'ja-JP': '日本語',
   'lt-LT': 'lietuvių kalba',
