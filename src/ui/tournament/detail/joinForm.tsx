@@ -57,7 +57,7 @@ function renderForm() {
           </div>
         </div>
         <div className={'select_input no_arrow_after' + (t.teamBattle ? '' : ' notVisible')}>
-          {formWidgets.renderSelect('Team', 'team', teamList, settings.tournament.join.lastTeam, false)}
+          {formWidgets.renderSelect('team', 'team', teamList, settings.tournament.join.lastTeam, false)}
         </div>
       </fieldset>
       <div className="popupActionWrapper">

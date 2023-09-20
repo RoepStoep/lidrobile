@@ -154,7 +154,7 @@ export function chatView(ctrl: Chat, header?: string): Mithril.Children {
         }
       }, [
         h('textarea#chat_input.chat_input', {
-          placeholder: ctrl.writeable ? i18n('talkInChat') : 'Chat is disabled.',
+          placeholder: ctrl.writeable ? i18n('talkInChat') : i18n('chatIsDisabled'),
           disabled: !ctrl.writeable,
           rows: 1,
           maxlength: 140,

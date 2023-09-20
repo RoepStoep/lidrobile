@@ -36,12 +36,11 @@ export function body(ctrl: TeamsCtrl) {
 
 function userStatus(leader: Leader) {
   const patron = leader.patron ? h('span.patron.userStatus', {'data-icon': ''}, []) : null
-  const title = renderTitle(leader.title)
   
   return h('div.user', [
     h('span', [plural('teamLeaders', 1) + ': ']),
     patron,
-    title,
+    renderTitle(leader.title),
     leader.name
   ])
 }
@@ -91,6 +90,6 @@ function renderLeave(ctrl: TeamsCtrl) {
 
 function requestPending() {
   return h('div.teamRequestPending', [
-    h('span', ['Your join request is being reviewed by the team leader.'])
+    h('span', i18n('beingReviewed'))
   ])
 }

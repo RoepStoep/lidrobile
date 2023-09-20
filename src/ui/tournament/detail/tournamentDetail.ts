@@ -80,7 +80,7 @@ export default {
         ]),
         h('h2.header-subTitle.tournament-subtTitle',
         !tournament.isFinished && !tournament.isStarted ?
-          timeInfo(tournament.secondsToStart, 'Starting in') :
+          timeInfo(tournament.secondsToStart, i18n('startingIn')) :
           timeInfo(tournament.secondsToFinish, '')
         )
       ]))

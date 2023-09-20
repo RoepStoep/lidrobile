@@ -167,9 +167,7 @@ function teamBattleNoTeam(t: Tournament) {
     return (
       <div className="tournamentNoTeam">
         <span className="withIcon" data-icon="7" />
-        <p>
-          You must join one of these teams to participate!
-        </p>
+        <p>{i18n('youMustJoinOneOfTheseTeams')}</p>
       </div>
     )
   }
@@ -196,7 +194,7 @@ function tournamentSettings(berserkable?: boolean, streakable?: boolean) {
       {streakable ? null : 
         <div className="setting">
           <span className="withIcon" data-icon="Q" />
-          <p>No arena streaks</p>
+          <p>{i18n('noArenaStreaks')}</p>
         </div>
       }
     </div>

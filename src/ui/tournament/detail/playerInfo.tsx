@@ -136,7 +136,7 @@ export default {
               </tr>
               <tr>
                 <td className="statName">
-                  Average Opponent
+                  {i18n('averageOpponent')}
                 </td>
                 <td className="statData">
                   {avgOpRating}
