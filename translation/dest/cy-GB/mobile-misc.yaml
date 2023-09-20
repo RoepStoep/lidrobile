@@ -1,0 +1,9 @@
+comments: "Sylwadau"
+gameInformation: "Gwybodaeth am y gêm"
+home: "Cartref" #The home page
+playerisInvitingYou: "Mae %s yn eich gwahodd chi"
+positionRight: "Dde" #As in "right-hand side"; not truth, morality, or law
+positionLeft: "Chwith" #As in "left-hand side"; not political or past participle
+playOnline: "Chwarae ar-lein"
+playOffline: "Chwarae all-lein"
+playOfflineOverTheBoard: "Dros y bwrdd" #Offline over the board play. This appears in the menu, so try to keep it short.

@@ -332,6 +332,7 @@ function quantity(locale: string, c: number): Quantity {
 export const allLocales: StringMap = {
   'be-BY': 'Беларуская',
   'cs-CZ': 'čeština',
+  'cy-GB': 'Cymraeg',
   'de-DE': 'Deutsch',
   'el-GR': 'Ελληνικά',
   'en-GB': 'English',
