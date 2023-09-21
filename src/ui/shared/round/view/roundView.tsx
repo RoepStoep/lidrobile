@@ -295,11 +295,6 @@ function renderExpiration(ctrl: OnlineRound, position: Position, myTurn: boolean
   )
 }
 
-function getChecksCount(ctrl: OnlineRound, color: Color) {
-  const player = color === ctrl.data.player.color ? ctrl.data.opponent : ctrl.data.player
-  return player.checks
-}
-
 function renderSubmitMovePopup(ctrl: OnlineRound) {
   if (ctrl.vm.moveToSubmit || ctrl.vm.dropToSubmit || ctrl.vm.submitFeedback) {
     return (
@@ -344,26 +339,22 @@ function renderPlayer(
   ctrl: OnlineRound,
   player: Player,
   material: Material,
-  flipped: boolean,
   position: Position,
-  isCrazy: boolean
 ) {
-  const user = player.user
   const playerName = renderPlayerName(player)
-  const togglePopup = user ? () => ctrl.openUserPopup(position, user.id) : utils.noop
-  const vConf = user ?
-    helper.ontap(togglePopup, () => userInfos(user, player, playerApi.playerName(player))) :
+  const togglePopup = () => player.user ? ctrl.openUserPopup(position, player.user.id) : utils.noop
+  const vConf = player.user ?
+    helper.ontap(togglePopup, () => userInfos(player.user!, player, playerApi.playerName(player))) :
     helper.ontap(utils.noop, () => Toast.show({ text: (player.user?.displayName || player.name || player.username || player.user?.username)!, position: 'center', duration: 'short' }))
-
-  const checksNb = getChecksCount(ctrl, player.color)
 
   const tournamentRank = ctrl.data.tournament && ctrl.data.tournament.ranks ?
     '#' + ctrl.data.tournament.ranks[player.color] + ' ' : null
 
+  const user = player.user
   const isBerserk = ctrl.vm.goneBerserk[player.color]
 
   return (
-    <div className={'antagonistInfos' + (isCrazy ? ' crazy' : '') + (ctrl.isZen() ? ' zen' : '')} oncreate={vConf}>
+    <div className={'antagonistInfos' + (ctrl.isZen() ? ' zen' : '')} oncreate={vConf}>
       <h2 className="antagonistUser">
         { user && user.patron ?
           <span className={'patron status ' + (player.onGame ? 'ongame' : 'offgame')} data-icon="" />
@@ -372,11 +363,7 @@ function renderPlayer(
         {tournamentRank}
         {playerName}
         { isBerserk ? <span className="berserk" data-icon="`" /> : null }
-        { isCrazy && position === 'opponent' && user && (user.engine || user.booster) ?
-          <span className="warning" data-icon="j"></span> : null
-        }
       </h2>
-      { !isCrazy ?
       <div className="ratingAndMaterial">
         { position === 'opponent' && user && (user.engine || user.booster) ?
           <span className="warning" data-icon="j"></span> : null
@@ -391,25 +378,8 @@ function renderPlayer(
             {levelToRating[player.ai]}
           </h3> : null)
         }
-        {checksNb !== undefined ?
-          <div className="checkCount">+{checksNb}</div> : null
-        }
         {!ctrl.vm.showCaptured ? null : renderMaterial(material)}
-      </div> : null
-      }
-      {isCrazy && ctrl.clock ?
-        // must reset clock with a single-child keyed fragment when flipped
-        [h(Clock, {
-          key: flipped.toString(),
-          ctrl: ctrl.clock,
-          color: player.color,
-          isBerserk,
-        })] :
-        isCrazy && ctrl.correspondenceClock ?
-          renderCorrespondenceClock(
-            ctrl.correspondenceClock, player.color, ctrl.data.game.player
-          ) : null
-      }
+      </div>
     </div>
   )
 }
@@ -421,18 +391,15 @@ function renderPlayTable(
   position: Position,
   flipped: boolean,
 ) {
-  const isCrazy = false
-
   const classN = helper.classSet({
     playTable: true,
-    crazy: isCrazy,
     clockOnLeft: ctrl.vm.clockPosition === 'left',
   })
 
   return (
     <section className={classN + ' ' + position}>
-      {renderPlayer(ctrl, player, material, flipped, position, isCrazy)}
-      { !isCrazy && ctrl.clock ?
+      {renderPlayer(ctrl, player, material, position)}
+      { ctrl.clock ?
         // must reset clock with a single-child keyed fragment when flipped
         [h(Clock, {
           key: flipped.toString(),
@@ -440,7 +407,7 @@ function renderPlayTable(
           color: player.color,
           isBerserk: ctrl.vm.goneBerserk[player.color],
         })] :
-        !isCrazy && ctrl.correspondenceClock ?
+        ctrl.correspondenceClock ?
           renderCorrespondenceClock(
             ctrl.correspondenceClock, player.color, ctrl.data.game.player
           ) : null

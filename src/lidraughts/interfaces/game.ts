@@ -14,7 +14,6 @@ export interface GameData {
   note?: string
   readonly chat?: Array<ChatMsg>
   possibleMoves?: StringMap
-  possibleDrops?: PossibleDrops
   captureLength?: number
   userTV?: string
   tv?: string

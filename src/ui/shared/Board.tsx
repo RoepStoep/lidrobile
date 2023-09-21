@@ -30,7 +30,7 @@ interface State {
 export default {
   oninit(vnode) {
 
-    const { draughtsground: draughtsground, canClearShapes } = vnode.attrs
+    const { draughtsground, canClearShapes } = vnode.attrs
 
     this.wrapperOnCreate = ({ dom }) => {
       if (canClearShapes) {

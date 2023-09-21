@@ -229,7 +229,7 @@ export default class Draughtsground {
       const dest = this.state.premovable.current ? this.state.premovable.current[1] : '00'
       if (anim(board.playPremove, this)) {
         // if we can continue capturing keep the piece selected, so all target squares can be clicked one after the other
-        if (this.state.movable.captLen !== null && this.state.movable.captLen > 1)
+        if (this.state.movable.captLen && this.state.movable.captLen > 1)
           board.setSelected(this.state, dest)
         return true
       }

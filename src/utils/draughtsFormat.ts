@@ -2,7 +2,7 @@ import isObject from 'lodash-es/isObject'
 import { san2alg as san2algMap } from '../draughtsground/util'
 
 export function uciToMove(uci: string): Key[] {
-    return decomposeUci(uci)
+  return decomposeUci(uci)
 }
 
 export function uciToMoveOrDrop(uci: string): Key[] {
@@ -18,13 +18,13 @@ export function uciTolastDrop(uci: string): KeyPair {
 }
 
 export function decomposeUci(uci: Uci): Key[] {
-  const uciArray: Key[] = new Array<Key>()
+  const ucis: Key[] = []
   if (uci && uci.length > 1) {
       for (let i = 0; i < uci.length; i += 2) {
-        uciArray.push(uci.substr(i, 2) as Key)
+        ucis.push(uci.substr(i, 2) as Key)
       }
   }
-  return uciArray
+  return ucis
 }
 
 export function san2alg(san?: string | null): string {

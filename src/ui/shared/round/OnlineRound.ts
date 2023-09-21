@@ -20,7 +20,7 @@ import vibrate from '../../../vibrate'
 import gameStatusApi from '../../../lidraughts/status'
 import * as gameApi from '../../../lidraughts/game'
 import { MiniUser } from '../../../lidraughts/interfaces'
-import { OnlineGameData, GameStep, Player, ApiEnd } from '../../../lidraughts/interfaces/game'
+import { OnlineGameData, Player, ApiEnd } from '../../../lidraughts/interfaces/game'
 import { Score } from '../../../lidraughts/interfaces/user'
 import { MoveRequest, DropRequest, MoveOrDrop, AfterMoveMeta, isMove, isDrop, isMoveRequest, isDropRequest } from '../../../lidraughts/interfaces/move'
 import * as draughtsFormat from '../../../utils/draughtsFormat'
@@ -34,6 +34,7 @@ import CorresClockCtrl from './correspondenceClock/corresClockCtrl'
 import RoundSocket from './socket'
 import * as xhr from './roundXhr'
 import { OnlineRoundInterface } from './'
+import { addStep, mergeSteps } from './util'
 
 interface VM {
   ply: number
@@ -88,7 +89,7 @@ export default class OnlineRound implements OnlineRoundInterface {
     userTv?: string,
     ply?: number,
   ) {
-    cfg.steps = this.mergeSteps(cfg.steps)
+    cfg.steps = mergeSteps(cfg.steps)
     this.setData(cfg)
     this.data.userTV = userTv
 
@@ -341,12 +342,9 @@ export default class OnlineRound implements OnlineRoundInterface {
       ((this.data.game.turns - this.data.game.startedAtTurn) > 1 || this.data.clock.running)
   }
 
-  public sendMove(orig: Key, dest: Key, prom?: Role, isPremove = false) {
+  public sendMove(orig: Key, dest: Key, isPremove = false) {
     const move = {
       u: orig + dest
-    }
-    if (prom) {
-      move.u = orig + dest
     }
     const sendBlur = this.getBlurAndReset()
     if (this.data.pref.submitMove && !isPremove) {
@@ -463,7 +461,6 @@ export default class OnlineRound implements OnlineRoundInterface {
     black.offeringDraw = o.bDraw
 
     d.possibleMoves = activeColor ? o.dests : undefined
-    d.possibleDrops = activeColor ? o.drops : undefined
     d.captureLength = o.captLen
 
     if (!this.replaying()) {
@@ -471,9 +468,8 @@ export default class OnlineRound implements OnlineRoundInterface {
 
       const newConf = {
         turnColor: d.game.player,
-        dests: playing ?
-          gameApi.parsePossibleMoves(d.possibleMoves) : <DestsMap>{},
-          captureLength: d.captureLength,
+        dests: playing ? gameApi.parsePossibleMoves(d.possibleMoves) : <DestsMap>{},
+        captureLength: d.captureLength,
         kingMoves: (o.fen && frisianVariant) ? fen.readKingMoves(o.fen) : undefined
       }
       if (isMove(o)) {
@@ -495,10 +491,6 @@ export default class OnlineRound implements OnlineRoundInterface {
           newConf
         )
       }
-
-      if (o.promotion) {
-        ground.promote(this.draughtsground, o.promotion.key)
-      }
     }
 
     if (o.clock) {
@@ -512,7 +504,7 @@ export default class OnlineRound implements OnlineRoundInterface {
     }
 
     d.game.threefold = !!o.threefold
-    this.addStep(d.steps, {
+    addStep(d.steps, {
       ply: d.game.turns,
       fen: o.fen,
       san: o.san,
@@ -547,7 +539,7 @@ export default class OnlineRound implements OnlineRoundInterface {
   }
 
   public onReload = (rCfg: OnlineGameData) => {
-    rCfg.steps = this.mergeSteps(rCfg.steps)
+    rCfg.steps = mergeSteps(rCfg.steps)
     if (rCfg.steps.length !== this.data.steps.length) {
       this.vm.ply = rCfg.steps[rCfg.steps.length - 1].ply
     }
@@ -698,7 +690,7 @@ export default class OnlineRound implements OnlineRoundInterface {
 
   private userMove = (orig: Key, dest: Key, meta: AfterMoveMeta) => {
     const hasPremove = !!meta.premove
-    this.sendMove(orig, dest, undefined, hasPremove)
+    this.sendMove(orig, dest, hasPremove)
   }
 
   private onMove = (_: Key, __: Key, capturedPiece?: Piece) => {
@@ -735,60 +727,4 @@ export default class OnlineRound implements OnlineRoundInterface {
     }
     this.data = cfg
   }
-
-  private addStep(steps: GameStep[], newStep: GameStep): GameStep {
-
-    if (steps.length === 0 || countGhosts(steps[steps.length - 1].fen) === 0)
-      steps.push(newStep)
-    else
-      this.mergeStep(steps[steps.length - 1], newStep)
-
-    if (countGhosts(steps[steps.length - 1].fen) > 0)
-      steps[steps.length - 1].ply++
-
-    return steps[steps.length - 1]
-  }
-
-  private mergeSteps(steps: GameStep[]): GameStep[] {
-
-    const mergedSteps: GameStep[] = new Array<GameStep>()
-    if (steps.length === 0)
-      return mergedSteps
-    else
-      mergedSteps.push(steps[0])
-    if (steps.length === 1) return mergedSteps
-
-    for (let i = 1; i < steps.length; i++) {
-      const step = steps[i - 1]
-      if (step.captLen === undefined) {
-          mergedSteps.push(steps[i])
-      } else if (step.captLen < 2 || step.ply < steps[i].ply) {
-          // captures split over multiple steps have the same ply. If a multicapture is reported in one step, the ply does increase
-          mergedSteps.push(steps[i])
-      } else {
-
-          const originalStep = steps[i]
-          for (let m = 0; m < step.captLen - 1 && i + 1 < steps.length; m++) {
-              if (m === 0 && originalStep.uci !== null)
-                originalStep.uci = originalStep.uci.substr(0, 4)
-              i++
-              this.mergeStep(originalStep, steps[i])
-          }
-          if (countGhosts(originalStep.fen) > 0)
-              originalStep.ply++
-
-          mergedSteps.push(originalStep)
-      }
-    }
-
-    return mergedSteps
-  }
-
-  private mergeStep(originalStep: GameStep, mergeStep: GameStep) {
-    originalStep.ply = mergeStep.ply
-    originalStep.fen = mergeStep.fen
-    originalStep.san = (originalStep.san !== null && mergeStep.san !== null) ? (originalStep.san.slice(0, originalStep.san.indexOf('x') + 1) + mergeStep.san.substr(mergeStep.san.indexOf('x') + 1)) : originalStep.san
-    originalStep.uci = (originalStep.uci !== null && mergeStep.uci !== null) ? (originalStep.uci + mergeStep.uci.substr(2, 2)) : originalStep.uci
-  }
-
 }
