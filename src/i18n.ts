@@ -137,10 +137,6 @@ export async function init(): Promise<string> {
   }
 }
 
-export function isLocaleAvailable(locale: string): boolean {
-  return allLocales[locale] !== undefined
-}
-
 export function loadLanguage(locale: string): Promise<string> {
   return loadFile(locale)
   .then(settings.general.locale)
@@ -363,7 +359,9 @@ export const allKeys = Object.keys(allLocales)
 
 const defaultRegions: StringMap = {
   'de': 'de-DE',
-  'en': 'en-US',
+  'en': 'en-GB',
+  'fr': 'fr-FR',
+  'nl': 'nl-NL',
   'pt': 'pt-PT',
   'zh': 'zh-CN',
 }
