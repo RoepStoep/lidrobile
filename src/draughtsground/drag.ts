@@ -31,7 +31,8 @@ export function dragNewPiece(ctrl: Draughtsground, piece: Piece, e: TouchEvent, 
   const key: Key = '00'
   const s = ctrl.state
   const bs = s.boardSize
-  const dom = ctrl.dom!
+  const dom = ctrl.dom
+  if (!dom) return
 
   s.pieces[key] = piece
 
@@ -76,7 +77,8 @@ export function start(ctrl: Draughtsground, e: TouchEvent) {
   if (e.touches && e.touches.length > 1) return
   e.preventDefault()
   const state = ctrl.state
-  const dom = ctrl.dom!
+  const dom = ctrl.dom
+  if (!dom) return
   const bounds = dom.bounds
   const position = util.eventPosition(e)
   const orig = getKeyAtDomPos(state, position, bounds)
@@ -198,7 +200,7 @@ export function end(ctrl: Draughtsground, e: TouchEvent) {
   state.draggable.current = null
 
   // must perform it in same raf callback or browser may skip it
-  batchRequestAnimationFrame(() => removeDragElements(ctrl.dom!))
+  batchRequestAnimationFrame(() => removeDragElements(ctrl.dom))
   ctrl.redraw()
 }
 
@@ -241,9 +243,9 @@ export function getKeyAtDomPos(state: State, pos: NumberPair, bounds: ClientRect
 
 function processDrag(ctrl: Draughtsground) {
   const state = ctrl.state, bs = state.boardSize
-  const dom = ctrl.dom!
+  const dom = ctrl.dom
   const cur = state.draggable.current
-  if (!cur) return
+  if (!cur || !dom) return
   if (cur.scheduledAnimationFrame) return
   cur.scheduledAnimationFrame = true
   requestAnimationFrame(() => {
@@ -317,7 +319,8 @@ function processDrag(ctrl: Draughtsground) {
   })
 }
 
-function removeDragElements(dom: cg.DOM) {
+function removeDragElements(dom?: cg.DOM) {
+  if (!dom) return
   if (dom.elements.shadow) {
     dom.elements.shadow.style.transform = util.translate3dAway
   }

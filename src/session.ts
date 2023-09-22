@@ -319,7 +319,7 @@ async function refresh(): Promise<void> {
     }
     redraw()
   } catch (err) {
-    if (session !== undefined && err.status === 401) {
+    if (session !== undefined && err?.status === 401) {
       session = undefined
       onLogout()
       redraw()
