@@ -153,9 +153,12 @@ export default function RetroCtrl(root: AnalyseCtrl): IRetroCtrl {
   function checkCeval(): void {
     const node = root.node,
       cur = vm.current
+    const isReady = isCevalReady(node)
+    if (isReady && !root.ceval.isDeeper) {
+      root.stopCevalImmediately()
+    }
     if (!cur || vm.feedback !== 'eval' || cur.fault.node.ply !== node.ply) return
     if (isCevalReady(node)) {
-      root.stopCevalImmediately()
       const diff = winningChances.povDiff(vm.color, node.ceval!, cur.prev.node.eval)
       if (diff > -0.035) onWin()
       else onFail()

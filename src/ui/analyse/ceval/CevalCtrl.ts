@@ -14,6 +14,7 @@ export default class CevalCtrl {
   private started = false
   public isDeeper = false
   private lastStarted: Started | undefined = undefined
+  private curEval: Tree.ClientEval | undefined = undefined
   private isEnabled: boolean
 
   constructor(
@@ -81,7 +82,9 @@ export default class CevalCtrl {
       }
     }
 
+    this.curEval = undefined
     await this.engine.start(work)
+
     this.started = true
     this.lastStarted = {
       threatMode,
@@ -167,8 +170,12 @@ export default class CevalCtrl {
     }
   }
 
+  private curDepth(): number {
+    return this.curEval ? this.curEval.depth : 0
+  }
+
   public canGoDeeper(): boolean {
-    return !this.isDeeper && !this.opts.infinite && !this.engine.isSearching()
+    return this.curDepth() < 99 && !this.isDeeper && !this.engine.isSearching()
   }
 
   public getEngineName(): string {
@@ -180,8 +187,11 @@ export default class CevalCtrl {
   }
 
   private onEmit = (work: Work, ev?: Tree.ClientEval) => {
-    if (ev) sortPvsInPlace(ev.pvs, (work.ply % 2 === 0) ? 'white' : 'black')
-    if (ev) npsRecorder(ev, this.opts.variant)
+    if (ev) {
+      sortPvsInPlace(ev.pvs, (work.ply % 2 === 0) ? 'white' : 'black')
+      npsRecorder(ev, this.opts.variant)
+      this.curEval = ev
+    }
     this.emit(work.path, ev, work.threatMode)
   }
 }
