@@ -232,21 +232,21 @@ export default class TrainingCtrl implements PromotingInterface {
     }
   }
 
-  // --
-
   private init(cfg: PuzzleData) {
-    if (cfg.puzzle.variant.key && !cfg.puzzle.variant.board) {
-      const variantData = getVariant(cfg.puzzle.variant.key)
-      cfg.puzzle.variant.board = variantData.board
+    const variant = cfg.puzzle.variant.key || 'standard'
+    settings.training.variant(variant)
+
+    if (variant && !cfg.puzzle.variant.board) {
+      cfg.puzzle.variant.board = getVariant(variant).board
     }
 
     this.initialData = cfg
 
-    router.History.replaceState({ puzzleId: cfg.puzzle.id }, `/training/${cfg.puzzle.id}/variant/${cfg.puzzle.variant.key}`)
+    router.History.replaceState({ puzzleId: cfg.puzzle.id }, `/training/${cfg.puzzle.id}/variant/${variant}`)
 
     this.vm = {
       mode: 'play',
-      variant: cfg.puzzle.variant.key,
+      variant: variant,
       initializing: true,
       lastFeedback: 'init',
       moveValidationPending: false,
@@ -259,7 +259,7 @@ export default class TrainingCtrl implements PromotingInterface {
 
     const user = session.get()
     if (user) {
-      nbRemainingPuzzles(this.database, user, cfg.puzzle.variant.key)
+      nbRemainingPuzzles(this.database, user, variant)
       .then(nb => {
         this.nbUnsolved = nb
         redraw()

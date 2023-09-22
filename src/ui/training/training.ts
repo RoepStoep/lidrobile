@@ -43,7 +43,6 @@ export default {
     const variant = settings.training.supportedVariants.includes(tryVariant) ? tryVariant : 'standard'
 
     const loadNewPuzzle = () => {
-      settings.training.variant(variant)
       const user = session.get()
       if (user) {
         syncAndLoadNewPuzzle(database, user, variant)

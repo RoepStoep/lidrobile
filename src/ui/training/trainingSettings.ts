@@ -81,7 +81,7 @@ export interface ISettingsCtrl {
           ctrl.settings.setVariant
         )
       ]),
-      h('div.sync', [
+      h('div.action.sync', [
         h('button', {
           disabled: !(hasNetwork() && session.isConnected()),
           oncreate: helper.ontap(ctrl.resync)
