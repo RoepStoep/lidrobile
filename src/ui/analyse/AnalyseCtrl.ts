@@ -126,17 +126,18 @@ export default class AnalyseCtrl {
     this.practice = null
 
     const cevalAllowed = (() => {
-      const study = this.study && this.study.data
+      const v = this.data.game.variant.key
 
-      if (!gameApi.analysableVariants.includes(this.data.game.variant.key)) {
+      if (!gameApi.analysableVariants.includes(v)) {
         return false
       }
 
+      const study = this.study && this.study.data
       if (study && !(study.chapter.features.computer || study.chapter.practice)) {
         return false
       }
 
-      if (!positionLooksLegit(this.data.game.fen, getVariant(this.data.game.variant.key).board.size)) {
+      if (this.data.game.initialFen && !positionLooksLegit(this.data.game.initialFen, getVariant(v).board.size)) {
         return false
       }
 
