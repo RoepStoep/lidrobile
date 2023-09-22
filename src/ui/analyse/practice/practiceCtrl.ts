@@ -76,10 +76,14 @@ export function make(root: AnalyseCtrl, playableDepth: () => number): PracticeCt
   function playable(node: Tree.Node, v: VariantKey): boolean {
     const ceval = node.ceval,
       depth = v === 'antidraughts' ? 7 : 15
-    return ceval ? (
+    const doPlay = ceval ? (
       ceval.depth >= Math.min(ceval.maxDepth || 99, playableDepth()) ||
       (ceval.depth >= depth && (ceval.cloud || Number(ceval.millis) > 5000))
     ) : false
+    if (doPlay && ceval && ceval.depth < 50) {
+      return !!(ceval.cloud || !ceval.millis || ceval.millis > 500)
+    }
+    return doPlay
   }
 
   function tbhitToEval(hit: Tree.TablebaseHit | undefined | null) {

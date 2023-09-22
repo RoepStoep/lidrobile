@@ -4,7 +4,7 @@ import { evalSwings } from '../nodeFinder'
 import { OpeningData } from '../explorer/interfaces'
 import * as winningChances from '../ceval/winningChances'
 import { path as treePath, Tree } from '../../shared/tree'
-import { empty } from '../util'
+import { empty, pieceCount } from '../util'
 
 import AnalyseCtrl from '../AnalyseCtrl'
 
@@ -44,12 +44,9 @@ export interface IRetroCtrl {
 
 export default function RetroCtrl(root: AnalyseCtrl): IRetroCtrl {
 
-  const game = root.data.game
   let candidateNodes: Tree.Node[] = []
   const explorerCancelPlies: number[] = []
   let solvedPlies: number[] = []
-  const maxDepth = game.variant.key === 'antidraughts' ? 10 : 21
-  const minDepth = game.variant.key === 'antidraughts' ? 6 : 16
 
   const vm: VM = {
     current: null,
@@ -97,6 +94,7 @@ export default function RetroCtrl(root: AnalyseCtrl): IRetroCtrl {
       openingUcis: []
     }
     // fetch opening explorer moves
+    const game = root.data.game
     if (useOpeningExplorer && game.variant.key === 'standard' && game.division && (!game.division.middle || fault.node.ply < game.division.middle)) {
       root.explorer.fetchMasterOpening(prev.node.fen).then((res: OpeningData) => {
         const cur = vm.current
@@ -142,9 +140,13 @@ export default function RetroCtrl(root: AnalyseCtrl): IRetroCtrl {
   }
 
   function isCevalReady(node: Tree.Node): boolean {
+    const v = root.data.game.variant.key
+    const bonus = pieceCount(node.fen) > 10 ? 0 : (v === 'antidraughts' ? 1 : 2)
+    const maxDepth = bonus + (v === 'antidraughts' ? 10 : 21)
+    const minDepth = bonus + (v === 'antidraughts' ? 6 : 16)
     return node.ceval ? (
       node.ceval.depth >= maxDepth ||
-      (node.ceval.depth >= minDepth && node.ceval.millis !== undefined && node.ceval.millis > 7000)
+      (node.ceval.depth >= minDepth && !!node.ceval.millis && node.ceval.millis > 7000)
     ) : false
   }
 

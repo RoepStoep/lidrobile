@@ -38,13 +38,15 @@ export default class CevalCtrl {
   private cevalMaxDepth = 
     this.opts.variant === 'antidraughts' ? settings.analyse.cevalMaxDepthAnti : settings.analyse.cevalMaxDepthNormal
 
-  public async start(threatMode: boolean, path: Tree.Path, nodes: Tree.Node[], forceMaxLevel: boolean, deeper: boolean): Promise<void> {
+  public async start(threatMode: boolean, path: Tree.Path, nodes: Tree.Node[], forceMaxDepth: boolean, deeper: boolean): Promise<void> {
     if (!this.enabled()) {
       return
     }
+
     this.isDeeper = deeper
+    const maxDepth = this.effectiveMaxDepth(forceMaxDepth)
+
     const step = nodes[nodes.length - 1]
-    const maxDepth = this.effectiveMaxDepth(deeper)
     const existing = threatMode ? step.threat : step.ceval
     if (existing && existing.depth >= maxDepth) {
       return
@@ -53,10 +55,10 @@ export default class CevalCtrl {
       initialFen: nodes[0].fen,
       currentFen: step.fen,
       moves: [],
-      maxDepth: forceMaxLevel ? this.cevalMaxDepth() : this.effectiveMaxDepth(deeper),
+      maxDepth,
       path,
       ply: step.ply,
-      multiPv: 1, // forceMaxLevel ? 1 : this.opts.multiPv,
+      multiPv: 1, // forceMaxDepth ? 1 : this.opts.multiPv,
       threatMode,
       emit: (ev?: Tree.ClientEval) => {
         if (this.enabled()) this.onEmit(work, ev)
@@ -173,8 +175,8 @@ export default class CevalCtrl {
     return this.engine.engineName
   }
 
-  public effectiveMaxDepth(deeper = false): number {
-    return (deeper || this.opts.infinite) ? 99 : this.cevalMaxDepth()
+  public effectiveMaxDepth(forceMaxDepth = false): number {
+    return (forceMaxDepth || this.isDeeper || this.opts.infinite) ? 99 : this.cevalMaxDepth()
   }
 
   private onEmit = (work: Work, ev?: Tree.ClientEval) => {

@@ -343,9 +343,9 @@ export default class AnalyseCtrl {
         const ghostEnd = (this.nodeList.length > 0 && this.node.displayPly && this.node.displayPly !== this.node.ply)
         const path = ghostEnd ? this.path.slice(2) : this.path
         const nodeList = ghostEnd ? this.nodeList.slice(1) : this.nodeList
-        const forceMaxLv = !!this.retro || !!this.practice
-        this.ceval.start(this.showThreat, path, nodeList, forceMaxLv, false)
-        this.evalCache.fetch(path, forceMaxLv ? 1 : this.ceval.getMultiPv())
+        const forceMaxDepth = !!(this.retro || this.practice)
+        this.ceval.start(this.showThreat, path, nodeList, forceMaxDepth, false)
+        this.evalCache.fetch(path, forceMaxDepth ? 1 : this.ceval.getMultiPv())
       } else this.stopCevalImmediately()
     }
   }
@@ -376,7 +376,21 @@ export default class AnalyseCtrl {
     }
   }
 
-  private practiceDepth = () => this.data.game.variant.key === 'antidraughts' ? 8 : 20
+  private practiceDepth = () => {
+    const v = this.data.game.variant.key
+    const baseDepth = v === 'antidraughts' ? 8 : 20
+    const pieceCount = util.pieceCount(this.node.fen)
+    if (pieceCount <= 5) {
+      if (v === 'antidraughts') return baseDepth + 2
+      else if (v === 'frisian' || v === 'frysk') return baseDepth + 8
+      return baseDepth + 5
+    } else if (pieceCount <= 10) {
+      if (v === 'antidraughts') return baseDepth + 1
+      else if (v === 'frisian' || v === 'frysk') return baseDepth + 5
+      return baseDepth + 3
+    }
+    return baseDepth
+  }
 
   togglePractice = () => {
     if (this.practice || !this.ceval.allowed) this.practice = null

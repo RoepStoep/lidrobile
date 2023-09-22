@@ -3,7 +3,7 @@ import redraw from '../../../utils/redraw'
 import { oppositeColor, prop } from '../../../utils'
 import { colorOf } from '../../../utils/fen'
 import * as gameApi from '../../../lidraughts/game'
-import { isSynthetic } from '../util'
+import { isSynthetic, tablebaseRelevant } from '../util'
 import AnalyseCtrl from '../AnalyseCtrl'
 import explorerConfig from './explorerConfig'
 import { openingXhr, tablebaseXhr } from './explorerXhr'
@@ -141,14 +141,6 @@ export default function ExplorerCtrl(
       })
     }
   }
-}
-
-function tablebaseRelevant(variant: VariantKey, fen: string) {
-  const parts = fen.split(/\s/)
-  const pieceCount = parts[0].split(/[nbrqkp]/i).length - 1
-
-  if (variant === 'standard' || variant === 'fromPosition') return pieceCount <= 0
-  else return false
 }
 
 export function winnerOf(fen: Fen, move: TablebaseMoveStats): Color | undefined {
