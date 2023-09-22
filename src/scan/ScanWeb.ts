@@ -24,7 +24,7 @@ export class ScanWeb extends WebPlugin implements ScanPlugin {
       if (this.worker) {
         setTimeout(resolve, 1)
       } else {
-        this.worker = new Worker(variant === 'frisian' ? '../scan_frisian.js' : '../scan_normal.js')
+        this.worker = new Worker(`../scan_${variant}.js`)
         this.worker.onmessage = msg => {
 
           const ev: any = new Event('scan')
