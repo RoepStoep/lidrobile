@@ -629,6 +629,7 @@ export default {
   "opponent": "Varžovas",
   "learnMenu": "Išmok",
   "studyMenu": "Studijos",
+  "faqMenu": "D.U.K.",
   "practice": "Praktika",
   "community": "Bendruomenė",
   "tools": "Įrankiai",

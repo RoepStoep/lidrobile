@@ -631,6 +631,7 @@ export default {
   "opponent": "Суперник",
   "learnMenu": "Навчатися",
   "studyMenu": "Дослідження",
+  "faqMenu": "ЧаПах",
   "practice": "Практика",
   "community": "Спільнота",
   "tools": "Інструменти",

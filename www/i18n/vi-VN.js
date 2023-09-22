@@ -1221,6 +1221,7 @@ export default {
   "playOfflineOverTheBoard": "Chơi ngoại tuyến trên bàn cờ",
   "playOfflineComputer": "Máy tính",
   "bgThemeSyncWithSystem": "Đồng bộ với hệ thống",
+  "chatIsDisabled": "Chức năng trò chuyện bị tắt.",
   "puzzleVariant": "Biến thể của câu đố",
   "syncAndRefreshSavedPuzzles": "Đồng bộ hóa và làm mới các câu đố đã lưu",
   "shareThisPuzzle": "Chia sẻ câu đố này",

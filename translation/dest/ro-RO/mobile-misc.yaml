@@ -1,0 +1,19 @@
+apiUnsupported: "Versiunea aplicației lidraughts este prea veche! Te rog să o actualizezi gratis la ultima versiune."
+apiDeprecated: "Actualizează gratis la ultima versiune a aplicației lidraughts! Suportul pentru această versiune va fi oprit pe %s."
+comments: "Comentarii"
+gameInformation: "Informații despre joc"
+home: "Acasă" #The home page
+playerisInvitingYou: "%s te invită"
+unsupportedVariant: "Varianta %s nu este suportată în această versiune"
+notesSynchronizationHasFailed: "Sincronizarea notelor cu lidraughts a eșuat, te rog să încerci mai târziu."
+vibrateOnGameEvents: "Vibrare la evenimentele din partidă"
+offline: "Deconectat"
+otbFlipPiecesAndInfoAfterMove: "Întoarce piesele și informațiile despre oponent după fiecare mutare" #Setting for offline over-the-board games
+settingsClockPosition: "Poziția ceasului" #Determines whether each player's time is shown on the left or right side of the board
+positionRight: "Dreapta" #As in "right-hand side"; not truth, morality, or law
+positionLeft: "Stânga" #As in "left-hand side"; not political or past participle
+landscapeBoardSide: "Plasarea tablei de joc (in mod peisaj)" #Side of the screen the board appears on in analysis or online rounds when the device is in landscape mode.
+playOnline: "Joacă online"
+playOffline: "Joacă offline"
+playOfflineOverTheBoard: "Deasupra tablei" #Offline over the board play. This appears in the menu, so try to keep it short.
+bgThemeSyncWithSystem: "Sincronizare cu sistemul" #Settings to synchronise background theme (dark or light) with the operating system (to support daynight automatic switch)

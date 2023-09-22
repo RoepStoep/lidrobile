@@ -194,7 +194,7 @@ export default {
   "variantEnding": "Fim da variante",
   "important": "Importante",
   "yourQuestionMayHaveBeenAnswered": "A tua pergunta pode já ter uma resposta %1$s",
-  "inTheFAQ": "no FAQ (perguntas frequentes)",
+  "inTheFAQ": "no FAQ",
   "toReportSomeoneForCheatingOrBadBehavior": "Para reportares um utilizador por fazer batota ou por mau comportamento, %1$s.",
   "useTheReportForm": "usa a ficha própria para o fazeres",
   "toRequestSupport": "Para solicitares suporte, %1$s.",

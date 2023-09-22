@@ -722,6 +722,7 @@ export default {
   "opponent": "Соперник",
   "learnMenu": "Обучение",
   "studyMenu": "Студия",
+  "faqMenu": "ЧаВо",
   "practice": "Практика",
   "community": "Сообщество",
   "tools": "Инструменты",

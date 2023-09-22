@@ -718,6 +718,7 @@ export default {
   "opponent": "Opponent",
   "learnMenu": "Learn",
   "studyMenu": "Study",
+  "faqMenu": "FAQ",
   "practice": "Practice",
   "community": "Community",
   "tools": "Tools",

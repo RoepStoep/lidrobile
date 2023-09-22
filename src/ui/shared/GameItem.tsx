@@ -85,8 +85,8 @@ export default {
             }
             {g.analysed ?
               <p className="analysis">
-              <span className="fa fa-bar-chart" />
-              Computer analysis available
+                <span className="fa fa-bar-chart" />
+                {i18n('computerAnalysisAvailable')}
               </p> : null
             }
           </div>
