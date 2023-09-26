@@ -7,7 +7,7 @@ import socket from '../socket'
 import redraw from '../utils/redraw'
 import { handleXhrError } from '../utils'
 import { fetchJSON, ErrorResponse } from '../http'
-import i18n from '../i18n'
+import i18n, { i18nVdom } from '../i18n'
 import router from '../router'
 import * as helper from './helper'
 import loginModal from './loginModal'
@@ -55,7 +55,8 @@ function renderCheckEmail() {
     h('h1.signup-emailCheck.withIcon[data-icon=E]', i18n('checkYourEmail')),
     h('p', i18n('weHaveSentYouAnEmailClickTheLink')),
     h('p', i18n('ifYouDoNotSeeTheEmailCheckOtherPlaces')),
-    h('p', 'Not receiving it? Visit https://lidraughts.org/contact to request a manual confirmation.')
+    h('p', [i18n('itCanTakeAWhileToArrive'), ' ', i18n('refreshInboxAfterFiveMinutes')]),
+    h('p', [i18n('notReceivingIt'), ' ', i18n('visitUrlToRequestManualConfirmation', 'https://lidraughts.org/contact')])
   ]
 }
 
@@ -65,13 +66,14 @@ function renderForm() {
       i18n('computersAreNotAllowedToPlay')
     ]),
     h('p.tosWarning', [
-      'By registering, you agree to be bound by our ',
-      h('a', {
-        oncreate: helper.ontap(() =>
-          window.open('https://lidraughts.org/terms-of-service', '_blank')
-        )},
-        'Terms of Service'
-      ), '.'
+      i18nVdom('byRegisteringYouAgreeToBeBoundByOur',
+        h('a', {
+          oncreate: helper.ontap(() =>
+            window.open('https://lidraughts.org/terms-of-service', '_blank')
+          )},
+          i18n('termsOfService')
+        )
+      )
     ]),
     h('form.defaultForm.login', {
       onsubmit: onSignup,
@@ -124,8 +126,8 @@ function renderForm() {
 }
 
 function oninput(e: Event) {
-  const val = (e.target as HTMLFormElement).value.trim()
-  if (val && val.match(/^[a-z0-9][\w-]{2,29}$/i)) {
+  const val = ((e.target as HTMLFormElement).value || '').trim()
+  if (val && val.match(/^[a-z0-9][\w-]{1,29}$/i)) {
     testUserName(val).then(exists => {
       setUserExistsFeedback(exists)
     })
@@ -137,7 +139,7 @@ function oninput(e: Event) {
 function setUserExistsFeedback(exists: boolean) {
   if (exists) {
     formError = {
-      username: ['This username is already in use, please try another one.']
+      username: [i18n('usernameAlreadyUsed')]
     }
   }
   else {

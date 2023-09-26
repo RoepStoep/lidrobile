@@ -1,5 +1,6 @@
-apiUnsupported: "Uw versie van de Lidraughts-app is te oud! Gelieve gratis te upgraden naar de nieuwste versie."
+apiUnsupported: "Deze versie van de Lidraughts-app is verouderd! Gelieve gratis te upgraden naar de nieuwste versie."
 apiDeprecated: "Upgrade gratis naar de nieuwste Lidraughts-app! Ondersteuning voor deze versie zal ophouden op %s."
+visitUrlToRequestManualConfirmation: "Ga naar %s om een handmatige bevestiging aan te vragen."
 comments: "Reacties"
 gameInformation: "Spelinformatie"
 home: "Startscherm" #The home page

@@ -768,7 +768,7 @@ export default {
   "yourPerfTypeRatingIsRating": "Your %1$s rating is %2$s.",
   "youAreBetterThanPercentOfPerfTypePlayers": "You are better than %1$s of %2$s players.",
   "youDoNotHaveAnEstablishedPerfTypeRating": "You do not have an established %s rating.",
-  "checkYourEmail": "Check your Email",
+  "checkYourEmail": "Check your email",
   "weHaveSentYouAnEmailClickTheLink": "We've sent you an email. Click the link in the email to activate your account.",
   "ifYouDoNotSeeTheEmailCheckOtherPlaces": "If you don't see the email, check other places it might be, like your junk, spam, social, or other folders.",
   "weHaveSentYouAnEmailTo": "We've sent an email to %s. Click the link in the email to reset your password.",
