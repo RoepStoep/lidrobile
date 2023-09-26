@@ -3,7 +3,7 @@ import { batchRequestAnimationFrame } from '../../utils/batchRAF'
 import * as utils from '../../utils'
 import * as playerApi from '../../lidraughts/player'
 import * as gameApi from '../../lidraughts/game'
-import { getVariant } from '../../lidraughts/variant'
+import { getVariantBoard } from '../../lidraughts/variant'
 import gameStatus from '../../lidraughts/status'
 import { UserGamePlayer, UserGameWithDate } from '../../lidraughts/interfaces/user'
 import session from '../../session'
@@ -97,7 +97,7 @@ export default {
 } as Mithril.Component<Attrs>
 
 function renderBoard(fen: string, orientation: Color, variant: VariantKey, boardTheme: string) {
-  const board = (getVariant(variant) || getVariant('standard')).board
+  const board = getVariantBoard(variant)
   const boardClass = [
     'display_board',
     `board-${boardTheme}`,
@@ -124,7 +124,7 @@ function renderBoard(fen: string, orientation: Color, variant: VariantKey, board
 }
 
 function emptyBoard(orientation: Color, boardTheme: string) {
-  const board = getVariant('standard').board
+  const board = getVariantBoard('standard')
   const boardClass = [
     'display_board',
     `board-${boardTheme}`,

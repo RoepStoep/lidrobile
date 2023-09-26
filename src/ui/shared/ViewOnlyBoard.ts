@@ -3,7 +3,7 @@ import { batchRequestAnimationFrame } from '../../utils/batchRAF'
 import Draughtsground from '../../draughtsground/Draughtsground'
 import { uciToMove } from '../../utils/draughtsFormat'
 import settings from '../../settings'
-import { getVariant } from '../../lidraughts/variant'
+import { getVariantBoard } from '../../lidraughts/variant'
 
 export interface Attrs {
   readonly fen: string
@@ -82,13 +82,12 @@ const ViewOnlyBoard: Mithril.Component<Attrs, State> = {
   },
 
   view({ attrs }) {
-    const docVariant = getVariant(attrs.variant) || getVariant('standard')
     const boardClass = [
       'display_board',
       attrs.customPieceTheme || this.pieceTheme,
       `board-${this.boardTheme}`,
       attrs.variant,
-      'is' + docVariant.board.key
+      'is' + getVariantBoard(attrs.variant).key
     ].join(' ')
 
     return h('div', { className: boardClass })
@@ -98,7 +97,6 @@ const ViewOnlyBoard: Mithril.Component<Attrs, State> = {
 export default ViewOnlyBoard
 
 function makeConfig({ fen, lastMove, orientation, variant, fixed = true }: Attrs) {
-  const docVariant = getVariant(variant) || getVariant('standard')
   const conf: Config = {
     batchRAF: batchRequestAnimationFrame,
     viewOnly: true,
@@ -106,7 +104,7 @@ function makeConfig({ fen, lastMove, orientation, variant, fixed = true }: Attrs
     minimalDom: true,
     coordinates: 0,
     fen,
-    boardSize: docVariant.board.size,
+    boardSize: getVariantBoard(variant).size,
     lastMove: lastMove ? uciToMove(lastMove) : null,
     orientation: orientation || 'white'
   }

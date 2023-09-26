@@ -3,7 +3,7 @@ import { Toast } from '@capacitor/toast'
 import i18n from '../../i18n'
 import router from '../../router'
 import { validateFen, positionLooksLegit } from '../../utils/fen'
-import { getVariant, specialFenVariants } from '../../lidraughts/variant'
+import { getVariantBoard, specialFenVariants } from '../../lidraughts/variant'
 import popupWidget from '../shared/popup'
 import * as helper from '../helper'
 import playMachineForm from '../playMachineForm'
@@ -82,7 +82,7 @@ export default {
               const v = ctrl.variant()
               const c = ctrl.color()
               if (f) {
-                if (validateFen(f, v) && positionLooksLegit(f, getVariant(v).board.size)) {
+                if (validateFen(f, v) && positionLooksLegit(f, getVariantBoard(v).size)) {
                   router.set(`/ai/variant/${v}/fen/${encodeURIComponent(f)}/color/${c}`)
                 } else {
                   Toast.show({ text: i18n('invalidFen'), position: 'center', duration: 'short' })
@@ -96,7 +96,7 @@ export default {
               const f = ctrl.fen()
               const v = ctrl.variant()
               if (f) {
-                if (validateFen(f, v) && positionLooksLegit(f, getVariant(v).board.size)) {
+                if (validateFen(f, v) && positionLooksLegit(f, getVariantBoard(v).size)) {
                   router.set(`/otb/variant/${v}/fen/${encodeURIComponent(f)}`)
                 } else {
                   Toast.show({ text: i18n('invalidFen'), position: 'center', duration: 'short' })

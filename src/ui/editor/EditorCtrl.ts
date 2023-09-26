@@ -128,7 +128,7 @@ export default class EditorCtrl {
   }
 
   public getVariant = () => {
-    return getLidraughtsVariant(this.data.game.variant.key()) || getLidraughtsVariant('standard')
+    return getLidraughtsVariant(this.data.game.variant.key())
   }
 
   private setPlayable = (fen: string, variant: VariantKey): Promise<void> => {

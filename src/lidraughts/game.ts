@@ -164,7 +164,7 @@ export function title(data: GameData | AnalyseData): string {
 
   const perf = data.game.perf && shortPerfTitle(data.game.perf)
   const variant = getVariant(data.game.variant.key)
-  const name = perf || (variant ? (variant.tinyName || variant.shortName || variant.name) : '?')
+  const name = perf || variant.tinyName || variant.shortName || variant.name || '?'
   const t = time(data)
   return data.game.source === 'import' ?
     'Import • Standard' :

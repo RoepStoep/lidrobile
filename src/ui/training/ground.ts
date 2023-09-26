@@ -2,14 +2,14 @@ import * as cg from '../../draughtsground/interfaces'
 import settings from '../../settings'
 
 import TrainingCtrl from './TrainingCtrl'
-import { getVariant } from '../../lidraughts/variant'
+import { getVariantBoard } from '../../lidraughts/variant'
 
 export default function makeConfig(
   ctrl: TrainingCtrl,
   userMove: (orig: Key, dest: Key) => void): cg.InitConfig {
 
   const pieceMoveConf = settings.game.pieceMove()
-  const board = ctrl.data.puzzle.variant.board || getVariant(ctrl.data.puzzle.variant.key).board
+  const board = ctrl.data.puzzle.variant.board || getVariantBoard(ctrl.data.puzzle.variant.key)
 
   return {
     fen: ctrl.data.puzzle.fen,

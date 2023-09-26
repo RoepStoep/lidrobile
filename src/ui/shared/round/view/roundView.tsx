@@ -30,7 +30,7 @@ import { view as renderCorrespondenceClock } from '../correspondenceClock/corres
 import { renderInlineReplay, renderReplay } from './replay'
 import OnlineRound from '../OnlineRound'
 import { Position, Material } from '../'
-import { getVariant } from '../../../../lidraughts/variant'
+import { isVariant } from '../../../../lidraughts/variant'
 import { renderTitle as renderUserTitle } from '~/ui/user/userView'
 
 export default function view(ctrl: OnlineRound) {
@@ -48,11 +48,7 @@ export default function view(ctrl: OnlineRound) {
 }
 
 export function emptyTV(channel?: string, onFeatured?: () => void) {
-  let variant: VariantKey
-  if (channel) {
-    variant = channel.toLowerCase() as VariantKey
-    if (!getVariant(variant)) variant = 'standard'
-  } else variant = 'standard'
+  const variant = channel && isVariant(channel) ? channel as VariantKey : 'standard'
   return layout.board(
     renderEmptyHeader(channel, onFeatured),
     viewOnlyBoardContent(emptyFen, 'white', variant)

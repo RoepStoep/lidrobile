@@ -18,7 +18,7 @@ import { PromotingInterface } from '../shared/round'
 
 import moveTest from './moveTest'
 import makeGround from './ground'
-import { getVariant } from '../../lidraughts/variant'
+import { getVariantBoard } from '../../lidraughts/variant'
 import menu, { IMenuCtrl } from './menu'
 import * as xhr from './xhr'
 import { VM, Data, PimpedGame, Feedback } from './interfaces'
@@ -236,8 +236,8 @@ export default class TrainingCtrl implements PromotingInterface {
     const variant = cfg.puzzle.variant.key || 'standard'
     settings.training.variant(variant)
 
-    if (variant && !cfg.puzzle.variant.board) {
-      cfg.puzzle.variant.board = getVariant(variant).board
+    if (!cfg.puzzle.variant.board) {
+      cfg.puzzle.variant.board = getVariantBoard(variant)
     }
 
     this.initialData = cfg
@@ -321,7 +321,7 @@ export default class TrainingCtrl implements PromotingInterface {
     const node = this.node
     const color: Color = node.ply % 2 === 0 ? 'white' : 'black'
     const dests = draughtsFormat.readDests(node.dests)
-    const board = this.data.puzzle.variant.board || getVariant(this.data.puzzle.variant.key).board
+    const board = this.data.puzzle.variant.board || getVariantBoard(this.data.puzzle.variant.key)
     const config = {
       fen: node.fen,
       boardSize: board.size,

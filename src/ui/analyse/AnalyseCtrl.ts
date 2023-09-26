@@ -16,7 +16,7 @@ import vibrate from '../../vibrate'
 import sound from '../../sound'
 import { toggleGameBookmark } from '../../xhr'
 import socket, { SocketIFace } from '../../socket'
-import { getVariant, openingSensibleVariants } from '../../lidraughts/variant'
+import { getVariantBoard, openingSensibleVariants } from '../../lidraughts/variant'
 import { playerName as gamePlayerName } from '../../lidraughts/player'
 import * as gameApi from '../../lidraughts/game'
 import { AnalyseData, AnalyseDataWithTree, isOnlineAnalyseData } from '../../lidraughts/interfaces/analyse'
@@ -137,7 +137,7 @@ export default class AnalyseCtrl {
         return false
       }
 
-      if (this.data.game.initialFen && !positionLooksLegit(this.data.game.initialFen, getVariant(v).board.size)) {
+      if (this.data.game.initialFen && !positionLooksLegit(this.data.game.initialFen, getVariantBoard(v).size)) {
         return false
       }
 
@@ -695,7 +695,7 @@ export default class AnalyseCtrl {
   }
 
   isAlgebraic(): boolean {
-    const board = this.data.game.variant.board || getVariant(this.data.game.variant.key).board
+    const board = this.data.game.variant.board || getVariantBoard(this.data.game.variant.key)
     return settings.game.coordSystem() === 1 && board.key === '64'
   }
 
@@ -752,7 +752,7 @@ export default class AnalyseCtrl {
 
     const color: Color = util.plyColor(node.ply)
     const dests = draughtsFormat.readDests(node.dests)
-    const board = this.data.game.variant.board || getVariant(this.data.game.variant.key).board
+    const board = this.data.game.variant.board || getVariantBoard(this.data.game.variant.key)
     const config = {
       fen: node.fen,
       boardSize: board.size,

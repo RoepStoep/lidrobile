@@ -107,8 +107,16 @@ const variantMap: {[key in VariantKey]: DocVariant} = {
   }
 }
 
+export function isVariant(key: string): boolean {
+  return key in variantMap
+}
+
 export function getVariant(key: VariantKey): DocVariant {
-  return variantMap[key]
+  return variantMap[key] || variantMap['standard']
+}
+
+export function getVariantBoard(key: VariantKey): BoardData {
+  return getVariant(key).board
 }
 
 export function getVariantKeyById(id: string): VariantKey | undefined {
@@ -122,18 +130,18 @@ export function getVariantKeyById(id: string): VariantKey | undefined {
 }
 
 export function getLidraughtsVariant(key: VariantKey): Variant {
-  const dv = variantMap[key]
+  const v = getVariant(key)
   return {
     key,
-    name: dv.name, board: dv.board,
-    short: dv.shortName || dv.tinyName || dv.name,
-    title: dv.title,
+    board: v.board,
+    name: v.name,
+    short: v.shortName || v.tinyName || v.name,
+    title: v.title,
   }
 }
 
 export function getInitialFen(key: VariantKey): string {
-  const v = variantMap[key]
-  return v.initialFen || standardFen
+  return getVariant(key).initialFen || standardFen
 }
 
 export const specialFenVariants = new Set(['frysk', 'russian', 'brazilian']) as Set<VariantKey>

@@ -2,17 +2,9 @@ import session from '../../../session'
 import { oppositeColor, animationDuration } from '../../../utils'
 import settings from '../../../settings'
 import i18n from '../../../i18n'
-import { standardFen } from '../../../lidraughts/variant'
+import { getInitialFen, getLidraughtsVariant } from '../../../lidraughts/variant'
 import { OfflineGameData } from '../../../lidraughts/interfaces/game'
 import { ClockState } from '../clock/interfaces'
-
-const standardVariant: Variant = {
-  key: 'standard',
-  name: 'Standard',
-  short: 'STD',
-  title: 'Standard rules of draughts (FMJD)',
-  board: { key: '100', size: [10, 10] }
-}
 
 export interface OfflineDataConfig {
   id: string
@@ -38,11 +30,13 @@ export default function data(cfg: OfflineDataConfig): OfflineGameData {
     spectator: false
   }
 
+  const variant = cfg.variant || getLidraughtsVariant('standard')
+  const standardFen = getInitialFen(variant.key)
   return {
     game: {
       id: cfg.id,
       offline: true,
-      variant: cfg.variant || standardVariant,
+      variant,
       initialFen: cfg.initialFen || standardFen,
       source: 'offline',
       fen: cfg.fen || standardFen,

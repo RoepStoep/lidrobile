@@ -2,7 +2,7 @@ import h from 'mithril/hyperscript'
 import settings from '../../settings'
 import redraw from '../../utils/redraw'
 import Draughtsground from '../../draughtsground/Draughtsground'
-import { getVariant } from '../../lidraughts/variant'
+import { getVariantBoard } from '../../lidraughts/variant'
 import BoardBrush, { Shape } from './BoardBrush'
 
 export interface Attrs {
@@ -73,7 +73,6 @@ export default {
 
   view(vnode) {
     const { variant, draughtsground, wrapperClasses, customPieceTheme, shapes, clearableShapes } = vnode.attrs
-    const docVariant = getVariant(variant) || getVariant('standard')
     const boardClass = [
       'display_board',
       'orientation-' + draughtsground.state.orientation,
@@ -81,7 +80,7 @@ export default {
       customPieceTheme || this.pieceTheme,
       `blindfold-${this.blindfoldDraughts}`,
       variant,
-      'is' + docVariant.board.key
+      'is' + getVariantBoard(variant).key
     ].join(' ')
 
     let wrapperClass = 'playable_board_wrapper'

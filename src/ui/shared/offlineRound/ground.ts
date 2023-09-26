@@ -5,14 +5,14 @@ import settings from '../../../settings'
 import { boardOrientation, animationDuration } from '../../../utils'
 import { OfflineGameData } from '../../../lidraughts/interfaces/game'
 import { AfterMoveMeta } from '../../../lidraughts/interfaces/move'
-import { getVariant } from '../../../lidraughts/variant'
+import { getVariantBoard } from '../../../lidraughts/variant'
 import { uciToMoveOrDrop } from '../../../utils/draughtsFormat'
 import { GameSituation } from '../../../draughts'
 
 function makeConfig(data: OfflineGameData, sit: GameSituation): cg.InitConfig {
   const lastUci = sit.uciMoves.length ? sit.uciMoves[sit.uciMoves.length - 1] : null
   const pieceMoveConf = settings.game.pieceMove()
-  const board = (getVariant(data.game.variant.key) || getVariant('standard')).board
+  const board = getVariantBoard(data.game.variant.key)
   return {
     fen: sit.fen,
     boardSize: board.size,
