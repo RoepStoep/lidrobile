@@ -54,19 +54,24 @@ export default class HomeCtrl {
 
   private networkListener: PluginListenerHandle
   private appStateListener: PluginListenerHandle
+  private isConnected: boolean
 
   constructor(defaultTab?: number) {
     this.corresPool = []
     this.selectedTab = defaultTab || 0
 
-    if (hasNetwork()) {
+    this.isConnected = hasNetwork()
+    if (this.isConnected) {
       this.init()
     } else {
       this.loadOfflinePuzzle()
     }
 
     this.networkListener = Network.addListener('networkStatusChange', s => {
-      if (s.connected) this.init()
+      if (s.connected !== this.isConnected) {
+        this.isConnected = s.connected
+        if (s.connected) this.init()
+      }
     })
 
     this.appStateListener = App.addListener('appStateChange', (state: AppState) => {
@@ -98,6 +103,8 @@ export default class HomeCtrl {
 
   public init = () => {
     if (isForeground()) {
+      console.log(`home.init(): socket`, this.socket)
+
       this.socket = socket.createLobby('homeLobby', () => {
         this.reloadCorresPool()
         this.getFeatured()
@@ -151,13 +158,14 @@ export default class HomeCtrl {
           this.dailyPuzzle = daily
           redraw()
         })
+        .catch(noop)
 
       timelineXhr(8)
         .then((timeline) => {
           this.timelineData = {
             users: timeline.users,
             entries: timeline.entries
-              .filter((o: TimelineEntry) => supportedTimelineTypes.indexOf(o.type) !== -1)
+              .filter((o: TimelineEntry) => supportedTimelineTypes.includes(o.type))
               .map(o => {
                 o.fromNow = fromNow(new Date(o.date))
                 return o
