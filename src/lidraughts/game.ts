@@ -41,7 +41,7 @@ export function isOpponentTurn(data: GameData) {
 }
 
 export function mandatory(data: OnlineGameData) {
-  return !!data.tournament
+  return !!data.tournament || !!data.simul || !!data.swiss
 }
 
 export function playedTurns(data: OnlineGameData | AnalyseData) {
@@ -57,11 +57,16 @@ export function abortable(data: OnlineGameData) {
 }
 
 export function takebackable(data: OnlineGameData): boolean {
-  return !!(playable(data) && data.takebackable && !data.tournament && playedTurns(data) > 1 && !data.player.proposingTakeback && !data.opponent.proposingTakeback)
+  return !!(playable(data) && data.takebackable && !mandatory(data) && playedTurns(data) > 1 && !data.player.proposingTakeback && !data.opponent.proposingTakeback)
 }
 
 export function drawable(data: OnlineGameData) {
-  return playable(data) && data.game.turns >= 2 && !data.player.offeringDraw && !data.opponent.ai && !data.opponent.offeringDraw
+  return playable(data) && data.game.turns >= 2 &&
+    !data.player.offeringDraw && !data.opponent.offeringDraw &&
+    !data.opponent.ai && (
+      data.drawLimit === undefined || 
+      (data.drawLimit > 0 && data.game.turns >= data.drawLimit * 2)
+    )
 }
 
 export function berserkableBy(data: OnlineGameData) {
@@ -80,7 +85,12 @@ export function forceResignable(data: OnlineGameData) {
 }
 
 export function moretimeable(data: OnlineGameData) {
-  return data.clock && isPlayerPlaying(data) && !mandatory(data)
+  return isPlayerPlaying(data) && data.moretimeable && !mandatory(data) && (
+    !!data.clock || (
+      !!data.correspondence &&
+      data.correspondence[data.opponent.color] < (data.correspondence.increment - 3600)
+    )
+  )
 }
 
 export function threefoldable(data: GameData) {

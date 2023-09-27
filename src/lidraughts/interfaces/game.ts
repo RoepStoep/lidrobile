@@ -11,6 +11,8 @@ export interface GameData {
   readonly clock?: ClockData
   steps: Array<GameStep>
   readonly tournament?: Tournament
+  readonly simul?: any
+  readonly swiss?: any
   note?: string
   readonly chat?: Array<ChatMsg>
   possibleMoves?: StringMap
@@ -19,6 +21,8 @@ export interface GameData {
   tv?: string
   bookmarked?: boolean
   readonly takebackable?: boolean
+  readonly moretimeable?: boolean
+  readonly drawLimit?: number;
 }
 
 export interface OnlinePref {
@@ -43,7 +47,6 @@ export interface OnlineGameData extends GameData {
   readonly game: OnlineGame
   readonly orientation: Color
   readonly pref: OnlinePref
-  readonly takebackable: boolean
   watchers?: GameWatchers
   readonly url: {
     readonly round: string
@@ -51,6 +54,7 @@ export interface OnlineGameData extends GameData {
   }
   expiration?: Expiration
 }
+
 export function isOnlineGameData(d: GameData): d is OnlineGameData {
   return (<OnlineGameData>d).url !== undefined
 }
