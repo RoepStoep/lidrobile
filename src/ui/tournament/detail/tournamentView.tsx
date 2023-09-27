@@ -3,9 +3,8 @@ import { Toast } from '@capacitor/toast'
 import h from 'mithril/hyperscript'
 import router from '../../../router'
 import session from '../../../session'
-import i18n from '../../../i18n'
+import i18n, { i18nVdom } from '../../../i18n'
 import { Tournament, StandingPlayer, PodiumPlace, Spotlight, Verdicts, TeamStanding } from '../../../lidraughts/interfaces/tournament'
-import { Opening } from '../../../lidraughts/interfaces/game'
 import { formatTournamentDuration, formatTournamentTimeControl } from '../../../utils'
 import * as helper from '../../helper'
 import settings from '../../../settings'
@@ -96,10 +95,10 @@ function tournamentHeader(data: Tournament, ctrl: TournamentCtrl) {
       {tournamentTimeInfo(data)}
       {tournamentSpotlightInfo(data.spotlight, data.description)}
       {tournamentCreatorInfo(data, ctrl.startsAt!)}
-      {data.position ? tournamentPositionInfo(data.position) : null}
       {data.verdicts.list.length > 0 ? tournamentConditions(data.verdicts) : null}
+      {tournamentSettings(data.berserkable, data.streakable, data.spotlight?.drawLimit)}
+      {tournamentOpeningInfo(data)}
       {teamBattleNoTeam(data)}
-      {tournamentSettings(data.berserkable, data.streakable)}
    </div>
   )
 }
@@ -125,16 +124,61 @@ function tournamentCreatorInfo(data: Tournament, startsAt: string) {
   )
 }
 
-function tournamentPositionInfo(position: Opening) {
-  return (
-    <div className={'tournamentPositionInfo' + (position.wikiPath ? ' withLink' : '')}
-      oncreate={helper.ontapY(() => position && position.wikiPath &&
-        window.open(`https://en.wikipedia.org/wiki/${position.wikiPath}`, '_blank')
-      )}
-    >
-      {position.eco + ' ' + position.name}
-    </div>
-  )
+function tournamentOpeningInfo(data: Tournament) {
+  const position = data.position, table = data.openingTable
+  if (table) {
+    if (!position || position.fen === 'random') {
+      // random position from opening table
+      if (table.url) {
+        return (
+          <div className="tournamentPositionInfo">
+            {i18nVdom('randomOpeningFromX',
+              <span className="withLink" oncreate={helper.ontapY(() => window.open(table.url, '_blank'))}>
+                {table.name}
+              </span>
+            )}
+          </div>
+        )
+      } else {
+        return (
+          <div className="tournamentPositionInfo">
+            {i18n('randomOpeningFromX', table.name)}
+          </div>
+        )
+      }
+    } else {
+      // specific position from opening table
+      if (table.url) {
+        return (
+          <div className="tournamentPositionInfo">
+            <div className="withLink" oncreate={helper.ontapY(() => window.open(table.url, '_blank'))}>
+              {table.name}
+            </div>
+            {i18n('opening')}&nbsp;
+            <strong>{position.code}</strong>
+            {position.name ? ': ' + position.name : ''}
+          </div>
+        )
+      } else {
+        return (
+          <div className="tournamentPositionInfo">
+            {table.name + ': ' + position.code + (position.name ? ' ' + position.name : '')}
+          </div>
+        )
+      }
+    }
+  } else if (position) {
+    return (
+      <div className={'tournamentPositionInfo' + (position.wikiPath ? ' withLink' : '')}
+        oncreate={helper.ontapY(() => position.wikiPath &&
+          window.open(`https://en.wikipedia.org/wiki/${position.wikiPath}`, '_blank')
+        )}
+      >
+        {position.code + (position.name ? ' ' + position.name : '')}
+      </div>
+    )
+  }
+  return null
 }
 
 function tournamentConditions(verdicts: Verdicts) {
@@ -182,9 +226,15 @@ function tournamentSpotlightInfo(spotlight?: Spotlight, description?: string) {
   ) : null
 }
 
-function tournamentSettings(berserkable?: boolean, streakable?: boolean) {
-  return (berserkable && streakable) ? null : (
+function tournamentSettings(berserkable?: boolean, streakable?: boolean, drawLimit?: number) {
+  return (berserkable && streakable && drawLimit === undefined) ? null : (
     <div className="tournamentSettings">
+      {drawLimit === undefined ? null : 
+        <div className="setting">
+          <span className="withIcon" data-icon="2" />
+          <p>{drawLimit ? i18n('drawOffersAfterX', drawLimit) : i18n('drawOffersNotAllowed')}</p>
+        </div>
+      }
       {berserkable ? null : 
         <div className="setting">
           <span className="withIcon" data-icon="`" />

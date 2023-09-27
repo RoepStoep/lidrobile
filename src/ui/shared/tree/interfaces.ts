@@ -91,8 +91,8 @@ export interface Comment {
 }
 
 export interface Opening {
-  readonly name: string
-  readonly eco: string
+  readonly code: string
+  readonly name?: string
 }
 
 export interface Glyph {

@@ -52,7 +52,6 @@ export default function appInit(
   })
 
   App.addListener('appStateChange', (state: AppState) => {
-    console.log(`app.appStateChange: isActive=${state.isActive}`)
     if (state.isActive) {
       sound.resume()
       setForeground()

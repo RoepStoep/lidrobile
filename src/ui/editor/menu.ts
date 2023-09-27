@@ -66,7 +66,7 @@ export function renderPositionSettings(ctrl: EditorCtrl) {
           position2option(fen, {
             name: '-- Position --',
             fen: '',
-            eco: '',
+            code: '',
           }),
           ctrl.extraPositions.map((pos: BoardPosition) => position2option(fen, pos))
         ])
@@ -126,7 +126,7 @@ function position2option(fen: string, pos: BoardPosition, showEco = false): Mith
   return h('option', {
     value: pos.fen,
     selected: fen === pos.fen
-  }, (showEco ? pos.eco + ' ' : '') + pos.name)
+  }, (showEco ? pos.code + ' ' : '') + (pos.name || ''))
 }
 
 function optgroup(name: string, opts: Mithril.Children) {

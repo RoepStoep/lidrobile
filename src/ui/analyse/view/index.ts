@@ -109,8 +109,8 @@ function viewOnlyBoard(color: Color, isSmall: boolean, fen: string, variant: Var
 function renderOpening(ctrl: AnalyseCtrl) {
   const opening = ctrl.tree.getOpening(ctrl.nodeList) || ctrl.data.game.opening
   if (opening) return h('div', [
-    h('strong', opening.eco),
-    ' ' + opening.name
+    h('strong', opening.code),
+    opening.name ? ' ' + opening.name : ''
   ])
 }
 

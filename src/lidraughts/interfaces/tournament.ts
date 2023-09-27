@@ -21,6 +21,7 @@ export interface Tournament {
   readonly perf: Perf
   readonly podium?: ReadonlyArray<PodiumPlace>
   readonly position?: Opening
+  readonly openingTable?: OpeningTable
   readonly private: boolean
   readonly quote?: Quote
   readonly schedule: Schedule
@@ -61,6 +62,12 @@ interface TournamentPairing {
   readonly u: ReadonlyArray<string>
 }
 
+interface OpeningTable {
+  readonly key: string
+  readonly name: string
+  readonly url?: string
+}
+
 export interface PodiumPlace {
   readonly name: string
   readonly id?: string
@@ -84,9 +91,11 @@ interface Schedule {
 }
 
 export interface Spotlight {
-  readonly iconFont: string
   readonly headline: string
   readonly description: string
+  readonly iconImg?: string
+  readonly iconFont?: string
+  readonly drawLimit?: number
 }
 
 export interface StandingPage {

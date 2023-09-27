@@ -81,7 +81,7 @@ interface Piece {
 interface BoardPosition {
   name: string
   fen: string
-  eco?: string
+  code?: string
 }
 
 interface BoardPositionCategory {

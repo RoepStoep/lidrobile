@@ -77,7 +77,7 @@ function renderForm(ctrl: TournamentsListCtrl) {
                 return (
                   <optgroup label={c.name}>
                     {c.positions.map(p =>
-                      <option value={p.fen}>{p.eco + ' ' + p.name}</option>
+                      <option value={p.fen}>{p.code + ' ' + p.name}</option>
                     )}
                   </optgroup>
                 )

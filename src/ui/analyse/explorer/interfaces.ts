@@ -48,7 +48,7 @@ export interface Game {
 }
 
 export interface Opening {
-  eco: string
+  code: string
   name: string
 }
 

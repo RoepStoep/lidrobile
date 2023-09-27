@@ -20,7 +20,7 @@ export default function renderExplorer(ctrl: AnalyseCtrl) {
     <div id="explorerTable" className={className}>
       { data && data.isOpening ?
       <div className="explorer-fixedTitle">
-        <span>{ opening ? opening.eco + ' ' + opening.name : '' }</span>
+        <span>{ opening ? opening.code + (opening.name ? ' ' + opening.name : '') : '' }</span>
         { configOpened || (data && data.isOpening) ?
           <div className="toconf" data-icon={configOpened ? 'L' : '%'}
             oncreate={helper.ontap(config.toggleOpen)}

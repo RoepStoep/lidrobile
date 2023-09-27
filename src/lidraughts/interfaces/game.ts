@@ -230,9 +230,8 @@ export interface GameStep {
 }
 
 export interface Opening {
-  readonly ply?: number
-  readonly eco: string
-  readonly name: string
-  readonly fen?: string
+  readonly code: string
+  readonly fen: string
+  readonly name?: string
   readonly wikiPath?: string
 }
