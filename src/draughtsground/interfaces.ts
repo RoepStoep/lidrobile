@@ -17,7 +17,7 @@ export interface InitConfig {
   viewOnly?: boolean
   fixed?: boolean
   otb?: boolean
-  otbMode?: OtbMode | null
+  otbMode?: OtbMode
   highlight?: {
     lastMove?: boolean
     kingMoves?: boolean
@@ -133,7 +133,7 @@ export interface Drop {
   key: Key
 }
 
-export type OtbMode = 'facing' | 'flip'
+export type OtbMode = 'facing' | 'flip' | 'none'
 
 export interface KeyedNode extends HTMLElement {
   cgKey: Key

@@ -23,7 +23,7 @@ function makeConfig(data: OfflineGameData, sit: GameSituation): cg.InitConfig {
     otb: data.game.id === 'offline_otb',
     coordinates: settings.game.coords(),
     coordSystem: (settings.game.coordSystem() === 1 && board.key === '64') ? 1 : 0,
-    otbMode: settings.otb.flipPieces() ? 'flip' : (settings.otb.mirrorPieces() ? 'facing' : null),
+    otbMode: settings.otb.flipPieces() ? 'flip' : (settings.otb.mirrorPieces() ? 'facing' : 'none'),
     highlight: {
       lastMove: settings.game.highlights(),
       kingMoves: settings.game.kingMoves()
@@ -75,7 +75,7 @@ function reload(ground: Draughtsground, data: OfflineGameData, sit: GameSituatio
 }
 
 function changeOTBMode(ground: Draughtsground, flip: boolean, mirror: boolean) {
-  ground.setOtbMode(flip ? 'flip' : (mirror ? 'facing' : null))
+  ground.setOtbMode(flip ? 'flip' : (mirror ? 'facing' : 'none'))
 }
 
 function promote(ground: Draughtsground, key: Key) {

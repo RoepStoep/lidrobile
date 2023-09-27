@@ -177,7 +177,7 @@ export default class Draughtsground {
     anim(board.toggleOrientation, this)
   }
 
-  setOtbMode(mode: cg.OtbMode | null): void {
+  setOtbMode(mode: cg.OtbMode): void {
     anim(state => {
       state.otbMode = mode
     }, this)

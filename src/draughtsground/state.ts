@@ -17,7 +17,7 @@ export interface State {
   fixed: boolean // board is viewOnly and pieces won't move
   exploding: cg.Exploding | null
   otb: boolean // is this an otb game?
-  otbMode: cg.OtbMode | null
+  otbMode: cg.OtbMode
   highlight: {
     lastMove: boolean // add last-move class to squares
     kingMoves: boolean | null; // show amount of king moves for frisian variants
@@ -97,7 +97,7 @@ export function makeDefaults(): State {
     coordinates: 2,
     coordSystem: 1,
     otb: false,
-    otbMode: 'facing' as cg.OtbMode,
+    otbMode: 'none' as cg.OtbMode,
     viewOnly: false,
     fixed: false,
     exploding: null,
