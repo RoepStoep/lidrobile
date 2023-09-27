@@ -142,6 +142,16 @@ export default class HomeCtrl {
         },
       })
 
+      const tournamentsCache = getFromCache('/tournament/featured')
+      if (tournamentsCache) {
+        this.featuredTournaments = tournamentsCache.data.featured
+      }
+
+      const timelineCache = getFromCache('/timeline')
+      if (timelineCache) {
+        this.timelineData = makeTimeline(timelineCache.data)
+      }
+
       Promise.all([
         featuredTournamentsXhr(),
         session.refresh()?.then(() => session.isKidMode() ? Promise.resolve([]) : featuredStreamersXhr()),
@@ -161,10 +171,6 @@ export default class HomeCtrl {
         })
         .catch(noop)
 
-      const timelineCache = getFromCache('/timeline')
-      if (timelineCache) {
-        this.timelineData = makeTimeline(timelineCache.data)
-      }
       if (!timelineCache || Date.now() >= timelineCache.expires) {
         timelineXhr(8, true)
           .then((timeline) => {
