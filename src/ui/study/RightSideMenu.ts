@@ -1,6 +1,6 @@
 import h from 'mithril/hyperscript'
 import router from '../../router'
-import plural from '../../i18n'
+import { plural } from '../../i18n'
 import { lightPlayerName } from '../../lidraughts/player'
 import { StudyMemberMap, StudyMember } from '../../lidraughts/interfaces/study'
 import * as helper from '../helper'

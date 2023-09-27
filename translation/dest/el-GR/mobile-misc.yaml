@@ -1,6 +1,6 @@
 apiUnsupported: "Η έκδοση της εφαρμογής Lidraughts είναι πολύ παλιά! Μπορείτε αναβαθμίστε δωρεάν στην τελευταία έκδοση."
 apiDeprecated: "Αναβαθμίστε δωρεάν στην τελευταία έκδοση της εφαρμογής Lidraughts! Η υποστήριξη για αυτήν την έκδοση θα λήξει στις %s."
-comments: "Σχόλια"
+comments: "Σχόλια" #As in comments on a position (analysis)
 gameInformation: "Πληροφορίες παιχνιδιού"
 home: "Αρχική" #The home page
 playerisInvitingYou: "Ο χρήστης %s σας προσκαλεί"

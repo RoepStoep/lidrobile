@@ -1294,7 +1294,7 @@ export default {
   "apiUnsupported": "Deze versie van de Lidraughts-app is verouderd! Gelieve gratis te upgraden naar de nieuwste versie.",
   "apiDeprecated": "Upgrade gratis naar de nieuwste Lidraughts-app! Ondersteuning voor deze versie zal ophouden op %s.",
   "visitUrlToRequestManualConfirmation": "Ga naar %s om een handmatige bevestiging aan te vragen.",
-  "comments": "Reacties",
+  "comments": "Commentaar",
   "gameInformation": "Spelinformatie",
   "home": "Startscherm",
   "returnToHome": "Terug naar startscherm",

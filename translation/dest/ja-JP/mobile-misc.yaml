@@ -1,6 +1,6 @@
 apiUnsupported: "Lidraughts アプリのバージョンが古すぎます。最新版にアップグレードを（無料です）。"
 apiDeprecated: "最新の Lidraughts アプリに無料でアップグレードを！このバージョンは %s にサポート終了します。"
-comments: "コメント"
+comments: "コメント" #As in comments on a position (analysis)
 gameInformation: "ゲーム情報"
 home: "ホーム" #The home page
 playerisInvitingYou: "%s から招待です"

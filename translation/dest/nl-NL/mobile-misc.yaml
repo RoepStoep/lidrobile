@@ -1,7 +1,7 @@
 apiUnsupported: "Deze versie van de Lidraughts-app is verouderd! Gelieve gratis te upgraden naar de nieuwste versie."
 apiDeprecated: "Upgrade gratis naar de nieuwste Lidraughts-app! Ondersteuning voor deze versie zal ophouden op %s."
 visitUrlToRequestManualConfirmation: "Ga naar %s om een handmatige bevestiging aan te vragen."
-comments: "Reacties"
+comments: "Commentaar" #As in comments on a position (analysis)
 gameInformation: "Spelinformatie"
 home: "Startscherm" #The home page
 returnToHome: "Terug naar startscherm" #As in "Return to the home page"

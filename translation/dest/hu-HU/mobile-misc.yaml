@@ -1,6 +1,6 @@
 apiUnsupported: "A telepített Lidraughts alkalmazásod már elavult! Kérjük frissíts a legújabb verzióra."
 apiDeprecated: "Frissíts ingyenesen a legújabb Lidraughts alkalmazásra. Jelen verzió támogatásának vége %s."
-comments: "Hozzászólások"
+comments: "Hozzászólások" #As in comments on a position (analysis)
 gameInformation: "Játszma részletei"
 home: "Kezdőlap" #The home page
 playerisInvitingYou: "%s meghívót küldött"

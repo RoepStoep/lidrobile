@@ -1,6 +1,6 @@
 apiUnsupported: "Ваша версія додатку Lidraughts застаріла! Будь ласка, оновіть безкоштовно до найновішої версії."
 apiDeprecated: "Оновіть безкоштовно до найновішої версії додатку Lidraughts! Супровід цієї версії буде припинено %s."
-comments: "Коментарі"
+comments: "Коментарі" #As in comments on a position (analysis)
 gameInformation: "Інформація про гру"
 home: "Головна" #The home page
 playerisInvitingYou: "%s запрошує вас"

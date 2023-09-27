@@ -1,6 +1,6 @@
 apiUnsupported: "Utilizas una versión antigua la aplicación de Lidraughts. Por favor, actualiza gratis a la última versión."
 apiDeprecated: "¡Actualiza gratis a la última versión de la aplicación de Lidraughts! Esta versión dejará de tener soporte a partir del %s."
-comments: "Comentarios"
+comments: "Comentarios" #As in comments on a position (analysis)
 gameInformation: "Información de la partida"
 home: "Inicio" #The home page
 playerisInvitingYou: "%s te está invitando"

@@ -1,6 +1,6 @@
 apiUnsupported: "Your version of the Lidraughts app is too old! Please upgrade for free to the latest version."
 apiDeprecated: "Upgrade for free to the latest Lidraughts app! Support for this version will be dropped on %s."
-comments: "Comments"
+comments: "Comments" #As in comments on a position (analysis)
 gameInformation: "Game information"
 home: "Home" #The home page
 returnToHome: "Return to home" #As in "Return to the home page"

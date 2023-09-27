@@ -1,6 +1,6 @@
 apiUnsupported: "Ваше приложение Lidraughts устарело. Пожалуйста, обновите его до последней версии бесплатно."
 apiDeprecated: "Обновите ваше приложение Lidraughts, это бесплатно! Поддержка текущей версии будет прекращена %s."
-comments: "Комментарии"
+comments: "Комментарии" #As in comments on a position (analysis)
 gameInformation: "О партии"
 home: "Главная" #The home page
 playerisInvitingYou: "%s приглашает вас"

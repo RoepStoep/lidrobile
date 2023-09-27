@@ -1,6 +1,6 @@
 apiUnsupported: "Jūsu Lidraughts aplikācijas versija ir par vecu. Lūdzu, atjauniniet, lai iegūtu jaunāko versiju par brīvu."
 apiDeprecated: "Atjauniniet uz jaunāko Lidraughts aplikāciju. Šo versiju vairs neatbalstīs sākot no %s."
-comments: "Komentāri"
+comments: "Komentāri" #As in comments on a position (analysis)
 gameInformation: "Spēles informācija"
 home: "Sākums" #The home page
 playerisInvitingYou: "%s jūs uzaicina"

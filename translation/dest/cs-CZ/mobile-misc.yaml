@@ -1,6 +1,6 @@
 apiUnsupported: "Vaše verze aplikace je příliš stará. Aktualizujte ji prosím zdarma na nejnovější verzi."
 apiDeprecated: "Aktualizujte zdarma na nejnovější Lidraughts aplikaci! Tato verze nebude podporována po %s."
-comments: "Komentáře"
+comments: "Komentáře" #As in comments on a position (analysis)
 gameInformation: "Informace o hře"
 home: "Hlavní stránka" #The home page
 playerisInvitingYou: "%s vás zve"

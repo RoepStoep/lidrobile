@@ -1,6 +1,6 @@
 apiUnsupported: "Phiên bản ứng dụng Lidraughts của bạn quá cũ! Vui lòng cập nhật lên phiên bản mới nhất."
 apiDeprecated: "Vui lòng nâng cấp lên phiên bản mới nhất của Lidraughts! Phiên bản này sẽ ngừng hỗ trợ vào %s."
-comments: "Bình luận"
+comments: "Bình luận" #As in comments on a position (analysis)
 gameInformation: "Thông tin ván đấu"
 home: "Trang chủ" #The home page
 returnToHome: "Quay lại trang chủ" #As in "Return to the home page"

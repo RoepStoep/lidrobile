@@ -39,7 +39,7 @@ function renderBody(appVersion?: string) {
       }, i18n('display')),
       h('li.list_item.nav', {
         oncreate: helper.ontapY(() => router.set('/settings/clock'))
-      }, i18n('clock')),
+      }, i18n('draughtsClock')),
       h('li.list_item.nav', {
         oncreate: helper.ontapY(() => router.set('/settings/gameBehavior'))
       }, i18n('gameBehavior')),

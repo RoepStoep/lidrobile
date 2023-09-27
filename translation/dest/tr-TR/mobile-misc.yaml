@@ -1,6 +1,6 @@
 apiUnsupported: "Lidraughts uygulamanızın versiyonu çok eski! Lütfen uygulamayı son sürümüne ücretsiz olarak güncelleyin."
 apiDeprecated: "Ücretsiz şekilde Lidraughts uygulamasını son sürümüne güncelleyin! Mevcut versiyon desteği %s tarihinden itibaren sonlandırılacaktır."
-comments: "Yorumlar"
+comments: "Yorumlar" #As in comments on a position (analysis)
 gameInformation: "Oyun bilgisi"
 home: "Ana Sayfa" #The home page
 playerisInvitingYou: "%s sizi davet ediyor"

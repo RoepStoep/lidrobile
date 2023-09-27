@@ -1,6 +1,6 @@
 apiUnsupported: "Jūsų Lidraughts programėlės versija per sena! Prašome nemokamai atsinaujinti savo programėlės versiją."
 apiDeprecated: "Nemokamai atsinaujinkite į vėliausią Lidraughts programės versiją! Šios programėlės versijos palaikymas pasibaigs %s."
-comments: "Komentarai"
+comments: "Komentarai" #As in comments on a position (analysis)
 gameInformation: "Žaidimo informacija"
 home: "Namai" #The home page
 playerisInvitingYou: "%s kviečia jus"
