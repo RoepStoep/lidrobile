@@ -23,7 +23,7 @@ interface State {
   pieceTheme: string
   blindfoldDraughts: boolean
   shapesCleared: boolean
-  bounds?: ClientRect
+  bounds?: DOMRect
   onResize: () => void
 }
 

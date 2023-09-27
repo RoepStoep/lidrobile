@@ -99,7 +99,7 @@ export interface MaterialDiff {
 export interface DOM {
   board: HTMLElement // cg base element for the board
   elements: { [k: string]: HTMLElement } // other dom elements
-  bounds: ClientRect
+  bounds: DOMRect
 }
 
 export interface MoveMetadata {
@@ -151,7 +151,7 @@ export type SquareNode = KeyedNode
 export interface PrevData {
   boardSize: BoardSize | null
   orientation: Color | null
-  bounds: ClientRect | null
+  bounds: DOMRect | null
   turnColor: Color | null
   otbMode: OtbMode | null
 }

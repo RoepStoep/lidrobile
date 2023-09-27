@@ -13,7 +13,7 @@ export interface Shape {
 const usedBrushes = defs(Object.keys(brushes).map(name => brushes[name]))
 
 export default function BoardBrush(
-  bounds: ClientRect,
+  bounds: DOMRect,
   orientation: Color,
   shapes: ReadonlyArray<Shape>,
   pieceTheme: string,

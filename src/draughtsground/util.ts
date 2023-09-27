@@ -21,7 +21,7 @@ export function boardpos(pos: cg.Pos, boardSize: cg.BoardSize, asWhite: boolean)
   }
 }
 
-export function posToTranslate(pos: cg.Pos, boardSize: cg.BoardSize, asWhite: boolean, bounds: ClientRect): NumberPair {
+export function posToTranslate(pos: cg.Pos, boardSize: cg.BoardSize, asWhite: boolean, bounds: DOMRect): NumberPair {
   const xSize = boardSize[0] / 2, xf = xSize - 0.5
   return [
     (!asWhite ? xf - ((pos[1] % 2 !== 0 ? -0.5 : -1) + pos[0]) : (pos[1] % 2 !== 0 ? -0.5 : -1) + pos[0]) * bounds.width / xSize,
@@ -81,7 +81,7 @@ export function eventPosition(e: TouchEvent): NumberPair {
   return [touch.clientX, touch.clientY]
 }
 
-export function computeSquareBounds(orientation: Color, bounds: ClientRect, key: Key, boardSize: cg.BoardSize) {
+export function computeSquareBounds(orientation: Color, bounds: DOMRect, key: Key, boardSize: cg.BoardSize) {
   const pos = key2pos(key, boardSize),
     w = boardSize[0], h = boardSize[1]
   if (orientation !== 'white') {

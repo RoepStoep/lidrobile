@@ -12,12 +12,12 @@ export interface ArrowDests {
 
 const key2pos: (key: Key, bs: cg.BoardSize) => BoardPos = cgUtil.key2pos
 
-function circleWidth(current: boolean, bounds: ClientRect, boardSize: cg.BoardSize) {
+function circleWidth(current: boolean, bounds: DOMRect, boardSize: cg.BoardSize) {
   const factor = 512 * boardSize[0] / 10
   return (current ? 3 : 4) / factor * bounds.width
 }
 
-function lineWidth(brush: Brush, current: boolean, bounds: ClientRect, boardSize: cg.BoardSize) {
+function lineWidth(brush: Brush, current: boolean, bounds: DOMRect, boardSize: cg.BoardSize) {
   const factor = 512 * boardSize[0] / 10
   return (brush.lineWidth || 10) * (current ? 0.7 : 1) / factor * bounds.width
 }
@@ -26,15 +26,15 @@ function opacity(brush: Brush, current: boolean) {
   return (brush.opacity || 1) * (current ? 0.6 : 1)
 }
 
-function arrowMargin(bounds: ClientRect, shorten: boolean, boardSize: cg.BoardSize) {
+function arrowMargin(bounds: DOMRect, shorten: boolean, boardSize: cg.BoardSize) {
   return boardSize[0] * (shorten ? 2 : 1) / 512 * bounds.width
 }
 
-function pos2px(pos: BoardPos, bounds: ClientRect, boardSize: cg.BoardSize) {
+function pos2px(pos: BoardPos, bounds: DOMRect, boardSize: cg.BoardSize) {
   return [(2 * pos[0] - (pos[1] % 2 !== 0 ? 0.5 : 1.5)) * bounds.width / boardSize[0], (pos[1] - 0.5) * bounds.height / boardSize[1]]
 }
 
-export function circle(brush: Brush, pos: BoardPos, current: boolean, bounds: ClientRect, boardSize: cg.BoardSize) {
+export function circle(brush: Brush, pos: BoardPos, current: boolean, bounds: DOMRect, boardSize: cg.BoardSize) {
   const o = pos2px(pos, bounds, boardSize)
   const width = circleWidth(current, bounds, boardSize)
   const radius = (bounds.width + bounds.height) / (2 * (boardSize[0] + boardSize[1]))
@@ -51,7 +51,7 @@ export function circle(brush: Brush, pos: BoardPos, current: boolean, bounds: Cl
   )
 }
 
-export function arrow(brush: Brush, orig: BoardPos, dest: BoardPos, current: boolean, shorten: boolean, bounds: ClientRect, boardSize: cg.BoardSize) {
+export function arrow(brush: Brush, orig: BoardPos, dest: BoardPos, current: boolean, shorten: boolean, bounds: DOMRect, boardSize: cg.BoardSize) {
   const margin = arrowMargin(bounds, shorten && !current, boardSize)
   const a = pos2px(orig, bounds, boardSize)
   const b = pos2px(dest, bounds, boardSize)
@@ -76,7 +76,7 @@ export function arrow(brush: Brush, orig: BoardPos, dest: BoardPos, current: boo
   )
 }
 
-export function piece(theme: string, pos: BoardPos, piece: Piece, bounds: ClientRect, boardSize: cg.BoardSize) {
+export function piece(theme: string, pos: BoardPos, piece: Piece, bounds: DOMRect, boardSize: cg.BoardSize) {
   const o = pos2px(pos, bounds, boardSize)
   const size = bounds.width / 10
   const name = piece.color[0] + piece.role[0].toUpperCase()
@@ -120,7 +120,7 @@ export function renderShape(
   current: boolean,
   brushes: {[key: string]: Brush},
   arrowDests: ArrowDests,
-  bounds: ClientRect,
+  bounds: DOMRect,
   pieceTheme: string,
   boardSize: cg.BoardSize
 ) {

@@ -118,7 +118,7 @@ export default class Draughtsground {
     }
   }
 
-  setBounds = (bounds: ClientRect) => {
+  setBounds = (bounds: DOMRect) => {
     if (this.dom) this.dom.bounds = bounds
   }
 

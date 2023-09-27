@@ -213,7 +213,7 @@ export function cancel(ctrl: Draughtsground) {
   }
 }
 
-export function getKeyAtDomPos(state: State, pos: NumberPair, bounds: ClientRect): Key | null {
+export function getKeyAtDomPos(state: State, pos: NumberPair, bounds: DOMRect): Key | null {
 
   if (typeof bounds !== 'object') {
     throw new Error('function getKeyAtDomPos require bounds object arg')
