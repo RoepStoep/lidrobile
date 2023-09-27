@@ -29,6 +29,8 @@ export default {
   onremove() {
     socket.destroy()
     this.ctrl.unload()
+    signals.afterLogin.remove(this.ctrl.init)
+    signals.afterLogout.remove(this.ctrl.init)
     signals.sessionRestored.remove(this.ctrl.loadOfflinePuzzle)
   },
 

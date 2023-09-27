@@ -3,7 +3,7 @@ import { Device } from '@capacitor/device'
 import throttle from 'lodash-es/throttle'
 import redraw from './utils/redraw'
 import signals from './signals'
-import { SESSION_ID_KEY, fetchJSON, fetchText } from './http'
+import { SESSION_ID_KEY, fetchJSON, fetchText, responseCache } from './http'
 import { hasNetwork, handleXhrError, serializeQueryParameters } from './utils'
 import { getAtPath, setAtPath, pick } from './utils/object'
 import i18n from './i18n'
@@ -79,6 +79,7 @@ function storeSession(d: Session): void {
 
 // clear session data stored in async storage and sessionId
 function onLogout(): void {
+  responseCache.clear()
   asyncStorage.remove('session')
   storage.remove(SESSION_ID_KEY)
   signals.afterLogout.dispatch()
@@ -235,6 +236,7 @@ function login(username: string, password: string, token: string | null): Promis
   }, true)
   .then(data => {
     if (isSession(data)) {
+      responseCache.clear()
       session = data
       if (session.sessionId) {
         storage.set(SESSION_ID_KEY, session.sessionId)

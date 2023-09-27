@@ -77,6 +77,9 @@ export default class HomeCtrl {
     this.appStateListener = App.addListener('appStateChange', (state: AppState) => {
       if (state.isActive) this.init()
     })
+
+    signals.afterLogin.add(this.init)
+    signals.afterLogout.add(this.init)
   }
 
   // workaround for scroll overflow issue on ios
@@ -103,8 +106,6 @@ export default class HomeCtrl {
 
   public init = () => {
     if (isForeground()) {
-      console.log(`home.init(): socket`, this.socket)
-
       this.socket = socket.createLobby('homeLobby', () => {
         this.reloadCorresPool()
         this.getFeatured()
