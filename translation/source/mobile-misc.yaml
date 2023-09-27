@@ -20,6 +20,8 @@ playOnline: "Play online"
 playOffline: "Play offline"
 playOfflineOverTheBoard: "Over the board" # Offline over the board play. This appears in the menu, so try to keep it short.
 playOfflineComputer: "Computer" # Offline play against the computer. This appears in the menu, so try to keep it short.
+importGameOnLidraughts: "Import game on Lidraughts"
+importGameStateWithPlayerNames: "Import current game state on Lidraughts with the following player names:"
 bgThemeSyncWithSystem: "Sync with system" # Settings to synchronise background theme (dark or light) with the operating system (to support daynight automatic switch)
 chatIsDisabled: "Chat is disabled."
 puzzleVariant: "Puzzle variant" # The draughts variant for puzzles

@@ -102,7 +102,7 @@ function renderGameActionsBar(ctrl: OtbRound) {
         <button className="fa fa-cloud-upload action_bar_button"
           oncreate={helper.ontap(
             ctrl.importGamePopup.open,
-            () => Toast.show({ text: i18n('Import game on lidraughts'), duration: 'short', position: 'bottom' })
+            () => Toast.show({ text: i18n('importGameOnLidraughts'), duration: 'short', position: 'bottom' })
           )}
         /> : null
       }

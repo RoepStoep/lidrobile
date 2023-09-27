@@ -10,7 +10,8 @@ unsupportedVariant: "Variant %s wordt niet ondersteund in deze versie"
 notesSynchronizationHasFailed: "Synchronisatie van notities met Lidraughts is mislukt, probeer het later opnieuw."
 vibrateOnGameEvents: "Trillen bij spelactiviteit"
 offline: "Offline"
-otbFlipPiecesAndInfoAfterMove: "Draai de stukken en de informatie van de tegenstander om na elke zet" #Setting for offline over-the-board games
+otbFlipPiecesAndInfoAfterMove: "Draai de stukken en informatie van de tegenstander om na elke zet" #Setting for offline over-the-board games
+otbMirrorOpponentPiecesAndInfo: "Spiegel de stukken en informatie van de tegenstander" #Setting for offline over-the-board games
 settingsClockPosition: "Positie klok" #Determines whether each player's time is shown on the left or right side of the board
 positionRight: "Rechts" #As in "right-hand side"; not truth, morality, or law
 positionLeft: "Links" #As in "left-hand side"; not political or past participle
@@ -19,6 +20,8 @@ playOnline: "Speel online"
 playOffline: "Speel offline"
 playOfflineOverTheBoard: "Speel offline" #Offline over the board play. This appears in the menu, so try to keep it short.
 playOfflineComputer: "Computer" #Offline play against the computer. This appears in the menu, so try to keep it short.
+importGameOnLidraughts: "Importeer partij op Lidraughts"
+importGameStateWithPlayerNames: "Importeer de huidige partij op Lidraughts met de volgende spelersnamen:"
 bgThemeSyncWithSystem: "Synchroniseren met systeem" #Settings to synchronise background theme (dark or light) with the operating system (to support daynight automatic switch)
 chatIsDisabled: "Chat is uitgeschakeld."
 puzzleVariant: "Puzzel variant" #The draughts variant for puzzles
