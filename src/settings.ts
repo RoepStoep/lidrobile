@@ -187,6 +187,7 @@ export default {
 
   otb: {
     flipPieces: prop('otb.flipPieces', false),
+    mirrorPieces: prop('otb.mirrorPieces', false),
     variant: prop<VariantKey>('otb.variant', 'standard'),
     availableVariants: offlineAvailableVariants,
     whitePlayer: prop('otb.whitePlayer', 'White'),

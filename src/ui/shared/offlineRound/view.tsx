@@ -17,6 +17,7 @@ export function renderAntagonist(
   material: Material,
   position: Position,
   otbFlip?: boolean,
+  otbMirror?: boolean,
   clock?: IDraughtsClock,
 ) {
   const antagonist = position === 'player' ? ctrl.data.player : ctrl.data.opponent
@@ -26,7 +27,7 @@ export function renderAntagonist(
     'playTable',
     'offline',
     position,
-    otbFlip !== undefined ? otbFlip ? 'mode_flip' : 'mode_facing' : '',
+    otbFlip !== undefined ? otbFlip ? 'mode_flip' : (otbMirror ? 'mode_facing' : '') : '',
     ctrl.draughtsground.state.turnColor === ctrl.data.player.color ? 'player_turn' : 'opponent_turn',
   ].join(' ')
 

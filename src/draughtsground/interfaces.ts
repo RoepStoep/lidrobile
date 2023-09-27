@@ -17,7 +17,7 @@ export interface InitConfig {
   viewOnly?: boolean
   fixed?: boolean
   otb?: boolean
-  otbMode?: OtbMode
+  otbMode?: OtbMode | null
   highlight?: {
     lastMove?: boolean
     kingMoves?: boolean

@@ -17,7 +17,7 @@ export interface State {
   fixed: boolean // board is viewOnly and pieces won't move
   exploding: cg.Exploding | null
   otb: boolean // is this an otb game?
-  otbMode: cg.OtbMode
+  otbMode: cg.OtbMode | null
   highlight: {
     lastMove: boolean // add last-move class to squares
     kingMoves: boolean | null; // show amount of king moves for frisian variants

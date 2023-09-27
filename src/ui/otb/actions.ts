@@ -26,7 +26,12 @@ function renderAlways(ctrl: OtbRound) {
     ]),
     h('div.action', formWidgets.renderCheckbox(
       i18n('otbFlipPiecesAndInfoAfterMove'), 'flipPieces', settings.otb.flipPieces,
-        (v) => ground.changeOTBMode(ctrl.draughtsground, v)
+      (v) => ground.changeOTBMode(ctrl.draughtsground, v, settings.otb.mirrorPieces())
+    )),
+    h('div.action', formWidgets.renderCheckbox(
+      i18n('otbMirrorOpponentPiecesAndInfo'), 'mirrorPieces', settings.otb.mirrorPieces,
+      (v) => ground.changeOTBMode(ctrl.draughtsground, settings.otb.flipPieces(), v),
+      settings.otb.flipPieces()
     ))
   ]
 }

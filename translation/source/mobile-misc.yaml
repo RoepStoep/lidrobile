@@ -11,6 +11,7 @@ notesSynchronizationHasFailed: "Notes synchronization with Lidraughts has failed
 vibrateOnGameEvents: "Vibrate on game events"
 offline: "Offline"
 otbFlipPiecesAndInfoAfterMove: "Flip pieces and opponent info after move" # Setting for offline over-the-board games
+otbMirrorOpponentPiecesAndInfo: "Mirror opponent pieces and info" # Setting for offline over-the-board games
 settingsClockPosition: "Clock position" # Determines whether each player's time is shown on the left or right side of the board
 positionRight: "Right" # As in "right-hand side"; not truth, morality, or law
 positionLeft: "Left" # As in "left-hand side"; not political or past participle

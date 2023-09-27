@@ -27,10 +27,11 @@ export function overlay(ctrl: OtbRound) {
 
 export function renderContent(ctrl: OtbRound, pieceTheme?: string) {
   const flip = settings.otb.flipPieces()
+  const mirror = settings.otb.mirrorPieces()
   const wrapperClasses = helper.classSet({
     'otb': true,
     'mode_flip': flip,
-    'mode_facing': !flip,
+    'mode_facing': !flip && mirror,
     'turn_white': ctrl.draughtsground.state.turnColor === 'white',
     'turn_black': ctrl.draughtsground.state.turnColor === 'black'
   })
@@ -53,19 +54,19 @@ export function renderContent(ctrl: OtbRound, pieceTheme?: string) {
   if (isPortrait)
     return [
       helper.hasSpaceForInlineReplay(vd, isPortrait) ? renderInlineReplay(ctrl) : null,
-      renderAntagonist(ctrl, opponentName, material[ctrl.data.opponent.color], 'opponent', flip, clock),
+      renderAntagonist(ctrl, opponentName, material[ctrl.data.opponent.color], 'opponent', flip, mirror, clock),
       board,
-      renderAntagonist(ctrl, playerName, material[ctrl.data.player.color], 'player', flip, clock),
+      renderAntagonist(ctrl, playerName, material[ctrl.data.player.color], 'player', flip, mirror, clock),
       renderGameActionsBar(ctrl)
     ]
   else
     return [
       board,
       <section className="table">
-        {renderAntagonist(ctrl, opponentName, material[ctrl.data.opponent.color], 'opponent', flip, clock)}
+        {renderAntagonist(ctrl, opponentName, material[ctrl.data.opponent.color], 'opponent', flip, mirror, clock)}
         {replayTable}
         {renderGameActionsBar(ctrl)}
-        {renderAntagonist(ctrl, playerName, material[ctrl.data.player.color], 'player', flip, clock)}
+        {renderAntagonist(ctrl, playerName, material[ctrl.data.player.color], 'player', flip, mirror, clock)}
       </section>
     ]
 }
