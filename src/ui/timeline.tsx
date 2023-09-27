@@ -26,15 +26,7 @@ export default {
     timelineXhr(20)
       .then((data: TimelineData) => {
         this.timelineData(
-          {
-            users: data.users,
-            entries: data.entries
-              .filter(o => supportedTypes.indexOf(o.type) !== -1)
-              .map(o => {
-                o.fromNow = fromNow(new Date(o.date))
-                return o
-              })
-          }
+          makeTimeline(data)
         )
         redraw()
       })
@@ -53,6 +45,18 @@ export default {
     ])
   }
 } as Mithril.Component<Record<string, never>, State>
+
+export function makeTimeline(data: TimelineData): TimelineData {
+  return {
+    users: data.users,
+    entries: data.entries
+      .filter((o: TimelineEntry) => supportedTypes.includes(o.type))
+      .map(o => {
+        o.fromNow = fromNow(new Date(o.date))
+        return o
+      })
+  }
+}
 
 export function timelineOnTap(e: Event) {
   const el = helper.getLI(e)

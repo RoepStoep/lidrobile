@@ -9,15 +9,15 @@ import redraw from '../../utils/redraw'
 import signals from '../../signals'
 import settings from '../../settings'
 import { timeline as timelineXhr, seeks as corresSeeksXhr, lobby as lobbyXhr, featured as featuredGameXhr } from '../../xhr'
+import { getFromCache } from '../../http'
 import { hasNetwork, noop } from '../../utils'
-import { fromNow } from '../../i18n'
 import { isForeground } from '../../utils/appMode'
-import { Streamer, PongMessage, TimelineEntry, CorrespondenceSeek, FeaturedGame2, FeaturedPlayer, TimelineData } from '../../lidraughts/interfaces'
+import { Streamer, PongMessage, CorrespondenceSeek, FeaturedGame2, FeaturedPlayer, TimelineData } from '../../lidraughts/interfaces'
 import { Player } from '../../lidraughts/interfaces/game'
 import { TournamentListItem } from '../../lidraughts/interfaces/tournament'
 import { PuzzleData } from '../../lidraughts/interfaces/training'
 import session from '../../session'
-import { supportedTypes as supportedTimelineTypes } from '../timeline'
+import { makeTimeline } from '../timeline'
 import offlinePuzzleDB from '../training/database'
 import { loadNewPuzzle } from '../training/offlineService'
 import { finishedStatus } from '~/lidraughts/status'
@@ -160,22 +160,20 @@ export default class HomeCtrl {
         })
         .catch(noop)
 
-      timelineXhr(8)
-        .then((timeline) => {
-          this.timelineData = {
-            users: timeline.users,
-            entries: timeline.entries
-              .filter((o: TimelineEntry) => supportedTimelineTypes.includes(o.type))
-              .map(o => {
-                o.fromNow = fromNow(new Date(o.date))
-                return o
-              })
-          }
-          redraw()
-        })
-        .catch(() => {
-          this.timelineData = {entries: [], users: {}}
-        })
+      const timelineCache = getFromCache('/timeline')
+      if (timelineCache) {
+        this.timelineData = makeTimeline(timelineCache.data)
+      }
+      if (!timelineCache || Date.now() >= timelineCache.expires) {
+        timelineXhr(8, true)
+          .then((timeline) => {
+            this.timelineData = makeTimeline(timeline)
+            redraw()
+          })
+          .catch(() => {
+            this.timelineData = {entries: [], users: {}}
+          })
+      }
     }
   }
 

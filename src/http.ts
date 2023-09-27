@@ -156,7 +156,15 @@ function request<T>(url: string, type: 'json' | 'text', opts?: RequestOpts, feed
 }
 
 type ExpiringCacheEntry = { expires: ReturnType<DateConstructor['now']>, data: any }
-const responseCache = new Map<string, ExpiringCacheEntry>()
+export const responseCache = new Map<string, ExpiringCacheEntry>()
+
+export function getFromCache(cacheKey: string): ExpiringCacheEntry | undefined {
+  const cacheEntry = responseCache.get(cacheKey)
+  if (cacheEntry) {
+    return cacheEntry
+  }
+  return undefined
+}
 
 async function getFromCacheOr<T>(cacheKey: string, cacheSeconds: number, getData: () => Promise<T>): Promise<T> {
   const cacheEntry = responseCache.get(cacheKey)

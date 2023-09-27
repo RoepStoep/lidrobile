@@ -1,6 +1,6 @@
 import { Dialog } from '@capacitor/dialog'
 import globalConfig from './config'
-import { fetchJSON, fetchText } from './http'
+import { fetchCachedJSON, fetchJSON, fetchText } from './http'
 import { currentSri } from './utils'
 import storage from './storage'
 import settings from './settings'
@@ -170,8 +170,12 @@ export function miniUser(userId: string): Promise<MiniUser> {
   return fetchJSON(`/@/${userId}/mini`)
 }
 
-export function timeline(nb?: number): Promise<TimelineData> {
-  return fetchJSON('/timeline', {query: {nb: nb || 10}}, false)
+export function timeline(nb?: number, cached?: boolean): Promise<TimelineData> {
+  const opts = { query: { nb: nb || 10 } }
+  if (cached) {
+    return fetchCachedJSON(15, '/timeline', opts, false)
+  }
+  return fetchJSON('/timeline', opts, false)
 }
 
 export function status(): Promise<void> {
