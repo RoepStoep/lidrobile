@@ -24,7 +24,7 @@ export default class Draughtsground {
     this.state = initBoard(cfg)
   }
 
-  attach(wrapper: HTMLElement, bounds: ClientRect): void {
+  attach(wrapper: HTMLElement, bounds: DOMRect): void {
     const isViewOnly = this.state.fixed || this.state.viewOnly
     const board = document.createElement('div')
     board.className = 'cg-board'

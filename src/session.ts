@@ -318,7 +318,7 @@ async function refresh(): Promise<void> {
       challengesApi.refresh()?.then(redraw)
     }
     redraw()
-  } catch (err) {
+  } catch (err: any) {
     if (session !== undefined && err?.status === 401) {
       session = undefined
       onLogout()

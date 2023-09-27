@@ -4,6 +4,7 @@ import Draughtsground from '../../draughtsground/Draughtsground'
 import { uciToMove } from '../../utils/draughtsFormat'
 import settings from '../../settings'
 import { getVariantBoard } from '../../lidraughts/variant'
+import { noop } from '../../utils'
 
 export interface Attrs {
   readonly fen: string
@@ -48,7 +49,10 @@ const ViewOnlyBoard: Mithril.Component<Attrs, State> = {
       left: 0,
       right: 0,
       height: 0,
-      width: 0
+      width: 0,
+      x: 0,
+      y: 0,
+      toJSON: noop
     } : dom.getBoundingClientRect()
     if (attrs.delay !== undefined) {
       setTimeout(() => {

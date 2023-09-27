@@ -10,8 +10,8 @@ type Quantity = 'zero' | 'one' | 'two' | 'few' | 'many' | 'other'
 
 const defaultLocale = 'en-GB'
 const englishMessages: StringMap = {}
-const dateFormatOpts = { day: '2-digit', month: 'long', year: 'numeric' }
-const dateTimeFormatOpts = { ...dateFormatOpts, hour: '2-digit', minute: '2-digit' }
+const dateFormatOpts: Intl.DateTimeFormatOptions = { day: '2-digit', month: 'long', year: 'numeric' }
+const dateTimeFormatOpts: Intl.DateTimeFormatOptions = { ...dateFormatOpts, hour: '2-digit', minute: '2-digit' }
 
 let currentLocale: string = defaultLocale
 let dateLocale: Locale | undefined
