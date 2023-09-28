@@ -1,5 +1,6 @@
 apiUnsupported: "Phiên bản ứng dụng Lidraughts của bạn quá cũ! Vui lòng cập nhật lên phiên bản mới nhất."
 apiDeprecated: "Vui lòng nâng cấp lên phiên bản mới nhất của Lidraughts! Phiên bản này sẽ ngừng hỗ trợ vào %s."
+visitUrlToRequestManualConfirmation: "Hãy truy cập %s để yêu cầu xác nhận thủ công."
 comments: "Bình luận" #As in comments on a position (analysis)
 gameInformation: "Thông tin ván đấu"
 home: "Trang chủ" #The home page
@@ -18,6 +19,8 @@ playOnline: "Chơi trực tuyến"
 playOffline: "Chơi ngoại tuyến"
 playOfflineOverTheBoard: "Chơi ngoại tuyến trên bàn cờ" #Offline over the board play. This appears in the menu, so try to keep it short.
 playOfflineComputer: "Máy tính" #Offline play against the computer. This appears in the menu, so try to keep it short.
+importGameOnLidraughts: "Nhập ván cờ trên Lidraughts"
+importGameStateWithPlayerNames: "Nhập trạng thái ván cờ hiện tại trên Lidraughts với tên người chơi sau:"
 bgThemeSyncWithSystem: "Đồng bộ với hệ thống" #Settings to synchronise background theme (dark or light) with the operating system (to support daynight automatic switch)
 chatIsDisabled: "Chức năng trò chuyện bị tắt."
 puzzleVariant: "Biến thể của câu đố" #The draughts variant for puzzles
