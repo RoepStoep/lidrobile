@@ -1,20 +1,20 @@
 PODS:
-  - Capacitor (5.3.0):
+  - Capacitor (5.4.1):
     - CapacitorCordova
   - CapacitorApp (5.0.6):
     - Capacitor
-  - CapacitorBrowser (5.0.6):
+  - CapacitorBrowser (5.1.0):
     - Capacitor
   - CapacitorClipboard (5.0.6):
     - Capacitor
   - CapacitorCommunityKeepAwake (4.0.0):
     - Capacitor
-  - CapacitorCordova (5.3.0)
+  - CapacitorCordova (5.4.1)
   - CapacitorDevice (5.0.6):
     - Capacitor
   - CapacitorDialog (5.0.6):
     - Capacitor
-  - CapacitorFilesystem (5.1.3):
+  - CapacitorFilesystem (5.1.4):
     - Capacitor
   - CapacitorHaptics (5.0.6):
     - Capacitor
@@ -24,7 +24,7 @@ PODS:
     - Capacitor
   - CapacitorPreferences (5.0.6):
     - Capacitor
-  - CapacitorPushNotifications (5.0.6):
+  - CapacitorPushNotifications (5.1.0):
     - Capacitor
   - CapacitorScan (1.1.0):
     - Capacitor
@@ -169,20 +169,20 @@ EXTERNAL SOURCES:
     :path: "../../node_modules/@capacitor/toast"
 
 SPEC CHECKSUMS:
-  Capacitor: 1ac9165943bc4f2137642d218c5ba05df811de69
+  Capacitor: 4c0681b47eebeba1f902093d24149cf2f518393e
   CapacitorApp: 024e1b1bea5f883d79f6330d309bc441c88ad04a
-  CapacitorBrowser: 6192948e0ce804fd72aaf77f4114a3ad2e08c760
+  CapacitorBrowser: 7a0fb6a1011abfaaf2dfedfd8248f942a8eda3d6
   CapacitorClipboard: 77edf49827ea21da2a9c05c690a4a6a4d07199c4
   CapacitorCommunityKeepAwake: f3442e3e9b666dd0162522fbd053da1fe81ede20
-  CapacitorCordova: b9374d68e63ce29e96ab5db994cf14fbefd722c9
+  CapacitorCordova: 1222fdd78bfd0d323cc22bf254eed1484fe6c92a
   CapacitorDevice: 2c968f98a1ec4d22357418c1521e7ddc46c675e6
   CapacitorDialog: 0f3c15dfe9414b83bc64aef4078f1b92bcfead26
-  CapacitorFilesystem: 9b4641db3d6d62b6cc1bf0a6a09681ebaea696b7
+  CapacitorFilesystem: af704badfbc69f6f8623d9ed313e5490e3723dcb
   CapacitorHaptics: 1fffc1217c7e64a472d7845be50fb0c2f7d4204c
   CapacitorKeyboard: b978154b024a5f65e044908e37d15b7de58b9d12
   CapacitorNetwork: d80b3e79bef6ec37640ee2806c19771f07ff2d0c
   CapacitorPreferences: f03954bcb0ff09c792909e46bff88e3183c16b10
-  CapacitorPushNotifications: 7eb70469f1fcc3dec07126336d4896520e4991db
+  CapacitorPushNotifications: b31e326c6e4eb216a622041d6ca21a973f34943f
   CapacitorScan: 2029f372ef3025016fe93f239e8ea4870e4b718a
   CapacitorShare: cd41743331cb71d217c029de54b681cbd91e0fcc
   CapacitorSoundEffect: 8a1071fe13f81f6ac0253262671f320b363bfaf1
@@ -199,6 +199,6 @@ SPEC CHECKSUMS:
   nanopb: b552cce312b6c8484180ef47159bc0f65a1f0431
   PromisesObjC: c50d2056b5253dadbd6c2bea79b0674bd5a52fa4
 
-PODFILE CHECKSUM: dda52954f34d494460a779c74833caff57dbbb04
+PODFILE CHECKSUM: 694a7779df38425efc99cccce07e9b9ec8d1c7e0
 
 COCOAPODS: 1.12.1
