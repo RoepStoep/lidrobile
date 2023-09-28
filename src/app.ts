@@ -149,12 +149,12 @@ function onOffline() {
 // retry 5 times
 let nbRetries = 1
 function getPools() {
-  return xhr.lobby()
-  .then(redraw)
-  .catch(() => {
-    if (nbRetries <= 5) {
-      nbRetries++
-      setTimeout(getPools, nbRetries * 1000)
-    }
-  })
+  return xhr.lobby(true)
+    .then(redraw)
+    .catch(() => {
+      if (nbRetries <= 5) {
+        nbRetries++
+        setTimeout(getPools, nbRetries * 1000)
+      }
+    })
 }

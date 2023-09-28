@@ -62,7 +62,7 @@ function open() {
     return
   }
   if (xhr.cachedPools.length === 0) {
-    xhr.lobby(false).then(redraw)
+    xhr.lobby().then(redraw)
   }
   router.backbutton.stack.push(close)
   isOpen = true

@@ -116,8 +116,8 @@ export function acceptChallenge(id: string): Promise<OnlineGameData> {
 }
 
 export let cachedPools: ReadonlyArray<Pool> = []
-export function lobby(feedback?: boolean): Promise<LobbyData> {
-  return fetchJSON<LobbyData>('/', undefined, feedback)
+export function lobby(disableCache?: boolean): Promise<LobbyData> {
+  return fetchJSON<LobbyData>('/',  disableCache ? { cache: 'reload' } : undefined)
   .then((d: LobbyData) => {
     if (d.lobby.pools !== undefined) cachedPools = d.lobby.pools
     return d
