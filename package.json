@@ -94,7 +94,7 @@
     "serve": "http-server -p 8080 -s -g -c-1 .",
     "version": "node scripts/bump-version.js",
     "lint": "eslint src/",
-    "test": "set NODE_OPTIONS=--unhandled-rejections=warn && jest",
+    "test": "NODE_OPTIONS=--unhandled-rejections=warn jest",
     "i18n-update": "rimraf scripts/tmp/ && rimraf www/i18n/*.js && cd scripts && npm run i18n-update",
     "compile-date-locales": "node scripts/compile-date-locales",
     "styles": "stylus -q -u autoprefixer-stylus src/styl/index.styl -c -o www/css/compiled/app.css",
