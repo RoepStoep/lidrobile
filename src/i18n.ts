@@ -353,6 +353,7 @@ export const allLocales: StringMap = {
   'uk-UA': 'українська',
   'vi-VN': 'Tiếng Việt',
   'zh-CN': '中文',
+  'zh-TW': '繁體中文',
 }
 
 export const allKeys = Object.keys(allLocales)
