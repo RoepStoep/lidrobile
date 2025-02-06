@@ -20,5 +20,32 @@
 	},
 	"ios": {
 		"scheme": "lidraughts"
-	}
+	},
+	"server": {
+		"hostname": "localhost",
+		"androidScheme": "http"
+	},
+	"packageClassList": [
+		"KeepAwakePlugin",
+		"KeepAwakePlugin",
+		"AppPlugin",
+		"CAPBrowserPlugin",
+		"ClipboardPlugin",
+		"DevicePlugin",
+		"DialogPlugin",
+		"FilesystemPlugin",
+		"HapticsPlugin",
+		"KeyboardPlugin",
+		"CAPNetworkPlugin",
+		"PreferencesPlugin",
+		"PushNotificationsPlugin",
+		"SharePlugin",
+		"SplashScreenPlugin",
+		"StatusBarPlugin",
+		"ToastPlugin",
+		"Scan",
+		"Scan",
+		"SoundEffectPlugin",
+		"SoundEffectPlugin"
+	]
 }

@@ -20,6 +20,10 @@ const config: CapacitorConfig = {
   },
   ios: {
     scheme: 'lidraughts',
+  },
+  server: {
+    hostname: 'localhost',
+    androidScheme: 'http'
   }
 }
 

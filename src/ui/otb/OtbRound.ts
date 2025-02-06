@@ -44,7 +44,7 @@ export default class OtbRound implements OtbRoundInterface, PromotingInterface {
   public clock?: IDraughtsClock
   public moveList: boolean
 
-  private appStateListener: PluginListenerHandle
+  private appStateListener?: PluginListenerHandle
 
   public constructor(
     saved?: StoredOfflineGame | null,
@@ -90,13 +90,13 @@ export default class OtbRound implements OtbRoundInterface, PromotingInterface {
       }
     }
 
-    this.appStateListener = App.addListener('appStateChange', (state: AppState) => {
+    App.addListener('appStateChange', (state: AppState) => {
       if (!state.isActive) this.saveClock()
-    })
+    }).then((appStateListener) => this.appStateListener = appStateListener)
   }
 
   public unload() {
-    this.appStateListener.remove()
+    this.appStateListener?.remove()
     this.saveClock()
   }
 

@@ -52,8 +52,8 @@ export default class HomeCtrl {
   public timelineData?: TimelineData
   public offlinePuzzle?: PuzzleData | undefined
 
-  private networkListener: PluginListenerHandle
-  private appStateListener: PluginListenerHandle
+  private networkListener?: PluginListenerHandle
+  private appStateListener?: PluginListenerHandle
   private isConnected: boolean
 
   constructor(defaultTab?: number) {
@@ -67,16 +67,16 @@ export default class HomeCtrl {
       this.loadOfflinePuzzle()
     }
 
-    this.networkListener = Network.addListener('networkStatusChange', s => {
+    Network.addListener('networkStatusChange', s => {
       if (s.connected !== this.isConnected) {
         this.isConnected = s.connected
         if (s.connected) this.init()
       }
-    })
+    }).then((networkListener) => this.networkListener = networkListener)
 
-    this.appStateListener = App.addListener('appStateChange', (state: AppState) => {
+    App.addListener('appStateChange', (state: AppState) => {
       if (state.isActive) this.init()
-    })
+    }).then((appStateListener) => this.appStateListener = appStateListener)
 
     signals.afterLogin.add(this.init)
     signals.afterLogout.add(this.init)
@@ -100,8 +100,8 @@ export default class HomeCtrl {
   }
 
   public unload = () => {
-    this.networkListener.remove()
-    this.appStateListener.remove()
+    this.networkListener?.remove()
+    this.appStateListener?.remove()
   }
 
   public init = () => {
