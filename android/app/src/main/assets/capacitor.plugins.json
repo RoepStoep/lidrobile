@@ -69,6 +69,6 @@
 	},
 	{
 		"pkg": "capacitor-sound-effect",
-		"classpath": "org.lidraughts.plugin.SoundEffectPlugin"
+		"classpath": "org.lichess.plugin.SoundEffectPlugin"
 	}
 ]
