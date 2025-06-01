@@ -52,8 +52,8 @@ export default class HomeCtrl {
   public timelineData?: TimelineData
   public offlinePuzzle?: PuzzleData | undefined
 
-  private networkListener: PluginListenerHandle
-  private appStateListener: PluginListenerHandle
+  private networkListener?: PluginListenerHandle
+  private appStateListener?: PluginListenerHandle
   private isConnected: boolean
 
   constructor(defaultTab?: number) {
@@ -67,19 +67,23 @@ export default class HomeCtrl {
       this.loadOfflinePuzzle()
     }
 
-    this.networkListener = Network.addListener('networkStatusChange', s => {
+    this.setupListeners()
+
+    signals.afterLogin.add(this.init)
+    signals.afterLogout.add(this.init)
+  }
+
+  private async setupListeners() {
+    this.networkListener = await Network.addListener('networkStatusChange', s => {
       if (s.connected !== this.isConnected) {
         this.isConnected = s.connected
         if (s.connected) this.init()
       }
     })
 
-    this.appStateListener = App.addListener('appStateChange', (state: AppState) => {
+    this.appStateListener = await App.addListener('appStateChange', (state: AppState) => {
       if (state.isActive) this.init()
     })
-
-    signals.afterLogin.add(this.init)
-    signals.afterLogout.add(this.init)
   }
 
   // workaround for scroll overflow issue on ios
@@ -100,8 +104,8 @@ export default class HomeCtrl {
   }
 
   public unload = () => {
-    this.networkListener.remove()
-    this.appStateListener.remove()
+    this.networkListener?.remove()
+    this.appStateListener?.remove()
   }
 
   public init = () => {

@@ -2,10 +2,11 @@ import h from 'mithril/hyperscript'
 import layout from '../../layout'
 import i18n from '../../../i18n'
 import session from '../../../session'
-import { Takeback, SubmitMove, AutoThreefold, SubmitMoveChoices, TakebackChoices, AutoThreefoldChoices } from '../../../lidraughts/prefs'
+import { Takeback, SubmitMove, AutoThreefold, SubmitMoveChoices, TakebackChoices, AutoThreefoldChoices, PrefValue } from '../../../lidraughts/prefs'
 import * as helper from '../../helper'
 import { dropShadowHeader, backButton } from '../../shared/common'
 import formWidgets from '../../shared/form'
+import { Prop } from '~/settings'
 
 export default {
   oncreate: helper.viewSlideIn,
@@ -30,13 +31,13 @@ export function render(ctrl: typeof prefsCtrl) {
     h('li.list_item', formWidgets.renderMultipleChoiceButton(
       i18n('premovesPlayingDuringOpponentTurn'), formWidgets.booleanChoice, ctrl.premove)),
     h('li.list_item', formWidgets.renderMultipleChoiceButton(
-      i18n('takebacksWithOpponentApproval'), TakebackChoices, ctrl.takeback
+      i18n('takebacksWithOpponentApproval'), TakebackChoices, ctrl.takeback as Prop<PrefValue>
     )),
     h('li.list_item', formWidgets.renderMultipleChoiceButton(
-      i18n('claimDrawOnThreefoldRepetitionAutomatically').replace(/%s/g, ''), AutoThreefoldChoices, ctrl.autoThreefold
+      i18n('claimDrawOnThreefoldRepetitionAutomatically').replace(/%s/g, ''), AutoThreefoldChoices, ctrl.autoThreefold as Prop<PrefValue>
     )),
     h('li.list_item', formWidgets.renderMultipleChoiceButton(
-      i18n('moveConfirmation'), SubmitMoveChoices, ctrl.submitMove
+      i18n('moveConfirmation'), SubmitMoveChoices, ctrl.submitMove as Prop<PrefValue>
     )),
   ]
 }

@@ -2,7 +2,7 @@ import h from 'mithril/hyperscript'
 import i18n from '../../../i18n'
 import session from '../../../session'
 import { Prop } from '../../../settings'
-import { ChallengeChoices, Challenge } from '../../../lidraughts/prefs'
+import { ChallengeChoices, Challenge, PrefValue } from '../../../lidraughts/prefs'
 import { dropShadowHeader, backButton } from '../../shared/common'
 import formWidgets from '../../shared/form'
 import layout from '../../layout'
@@ -34,7 +34,7 @@ function renderBody(ctrl: Ctrl) {
   return [
     h('ul.native_scroller.page.settings_list.game', [
       h('li.list_item', formWidgets.renderMultipleChoiceButton(i18n('letOtherPlayersFollowYou'), formWidgets.booleanChoice, ctrl.follow)),
-      h('li.list_item', formWidgets.renderMultipleChoiceButton(i18n('letOtherPlayersChallengeYou'), ChallengeChoices, ctrl.challenge))
+      h('li.list_item', formWidgets.renderMultipleChoiceButton(i18n('letOtherPlayersChallengeYou'), ChallengeChoices, ctrl.challenge as Prop<PrefValue>))
     ])
   ]
 }

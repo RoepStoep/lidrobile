@@ -2,10 +2,11 @@ import h from 'mithril/hyperscript'
 import layout from '../../layout'
 import i18n from '../../../i18n'
 import session from '../../../session'
-import { AnimationChoices, Animation } from '../../../lidraughts/prefs'
+import { AnimationChoices, Animation, PrefValue } from '../../../lidraughts/prefs'
 import * as helper from '../../helper'
 import { dropShadowHeader, backButton } from '../../shared/common'
 import formWidgets from '../../shared/form'
+import { Prop } from '~/settings'
 
 export default {
   oncreate: helper.viewSlideIn,
@@ -26,7 +27,7 @@ const prefsCtrl = {
 export function render(ctrl: typeof prefsCtrl) {
   return [
     h('li.list_item',
-      formWidgets.renderMultipleChoiceButton(i18n('pieceAnimation'), AnimationChoices, ctrl.animation),
+      formWidgets.renderMultipleChoiceButton(i18n('pieceAnimation'), AnimationChoices, ctrl.animation as Prop<PrefValue>),
     ),
     h('li.list_item',
       formWidgets.renderMultipleChoiceButton(i18n('materialDifference'), formWidgets.booleanChoice, ctrl.showCaptured),

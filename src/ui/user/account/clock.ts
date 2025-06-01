@@ -2,10 +2,11 @@ import h from 'mithril/hyperscript'
 import layout from '../../layout'
 import i18n from '../../../i18n'
 import session from '../../../session'
-import { MoreTime, MoreTimeChoices, ClockTenths, ClockTenthsChoices } from '../../../lidraughts/prefs'
+import { MoreTime, MoreTimeChoices, ClockTenths, ClockTenthsChoices, PrefValue } from '../../../lidraughts/prefs'
 import * as helper from '../../helper'
 import { dropShadowHeader, backButton } from '../../shared/common'
 import formWidgets from '../../shared/form'
+import { Prop } from '~/settings'
 
 export default {
   oncreate: helper.viewSlideIn,
@@ -27,7 +28,7 @@ export const prefsCtrl = {
 export function render(ctrl: typeof prefsCtrl) {
   return [
     h('li.list_item', formWidgets.renderMultipleChoiceButton(
-      i18n('tenthsOfSeconds'), ClockTenthsChoices, ctrl.clockTenths
+      i18n('tenthsOfSeconds'), ClockTenthsChoices, ctrl.clockTenths as Prop<PrefValue>
     )),
     h('li.list_item', formWidgets.renderMultipleChoiceButton(
       i18n('soundWhenTimeGetsCritical'), [
@@ -35,7 +36,7 @@ export function render(ctrl: typeof prefsCtrl) {
         { label: i18n('yes'), value: true },
       ], ctrl.clockSound)),
     h('li.list_item', formWidgets.renderMultipleChoiceButton(
-      i18n('giveMoreTime'), MoreTimeChoices, ctrl.moreTime
+      i18n('giveMoreTime'), MoreTimeChoices, ctrl.moreTime as Prop<PrefValue>
     )),
   ]
 }

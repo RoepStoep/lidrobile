@@ -4,6 +4,7 @@ import i18n from '../../i18n'
 import redraw from '../../utils/redraw'
 import { Prop } from '../../settings'
 import * as helper from '../helper'
+import { PrefValue } from '../../lidraughts/prefs'
 
 type SelectOption = ReadonlyArray<string>
 interface MultiOption<T> {
@@ -44,11 +45,11 @@ export default {
     ]
   },
 
-  renderSelect(
+  renderSelect<T extends string>(
     label: string,
     name: string,
     options: ReadonlyArray<SelectOption>,
-    settingsProp: Prop<string>,
+    settingsProp: Prop<T>,
     isDisabled?: boolean,
     onChangeCallback?: (v: string) => void
   ) {
@@ -62,7 +63,7 @@ export default {
         disabled: isDisabled,
         onchange(e: Event) {
           const val = (e.target as HTMLSelectElement).value
-          settingsProp(val)
+          settingsProp(val as T)
           if (onChangeCallback) onChangeCallback(val)
           setTimeout(redraw, 10)
         }
@@ -99,7 +100,7 @@ export default {
     ])
   },
 
-  renderMultipleChoiceButton<T>(
+  renderMultipleChoiceButton<T extends PrefValue>(
     label: string,
     options: ReadonlyArray<MultiOption<T>>,
     prop: Prop<T>,

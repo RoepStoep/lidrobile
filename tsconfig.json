@@ -17,6 +17,11 @@
     "jsxFactory": "h",
     "types": ["lodash-es", "d3"]
   },
+  "files": [
+    "src/utils/lru/index.js",
+	  "src/utils/zanimo/index.js",
+	  "src/ui/helper/Siema.js"
+  ],
   "include": [
     "src/**/*.js",
     "src/**/*.ts",

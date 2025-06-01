@@ -2,7 +2,7 @@
 // (c) 2011-2014 Paul Panserrieu
 // modified here for lidrobile
 
-const transition = 'transition', transitionend = 'transitionend',
+const transition = 'transition', transitionend = 'transitionend'
 
 /**
 * Zanimo(el | promise[el])

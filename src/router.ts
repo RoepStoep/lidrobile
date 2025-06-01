@@ -32,7 +32,7 @@ export function withRouter(f: (r: Rlite.Rlite) => void): void {
   f(router)
 }
 
-export function onRouteMatch<T>(component: Mithril.Component, params: T): void {
+export function onRouteMatch<T extends Object>(component: Mithril.Component, params: T): void {
 
   const RouteComponent = {view() {
     return Vnode(component, undefined, params)

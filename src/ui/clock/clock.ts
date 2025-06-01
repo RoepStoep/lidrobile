@@ -26,7 +26,7 @@ function hideStatusBar() {
 const DraughtsClockScreen: Mithril.Component<Record<string, never>, State> = {
   oncreate: helper.viewFadeIn,
 
-  oninit() {
+  async oninit() {
     sleepUtils.keepAwake()
 
     if (Capacitor.getPlatform() === 'android') {
@@ -35,7 +35,7 @@ const DraughtsClockScreen: Mithril.Component<Record<string, never>, State> = {
 
     hideStatusBar()
 
-    this.appStateListener = App.addListener('appStateChange', (state: AppState) => {
+    this.appStateListener = await App.addListener('appStateChange', (state: AppState) => {
       if (state.isActive) hideStatusBar()
     })
 

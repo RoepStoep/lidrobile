@@ -25,7 +25,10 @@ export default function UserCtrl(userId: string): IUserCtrl {
   const user = utils.prop<ProfileUser | null>(null)
 
   function setNewUserState(newData: Partial<ProfileUser>) {
-    Object.assign(user(), newData)
+    const currentUser = user()
+    if (currentUser) {
+      Object.assign(currentUser, newData)
+    }
     redraw()
   }
 
