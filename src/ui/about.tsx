@@ -1,4 +1,3 @@
-import { Capacitor } from '@capacitor/core'
 import h from 'mithril/hyperscript'
 import socket from '../socket'
 import * as helper from './helper'
@@ -32,10 +31,6 @@ export default {
 
         <ul className="about_links">
           <li>{externalLink('Github', 'https://github.com/RoepStoep/lidrobile')}</li>
-          { Capacitor.getPlatform() !== 'ios' ?
-              <li>{externalLink('Donate', 'https://lidraughts.org/patron')}</li> :
-              null
-          }
           <li>{externalLink('Contact', 'https://lidraughts.org/contact')}</li>
           <li>{externalLink('Terms of Service', 'https://lidraughts.org/terms-of-service')}</li>
           <li>{externalLink('Privacy Policy', 'https://lidraughts.org/privacy')}</li>
