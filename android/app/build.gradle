@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 
 android {
     namespace "org.lidraughts.mobileapp"
-    compileSdkVersion rootProject.ext.compileSdkVersion
+    compileSdk rootProject.ext.compileSdkVersion
     defaultConfig {
         // configurations.all {
         //   resolutionStrategy {

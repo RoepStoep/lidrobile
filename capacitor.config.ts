@@ -4,7 +4,6 @@ import { CapacitorConfig } from '@capacitor/cli'
 const config: CapacitorConfig = {
   appId: 'org.lidraughts.mobileapp',
   appName: 'lidraughts',
-  bundledWebRuntime: false,
   webDir: 'www',
   backgroundColor: '000000ff',
   appendUserAgent: 'Lidrobile/2.2.0',
