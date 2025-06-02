@@ -4,11 +4,11 @@ declare module 'signals' {
   type SignalBinding = unknown
 
   export class Signal<T = unknown> {
-    constructor();
+    constructor()
 
-    add(listener: Listener<T>, context?: Context, priority?: number): SignalBinding;
-    removeAll(): void;
-    dispatch(params?: unknown): void;
-    remove(listener: Listener<T>, context?: Context): Listener<T>;
+    add(listener: Listener<T>, context?: Context, priority?: number): SignalBinding
+    removeAll(): void
+    dispatch(params?: unknown): void
+    remove(listener: Listener<T>, context?: Context): Listener<T>
   }
 }

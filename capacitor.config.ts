@@ -6,7 +6,7 @@ const config: CapacitorConfig = {
   appName: 'lidraughts',
   webDir: 'www',
   backgroundColor: '000000ff',
-  appendUserAgent: 'Lidrobile/2.2.0',
+  appendUserAgent: 'Lidrobile/2.3.0',
   plugins: {
     SplashScreen: {
       androidSplashResourceName: 'launch_splash',
@@ -16,6 +16,9 @@ const config: CapacitorConfig = {
     PushNotifications: {
       presentationOptions: ['sound', 'alert']
     }
+  },
+  server: {
+    androidScheme: "http"
   },
   ios: {
     scheme: 'lidraughts',

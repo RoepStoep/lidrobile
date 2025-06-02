@@ -9,10 +9,10 @@ export default class LRUMap<K,V> {
   // `entries` should be an Array or other iterable object whose elements are
   // key-value pairs (2-element Arrays). Each key-value pair is added to the new Map.
   // null is treated as undefined.
-  constructor(limit :number, entries? :Iterable<[K,V]>);
+  constructor(limit :number, entries? :Iterable<[K,V]>)
 
   // Convenience constructor equivalent to `new LRUMap(count(entries), entries)`
-  constructor(entries :Iterable<[K,V]>);
+  constructor(entries :Iterable<[K,V]>)
 
   // Current number of items
   size :number
@@ -28,22 +28,22 @@ export default class LRUMap<K,V> {
 
   // Replace all values in this map with key-value pairs (2-element Arrays) from
   // provided iterable.
-  assign(entries :Iterable<[K,V]>) : void;
+  assign(entries :Iterable<[K,V]>) : void
 
   // Put <value> into the cache associated with <key>. Replaces any existing entry
   // with the same key. Returns `this`.
-  set(key :K, value :V) : LRUMap<K,V>;
+  set(key :K, value :V) : LRUMap<K,V>
 
   // Purge the least recently used (oldest) entry from the cache.
   // Returns the removed entry or undefined if the cache was empty.
-  shift() : [K,V] | undefined;
+  shift() : [K,V] | undefined
 
   // Get and register recent use of <key>.
   // Returns the value associated with <key> or undefined if not in cache.
-  get(key :K) : V | undefined;
+  get(key :K) : V | undefined
 
   // Returns an object suitable for JSON encoding
-  toJSON() : ReadonlyArray<[K, V]>;
+  toJSON() : ReadonlyArray<[K, V]>
 }
 
 // An entry holds the key and value, and pointers to any older and newer entries.
