@@ -710,7 +710,7 @@ export default class AnalyseCtrl {
 
         if (isThreat) {
           const threat = ev 
-          if (!node.threat || util.isEvalBetter(threat, node.threat) || node.threat?.maxDepth! < threat.maxDepth!) {
+          if (!node.threat || util.isEvalBetter(threat, node.threat) || node.threat.maxDepth! < threat.maxDepth!) {
             node.threat = threat
           } else if (ev.knps) {
             node.threat.knps = ev.knps
